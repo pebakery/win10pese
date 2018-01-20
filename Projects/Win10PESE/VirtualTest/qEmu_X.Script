@@ -1,0 +1,706 @@
+[Main]
+Title=qEmu X Emulation
+Type=Plugin
+Author=Lancelot
+Description=(v2.10.0-rc3 - 20170816) (Host NT5x v2.7.0 20160903) Runs your ISO in QEMU (With Latest X version) (Thanks to Fabrice Bellard for qEmu AND Stefan Weil for compiled distribution.)
+Credits=http://TheOven.org
+Version=014
+Download_Level=2
+Level=8
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.22
+Depend=
+Disable=%ScriptDir%\AA_Best_Emulation.Script,%ScriptDir%\Bochs_Emu.Script,%ScriptDir%\qEmu.Script,%ScriptDir%\qEmu_X.Script,%ScriptDir%\VirtualBox.Script,%ScriptDir%\VirtualPC.Script,%ScriptDir%\VMWare.Script,%ProjectDir%\VirtualTestY\AA_Best_Emulation.Link,%ProjectDir%\VirtualTes\Bochs_Emu.Link,%ProjectDir%\VirtualTestY\qEmu.Link,%ProjectDir%\VirtualTestY\qEmu_X.Link,%ProjectDir%\VirtualTestY\VirtualBox.Link,%ProjectDir%\VirtualTestY\VirtualPC.Link,%ProjectDir%\VirtualTestY\VMWare.Link,%ProjectDir%\VirtualTest\AA_Best_Emulation.Script,%ProjectDir%\VirtualTes\Bochs_Emu.Script,%ProjectDir%\VirtualTest\qEmu.Script,%ProjectDir%\VirtualTest\qEmu_X.Script,%ProjectDir%\VirtualTest\VirtualBox.Script,%ProjectDir%\VirtualTest\VirtualPC.Script,%ProjectDir%\VirtualTest\VMWare.Script
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/VirtualTest/qEmu_X.Script
+Web1C_x64=http://yomi.cwcodes.net/Yomi/VirtualTestY/qEmu_X_x64_File.Script
+Web1C_x86=http://yomi.cwcodes.net/Yomi/VirtualTestY/qEmu_X_x86_File.Script
+Web1C_NT5x_x64=http://yomi.cwcodes.net/Yomi/VirtualTestY/qEmu_X_NT5x_x64_File.Script
+Web1C_NT5x_x86=http://yomi.cwcodes.net/Yomi/VirtualTestY/qEmu_X_NT5x_x86_File.Script
+Web2=http://yomi.cwcodes.net/Yomi/VirtualTestY/qEmu_X.Script
+Web3=http://win81se.cwcodes.net/Projects/Win8.1SE/VirtualTest/qEmu_X.Script
+Web4=http://w8pese.cwcodes.net/Projects/Win8PESE/VirtualTest/qEmu_X.Script
+Web5=http://win10se.cwcodes.net/Projects/Win10PESE/VirtualTest/qEmu_X.Script
+Web6=http://gena.cwcodes.net/Projects/Gena/VirtualTest/qEmu_X.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Lancelot: Works with Win10PESE x64 and Gena x64 :)
+HistoryNotes02=Lancelot: FileContainer qEmu_X_x86_File plugin only on Yomi to reduce project size ( I believe most users now have Host-x64 )
+HistoryNotes03=+++++++++++ How to create qemu-w64-setup-........_Mini.7z +++++++++++++ START
+HistoryNotes04=******************************Lancelot: FileContainer Plugins have automatic Encode feature S **************************
+HistoryNotes05=Download latest qemu-w64-setup-.........exe from https://qemu.weilnetz.de/w64/
+HistoryNotes06=Extract qemu-w64-setup-.........exe with 7z
+HistoryNotes07=Delete ALL qemu-system-.....exe except qemu-system-i386.exe AND qemu-system-x86_64.exe
+HistoryNotes08=Pack all files to qemu-w64-setup-........_Mini.7z
+HistoryNotes09=******************************Lancelot: FileContainer Plugins have automatic Encode feature F **************************
+HistoryNotes10=+++++++++++ How to create qemu-w64-setup-........_Mini.7z +++++++++++++ Finish
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2017.08.19 Plugin created following feedback Tsaukpaetra - http://TheOven.org/index.php?topic=2195
+History002=Lancelot Add to servers - Date:2017.08.20
+History003=Lancelot Fix network - Date:2017.08.20
+History004=Lancelot Added FileContainer (Faster plugin) // Add Hostx86 support - FileContainer qEmu_X_x86_File plugin only on Yomi to reduce project size ( I believe most users now have Host-x64 ) - Date:2017.08.21
+History005=Lancelot Add Host-NT5 support (new FileContainers on server) - Date:2017.08.21
+History006=Lancelot Add More parameter checkbox // custom parameter box // Additional Admin buttons (view all container, delete all) // Create HDD // Download NT5x container buttons // Added Template_Fat32.img - Date:2017.08.22
+History007=Lancelot Add to Gena server to avoid winbuilder selectiso bug with .link - Date:2017.08.22
+History008=Lancelot Improved //SE project have FileContainer_x64 on project distribution - Gena do not // SelectISO halt on .link file to avoid winbuilder bug // Add Par_USBD_tablet_CheckBox to partially workaround qEmu mouse issue - Reply 6-7-8 http://TheOven.org/index.php?topic=2195.msg23760#msg23760 - Date:2017.08.23 // Echo minor fix - Date:2017.08.23
+History009=Lancelot Fix BootDisk - Date:2017.08.23
+History010=Lancelot Add SelectContainer_ScrollBox to debug easily - Date:2017.08.23
+History011=Lancelot Updated Disable - Date:2017.08.30
+History012=Lancelot Update to get PEBakery compatible (Remove ShellExecute%Ex% ) ied206 Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
+History014=Lancelot %ISODir% deprecated - Date:2017.11.22
+
+[Interface]
+pButton_Show_Second_Gui="More Options",1,8,251,6,100,18,Second_Gui,True,True,False,_Second_Gui_,True
+pButton_Show_First_Gui="Basic Options",0,8,251,6,100,18,First_Gui,True,True,False,_First_Gui_,True
+BootDrive_pBevel=pBevel1,0,12,4,4,247,35
+BootDrive_TextLabel="Boot Drive",0,1,8,10,65,18,8,Bold
+BootDrive_ScrollBox=d,0,4,78,9,40,21,a,c,d
+BootDrive_Info_TextLabel="Boot from floppy (a), hard disk (c) or CD-ROM (d)",0,1,120,6,126,27,8,Normal
+Ram_pBevel=pBevel2,1,12,4,37,247,50
+Ram_TextLabel="Ram Size",1,1,9,46,60,18,8,Bold
+Ram_NumberBox=pNumberBox1,1,2,70,43,56,22,2048,64,16384,32
+Ram_MP_TextLabel=MB,1,1,127,45,18,18,8,Normal
+Pause_CheckBox="Pause while running Emulated PC",1,3,8,113,181,19,False
+WebLabel_Homepg=HomePage,1,10,360,1,51,18,https://qemu.weilnetz.de
+WebLabel_Plugin="Plugin Page",1,10,417,1,55,18,http://TheOven.org/index.php?board=9
+Par_LocTi_CheckBox="Use local time",0,3,246,116,90,16,True
+Par_FScrn_CheckBox="Full screen",0,3,246,132,76,16,False
+Par_EnUSB_CheckBox="Enable USB -usb",0,3,246,149,105,16,True
+Par_dACPI_CheckBox="Disable ACPI",0,3,246,166,85,16,False
+Par_USBD_tablet_CheckBox="-device usb-tablet",0,3,246,181,110,18,True
+View_Qemu_Files_Button="View Qemu Files",0,8,250,258,111,25,View_Qemu_Files,opendir.bmp,False,False,_View_Qemu_Files_,False,"__Open Qemu Folder"
+View_Qemu_Files_ALL_Button="View  ALL Containers",0,8,12,355,139,25,Extract_ALL_P,opendir.bmp,False,False,"__Extract ALL Container files and Open Qemu Folder"
+Exp_IsoFolder_Button=IsoFolder,0,8,402,224,81,25,Open_Folder_IsoFolder,explorer.bmp,False,False,_Open_Folder_IsoFolder_,False
+List_PhysicalDrive_Button="List PhysicalDrive",0,8,401,184,93,25,List_PhysicalDrive_B,0,False,False,_List_PhysicalDrive_B_,False
+View_Parameters_Button="View possible parameters",0,8,250,224,129,25,view_parameters
+Select_Disk_Button="Boot Disk",0,8,397,117,80,34,Select_Disk_Boot_B,Oxygen-Icons.org-Oxygen-Devices-drive-harddisk2424..bmp,False,False,_Select_Disk_Boot_B_,False
+Select_Disk_ScrollBox=PhysicalDrive2,0,4,398,151,94,21,PhysicalDrive1,PhysicalDrive2,PhysicalDrive3,PhysicalDrive4,PhysicalDrive5,PhysicalDrive6,PhysicalDrive7
+Select_Disk_Bevel=pBevel1,0,12,395,114,105,64
+Include_PhysicalDrive_CheckBox="Include PhysicalDrive",0,3,11,246,124,18,False
+Include_PhysicalDrive_ScrollBox=PhysicalDrive2,0,4,137,244,94,21,PhysicalDrive1,PhysicalDrive2,PhysicalDrive3,PhysicalDrive4,PhysicalDrive5,PhysicalDrive6,PhysicalDrive7
+Include_PhysicalDrive_Bevel=pBevel2,0,12,5,238,230,36
+Hdd_Bevel=Bevel,0,12,6,134,222,99
+Hdd_Include_CheckBox="Include hdd image",0,3,11,145,109,18,True
+Hdd_Disk_Image=,0,0,121,155,100,21,xxx.img
+Hdd_Disk_Reset_CheckBox="Reset on Build",0,3,26,163,94,13,True
+CreateHD_Bevel=Bevel,0,12,14,184,173,45
+CreateHD_Button=Create,0,8,20,196,76,28,Create_image,_Create_image_,False
+CreateHD_TextBox="Size (Mb)",0,0,99,203,50,21,100
+CreateHD_Info_Button=Info,0,8,152,204,27,20,Create_image_INFO
+Pars_TextBox="Add parameters to command line",0,0,9,311,229,21,
+SelectISO_Button="Select Iso",1,8,385,18,93,36,SelectISO_Process,MesCD2424.bmp,False,False,_SelectISO_Process_,False
+VirtualOS_ScrollBox=Auto,1,4,320,54,158,21,Auto,qemu-system-i386.exe,qemu-system-x86_64.exe
+Button_Download=,1,8,480,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__Download (Update) Plugin"
+Button_Upload=,1,8,480,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__Upload Plugin (Admins Only)"
+Button_CompareEdit=,1,8,480,78,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Download_Container_x64=,1,8,503,21,24,24,DownloadXXX_Container_x64,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x64_,False,"__Download Container x64 (~18 MB)"
+Button_Download_Container_x86=,0,8,525,21,24,24,DownloadXXX_Container_x86,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x86_,False,"__Download Container x86 (~18 MB)"
+Button_Download_Container_NT5x_x64=,0,8,503,52,24,24,DownloadXXX_Container_NT5x_x64,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_NT5x_x64_,False,"__Download Container NT5x x64 (~18 MB)"
+Button_Download_Container_NT5x_x86=,0,8,525,52,24,24,DownloadXXX_Container_NT5x_x86,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_NT5x_x86_,False,"__Download Container NT5x x86 (~18 MB)"
+Delete_ALL_Button="Delete ALL qEmu Folders",0,8,11,386,161,25,Delete_ALL_P,trash.bmp,False,False,_Delete_ALL_P_,False,"__Delete ALL qEmu Related Folders"
+SelectContainer_ScrollBox=Auto,0,4,13,417,150,21,Auto,"Force qEmu x64","Force qEmu x64 Project","Force qEmu x86","Force qEmu NT5 x64","Force qEmu NT5 x86"
+
+[Second_Gui]
+System,CURSOR,Wait
+Run,%ScriptFile%,Show-Hide-First_Gui,False
+Run,%ScriptFile%,Show-Hide-Second_Gui,True
+System,RefreshInterface
+System,CURSOR,Normal
+
+[First_Gui]
+System,CURSOR,Wait
+Run,%ScriptFile%,Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Show-Hide-First_Gui,True
+System,RefreshInterface
+System,CURSOR,Normal
+
+[Show-Hide-Second_Gui]
+Visible,%BootDrive_pBevel%,#1,PERMANENT
+Visible,%BootDrive_TextLabel%,#1,PERMANENT
+Visible,%BootDrive_ScrollBox%,#1,PERMANENT
+Visible,%BootDrive_Info_TextLabel%,#1,PERMANENT
+Visible,%Par_LocTi_CheckBox%,#1,PERMANENT
+Visible,%Par_FScrn_CheckBox%,#1,PERMANENT
+Visible,%Par_EnUSB_CheckBox%,#1,PERMANENT
+Visible,%Par_dACPI_CheckBox%,#1,PERMANENT
+Visible,%Par_USBD_tablet_CheckBox%,#1,PERMANENT
+Visible,%View_Parameters_Button%,#1,PERMANENT
+Visible,%Hdd_Bevel%,#1,PERMANENT
+Visible,%Hdd_Include_CheckBox%,#1,PERMANENT
+Visible,%Hdd_Disk_Image%,#1,PERMANENT
+Visible,%Hdd_Disk_Reset_CheckBox%,#1,PERMANENT
+Visible,%CreateHD_Bevel%,#1,PERMANENT
+Visible,%CreateHD_Button%,#1,PERMANENT
+Visible,%CreateHD_TextBox%,#1,PERMANENT
+Visible,%CreateHD_Info_Button%,#1,PERMANENT
+Visible,%Pars_TextBox%,#1,PERMANENT
+Visible,%View_Qemu_Files_Button%,#1,PERMANENT
+Visible,%Select_Disk_Button%,#1,PERMANENT
+Visible,%Select_Disk_ScrollBox%,#1,PERMANENT
+Visible,%Select_Disk_Bevel%,#1,PERMANENT
+Visible,%List_PhysicalDrive_Button%,#1,PERMANENT
+Visible,%Include_PhysicalDrive_CheckBox%,#1,PERMANENT
+Visible,%Include_PhysicalDrive_ScrollBox%,#1,PERMANENT
+Visible,%Include_PhysicalDrive_Bevel%,#1,PERMANENT
+Visible,%Exp_IsoFolder_Button%,#1,PERMANENT
+//Visible,%Button_Download_Container_x64%,#1,PERMANENT
+Visible,%Button_Download_Container_x86%,#1,PERMANENT
+Visible,%Button_Download_Container_NT5x_x64%,#1,PERMANENT
+Visible,%Button_Download_Container_NT5x_x86%,#1,PERMANENT
+Visible,%View_Qemu_Files_ALL_Button%,#1,PERMANENT
+Visible,%Delete_ALL_Button%,#1,PERMANENT
+Visible,%SelectContainer_ScrollBox%,#1,PERMANENT
+//--
+Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+
+[Show-Hide-First_Gui]
+Visible,%Button_Upload%,#1,PERMANENT
+//--
+Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+
+[Variables]
+%ProgramTitle%=qEmu-X
+%ProgramEXE%=qemu-system-i386.exe
+%ProgramFolder%=qEmuX
+%WF%=%ProjectTemp%\%ProgramFolder%
+%hddInclude%=Nop
+%DiskBoot%=0
+%FileContainer%=%FileContainer_x86%
+%FileContainer_x64_Project%=%ScriptDir%\qEmu_X_x64_File.Script
+%FileContainer_x64%=%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_x64_File.Script
+%FileContainer_x86%=%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_x86_File.Script
+%FileContainer_NT5_x86%=%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_NT5x_x86_File.Script
+%FileContainer_NT5_x64%=%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_NT5x_x64_File.Script
+
+[Process]
+Call,HostOSVersion,,1
+Call,HostOSArch
+//2016-10-16: New QEMU installers. Drop SDL and Windows XP support, use updated third party DLLs, support more QEMU features.
+//If,%HostOSVersion1%,Smaller,6,Exit,"%ScriptTitle% only support Vista and later"
+//--
+//---- FileContainer Check - Start
+If,%HostOSVersion1%,Equal,5,Begin
+If,%HostOSArch%,Equal,x86,Begin
+Set,%FileContainer%,%FileContainer_NT5_x86%
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container_NT5x_x86_NOQ
+End
+//-
+If,%HostOSArch%,Equal,x64,Begin
+Set,%FileContainer%,%FileContainer_NT5_x64%
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container_NT5x_x64_NOQ
+If,Not,ExistFile,%FileContainer%,Begin
+//x64 Fall Back to x86
+Run,%ScriptFile%,DownloadXXX_Container_NT5x_x86_NOQ
+If,ExistFile,%FileContainer_NT5_x86%,Set,%FileContainer%,%FileContainer_NT5_x86%
+End
+End
+//-
+// All FallBack to x86
+If,Not,%HostOSArch%,Equal,x86,Begin
+If,Not,%HostOSArch%,Equal,x64,Begin
+Set,%FileContainer%,%FileContainer_NT5_x86%
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container_NT5x_x86_NOQ
+End
+End
+End
+//---------------------------------
+If,%HostOSVersion1%,Bigger,5,Begin
+If,%HostOSArch%,Equal,x86,Begin
+Set,%FileContainer%,%FileContainer_x86%
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container_x86_NOQ
+End
+//-
+If,%HostOSArch%,Equal,x64,Begin
+//-
+//SE project have FileContainer_x64 on project distribution - Gena do not
+Set,%FileContainer%,%FileContainer_x64_Project%
+If,Not,ExistFile,%FileContainer%,Set,%FileContainer%,%FileContainer_x64%
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container_x64_NOQ
+If,Not,ExistFile,%FileContainer%,Begin
+//x64 Fall Back to x86
+Run,%ScriptFile%,DownloadXXX_Container_x86_NOQ
+If,ExistFile,%FileContainer_x86%,Set,%FileContainer%,%FileContainer_x86%
+End
+End
+//-
+// All FallBack to x86
+If,Not,%HostOSArch%,Equal,x86,Begin
+If,Not,%HostOSArch%,Equal,x64,Begin
+Set,%FileContainer%,%FileContainer_x86%
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container_x86_NOQ
+End
+End
+End
+//-
+//---- FileContainer Check - Finish
+//--
+//Debug ----- S
+If,%SelectContainer_ScrollBox%,Equal,"Force qEmu x86",Set,%FileContainer%,%FileContainer_x86%
+If,%SelectContainer_ScrollBox%,Equal,"Force qEmu x64",Set,%FileContainer%,%FileContainer_x64%
+If,%SelectContainer_ScrollBox%,Equal,"Force qEmu x64 Project",Set,%FileContainer%,%FileContainer_x64_Project%
+If,%SelectContainer_ScrollBox%,Equal,"Force qEmu NT5 x64",Set,%FileContainer%,%FileContainer_NT5_x64%
+If,%SelectContainer_ScrollBox%,Equal,"Force qEmu NT5 x86",Set,%FileContainer%,%FileContainer_NT5_x86%
+//--
+//Set,%FileContainer%,%FileContainer_x86%
+//Set,%FileContainer%,%FileContainer_x64%
+//Set,%FileContainer%,%FileContainer_x64_Project%
+//Set,%FileContainer%,%FileContainer_NT5_x86%
+//Set,%FileContainer%,%FileContainer_NT5_x64%
+//Debug ----- F
+//--
+If,Not,ExistFile,%FileContainer%,Call,Echo,"%FileContainer% NOT FOUND",Warn,,Message,,Exit
+//--
+If,%FileContainer%,Equal,%FileContainer_x64%,Set,%WF%,%WF%_x64
+If,%FileContainer%,Equal,%FileContainer_x64_Project%,Set,%WF%,%WF%_x64
+If,%FileContainer%,Equal,%FileContainer_x86%,Set,%WF%,%WF%_x86
+If,%FileContainer%,Equal,%FileContainer_NT5_x64%,Set,%WF%,%WF%_NT5_x64
+If,%FileContainer%,Equal,%FileContainer_NT5_x86%,Set,%WF%,%WF%_NT5_x86
+//--
+Echo,"Processing %ScriptTitle%..."
+//--
+If,Not,ExistFile,%WF%\%ProgramEXE%,Run,%ScriptFile%,Extract
+//--
+If,%VirtualOS_ScrollBox%,Equal,Auto,Begin
+If,%SourceArch%,Equal,x86,Set,%Exe%,qemu-system-i386.exe
+If,%SourceArch%,Equal,x64,Set,%Exe%,qemu-system-x86_64.exe
+End
+Else,Set,%Exe%,%VirtualOS_ScrollBox%
+Echo,%Exe%
+//-
+Set,%BootDrive_ScrollBoxV%,%BootDrive_ScrollBox%
+//--
+If,Not,ExistVar,%ISOfileVar%,Begin
+Set,%ISOfileVar%,%ISOfile%
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,IniVariables,ISOfileVar,%t%
+If,Not,%t%,Equal,"",Set,%ISOfileVar%,%t%
+End
+//-
+Set,%Ram%,%Ram_NumberBox%
+//-
+Set,%Ex%,Ex
+If,%Pause_CheckBox%,Equal,True,Set,%Ex%,""
+//-
+If,%Hdd_Include_CheckBox%,Equal,True,Set,%hddInclude%,Yep
+//-
+Set,%hdDiskImage1%,""
+If,%hddInclude%,Equal,Yep,Begin
+Set,%hdDiskImage1%,-hda#$s#$q%WF%\%Hdd_Disk_Image%#$q
+If,Not,ExistFile,%WF%\%Hdd_Disk_Image%,Begin
+ExtractFile,%ScriptFile%,Folder,Template_Fat32.img,%WF%
+FileRename,%WF%\Template_Fat32.img,%WF%\%Hdd_Disk_Image%
+End
+End
+//-
+Set,%PhysicalDriveA%,""
+If,%Include_PhysicalDrive_CheckBox%,Equal,True,Begin
+If,%DiskBoot%,Equal,1,Begin
+If,Not,%Select_Disk_ScrollBox%,Equal,%Include_PhysicalDrive_ScrollBox%,Set,%hdbE%,1
+End
+Else,Set,%hdbE%,1
+//-
+If,%hdbE%,Equal,1,Set,%PhysicalDriveA%," -hdb //./%Include_PhysicalDrive_ScrollBox%"
+End
+//-
+If,%Hdd_Disk_Reset_CheckBox%,Equal,True,Begin
+If,ExistFile,%WF%\%Hdd_Disk_Image%,FileDelete,%WF%\%Hdd_Disk_Image%
+ExtractFile,%ScriptFile%,Folder,Template_Fat32.img,%WF%
+FileRename,%WF%\Template_Fat32.img,%WF%\%Hdd_Disk_Image%
+End
+//-
+//Auto Add Space to Additional Parameters
+Set,%Pars_TextBoxV%,%Pars_TextBox%
+If,Not,%Pars_TextBoxV%-,Equal,-,Begin
+StrFormat,LEFT,%Pars_TextBoxV%,1,%t%
+If,%t%,Equal," ",Echo,"Everything OK"
+Else,Set,%Pars_TextBoxV%," %Pars_TextBoxV%"
+End
+//-
+Set,%Par_LocalTime%,""
+If,%Par_LocTi_CheckBox%,Equal,True,Set,%Par_LocalTime%,#$s-localtime
+Set,%Par_FullScreen%,""
+If,%Par_FScrn_CheckBox%,Equal,True,Set,%Par_FullScreen%,#$s-full-screen
+Set,%Par_Usb%,""
+If,%Par_EnUSB_CheckBox%,Equal,True,Set,%Par_Usb%,#$s-usb
+Set,%Par_NO_acpi%,""
+If,%Par_dACPI_CheckBox%,Equal,True,Set,%Par_NO_acpi%,#$s-no-acpi
+Set,%Par_USB_Dev_tablet%,""
+//-usbdevice tablet depricated -- see manual
+//If,%Par_USBD_tablet_CheckBox%,Equal,True,Set,%Par_USB_Dev_tablet%,#$s-usbdevice#$stablet
+If,%Par_USBD_tablet_CheckBox%,Equal,True,Set,%Par_USB_Dev_tablet%,#$s-device#$susb-tablet
+//You muse enable USB
+If,%Par_USBD_tablet_CheckBox%,Equal,True,Set,%Par_Usb%,#$s-usb
+If,%Par_USBD_tablet_CheckBox%,Equal,True,Begin
+If,Not,%Par_EnUSB_CheckBox%,Equal,True,Begin
+Set,%Par_EnUSB_CheckBox%,True,Permanent
+System,RefreshInterface
+End
+End
+//-
+Set,%w%,%WF%\1Debug_RunAsAdmin.cmd
+If,ExistFile,%w%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%w%#$q"
+If,ExistFile,%w%,Echo,"FILE NOT DELETED",WARN
+FileCreateBlank,%w%
+If,%DiskBoot%,Equal,1,TxtAddLine,%w%,"Echo DiskBoot",Append
+If,Not,%DiskBoot%,Equal,1,TxtAddLine,%w%,"Echo ISO Boot",Append
+TxtAddLine,%w%,"Echo Some features of qEmu ex: -usb requires RunAsAdmin",Append
+TxtAddLine,%w%,"cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,%w%,"Set ISOfileVar=%ISOfileVar%",Append
+TxtAddLine,%w%,"Del /q /f 1Debug_ErrorExists.txt",Append
+//-
+If,Not,%DiskBoot%,Equal,1,Begin
+TxtAddLine,%w%,"%Exe% %hdDiskImage1%%PhysicalDriveA%#$s-boot %BootDrive_ScrollBoxV% -cdrom #$q%ISOfileVar%#$q -L #$q%WF%#$q -net nic,model=rtl8139 -net user -m %Ram%%Par_LocalTime%%Par_FullScreen%%Par_Usb%%Par_NO_acpi%%Par_USB_Dev_tablet%%Pars_TextBoxV%",Append
+Echo,"%Exe% %hdDiskImage1%%PhysicalDriveA%#$s-boot %BootDrive_ScrollBoxV% -cdrom #$q%ISOfileVar%#$q -L #$q%WF%#$q -net nic,model=rtl8139 -net user -m %Ram%%Par_LocalTime%%Par_FullScreen%%Par_Usb%%Par_NO_acpi%%Par_USB_Dev_tablet%%Pars_TextBoxV%"
+End
+If,%DiskBoot%,Equal,1,Begin
+Set,%BootDrive_ScrollBoxV%,c
+StrFormat,REPLACE,%hdDiskImage1%,-hda,-hdb,%hdDiskImage1%
+//TxtAddLine,%w%,"%Exe% -hda //./%Select_Disk_ScrollBox% %hdDiskImage1%%PhysicalDriveA%#$s-boot %BootDrive_ScrollBoxV% -cdrom #$q%ISOfileVar%#$q -L #$q%WF%#$q -net nic,model=rtl8139 -net user -m %Ram%%Par_LocalTime%%Par_FullScreen%%Par_Usb%%Par_NO_acpi%%Par_USB_Dev_tablet%%Pars_TextBoxV%",Append
+TxtAddLine,%w%,"%Exe% -hda \\.\%Select_Disk_ScrollBox% %hdDiskImage1%%PhysicalDriveA%#$s-boot %BootDrive_ScrollBoxV% -L #$q%WF%#$q -net nic,model=rtl8139 -net user -m %Ram%%Par_LocalTime%%Par_FullScreen%%Par_Usb%%Par_NO_acpi%%Par_USB_Dev_tablet%%Pars_TextBoxV%",Append
+Echo,"%Exe% -hda \\.\%Select_Disk_ScrollBox% %hdDiskImage1%%PhysicalDriveA%#$s-boot %BootDrive_ScrollBoxV% -L #$q%WF%#$q -net nic,model=rtl8139 -net user -m %Ram%%Par_LocalTime%%Par_FullScreen%%Par_Usb%%Par_NO_acpi%%Par_USB_Dev_tablet%%Pars_TextBoxV%"
+End
+//-
+TxtAddLine,%w%,"Echo #$pErrorLevel#$p",Append
+TxtAddLine,%w%,"::pause",Append
+TxtAddLine,%w%,"If #$pErrorLevel#$p NEQ 0 Goto :ErrorExists",Append
+TxtAddLine,%w%,"::pause",Append
+TxtAddLine,%w%,"exit",Append
+TxtAddLine,%w%,"",Append
+TxtAddLine,%w%,":ErrorExists",Append
+TxtAddLine,%w%,"Echo ErrorExists",Append
+TxtAddLine,%w%,"Echo #$qError #$pErrorLevel#$p#$q>1Debug_ErrorExists.txt",Append
+TxtAddLine,%w%,"::pause",Append
+//-
+Retrieve,FileSize,%ISOfileVar%,%sizeISO%
+StrFormat,Bytes,%sizeISO%
+Echo,"Running %ISOfileVar% %sizeISO% MB in qEmu X.. ( %Exe% )"
+//-
+If,%Ex%--,Equal,--,ShellExecute,Hide,%w%,,%WF%
+If,%Ex%,Equal,Ex,ShellExecuteEx,Hide,%w%,,%WF%
+Wait,3
+If,ExistFile,%WF%\1Debug_ErrorExists.txt,Begin
+TxtAddLine,%w%,"pause",Append
+//ShellExecute%Ex%,Open,%w%,,%WF%
+If,%Ex%--,Equal,--,ShellExecute,Open,%w%,,%WF%
+If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%w%,,%WF%
+End
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%WF%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%WF%#$q"
+If,ExistDir,%WF%,Call,DirDelete,%WF%
+Set,%Check%,0
+If,ExistFile,%WF%\qemu-system-i386.exe,Set,%Check%,1
+If,ExistFile,%WF%\qemu-system-x86_64.exe,Set,%Check%,1
+If,%Check%,Equal,1,Message,"YOU MUST close active qEmu X Window.#$x#$x#$x#$xClose qEmu X and Press OK button to continue.",Error
+If,ExistDir,%WF%,Call,DirDelete,%WF%
+Set,%Check%,0
+If,ExistFile,%WF%\qemu-system-i386.exe,Set,%Check%,1
+If,ExistFile,%WF%\qemu-system-x86_64.exe,Set,%Check%,1
+If,%Check%,Equal,1,Call,Echo,"There is active qEmu X Window. #$x#$x#$x#$x.Plugin Exit Now. #$x#$x Press OK button to continue Plugin Exit. ",Warn,,Message,,Exit
+DirMake,%WF%\zzz
+//ExtractFile,%ScriptFile%,Folder,%SetupFile%,%WF%\zzz
+IniRead,%FileContainer%,IniVariables,PackedFile01,%SetupFile%
+ExtractFile,%FileContainer%,Folder,%SetupFile%,%WF%\zzz
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%WF%\zzz\%SetupFile%#$q -y -o#$q%WF%#$q"
+//Extracting-7z-Finish
+
+[List_PhysicalDrive_B]
+System,FILEREDIRECT,OFF
+//Shellexecute,Open,cmd.exe,"/C wmic diskdrive list brief"
+ShellexecuteEx,Open,cmd.exe,"/K wmic diskdrive list brief"
+System,FILEREDIRECT,ON
+
+[Open_Folder_IsoFolder]
+StrFormat,Path,%IsoFile%,%IsoFolder%
+StrFormat,CTrim,%IsoFolder%,\,%IsoFolder%
+Call,OpenDir,%IsoFolder%
+
+[View_Qemu_Files]
+If,ExistDir,%WF%_x64,Call,OpenDir,%WF%_x64
+Else,Begin
+If,ExistDir,%WF%_x86,Call,OpenDir,%WF%_x86
+Else,Begin
+If,ExistDir,%WF%_NT5_x64,Call,OpenDir,%WF%_NT5_x64
+Else,Begin
+If,ExistDir,%WF%_NT5_x86,Call,OpenDir,%WF%_NT5_x86
+End
+End
+End
+//Call,OpenDir,%WF%
+
+[view_parameters]
+If,Not,ExistFile,%WF%\qemu-doc.html,Run,%ScriptFile%,Extract
+Call,StartDoc,%WF%\qemu-doc.html
+
+[Select_Disk_Boot_B]
+Set,%DiskBoot%,1
+Run,%ScriptFile%,Process
+
+[AuthorEncoded]
+Logo=qemu-system-i3864848.ico
+qemu-system-i3864848.ico=2728,3638
+
+[EncodedFile-AuthorEncoded-qemu-system-i3864848.ico]
+lines=0
+0=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
+
+[create_image]
+If,ExistFile,%WF%_x64\qemu-system-i386.exe,Set,%WF%,%WF%_x64
+If,ExistFile,%WF%_x86\qemu-system-i386.exe,Set,%WF%,%WF%_x86
+If,ExistFile,%WF%_NT5_x86\qemu-system-i386.exe,Set,%WF%,%WF%_NT5_x86
+If,ExistFile,%WF%_NT5_x64\qemu-system-i386.exe,Set,%WF%,%WF%_NT5_x64
+//-
+If,Not,ExistFile,%WF%\qemu-img.exe,Call,Echo,"First Use qEmu Plugin for emulation - Plugin Exit",Warn,,Message,,Exit
+//-
+If,Not,ExistDir,%WF%,DirMake,%WF%
+FileDelete,%WF%\%Hdd_Disk_Image%
+ShellExecute,Hide,%WF%\qemu-img.exe,"create -f qcow #$q%WF%\%Hdd_Disk_Image%#$q %CreateHD_TextBox%M",%WF%
+Set,%w%,%WF%\1CreateImage.cmd
+Call,FileCreateBlank,%w%,OverWrite
+TxtAddLine,%w%,"cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,%w%,"qemu-img.exe create -f qcow #$q%WF%\%Hdd_Disk_Image%#$q %CreateHD_TextBox%M",Append
+TxtAddLine,%w%,"cmd",Append
+TxtAddLine,%w%,"exit",Append
+Message,"Created image %WF%\%Hdd_Disk_Image% sized in %CreateHD_TextBox%Mb",Information
+
+[Create_image_INFO]
+Message,"Create Button will create ( overwrite ) the previous image.#$x#$sThe New Image will be invisible in the emulator#$x#$s#$sand must be partitioned first.",Information
+
+[SelectISO_Process]
+If,Not,ExistFile,%ScriptFile%,Exit,"%ScriptFile% NOT FOUND"
+Call,LinkType,LinkTypeV,%ScriptFile%,%ProjectDir%
+If,Not,%LinkTypeV%,Equal,PluginFile,Call,Echo,"SelectISO DO NOT work with linked plugins (.Link) - Use Plugin under Plugin Folder#$x#$x%ScriptFile%",Warn,,MessageError,,Halt
+//-
+If,Not,ExistVar,%IsoFolder%,Set,%IsoFolder%,%BaseDir%\ISO
+If,-%IsoFolder%,Equal,-,Set,%IsoFolder%,%BaseDir%\ISO
+If,Not,ExistDir,%IsoFolder%,DirMake,%IsoFolder%
+Retrieve,FILE,%IsoFolder%\*.ISO,%IsoSelect%
+If,Not,ExistFile,%ScriptFile%,Begin
+//Workaround NOT Work - winbuilder .Link Bug with Retrieve,FILE, * malfunction plugin variables - but after plugin executes bug continues with not working plugin
+//-
+//Using Global Does not fix
+//Set,%ScriptFile%,%BaseDir%\%ScriptFile%,Global
+//Set,%ScriptDir%,%BaseDir%\%ScriptDir%,Global
+//AddVariables,%ScriptFile%,Variables,Global
+//-
+//Using Set partially fix - after process all link files broken - builder have to be restarted
+Set,%ScriptFile%,%BaseDir%\%ScriptFile%
+Set,%ScriptDir%,%BaseDir%\%ScriptDir%
+AddVariables,%ScriptFile%,Variables
+End
+If,Not,ExistFile,%ScriptFile%,Exit,"%ScriptFile% NOT FOUND"
+If,ExistFile,%IsoSelect%,Set,%ISOfileVar%,%IsoSelect%
+If,ExistFile,%ISOfileVar%,Run,%ScriptFile%,Process
+
+[Extract_ALL_P]
+Set,%WF%,%WF%_ALL
+//-
+If,ExistDir,%WF%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%WF%#$q"
+If,ExistDir,%WF%,Call,DirDelete,%WF%
+DirMake,%WF%\zzz
+Set,%FileContainer%,%FileContainer_x64%
+If,ExistFile,%FileContainer%,Begin
+Set,%TFName%,NT6x_x64
+Run,%ScriptFile%,Extract_ALL
+End
+Else,Begin
+//SE project have FileContainer_x64 on project distribution - Gena do not
+Set,%FileContainer%,%FileContainer_x64_Project%
+If,ExistFile,%FileContainer%,Begin
+Set,%TFName%,NT6x_x64
+Run,%ScriptFile%,Extract_ALL
+End
+Else,Begin
+Echo,"%FileContainer% NOT FOUND",WARN
+Message,"%FileContainer% NOT FOUND",Error
+End
+End
+Set,%FileContainer%,%FileContainer_x86%
+If,ExistFile,%FileContainer%,Begin
+Set,%TFName%,NT6x_x86
+Run,%ScriptFile%,Extract_ALL
+End
+Else,Begin
+Echo,"%FileContainer% NOT FOUND",WARN
+Message,"%FileContainer% NOT FOUND",Error
+End
+Set,%FileContainer%,%FileContainer_NT5_x64%
+If,ExistFile,%FileContainer%,Begin
+Set,%TFName%,NT5x_x64
+Run,%ScriptFile%,Extract_ALL
+End
+Else,Begin
+Echo,"%FileContainer% NOT FOUND",WARN
+Message,"%FileContainer% NOT FOUND",Error
+End
+Set,%FileContainer%,%FileContainer_NT5_x86%
+If,ExistFile,%FileContainer%,Begin
+Set,%TFName%,NT5x_x86
+Run,%ScriptFile%,Extract_ALL
+End
+Else,Begin
+Echo,"%FileContainer% NOT FOUND",WARN
+Message,"%FileContainer% NOT FOUND",Error
+End
+//-
+Call,OpenDir,%WF%
+
+[Extract_ALL]
+//Extracting-7z-Start
+//ExtractFile,%ScriptFile%,Folder,%SetupFile%,%WF%\zzz
+IniRead,%FileContainer%,IniVariables,PackedFile01,%SetupFile%
+ExtractFile,%FileContainer%,Folder,%SetupFile%,%WF%\zzz
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%WF%\zzz\%SetupFile%#$q -y -o#$q%WF%\%TFName%#$q"
+//Extracting-7z-Finish
+
+[Delete_ALL_P]
+Call,DirDelete,%WF%
+Call,DirDelete,%WF%_x64
+Call,DirDelete,%WF%_x86
+Call,DirDelete,%WF%_NT5_x64
+Call,DirDelete,%WF%_NT5_x86
+Call,DirDelete,%WF%_ALL
+
+[InterfaceEncoded]
+opendir.bmp=571,762
+explorer.bmp=828,1104
+Oxygen-Icons.org-Oxygen-Devices-drive-harddisk2424..bmp
+MesCD2424.bmp=1473,1964
+trash.bmp=867,1156
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+
+[EncodedFile-InterfaceEncoded-opendir.bmp]
+lines=0
+0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-explorer.bmp]
+lines=0
+0=eJx9k1lPE1EYhjHea+KVP8Ff4A/w3o1ogmCCECDBmCjBGFFCIhqgRClGRBFjEVSgFCprSylQaG1p6QKlYzfoMjOdTtvpzHS2Thd6HCAIVzzJ+1295zvvd5Zr1/vPlx1yVdIVSRclXZJ0ruxy2TGmC0c6BhyyzedNKBVCkuBMhjUHNZkr/griQ250UK1fdbn9BBlkRTudXUCT2jBmhbE4SR/5zfBBNeLsO2/yPZR+PrTQNWuQrdg6zL5mR+TRVqTd5vtqhRZt20g4IjkxGmxRQr8ff7XHdu7Qd3uUVcOaeq29VgdVWCK3HehTS6DPGpg02p3WzRiKSktm4VR3NNMS4rq97K3eqRsjy3fmXFU6330zXL6JdnkTkzA97/J6tnf2wuF4HkzDKTnKtSHZrkDmZq+qfEhfOeOqXg3UWKNVrpgsmFBh9GIgHEZgLJVUaIEGTg/GxK54/i3M1o2uVCp0dbPOGqP/gS1S64m/DiZGY+mNeIpgGCmMAwc6hPyJFfqSxY+48HLNc0+hbZx3Npj9DXb08d9kpz81FU3BnHh0PjQLllFamdhXkGCEKrauuytGdA81rifW3SYH3u6jBvY4a1o4fQVGjFEThVEeqNj9DhNUPaJrWtp5thlu3UnId8nvKO2Umh4jbWNMML/JwqQItEJJ/gdq+LHUove0O6MdXuJLhBnHGTfN/feP6cFKKjNB5dQiMORKH8xQ/Zj+hQGSbSM9vvQwzKuTPJQ58QcpoCcySjo3K4ANsfTJ6mtUr7VZAnIP1hekRmPZaUKAGP6/n+GAiWBnyLyeBy6hNOwMNWtsMkdk0J/4hnDjcX6G5D3MSf+DJ5Ti5tMFPVty5UoKx+4bi/9zkJiIc+M4P0dkdYzgyZzMy5bAOsHNpAtzbFEZwQe2AgqEUhHZhUzWwOQtrGhiuD3uJA9CgU06qyVyyjitimJLBKsl+HVKsJC0m+YDrOAV+NNhaB6EmLyNEDe43JYgBoVcVCye/WX+ARBn2gB4nONJrSjIyS9KLdJLyi1gGAUjDUxjhtAfmLDLZ886osLABACupwhlkgPAWgEAAAACAAAAKAAAAPACAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Devices-drive-harddisk2424..bmp]
+lines=0
+0=eJy1lTlLnUEUhpMy/yDpUqYQy9inEFRSKmphojbB2j9ga+FuCkFQcN8QFfd93/d9wQUXUFDBwgX1zX0OHvliSBVz4WXmzpzzzJkzc+b78vXnuzf2+xzSp5Deh/QhpLdvPtr496f54E/Sf9fDw4Pu7u5eVTCdvbi4qNraWlVVVb2KYMGEfXNzo/T0dKWkpJgiIiIUFhamyMhIxcbGKikpScnJyYqOjraxqKgoJSQkPNsHlfTjm4k+TNjX19dKS0tTYmKiKTw83LhxcXG/CS78mJgYxcfHP9sHFZUaq+jUOOvDhI0yMjJUWFiogoICZWZmKi8vT7m5ucrJyVF2draysrKsRYwx52P+H5/8/HxjwIIJ+/b2VhUVFWppaVFXV5cGBwfV09Oj9vZ2G2tsbFR9fb3q6uqs7/8bGhrU1NSk1tZWdXZ2qq+vT8PDw8Zobm5WZWWlse/v71VeXq7+/n6NjIyYBgYG1N3dbe3m5qaOj491dHSkvb09E33Gtra2LJ7e3l5rx8bGNDo6an4wYXPGnPnc3Jymp6c1MTFhNru7u8YZHx9XR0eH2traLFZEnzHmsMGW/uTkpGZmZjQ/P29M2I+Pj7ZX7pOvsbGxoYWFBQ0NDdm+iI+csSdEn3wQJznBFx9nLy0tGRM2NUA8y8vLxiT+2dlZi4WY2AsM1iIHiD55ZA77qampZx/WWllZsT16/WK7urpqc8RGDMTCXvCBQUz7+/sm+s7FBjY+7JM4YcF0Pv9ZEx/2jD97IV/4sg9yzBjiXNkD83CJCy6+MGDBdD5nhB2xkm9fj3XwZa/MB8U9dC62a2tr5guDGGA6//z83HK5vr5u50eL8GEtGEGWx4ewwZbzJbe0sGA6/+rqympke3vb7jA+2CFf62/ChhrBB18YsGA6nzqmLqlj7DgzfMgzLfL1nOdyG3zwpW5hwXQ+73VNTY3NY39wcGC5Jw/EgxgPyseR33nfByyYzqeOqTfmuOsnJye6uLiwHHJvWIdcBJnBtfBhDWw4E1gwg9+v6upqO0PeNT8z4jk8PNTl5aW13EePM5gz8g3faxSWf78QdcybSE3x7cEGjtcKoq7Yk9ep32FsyDdr+/sCy98GF3ecmisrK3uuSa8fryvW3NnZsXfZ6wA78k0tc3/IVfBtcDHH3aduEHVInKw187TW7FOMvKG8Bbxx3Hm+DdQu//GF9ZJ/enqqkpISFRcXWx2S1+XQ/hep4SfNh/ZA6+8oeee8WI9vUVFRkUpLS3V2dvYH38+Bc/kXvcz7L2RDpgt4nDP3r6hMT83T9UzOzyvWyy9K14UKuKSWZSanFuumFGWWpepmJBalpGQWZxuZGJno6SXlFjCMgmEBpnFC6P3M2OW1t83YzsAEADOkF6DQOWZQAQAAAAIAAABOAAAAvwMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-MesCD2424.bmp]
+lines=0
+0=eJylVW1sU1UYBqLxI5j4Q0X5IZKIH9EYAxE1Go1EfxizgPEL+SExKkwxgRjRCPKDhCwgoGQgjA3YB46RhcFgo7T7gpVtbKO0tGtve7ve9t7e3ra3a7t2bdfetvd9PacUchmIGG/y5D333Hue932f877nLKtY+sCs0rOU4DmCx8uYPeupax/K37UPIt410qnUYy67fbPlypVhh8MxJQhC0e12xzmOOy+K4veKosz9N47JjPLwmg5fc0op3vQv67BVMgZd0tvfD5zdjrzXC4FAAGVZxng8DqlUCicmJiSCijvxG72xtx/dbYZXj/IOZyz3Ap0zOU27jaZTYOs8CtyZNvCNDIPg8YAUCADhB8qfTqchl8sByaFIfFT+E//+kcCGeX9YYG61G+fXeDJ1Rqb5pLkfWyzHsauvFm2nDoO3V48C4wBJFDESidyIP5vNYj6fp34KZG7Z7fjX6TwN86qtMK+GwwU1bmzrckOTzooH+gx45HwT6jv2w8iJejR168FiMiHLshgMBiGZTGImk6E+KD+GQiGXqqr3zORf1uy0zq9xwZN1LKxrZ8F4kYe2Di/UnbRB9elu2NdSCxe62kHkfUB0KOnD8zxIkkR90DxKWlEbDoeXa7mz+eL9iw4xyoJ6Hyw8wmDrMIsMw8PoqIDnenx4qPUytur66Tq6r0C1icViODk5CT6fD+k8HScSCWrR6/XWavmvhlNLFjVy+PwxPyxsdKLFxaHfL5K1AWScIuq7zciO8zRmZMWQOJ3Nbo5GozzVn2iEHo+H1hCQOaQg2g1q+Y85I1+9eNwPi09IsKiZBY/gB6IjQZjkHwKz2Up4QiVdGmxhaOXSZimaMBKu8neG1Gy49D/JBRiGsWr5N10K7FvaHsI3zoRgcbsfx0jcdC3VgMZDegmpziReFOUo9HMRlMKRUsxXbRzqDA60jQWB44IkbwlJD/Zp+T/qFgbfOivju/oIvKOX8aw7iHTPpqamqC3pSzQt+aOaUEu4kffzUHfKgPUn7dhpCMDQpSDZtwC6XO5d17lVgDmvdAip93uiWNEXBQLcZpFxenoaCEq1R2ucxk/OAyTnAYiCgKxlFDvaa6FWdxhre89jU6cTTutEHBoSiU7y69f5vVPKs68ZQvDJxTh8OnANKwdi4JtMA+0Z0pfUD82lpO242w12sxms3TqwnKmH7r6D0GJugWOmC9A56IILRmuvVpseOfvZe/1RXD2SpICyxa3WOOTyBSwUCkj7htY2rT+6L2FSM0GGQX/fOXDoGrFvtAnPjndCj20oPplIPK3lbxCz21cQ3rXm1C3Y75qE6ZxSOl/K/LQGQSZ5BElvBU2XQTR0gNPYDoNXDfFwNPzmzL79TcjpV5lTuH4sQwFle2O8nUmgM5Kge3AjftoHQUnCINEqMDKCPYOjaJYiX8zkBoDZG/lC+BvC87NrmgLK9uaxM4N7XHFoG5fxIieBcdyPBtaPp1wi7GWjWCXkcbdf6ZrJH8+r8zfwKqxns7DFk7srbCR+K81J+Hw4Dl/aM/CrUIBdUgE2EevPwUtafiLBBz8JKlS6FdzsVXAbnwcCLEM71r6X7E4u03HQHtvxoV6MrbqSwC2BIjRMFOtvOtdUeGggqa7d6S+YvmVzsNatwC9k7XaxgDsCBSBADUBr/5ILf5buTnLfNY9NfFfRNu5aMTiRJZo8cbvz35spLmkUpg+ssSQSNG+yL7BDKsLvoVtRReZ10cIP2vWqCnOiaeWRvKree6d7MltUH+wOpFf/OCwbPx6MquvGc1gVUrFaVoEA9xC70avEYsrt4/wv4JPKM3vNctXKLtG1fCCS/9qazG51p3o9qcLL/5d7JnKF4n354p1z1+JvDhtHs3ic4/VNLXZ2MTIxMtFLyi1gGAUjDJhxQugSVuzym9/wszEwAQCBiAZhcew1gAEAAAACAAAAKQAAAHQFAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-trash.bmp]
+lines=0
+0=eJxtlNtTEnEUx2umtx5qtKb+hN7MyUxCELxfkBRvjToTXkYTu3i3tJdq8sHeLEfNLBJSQcVLKCy7wCIsKyiwKOEFZyjxkoOvNl7GqRMk4yBnvmdn9/c7n99v95zf2fjMmgvnfBYNfgM8HDwM/Py5677xuzAfdtHvJ/bnxA4PD+fnLQa9ISA9XA2EwW96g81GHR8fB+JPs4gSmSXJr2KxqF8klUjFItHQ4CA8SoaGxCKxuF9ktVhQFXqWXV5edq2ucjOzxmSytjdtly+Fl5WWYyjKyci8euVa5/vOT31997hZjkWHx+MJYmdnTdNT8iePnxoNxNLS0s2IyMmJSSNBdHd1M+gMi8UyZzYX3i9UIciCfSGIJY3klFxeW1OrVCitVuvtqGjZqAxBkK6uLjYrXq/XazQa/gM+qlLZKXswS84qpqcb6uoh3mazxdyJGZONQeSHnp7EhETIFK7FS/il8BUhWUSpbGpsUiEqirLRafSJ8XFgP/b2piQlQ65xHC8vK9eoMSoUC9/yvPkZsHaKYjKY3yYnIauQovTUNIIw6HC8sqJCq1GH3BdDVS9aWxUKBUVRbBZbLpdD1YSfhVxOJlRaq9FWCwS4VhtyXzWGtba0WC3WNZeLHcdSKpWwyBehkJOe7nA4FhcWH1ZWzujws6zJZNLP6JITk2CFdx0dkRERjQ0NpJEo4fOjbkUJhULZ6AgzNhZGHI7vQSyKYktOZ052dg6Pl8vLKS4qys/Ny8nmFeTnFxcW5fJ4MFWQl+daXcEw9WkWjvGGZ10qkQyDpFLQiE/DJ5LCGZUMSeCMDgysrbnMJnOAJUlya2uzuqqKHhMTx2CAWMw4dtx/sZhM/yCdRnskEKyurECDBNj9/X14591db0N9HWSGm8FJT01N8yslBe65nH8jr1+93N7ehsLt7f0O6iMdroM1obhbm5vNTY0MOj0pIT6WRnvb3r65sWG32ZxOp5EwhuxBsJ1fO263G0Ox9fWfkFJoSWiHDY9HrVa73T+8Xu/p4CDWbwcHB2bzHEEYYRfCQEATHR0dnQ3z/Tn+Ah/33RZ4nOMsKUosztBLyi1gGAUjEBSwQGgpZuzyyx1fajMwAQDHowYo0vtiWAEAAAACAAAAJQAAABoDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+Set,%BootDrive_ScrollBox%,d,Permanent
+Set,%Include_PhysicalDrive_CheckBox%,False,Permanent
+Set,%SelectContainer_ScrollBox%,Auto,Permanent
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Run,%ScriptFile%,First_Gui
+Call,CompareEdit
+
+[DownloadXXX_Container_x64]
+IniRead,%ScriptFile%,Main,Web1C_x64,%WebFileContainer%
+Call,DownloadXQ,%FileContainer_x64%,%WebFileContainer%
+//-
+//SE project have FileContainer_x64 on project distribution - Gena do not
+If,ExistFile,%FileContainer_x64%,Begin
+StrFormat,Split,%ProjectDir%,\,0,%ProjectDirNo%
+StrFormat,Split,%ProjectDir%,\,%ProjectDirNo%,%ProjectFolderName%
+//-
+Set,%t%,0
+If,%ProjectFolderName%,Equal,Win7PESE,Set,%t%,1
+If,%ProjectFolderName%,Equal,Win8.1SE,Set,%t%,1
+If,%ProjectFolderName%,Equal,Win8PESE,Set,%t%,1
+If,%ProjectFolderName%,Equal,Win10PESE,Set,%t%,1
+//-
+If,%t%,Equal,1,FileCopy,%FileContainer_x64%,%FileContainer_x64_Project%
+End
+
+[DownloadXXX_Container_x64_NOQ]
+IniRead,%ScriptFile%,Main,Web1C_x64,%WebFileContainer%
+Call,DownloadX,%FileContainer_x64%,%WebFileContainer%
+//-
+//SE project have FileContainer_x64 on project distribution - Gena do not
+If,ExistFile,%FileContainer_x64%,Begin
+StrFormat,Split,%ProjectDir%,\,0,%ProjectDirNo%
+StrFormat,Split,%ProjectDir%,\,%ProjectDirNo%,%ProjectFolderName%
+//-
+Set,%t%,0
+If,%ProjectFolderName%,Equal,Win7PESE,Set,%t%,1
+If,%ProjectFolderName%,Equal,Win8.1SE,Set,%t%,1
+If,%ProjectFolderName%,Equal,Win8PESE,Set,%t%,1
+If,%ProjectFolderName%,Equal,Win10PESE,Set,%t%,1
+//-
+If,%t%,Equal,1,FileCopy,%FileContainer_x64%,%FileContainer_x64_Project%
+End
+
+[DownloadXXX_Container_x86]
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+Call,DownloadXQ,%FileContainer_x86%,%WebFileContainer%
+
+[DownloadXXX_Container_x86_NOQ]
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+Call,DownloadX,%FileContainer_x86%,%WebFileContainer%
+
+[----------NT5x--------------------]
+
+[DownloadXXX_Container_NT5x_x64]
+IniRead,%ScriptFile%,Main,Web1C_NT5x_x64,%WebFileContainer%
+Call,DownloadXQ,%FileContainer_NT5_x64%,%WebFileContainer%
+
+[DownloadXXX_Container_NT5x_x64_NOQ]
+IniRead,%ScriptFile%,Main,Web1C_NT5x_x64,%WebFileContainer%
+Call,DownloadX,%FileContainer_NT5_x64%,%WebFileContainer%
+
+[DownloadXXX_Container_NT5x_x86]
+IniRead,%ScriptFile%,Main,Web1C_NT5x_x86,%WebFileContainer%
+Call,DownloadXQ,%FileContainer_NT5_x86%,%WebFileContainer%
+
+[DownloadXXX_Container_NT5x_x86_NOQ]
+IniRead,%ScriptFile%,Main,Web1C_NT5x_x86,%WebFileContainer%
+Call,DownloadX,%FileContainer_NT5_x86%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+Template.img=189,252
+Template_Fat32.img=2988,3984
+
+[EncodedFile-Folder-Template.img]
+lines=0
+0=eJzt2jEKg1AMANBIQRCE1hPUI3gD/yR07NBLepReyUXRpQUXRdDhvSUhJCEHyLt7DRGRxYo8RZTFX6lZwmOtHQAAALi0eudcc+QRAAAAAPxIQ5r/NrLI7+23ndLqedu85dMffhgAAAAAAAAApxgBx+AHz3ic4wlJzS3ISSxJ1cvMTWcYBSMOOECoYhzSp1TPfmFgAgAfeQgZwuAojwEAAAACAAAAJgAAAHMAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-Template_Fat32.img]
+lines=0
+0=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
+

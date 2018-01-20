@@ -1,0 +1,262 @@
+[Main]
+Title=ISCSI Initiator
+Type=Plugin
+Author=Ludovici, ChrisR
+Description=(NT6x) Microsoft iSCSI Initiator
+Credits=http://www.gregorystrike.com/?p=8 - Max_Real_Qnx
+Version=015
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.02.16_14:19.49 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/IscsI.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/IscsI.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Ms integrate iSCSI Software Initiator support into a Windows PE image (winPE3): https://technet.microsoft.com/en-us/library/ee619769(v=ws.10).aspx
+History002=ChrisR - controlled with http://www.gregorystrike.com/?p=8 - Deleting some duplicate files and registry service key
+History003=ChrisR - Require_File replaced by Require_FileQ and reg_add replaced by RegWrite,HKLM(faster)
+History004=Lancelot code Cleanup x 2
+History006=ChrisR - Code Cleanup - NoWarnROW implemented
+History007=ChrisR - Require,Drivers,[Filename]
+History007=ChrisR - Win8 compatibility. Code cleanup
+History009=Lancelot - Added DU buttons // improved syntax // reported working on Win10PESE http://TheOven.org/index.php?topic=1592.0 - Date:2015.12.31
+History010=ChrisR - Minor cleanup.  Win10 compatibility - Date:2016.03.20
+History011=Lancelot - Syntax update - Date:2016.10.21
+History012=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History014=ChrisR - NoWarnROW implemented - Date:2016.11.24
+History015=Lancelot Added forgotten Web2 - Date:2017.02.16
+
+[Variables]
+
+[Interface]
+pBevel1=pBevel1,1,12,6,8,161,129
+pCheckBox1="Desktop shortcut",1,3,11,13,122,18,False
+pCheckBox2="Start menu shortcut",1,3,11,32,122,18,True
+pTextBox1="Start Menu folder:",1,0,14,69,146,21,"Computer Management"
+pTextBox2="Shortcut name:",1,0,14,109,146,21,"iSCSI Initiator"
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,%OSFamily%,Equal,NT6,Run,%ScriptFile%,Process_NT6
+
+[Process_NT6]
+Echo,"Processing %ScriptTitle%..."
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+Call,TargetVersion,,4x
+Call,CompareVersions,%TargetVersion%,6.2.9200.00000,TC_Win80
+//--
+Run,%ScriptFile%,CopyFiles
+Run,%ScriptFile%,Drivers
+Run,%ScriptFile%,Registry
+//--
+Echo,"Processing Shortcut..."
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,#$pSystemRoot#$p\System32\iscsicpl.exe,%pTextBox2%,#$pSystemRoot#$p\System32,""
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%,#$pSystemRoot#$p\System32\iscsicpl.exe,%pTextBox2%,#$pSystemRoot#$p\System32,""
+
+[CopyFiles]
+Echo,"Copy Files..."
+Require_FileQ,iscsicli.exe
+Require_FileQ,iscsicpl.exe
+Require_FileQ,iscsicpl.dll
+Require_FileQ,iscsidsc.dll
+If,Not,ExistFile,%Target_Sys%\iscsied.dll,FileCopy,%Source_Sys%\iscsied.dll,%Target_Sys%
+Require_FileQ,iscsiexe.dll
+Require_FileQ,iscsilog.dll
+If,Not,ExistFile,%Target_Sys%\iscsium.dll,FileCopy,%Source_Sys%\iscsium.dll,%Target_Sys%
+If,Not,ExistFile,%Target_Sys%\iscsiwmi.dll,FileCopy,%Source_Sys%\iscsiwmi.dll,%Target_Sys%
+// iscsiwmiv2 added in Win8
+If,ExistFile,%Source_Sys%\iscsiwmiv2.dll,FileCopy,%Source_Sys%\iscsiwmiv2.dll,%Target_Sys%
+//--
+// Already exist
+//Require_FileQ,setupapi.dll
+//Require_FileQ,sysclass.dll
+
+[Drivers]
+//- Drivers
+If,Not,ExistFile,%Target_Sys%\Drivers\msiscsi.sys,Require,Drivers,msiscsi.sys
+//--
+//Require,Drivers,mpio.sys
+// Already exist
+//DirCopy,%Source_Sys%\DriverStore\FileRepository\iscsi.inf_*,%Target_Sys%\DriverStore\FileRepository
+//FileCopy,%Source_Win%\inf\iscsi.inf,%Target_Win%\inf
+//Require,Drivers,ndis.sys
+//Require,Drivers,netio.sys
+//Require,Drivers,storport.sys
+//Require,Drivers,tdi.sys
+
+[Registry]
+Echo,"Processing registry Setting..."
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{D0520B5D-1B5F-4ECF-A940-6E57476AE4B0}\InprocServer32,,X:\Windows\System32\iscsiwmi.dll
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{D0520B5D-1B5F-4ECF-A940-6E57476AE4B0}\InprocServer32,ThreadingModel,Both
+// iscsiwmiv2 added in Win8, so add registry only if iscsiwmiv2.dll exist
+If,ExistFile,%Source_Sys%\iscsiwmiv2.dll,Begin
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{52C84ACA-027A-4536-A74A-E0BB50C44782},,"Microsoft iSCSI WMIv2 Provider"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{52C84ACA-027A-4536-A74A-E0BB50C44782}\InprocServer32,,#$psystemroot#$p\system32\iscsiwmiv2.dll
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{52C84ACA-027A-4536-A74A-E0BB50C44782}\InprocServer32,ThreadingModel,Both
+End
+//--
+If,%TC_Win80%,Equal,Smaller,Begin
+RegWrite,HKLM,0x7,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Svchost",Godzilla,MSiSCSI
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\iSCSI\Discovery",AllowiSNSFirewallException,1
+End
+RegWrite,HKLM,0x0,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\iSCSI\Discovery\Authentication Cache"
+RegWrite,HKLM,0x0,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\iSCSI\Discovery\Send Targets"
+RegWrite,HKLM,0x0,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\iSCSI\Discovery\Static Targets"
+RegWrite,HKLM,0x0,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\iSCSI\Discovery\Tunnel Address"
+RegHiveUnLoad,Tmp_Software
+//--
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,ClassGUID,{4d36e97b-e325-11ce-bfc1-08002be10318}
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,HardwareID,ROOT\ISCSIPRT
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,Capabilities,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,Driver,{4d36e97b-e325-11ce-bfc1-08002be10318}\0002
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,Mfg,"@iscsi.inf,#$pmsft#$p;Microsoft"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,Service,iScsiPrt
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,DeviceDesc,"@iscsi.inf,#$piscsiprt#$p;Initiateur Microsoft iSCSI"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,ConfigFlags,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000,ContainerID,{00000000-0000-0000-FFFF-FFFFFFFFFFFF}
+RegWrite,HKLM,0x3,"Tmp_System\ControlSet001\Enum\ROOT\ISCSIPRT\0000\Device Parameters\StorPort",AdapterGuid,87,b6,23,3f,33,e8,e5,11,9c,6b,00,00,00,00,5a,ad
+//--
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\EventLog\System\iScsiPrt,EventMessageFile,#$pSystemRoot#$p\System32\iscsilog.dll
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\EventLog\System\iScsiPrt,TypesSupported,7
+//-
+If,%TC_Win80%,Equal,Smaller,RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\iScsiPrt,DisplayName,"iScsiPort Driver"
+Else,Begin
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\iScsiPrt,DisplayName,"@iscsi.inf,#$piScsiPortName#$p;iScsiPort Driver"
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\iScsiPrt,Owners,iscsi.inf
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\iScsiPrt,Group,
+End
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\iScsiPrt,ImagePath,\SystemRoot\System32\drivers\msiscsi.sys
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt,Type,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt,Start,3
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt,ErrorControl,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt,BootFlags,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt\Parameters,BusType,9
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\iScsiPrt\Enum,0,Root\ISCSIPRT\0000
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt\Enum,Count,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\iScsiPrt\Enum,NextInstance,1
+//--
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\EventLog\System\MSiSCSI,EventMessageFile,#$psystemroot#$p\System32\iscsiexe.dll
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\EventLog\System\MSiSCSI,TypesSupported,7
+//-
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\MSiSCSI,DisplayName,"@#$pSystemRoot#$p\system32\iscsidsc.dll,-5000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\MSiSCSI,Group,iSCSI
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\MSiSCSI,ImagePath,"#$psystemroot#$p\system32\svchost.exe -k netsvcs"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\MSiSCSI,Description,"@#$pSystemRoot#$p\system32\iscsidsc.dll,-5001"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\MSiSCSI,ObjectName,LocalSystem
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MSiSCSI,ErrorControl,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MSiSCSI,Start,3
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MSiSCSI,Type,32
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MSiSCSI,ServiceSidType,1
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\MSiSCSI,RequiredPrivileges,SeAuditPrivilege,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeCreatePermanentPrivilege,SeImpersonatePrivilege,SeTcbPrivilege
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MSiSCSI,FailureActionsOnNonCrashFailures,1
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Services\MSiSCSI,FailureActions,50,46,00,00,01,00,00,00,01,00,00,00,03,00,00,00,14,00,00,00,01,00,00,00,c0,d4,01,00,01,00,00,00,e0,93,04,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\MSiSCSI,FailureCommand,customScript.cmd
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\MSiSCSI,RebootMessage,"See Note 3 below"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MSiSCSI\Parameters,ServiceDllUnloadOnStop,1
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\MSiSCSI\Parameters,ServiceDll,#$psystemroot#$p\system32\iscsiexe.dll
+//--
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318},Class,SCSIAdapter
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318},ClassDesc,"@#$pSystemRoot#$p\System32\SysClass.Dll,-3005"
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318},IconPath,#$pSystemRoot#$p\System32\setupapi.dll#$c-10
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318},LegacyAdapterDetection,0
+If,%TC_Win80%,Equal,Smaller,Begin
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318},,"Storage controllers"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318},Installer32,"SysClass.Dll,ScsiClassInstaller"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,DriverDesc,"Microsoft iSCSI Initiator"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,DriverDateData,00,80,8c,a3,c5,94,c6,01
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,DriverDate,6-21-2006
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,DriverVersion,%TargetVersion%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,InfPath,iscsi.inf
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,InfSection,iScsiPort_Install_Control
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,MatchingDeviceId,root\iscsiprt
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\0000,ProviderName,Microsoft
+End
+Else,Begin
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,EnumPropPages32,"iscsipp.dll,iSCSIPropPageProvider"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,InfPath,iscsi.inf
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,InfSection,iScsiPort_Install_Control
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,ProviderName,Microsoft
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,DriverDateData,00,80,8c,a3,c5,94,c6,01
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,DriverDate,6-21-2006
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,DriverVersion,10.0.10586.0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,MatchingDeviceId,root\iscsiprt
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002,DriverDesc,"Initiateur Microsoft iSCSI"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,TCPConnectTime,15
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,TCPDisconnectTime,15
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,WMIRequestTimeout,30
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,DelayBetweenReconnect,5
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,MaxPendingRequests,255
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,EnableNOPOut,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,MaxTransferLength,262144
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,MaxBurstLength,262144
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,FirstBurstLength,65536
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,MaxRecvDataSegmentLength,65536
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,MaxConnectionRetries,-1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,MaxRequestHoldTime,60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,LinkDownTime,15
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,IPSecConfigTimeout,60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,InitialR2T,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,ImmediateData,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,ErrorRecoveryLevel,2
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,PortalRetryCount,5
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,NetworkReadyRetryCount,10
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\Parameters,SrbTimeoutDelta,15
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Class\{4d36e97b-e325-11ce-bfc1-08002be10318}\0002\PersistentTargets,,
+End
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\Properties,DeviceType,4
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\Properties,DeviceCharacteristics,256
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\Class\{4D36E97B-E325-11CE-BFC1-08002BE10318}\Properties,Security,01,00,04,90,00,00,00,00,00,00,00,00,00,00,00,00,14,00,00,00,02,00,34,00,02,00,00,00,00,00,14,00,ff,01,1f,10,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,1f,10,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00
+RegHiveUnLoad,Tmp_System
+
+[AuthorEncoded]
+vinis13 (31).jpg=4855,6474
+Logo=vinis13 (31).jpg
+
+[EncodedFile-AuthorEncoded-vinis13 (31).jpg]
+lines=1
+0=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
+1=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

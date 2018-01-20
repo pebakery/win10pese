@@ -1,0 +1,332 @@
+[Main]
+Title=KeyBoard
+Type=Plugin
+Author=ChrisR
+Description=KeyBoard for Win7PE, you can not run this Plugin directly.
+Credits=http://TheOven.org
+Version=006
+Download_Level=0
+Level=0
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.02.18
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/KeyBoard.script
+CertifiedBy=
+Certification=
+HistoryNotes01=To add a choice, add the choice to config Plugin and change KeyBoard Plugin: New section eg: [fr-FR] and change section Run_KeyBoard_Choice.
+HistoryNotes02=To switch between visible/nonevisible change Level=1 Level=0
+HistoryNotes03=Variables are not used if the Plugin is called from another Plugin. Use Set,%variable%,""
+History003=ChrisR - Add Keyboard dll files, if does not already exist, according to the Registry for specified language - Date:2013.03.27
+History005=Lancelot - Added DU Buttons - Date:2016.01.28
+History006=Lancelot - Add Compare Button - Date:2017.02.18
+
+[Info]
+The Plugin is designed to be called from other Plugin (eg: 1 - Copy Files) or if Not Auto directly
+If,ExistFile,%ProjectDir%\Build\KeyBoard.script,Run,%ProjectDir%\Build\KeyBoard.script,Called_process,%ProjectDir%\Build\KeyBoard.script,Auto
+If,ExistFile,%ScriptDir%\KeyBoard.script,Run,%ScriptDir%\KeyBoard.script,Called_process,%ScriptDir%\KeyBoard.script,Auto
+If,ExistFile,%ScriptDir%\KeyBoard.script,Run,%ScriptDir%\KeyBoard.script,Called_process,%ScriptDir%\KeyBoard.script,fr-FR
+
+[Variables]
+
+[Interface]
+pTextLabel1="The Plugin is designed to be called from other Plugin",1,1,8,20,315,18,8,Bold
+pTextL_KeyBoard=KeyBoard,1,1,8,59,76,18,8,Normal
+pScroll_KeyBoard=Auto,1,4,102,52,350,21,Auto,"Belgian French",French,German,Greek,Hebrew,Hungarian,Italian,Portuguese,Russian,Spanish,Swedish,Turkish,"UK English"
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Called_process]
+Set,%KeyBoardScript%,#1
+If,-#1,Equal,-,Set,%KeyBoardScript%,%ScriptFile%
+Set,%KeyBoard%,#2
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing KeyBoard %KeyBoard%..."
+If,%KeyBoard%,Equal,Auto,Run,%KeyBoardScript%,Auto
+Else,If,Not,-%KeyBoard%,Equal,-,Run,%KeyBoardScript%,Run_KeyBoard_Choice
+
+[Process]
+// Comment Exit for tests
+Exit,"The Plugin is designed to be called from other Plugin"
+Set,%KeyBoardScript%,%ScriptFile%
+Set,%KeyBoard%,%pScroll_KeyBoard%
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing KeyBoard %KeyBoard%..."
+If,%KeyBoard%,Equal,Auto,Run,%KeyBoardScript%,Auto
+Else,If,Not,-%KeyBoard%,Equal,-,Run,%KeyBoardScript%,Run_KeyBoard_Choice
+
+[Run_KeyBoard_Choice]
+RegHiveLoad,Tmp_Default,%RegDefault%
+If,%KeyBoard%,Equal,"Belgian French",Run,%KeyBoardScript%,fr-BE
+If,%KeyBoard%,Equal,French,Run,%KeyBoardScript%,fr-FR
+If,%KeyBoard%,Equal,Hebrew,Run,%KeyBoardScript%,he-IL
+If,%KeyBoard%,Equal,German,Run,%KeyBoardScript%,de-DE
+If,%KeyBoard%,Equal,Greek,Run,%KeyBoardScript%,el-GR
+If,%KeyBoard%,Equal,Hungarian,Run,%KeyBoardScript%,hu-HU
+If,%KeyBoard%,Equal,Italian,Run,%KeyBoardScript%,it-IT
+If,%KeyBoard%,Equal,Portuguese,Run,%KeyBoardScript%,pt-PT
+If,%KeyBoard%,Equal,Russian,Run,%KeyBoardScript%,ru-RU
+If,%KeyBoard%,Equal,Spanish,Run,%KeyBoardScript%,es-ES
+If,%KeyBoard%,Equal,Swedish,Run,%KeyBoardScript%,sv-SE
+If,%KeyBoard%,Equal,Turkish,Run,%KeyBoardScript%,tr-TR
+If,%KeyBoard%,Equal,"UK English",Run,%KeyBoardScript%,en-GB
+// Auto: If exists in local archive (**temporary solution)
+If,%KeyBoard%,Equal,Auto,If,ExistSection,%KeyBoardScript%,%DistLang%,Run,%KeyBoardScript%,%DistLang%
+// Add Keyboard dll files, if does not already exist, according to the Registry for specified language
+Run,%KeyBoardScript%,Auto
+RegHiveUnLoad,Tmp_Default
+
+[minimum_KBD_tr-TR]
+//not mandatory but better have minimum keyboards of local source too
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDTUQ.DLL,FileCopy,%BootSRC%\Windows\System32\KBDTUQ.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDTUF.DLL,FileCopy,%BootSRC%\Windows\System32\KBDTUF.DLL,%TargetDir%\Windows\System32
+
+[minimum_KBD_fr-FR]
+//not mandatory but better have minimum keyboards of local source too
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDFR.DLL,FileCopy,%BootSRC%\Windows\System32\KBDFR.DLL,%TargetDir%\Windows\System32
+
+[minimum_KBD_hu-HU]
+//not mandatory but better have minimum keyboards of local source too
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUS.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUS.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDHU.DLL,FileCopy,%BootSRC%\Windows\System32\KBDHU.DLL,%TargetDir%\Windows\System32
+
+[minimum_KBD_ru-RU]
+//Thanks to GrAnd
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUS.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUS.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDRU.DLL,FileCopy,%BootSRC%\Windows\System32\KBDRU.DLL,%TargetDir%\Windows\System32
+
+[Auto]
+RegHiveLoad,Tmp_System,%RegSystem%
+//
+// Copy up to three default keyboard layout DLLs
+Loop,%KeyBoardScript%,CopyKeyboardDLL,1,3
+//
+//RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Toggle",Hotkey,2
+//RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Toggle","Language Hotkey",2
+//RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Toggle","Layout Hotkey",3
+//
+RegHiveUnLoad,Tmp_System
+
+[CopyKeyboardDLL]
+// #c is the number of the keyboard layout, starting with 1.
+If,ExistRegKey,HKLM,"Tmp_default\Keyboard Layout\Preload",#c,Begin
+RegRead,HKLM,"Tmp_default\Keyboard Layout\Preload",#c,%LVAR%
+If,ExistRegKey,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVAR%","Layout File",Begin
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVAR%","Layout File",%LVARFile%
+If,Not,ExistFile,%TargetDir%\Windows\System32\%LVARFile%,Begin
+If,ExistFile,%BootSRC%\Windows\System32\%LVARFile%,FileCopy,%BootSRC%\Windows\System32\%LVARFile%,%TargetDir%\Windows\System32
+End
+End
+//- Substitutes
+If,ExistRegKey,HKLM,"Tmp_default\Keyboard Layout\Substitutes",%LVAR%,Begin
+RegRead,HKLM,"Tmp_default\Keyboard Layout\Substitutes",%LVAR%,%LVARSub%
+If,ExistRegKey,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVARSub%","Layout File",Begin
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVARSub%","Layout File",%LVARSubFile%
+If,Not,ExistFile,%TargetDir%\Windows\System32\%LVARSubFile%,Begin
+If,ExistFile,%BootSRC%\Windows\System32\%LVARSubFile%,FileCopy,%BootSRC%\Windows\System32\%LVARSubFile%,%TargetDir%\Windows\System32
+End
+End
+End
+End
+
+[it-IT]
+// Italian by online
+Echo,"Processing Italian KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDIT.DLL,FileCopy,%BootSRC%\Windows\System32\KBDIT.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000410"
+//RegDelete,HKLM,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409",""
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409,RegDelete,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000410\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000410\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000410\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","68158480"
+
+[en-GB]
+// UK English by martinr
+Echo,"Processing UK KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUK.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUK.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUKX.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUKX.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000809"
+//RegDelete,HKLM,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409",""
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409,RegDelete,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000809\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000809\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000809\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","0x08090809"
+
+[tr-TR]
+// turkish by Max_Real Qnx
+Echo,"Processing turkish KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDTUQ.DLL,FileCopy,%BootSRC%\Windows\System32\KBDTUQ.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDTUF.DLL,FileCopy,%BootSRC%\Windows\System32\KBDTUF.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUK.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUK.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUKX.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUKX.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","0000041f"
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","2","00000409"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000041f\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000041f\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000041f\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","69141535"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","67699721"
+
+[ru-RU]
+// Russian by NightMan
+Echo,"Processing Russian KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUS.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUS.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDRU.DLL,FileCopy,%BootSRC%\Windows\System32\KBDRU.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000409"
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","2","00000419"
+//RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Toggle","Hotkey","2"
+//RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Toggle","Language Hotkey","2"
+//RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Toggle","Layout Hotkey","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000419\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000419\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000419\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","68748313"
+
+[el-GR]
+// greek by Larryg4
+Echo,"Processing greek KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDGKL.DLL,FileCopy,%BootSRC%\Windows\System32\KBDGKL.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000409"
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","2","00000408"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000408\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000408\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000408\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","67634184"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","67699721"
+
+[de-DE]
+// german by NightMan
+Echo,"Processing german KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDGR.DLL,FileCopy,%BootSRC%\Windows\System32\KBDGR.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDGR1.DLL,FileCopy,%BootSRC%\Windows\System32\KBDGR1.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000407"
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","2","00000409"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000407\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000407\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000407\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","67568647"
+
+[fr-FR]
+// french by cyberyeye
+Echo,"Configuration du clavier en Français..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDFR.DLL,FileCopy,%BootSRC%\Windows\System32\KBDFR.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,Tmp_Default\Keyboard Layout\Preload,1,0000040c
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040c\{34745C63-B2F0-4784-8B67-5E12C8701A31},Default,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040c\{34745C63-B2F0-4784-8B67-5E12C8701A31},Profile,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040c\{34745C63-B2F0-4784-8B67-5E12C8701A31},KeyboardLayout,67896332
+
+[es-ES]
+// Spanish by hectorma
+Echo,"Processing Spanish KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDLA.DLL,FileCopy,%BootSRC%\Windows\System32\KBDLA.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDSP.DLL,FileCopy,%BootSRC%\Windows\System32\KBDSP.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000c0a"
+//RegDelete,HKLM,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000c0a",""
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000c0a,RegDelete,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000c0a
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000c0a\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000c0a\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000c0a\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","67767306"
+
+[sv-SE]
+// Swedish by Virtual-R
+Echo,"Processing Swedish KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDSW.DLL,FileCopy,%BootSRC%\Windows\System32\KBDSW.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","0000041d"
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","2","00000409"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000041d\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000041d\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000041d\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","69010461"
+
+[pt-PT]
+// Portuguese by Rui Paz
+Echo,"Processing Portuguese KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDPO.DLL,FileCopy,%BootSRC%\Windows\System32\KBDPO.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","00000816"
+//RegDelete,HKLM,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000816",""
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000816,RegDelete,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000816
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000816\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000816\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000816\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","135661590"
+
+[fr-BE]
+// Belgian by ADB
+Echo,"Configuration du clavier en Français-Belge..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDBE.DLL,FileCopy,%BootSRC%\Windows\System32\KBDBE.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload","1","0000080c"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000080c\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Default","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000080c\{34745C63-B2F0-4784-8B67-5E12C8701A31}","Profile","{00000000-0000-0000-0000-000000000000}"
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000080c\{34745C63-B2F0-4784-8B67-5E12C8701A31}","KeyboardLayout","135006220"
+
+[he-IL]
+// Hebrew Aviv - by agrafi
+Echo,"Processing Hebrew KeyBoard..."
+FileCopy,%BootSRC%\Windows\System32\KBD*.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload",1,00000409
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload",2,0000040d
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409,RegDelete,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},Default,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},Profile,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},KeyboardLayout,4090409
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040d\{34745C63-B2F0-4784-8B67-5E12C8701A31},Default,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040d\{34745C63-B2F0-4784-8B67-5E12C8701A31},Profile,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040d\{34745C63-B2F0-4784-8B67-5E12C8701A31},KeyboardLayout,67961869
+
+[hu-HU]
+// Hungarian by Dera
+Echo,"Processing Hungarian KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDUS.DLL,FileCopy,%BootSRC%\Windows\System32\KBDUS.DLL,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\KBDHU.DLL,FileCopy,%BootSRC%\Windows\System32\KBDHU.DLL,%TargetDir%\Windows\System32
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload",1,0000040e
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload",2,00000409
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Substitutes",00000409,00020409
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409,RegDelete,HKLM,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040e\{34745C63-B2F0-4784-8B67-5E12C8701A31},Default,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040e\{34745C63-B2F0-4784-8B67-5E12C8701A31},Profile,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x0000040e\{34745C63-B2F0-4784-8B67-5E12C8701A31},KeyboardLayout,0x040e040e
+
+[AuthorEncoded]
+KeyBoard.jpg=2532,3376
+Logo=KeyBoard.jpg
+
+[EncodedFile-AuthorEncoded-KeyBoard.jpg]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

@@ -1,0 +1,676 @@
+[Main]
+Title=PostConfig
+Type=Plugin
+Author=NightMan, ChrisR, JFX
+Description=Finalizing WinPESE...
+Credits=Lancelot, http://TheOven.org
+Version=063
+Download_Level=0
+Level=8
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.22
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Finals/yy_1-postconfig.script
+CertifiedBy=
+Certification=
+HistoryNotes01=--- DirMove Error info - Start
+HistoryNotes02=Possible cause:
+HistoryNotes03=The action can't be completed because the Folder or a File in it is open in another program.
+HistoryNotes04=Reason of some known Failures:
+HistoryNotes05=1) Files having very long path.
+HistoryNotes06=2) Antivirus Lock files during scan.
+HistoryNotes07=( Adding 'Project Folder' and 'Source Folder' to Exclusion list do not fix on some AV -  Totally Disable AV )
+HistoryNotes08=Solutions to known Failures:
+HistoryNotes09=1-1) Use Official MS Distribution. ( Updated - Beta etc. Contains very long paths - NOT Supported.)
+HistoryNotes10=1-2) Use short folder for project ex: D:\Oven
+HistoryNotes11=1-3) Use short folder for source ex: D:\S\Wx64
+HistoryNotes12=--- DirMove Error info - Finish
+History026=ChrisR - Win7pese - Win8pese. The old history is stored in the section [History]
+History026=ChrisR - Target Image
+History027=ChrisR - Plugin renamed 3-postconfig -> yy_1-postconfig
+History028=anshad - Added Win8 "windows is loading" progress bar
+History029=ChrisR - Fix double comma
+History030=ChrisR - Adjustment to get single plugin
+History031=ChrisR - Add the flag 9 to the boot.wim for running setup from within windows to upgrade, thanks halikus.
+History032=ChrisR - Moved back %BootTMP%\Program Files(x86) if Target Image folder used
+History033=2aCD   - Use xcopy rather than filecopy to preserve attributes while copying the other folders
+History034=ChrisR - Include files in boot.wim Root (Ram)
+History035=ChrisR - Remove an old test for .pdf association! thanks anshad
+History036=ChrisR - Clean Recent Program for Win8.1
+History037=ChrisR - Set bootmenupolicy legacy for UEFI, thanks anshad
+History038=ChrisR - Fix path for delete the log data of SMI\Store\Machine\SCHEMA.DAT. thanks neon2m
+History039=ChrisR - The following of Bypass Driver Signing (see "1-Copy Files). Thanks JFX http://theoven.org/index.php?topic=866.msg11055#msg11055
+History040=ChrisR - Set the BCD timeout defined in "Create ISO" plugin
+History041=ChrisR - Change the BCD description "Windows setup" => %ProjectName% x86 or x64 (+UEFI for efi bcd)
+History042=ChrisR - Set description only if Multi-Wim is not selected. Otherwise, the description is written in the latter
+History043=Lancelot - added Emulator options // changed interface description after KYHI post reply 1 http://TheOven.org/index.php?topic=1177
+History044=Lancelot - change folder to %ISODir%\TargetImage\WIM
+History045=ChrisR - choice to use wimlib for capturing. in Wimlib 1.7.5-Beta2 the capture can go up to 2 times faster
+History046=ChrisR - BCD adjustment to bypass Driver Signing is only done for BIOS computer
+History047=ChrisR - BCDedit DISABLE_INTEGRITY_CHECKS & NoIntegrityChecks moved in 1-Files plugin with option: Patch winload.exe to bypass Driver Signing (patch winload.exe
+History048=ChrisR - fix iniread zMultiWim for small Win7pese. zMultiWim not included
+History049=ChrisR - bootmenupolicy legacy also for windows 10
+History050=Lancelot - Added Del_Desktop_Desktopini_CheckBox - (Missing Optimization plugin on Win10PESE ;) - Better to put none-project specific optimizations here to be sure...)
+History051=ChrisR - halt the build in case of Xcopy error - Date:2016.04.03
+History056=Lancelot - Call,DirMove fix - Winbuilder Bug -> DirMove - Failed to move directory [%BaseDir%\Target\Win10PESE\xxxxx] to: [%BaseDir%\ISO\TargetImage\WIM\boot.tmp]: Unknown error - Reply 15  http://TheOven.org/index.php?topic=1924 - Date:2016.11.09 - Date:2016.11.10
+History057=Lancelot - To get Same path debt : Set,%TargetImage%,%ISODir%\TargetImage\WIM --> Set,%TargetImage%,%ISODir%\TI\WIM // %BootTMP%=%TargetDir%\boot.tmp -> %BootTMP%=%TargetDir%\b.tmp // Set,%BootTMP%,%TargetImage%\boot.tmp --> Set,%BootTMP%,%TargetImage%\b.tmp - Date:2016.11.11
+History058=ChrisR - DirMove with Unknown error and Halt is replaced by SHDirMove - Date:2016.12.07
+History059=ChrisR - Set the NTFS permissions on BootTMP to Full Control to everyone - it should allows to avoid the black screen at startup - Date:2016.12.22
+History060=Lancelot - Add qEmu_X support // Delete ISOfileVar to save space before repack - Date:2017.08.24
+History061=Lancelot - Message : Directory still not Moved Error : Improved with: Reason of some known Failures: + Solutions to known Failures: - Reply10: http://TheOven.org/index.php?topic=2262.msg24446#msg24446 - Date:2017.10.25
+History062=ied206 - Typo fixed Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
+History063=Lancelot %ISODir% deprecated - Date:2017.11.22
+
+[Variables]
+%i32%=%InstallSRC%\Windows\System32
+%bw%=%BootSRC%\Windows
+%tw%=%TargetDir%\Windows
+%b32%=%bw%\system32
+%t32%=%tw%\system32
+%BootTMP%=%TargetDir%\b.tmp
+%RootRAMFolder%=%GlobalTemplates%\RootRAM
+%RegeditexeFolder%=
+
+[ProcessImageISO]
+Run,%ScriptFile%,Process
+If,Not,ExistFile,%ScriptDir%\yy_2-iso.script,Message,"yy_2-iso script required to create new ISO !!!",Error
+Else,Run,%ScriptDir%\yy_2-iso.script,ProcessISO,%ScriptDir%\yy_2-iso.script
+
+[Process]
+If,%Del_Desktop_Desktopini_CheckBox%,Equal,True,Begin
+Call,TargetDesktop
+If,ExistFile,%TargetDesktop%\Desktop.ini,Call,FileDelete,%TargetDesktop%\Desktop.ini
+End
+//-
+Echo,"Processing %ScriptTitle% For %ProjectName%..."
+If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Begin
+If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+End
+IniRead,%ProjectDir%\script.project,IniVariables,SaveConditionLogAlways,%SaveConditionLogAlways%
+If,%SaveConditionLogAlways%,Equal,1,Begin
+If,ExistFile,%ProjectTemp%\SupportLog_Execute.script,Begin
+If,ExistSection,%ProjectTemp%\SupportLog_Execute.script,Prepack,Begin
+Exec,%ProjectTemp%\SupportLog_Execute.script,Prepack
+End
+End
+End
+//-
+If,%ProjectName%,Equal,Win7PESE,StrFormat,LEFT,%ProjectName%,6,%ImageName%
+If,%ProjectName%,Equal,Win8PESE,StrFormat,LEFT,%ProjectName%,6,%ImageName%
+If,%ProjectName%,Equal,Win8.1SE,StrFormat,LEFT,%ProjectName%,6,%ImageName%
+If,%ProjectName%,Equal,Win10PESE,StrFormat,LEFT,%ProjectName%,7,%ImageName%
+Set,%CDFlagfile%,%ImageName%.cd
+IniRead,%ProjectDir%\script.project,IniVariables,WimTool,%WimTools%
+IniRead,%ProjectDir%\script.project,IniVariables,WimToolFile,%WimToolFile%
+If,%WimTools%,Equal,ImageX,Set,%ImageX%,%WimToolFile%
+If,%WimTools%,Equal,WimUtil,Set,%WimUtil%,%WimToolFile%
+IniRead,%ProjectDir%\script.project,IniVariables,BuildModel,%BuildModel%
+IniRead,%ProjectDir%\script.project,IniVariables,BootSRC,%BootSRC%
+IniRead,%ProjectDir%\script.project,IniVariables,InstallSRC,%InstallSRC%
+IniRead,%ProjectDir%\script.project,IniVariables,ShowImageX,%ShowImageX%
+IniRead,%ProjectDir%\script.project,IniVariables,ShowImageX,%ShowWimlib%
+IniRead,%ProjectDir%\script.project,IniVariables,ShowWimUtil,%ShowWimUtil%
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%ExtractWimFolder%
+//-
+StrFormat,Path,%IsoFile%,%IsoFolder%
+StrFormat,CTrim,%IsoFolder%,\,%IsoFolder%
+//-
+If,%TargetImage_CheckBox%-%BuildModel%,Equal,True-RAM,Set,%TargetImage%,%IsoFolder%\TI\WIM
+Else,Set,%TargetImage%,%TargetDir%
+Set,%BootTMP%,%TargetImage%\b.tmp
+IniWrite,%ProjectDir%\script.project,IniVariables,TargetImage,%TargetImage%
+//-
+If,Not,ExistFile,%Tools%\%SourceArch%\bcdedit.exe,FileCopy,%InstallSRC%\Windows\System32\bcdedit.exe,%Tools%\%SourceArch%
+Set,%BcdEditExe%,%Tools%\%OSArch%\bcdedit.exe
+If,Not,ExistFile,%BcdEditExe%,Set,%BcdEditExe%,%Tools%\x86\bcdedit.exe
+//source x64 host x86
+If,Not,ExistFile,%BcdEditExe%,Message,"%Tools%\%OSArch%\bcdedit.exe NOT found. Build Stop Now",Error
+If,Not,ExistFile,%BcdEditExe%,Halt,"%Tools%\%OSArch%\bcdedit.exe NOT found. Build Stop Now"
+//-
+//- Write IsoName in Internal ini file MountPEmedia.ini. ISO boot, at startup MountPEmedia.exe checks if imdisk exist, if yes and if Iso filename (set in in MountPEmedia.ini) is available on CD-USB drives, it will mount it on drive Y.
+Call,AddInterface,%ProjectDir%\Finals\yy_2-iso.script,Interface,""
+Set,%tmout%,%pNumberBox1%
+Run,%ScriptDir%\yy_2-iso.script,IsoName
+IniRead,%ProjectDir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
+If,Not,%ISOfileVar%-,Equal,-,Call,FileDelete,%ISOfileVar%
+StrFormat,FILENAME,%ISOfileVar%,%ISOfileName%
+If,Not,ExistFile,%Target_Sys%\MountPEmedia.ini,FileCreateBlank,%Target_Sys%\MountPEmedia.ini
+If,-%ISOBootFolder_TextBox%,Equal,-,IniWrite,%Target_Sys%\MountPEmedia.ini,IsoInfo,IsoName,%ISOfileName%
+Else,IniWrite,%Target_Sys%\MountPEmedia.ini,IsoInfo,IsoName,%ISOBootFolder_TextBox%\%ISOfileName%
+//-
+If,%ProjectName%%BuildType%,Equal,Win8.1SEOS,Run,%ScriptFile%,CleanRecentProgram
+//-
+// If not extracted wim folder - UnMount wim files and check that UnMounted successfully (After checking bcdedit.exe)
+If,Not,%ExtractWimFolder%,Equal,Yes,Run,%ScriptFile%,UnMountWim
+If,Not,ExistFile,%TargetDir%\%CDFlagfile%,FileCreateBlank,%TargetDir%\%CDFlagfile%
+//-
+//Call,HostWindowsDir
+////ShellExecute,Hide,#$q%TargetDir%\Windows\System32\bcdedit.exe#$q,"/store #$q%TargetDir%\boot\bcd#$q /set {default} quietboot on","%HostWindowsDir%\system32"
+////enable ntbtlog.txt
+////ShellExecute,Hide,#$q%TargetDir%\Windows\System32\bcdedit.exe#$q,"/store #$q%TargetDir%\boot\bcd#$q /set {default} bootlog on","%HostWindowsDir%\system32"
+// Add ChrisR
+Run,%ScriptFile%,BcdMenu
+If,ExistFile,%TargetDir%\boot\bcd.LOG*,FileDelete,%TargetDir%\boot\bcd.LOG*
+//-
+If,ExistFile,%Target_Sys%\config\*.LOG1,FileDelete,%Target_Sys%\config\*.LOG1
+If,ExistFile,%Target_Sys%\config\*.LOG2,FileDelete,%Target_Sys%\config\*.LOG2
+If,ExistFile,%Target_Sys%\config\*.blf,FileDelete,%Target_Sys%\config\*.blf
+If,ExistFile,%Target_Sys%\config\*.regtrans-ms,FileDelete,%Target_Sys%\config\*.regtrans-ms
+If,ExistFile,%TargetProfilesUserDir%\*.LOG1,FileDelete,%TargetProfilesUserDir%\*.LOG1
+If,ExistFile,%TargetProfilesUserDir%\*.LOG2,FileDelete,%TargetProfilesUserDir%\*.LOG2
+If,ExistFile,%TargetProfilesUserDir%\*.blf,FileDelete,%TargetProfilesUserDir%\*.blf
+If,ExistFile,%TargetProfilesUserDir%\*.regtrans-ms,FileDelete,%TargetProfilesUserDir%\*.regtrans-ms
+If,ExistFile,%Target_Sys%\SMI\Store\Machine\*.LOG1,FileDelete,%Target_Sys%\SMI\Store\Machine\*.LOG1
+If,ExistFile,%Target_Sys%\SMI\Store\Machine\*.LOG2,FileDelete,%Target_Sys%\SMI\Store\Machine\*.LOG2
+If,ExistFile,%Target_Sys%\SMI\Store\Machine\*.blf,FileDelete,%Target_Sys%\SMI\Store\Machine\*.blf
+If,ExistFile,%Target_Sys%\SMI\Store\Machine\*.regtrans-ms,FileDelete,%Target_Sys%\SMI\Store\Machine\*.regtrans-ms
+//-
+If,%BuildModel%,Equal,RAM,Run,%ScriptFile%,PackBoot
+If,%BuildModel%,Equal,Normal,Run,%ScriptFile%,NoPackBoot
+////If,%pCheckBox2%,Equal,true,Run,%ScriptFile%,PackPrograms
+
+[UnMountWim]
+If,%WimTools%,Equal,ImageX,Begin
+Echo,"UnMounting Wim files (BootSRC) with %WimTools% ..."
+If,ExistDir,%BootSRC%\Windows,ShellExecute,%ShowImageX%,%IMAGEX%,"/unmount #$q%BootSRC%#$q"
+Echo,"%WimTools% unmount Wim files (BootSRC) return : %ExitCode%"
+//-
+Echo,"UnMounting Wim files (InstallSRC) with %WimTools% ..."
+If,ExistDir,%InstallSRC%\Windows,ShellExecute,%ShowImageX%,%IMAGEX%,"/unmount #$q%InstallSRC%#$q"
+Echo,"%WimTools% unmount Wim files (InstallSRC) return : %ExitCode%"
+End
+//-
+If,%WimTools%,Equal,WimUtil,Begin
+Echo,"UnMounting Wim files (BootSRC) with %WimTools% ..."
+If,ExistDir,%BootSRC%\Windows,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q %ShowWimUtil% /nowarn",%Tools%\%OSArch%\
+Echo,"%WimTools% unmount Wim files (BootSRC) return : %ExitCode%"
+//-
+Echo,"UnMounting Wim files (InstallSRC) with %WimTools% ..."
+If,ExistDir,%InstallSRC%\Windows,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%InstallSRC%#$q %ShowWimUtil% /nowarn",%Tools%\%OSArch%\
+Echo,"%WimTools% unmount Wim files (InstallSRC) return : %ExitCode%"
+End
+// Check that the image is well unmounted (some issues encountered sometimes with wimmount driver, who locked the folder)
+Run,%scriptfile%,CheckUnMountInstallWim
+Run,%scriptfile%,CheckUnMountBootWim
+
+[CheckUnMountInstallWim]
+If,ExistDir,%InstallSRC%,Begin
+Retrieve,FolderSize,%InstallSRC%,%ISRCsizeFolder%
+If,%ISRCsizeFolder%,Equal,0,Begin
+If,ExistDir,%InstallSRC%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%InstallSRC%#$q"
+If,ExistDir,%InstallSRC%,Message,"%InstallSRC% Folder can not be deleted !!!#$x#$xExiting...",Error
+If,ExistDir,%InstallSRC%,Halt,"%InstallSRC% Folder can not be deleted. Exiting..."
+DirMake,%InstallSRC%
+End
+Else,Begin
+Message,"%InstallSRC% Can not be Unmounted or there are files in folder !!!#$x#$xExiting...",Error
+Halt,"%InstallSRC% Can not be Unmounted or there are files in folder. Exiting..."
+End
+End
+
+[CheckUnMountBootWim]
+If,ExistDir,%BootSRC%,Begin
+Retrieve,FolderSize,%BootSRC%,%BSRCsizeFolder%
+If,%BSRCsizeFolder%,Equal,0,Begin
+If,ExistDir,%BootSRC%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%BootSRC%#$q"
+If,ExistDir,%BootSRC%,Message,"%BootSRC% Folder can not be deleted !!!#$x#$xExiting...",Error
+If,ExistDir,%BootSRC%,Halt,"%BootSRC% Folder can not be deleted. Exiting..."
+DirMake,%BootSRC%
+End
+Else,Begin
+Message,"%BootSRC% Can not be Unmounted or there are files in folder !!!#$x#$xExiting...",Error
+Halt,"%BootSRC% Can not be Unmounted or there are files in folder. Exiting..."
+End
+End
+
+[PackBoot]
+Echo,"Preparing boot.wim, Be patient..."
+If,Not,%TargetImage%,Equal,%TargetDir%,Begin
+If,ExistDir,%TargetImage%,Echo,"Deleting [%TargetImage%]"
+If,ExistDir,%TargetImage%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%TargetImage%#$q"
+If,ExistDir,%TargetImage%,Call,DirDelete,%TargetImage%
+If,ExistDir,%TargetImage%,Call,Echo,"%TargetImage% could not be deleted!",Warn
+If,ExistDir,%TargetImage%,Message,"%TargetImage% could not be deleted!",Error
+If,ExistDir,%TargetImage%,Halt,"%TargetImage% could not be deleted!"
+End
+//-
+DirMake,%BootTMP%
+// Set the NTFS permissions on BootTMP to Full Control to everyone - it should allows to avoid the black screen at startup
+ShellExecute,Hide,%Tools%\%OSArch%\SetAcl.exe," -ot #$qfile#$q -on #$q%BootTMP%#$q -actn ace -actn setprot  -op #$qdacl:p_nc#$q  -ace #$qn:S-1-1-0;p:full;s:y#$q"
+If,Not,%ExitCode%,Equal,0,Call,Echo,"SetAcl - NTFS permission on BootTMP FAIL -> Black Screen on boot",Warn
+//History 13
+If,ExistDir,"%targetdir%\Program Files (x86)",Run,%ScriptFile%,SHDirMove_x3,"%targetdir%\Program Files (x86)",%BootTMP%
+If,Not,ExistDir,"%targetdir%\Program Files",DirMake,"%targetdir%\Program Files"
+Run,%ScriptFile%,SHDirMove_x3,"%targetdir%\Program Files",%BootTMP%
+Run,%ScriptFile%,SHDirMove_x3,%targetdir%\ProgramData,%BootTMP%
+If,ExistDir,%targetdir%\sources,Run,%ScriptFile%,SHDirMove_x3,%targetdir%\sources,%BootTMP%
+Run,%ScriptFile%,SHDirMove_x3,%targetdir%\Users,%BootTMP%
+Run,%ScriptFile%,SHDirMove_x3,%targetdir%\Windows,%BootTMP%
+//--
+// If the other directory for files exists (and isn't empty), then lets copy it over to the build area.
+If,%IncludeinWimRoot_CheckBox%,Equal,True,Begin
+If,Not,ExistDir,%RootRAMFolder%,DirMake,%RootRAMFolder%
+Retrieve,FolderSize,%RootRAMFolder%,%RootRAMFolderSize%
+If,Not,%RootRAMFolderSize%,Equal,0,Begin
+Echo,"Copying Additional files to CD Root... Please Wait.."
+//FileCopy * have unicode bug - workaround with DirCopy * bug
+//DirCopy,%RootRAMFolder%\*,%BootTMP%
+Shellexecute,hide,xcopy.exe,"#$q%RootRAMFolder%\*.*#$q #$q%BootTMP%\#$q /i /s /e /r /v /k /f /c /h /y"
+If,Not,%ExitCode%,Equal,0,Call,Echo,"XCOPY - A problem occurred while copying Additional files to CD Root",Warn,,MessageError,,Halt
+End
+End
+//--
+////add 14.12.2007 for RIS booting
+FileCopy,%targetdir%\bootmgr,%BootTMP%\bootmgr
+If,Not,ExistDir,%TargetImage%\sources,DirMake,%TargetImage%\sources
+//--
+If,%pScrollB_WimTools%,Equal,Wimlib,Begin
+If,ExistFile,%Tools%\x86\wimlib\wimlib-imagex.exe,Set,%WimlibImagex%,%Tools%\x86\wimlib\wimlib-imagex.exe
+If,ExistFile,%Tools%\%OSArch%\wimlib\wimlib-imagex.exe,Set,%WimlibImagex%,%Tools%\%OSArch%\wimlib\wimlib-imagex.exe
+If,Not,ExistFile,%WimlibImagex%,Set,%pScrollB_WimTools%,"Defined in Images configuration"
+Else,Begin
+Echo,"Packing boot.wim with WimLib, Be patient..."
+If,%pCompressionGroup%,Equal,0,ShellExecute,%ShowWimlib%,%WimlibImagex%,"capture #$q%BootTMP%#$q #$q%TargetImage%\sources\boot.wim#$q #$q%ImageName%_%SourceArch%#$q #$q%ImageName%_%SourceArch%#$q --boot --flags=9 --compress=XPRESS --verbose"
+If,%pCompressionGroup%,Equal,1,ShellExecute,%ShowWimlib%,%WimlibImagex%,"capture #$q%BootTMP%#$q #$q%TargetImage%\sources\boot.wim#$q #$q%ImageName%_%SourceArch%#$q #$q%ImageName%_%SourceArch%#$q --boot --flags=9 --compress=LZX --verbose"
+Echo,"Wimlib Packing boot.wim return : %ExitCode%"
+If,Not,%ExitCode%,Equal,0,Run,%scriptfile%,ErrorPack,boot.wim
+End
+End
+If,Not,%pScrollB_WimTools%,Equal,Wimlib,Begin
+Echo,"Packing boot.wim with %WimTools%, Be patient..."
+If,%WimTools%,Equal,ImageX,Begin
+If,%pCompressionGroup%,Equal,0,ShellExecute,%ShowImageX%,%IMAGEX%,"/capture #$q%BootTMP%#$q #$q%TargetImage%\sources\boot.wim#$q #$q%ImageName%_%SourceArch%#$q #$q%ImageName%_%SourceArch%#$q /boot /flags #$q9#$q"
+If,%pCompressionGroup%,Equal,1,ShellExecute,%ShowImageX%,%IMAGEX%,"/capture #$q%BootTMP%#$q #$q%TargetImage%\sources\boot.wim#$q #$q%ImageName%_%SourceArch%#$q #$q%ImageName%_%SourceArch%#$q /boot /flags #$q9#$q /compress maximum"
+Echo,"%WimTools% Packing boot.wim return : %ExitCode%"
+If,Not,%ExitCode%,Equal,0,Run,%scriptfile%,ErrorPack,boot.wim
+End
+If,%WimTools%,Equal,WimUtil,Begin
+If,%pCompressionGroup%,Equal,0,ShellExecute,Hide,%WIMUTIL%,"/capture #$q%BootTMP%#$q #$q%TargetImage%\sources\boot.wim#$q #$q%ImageName%#$q /boot /xpress %ShowWimUtil%"
+If,%pCompressionGroup%,Equal,1,ShellExecute,Hide,%WIMUTIL%,"/capture #$q%BootTMP%#$q #$q%TargetImage%\sources\boot.wim#$q #$q%ImageName%#$q /boot /lzx %ShowWimUtil%"
+Echo,"%WimTools% Packing boot.wim return : %ExitCode%"
+If,Not,%ExitCode%,Equal,0,Run,%scriptfile%,ErrorPack,boot.wim
+End
+End
+//--
+//-- If TargetImage selected, copy what remains in TargetDir to TargetImage and restore all folders of BootTMP to TargetDir
+If,Not,%TargetImage%,Equal,%TargetDir%,Begin
+Echo,"Copy the other folders in Target Image, Be patient..."
+// 2aCD use xcopy rather than filecopy (dircopy to support unicode) to preserve attributes while copying the other folders
+Shellexecute,hide,xcopy.exe,"#$q%TargetDir%\*.*#$q #$q%TargetImage%\#$q /i /s /e /r /v /k /f /c /h /y"
+If,Not,%ExitCode%,Equal,0,Call,Echo,"XCOPY - A problem occurred while copying the other folders",Warn,,MessageError,,Halt
+// Do not move back the files from RootRAMFolder (just included in boot.wim but not in %TargetDir%)
+If,ExistDir,"%BootTMP%\Program Files (x86)",Run,%ScriptFile%,SHDirMove_x3,"%BootTMP%\Program Files (x86)",%TargetDir%
+Run,%ScriptFile%,SHDirMove_x3,"%BootTMP%\Program Files",%TargetDir%
+Run,%ScriptFile%,SHDirMove_x3,%BootTMP%\ProgramData,%TargetDir%
+If,ExistDir,%BootTMP%\sources,Run,%ScriptFile%,SHDirMove_x3,%BootTMP%\sources,%TargetDir%
+Run,%ScriptFile%,SHDirMove_x3,%BootTMP%\Users,%TargetDir%
+Run,%ScriptFile%,SHDirMove_x3,%BootTMP%\Windows,%TargetDir%
+End
+DirDelete,%BootTMP%
+
+[SHDirMove_x3]
+If,Not,ExistFile,%ProjectTemp%\SHDirMove.exe,ExtractFile,%ScriptFile%,Folder,SHDirMove.exe,%ProjectTemp%
+System,FILEREDIRECT,OFF
+ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q#1#$q #$q#2#$q"
+Set,%DirMove_ExitCode%,%ExitCode%
+System,FILEREDIRECT,ON
+//-
+If,Not,%DirMove_ExitCode%,Equal,0,Begin
+StrFormat,HEX,%DirMove_ExitCode%,%HDirMove_ExitCode%
+Message,"!!! Directory not Moved Warning 1/2 !!! #$x#$x#1 #$x#$xPossible cause:#$xThe action can't be completed because the Folder or a File in it is open in another program. #$xOr look at the Error Code: %DirMove_ExitCode% (0x%HDirMove_ExitCode%)#$x#$xClose the Folder or File and try again.",Warning
+//-
+System,FILEREDIRECT,OFF
+ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q#1#$q #$q#2#$q"
+Set,%DirMove_ExitCode%,%ExitCode%
+System,FILEREDIRECT,ON
+//-
+If,Not,%DirMove_ExitCode%,Equal,0,Begin
+StrFormat,HEX,%DirMove_ExitCode%,%HDirMove_ExitCode%
+Message,"!!! Directory still not Moved Warning 2/2 !!! #$x#$x#1 #$x#$xPossible cause:#$xThe action can't be completed because the Folder or a File in it is open in another program. #$xOr look at the Error Code: %DirMove_ExitCode% (0x%HDirMove_ExitCode%)#$x#$xClose the Folder or File and try again.",Warning
+//-
+System,FILEREDIRECT,OFF
+ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q#1#$q #$q#2#$q"
+Set,%DirMove_ExitCode%,%ExitCode%
+System,FILEREDIRECT,ON
+//-
+If,Not,%DirMove_ExitCode%,Equal,0,Begin
+StrFormat,HEX,%DirMove_ExitCode%,%HDirMove_ExitCode%
+//Message,"!!! Directory still not Moved Error!!! #$x#$x#1 #$x#$xPossible cause:#$xThe action can't be completed because the Folder or a File in it is open in another program. #$xOr look at the Error Code: %DirMove_ExitCode% (0x%HDirMove_ExitCode%)#$x#$xBuild will now halt.",Error
+Message,"!!! Directory still not Moved Error!!! #$x#$x#1 #$x#$xPossible cause:#$xThe action can't be completed because the Folder or a File in it is open in another program. #$xOr look at the Error Code: %DirMove_ExitCode% (0x%HDirMove_ExitCode%)#$x#$xReason of some known Failures:#$x1) Files having very long path.#$x2) Antivirus Lock files during scan.#$x( Adding 'Project Folder' and 'Source Folder' to Exclusion list do not fix on some AV -  Totally Disable AV ) #$x#$xSolutions to known Failures:#$x1-1) Use Official MS Distribution. ( Updated - Beta etc. Contains very long paths - NOT Supported.)#$x1-2) Use short folder for project ex: D:\Oven#$x1-3) Use short folder for source ex: D:\S\Wx64#$x#$x#$x#$x#$x#$xBuild will now halt.",Error
+// Try to restore previous moved BootTMP folders to TargetDir before halt
+System,FILEREDIRECT,OFF
+If,ExistDir,"%BootTMP%\Program Files (x86)",ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q%BootTMP%\Program Files (x86)#$q #$q%TargetDir%#$q"
+If,ExistDir,"%BootTMP%\Program Files",ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q%BootTMP%\Program Files#$q #$q%TargetDir%#$q"
+If,ExistDir,%BootTMP%\ProgramData,ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q%BootTMP%\ProgramData#$q #$q%TargetDir%#$q"
+If,ExistDir,%BootTMP%\sources,ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q%BootTMP%\sources#$q #$q%TargetDir%#$q"
+If,ExistDir,%BootTMP%\Users,ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q%BootTMP%\Users#$q #$q%TargetDir%#$q"
+If,ExistDir,%BootTMP%\Windows,ShellExecute,Open,%ProjectTemp%\SHDirMove.exe,"#$q%BootTMP%\Windows#$q #$q%TargetDir%#$q"
+System,FILEREDIRECT,ON
+//-
+Call,Echo,"Directory #1 not Moved! Halt",Warn,,,,Halt
+End
+End
+End
+
+[NoPackBoot]
+Echo,"Preparing boot directly from cd..."
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetImage%\boot\bcd#$q /set {default} device boot",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetImage%\boot\bcd#$q /set {default} osdevice boot",%Tools%\%OSArch%\
+
+[PackPrograms]
+If,Not,ExistDir,"%WinPE_Temp%\Program Files",Halt,"Folder %WinPE_Temp%\Program Files not found"
+If,Not,ExistFile,"%WinPE_Temp%\Program Files\program.cd",FileCreateBlank,"%WinPE_Temp%\Program Files\program.cd"
+//--
+If,%pScrollB_WimTools%,Equal,Wimlib,Begin
+If,ExistFile,%Tools%\x86\wimlib\wimlib-imagex.exe,Set,%WimlibImagex%,%Tools%\x86\wimlib\wimlib-imagex.exe
+If,ExistFile,%Tools%\%OSArch%\wimlib\wimlib-imagex.exe,Set,%WimlibImagex%,%Tools%\%OSArch%\wimlib\wimlib-imagex.exe
+If,Not,ExistFile,%WimlibImagex%,Set,%pScrollB_WimTools%,"Defined in Images configuration"
+Else,Begin
+Echo,"Packing programs.wim with Wimlib, Be patient..."
+If,%pCompressionGroup%,Equal,0,ShellExecute,%ShowWimlib%,%WimlibImagex%,"capture #$q%WinPE_Temp%\Program Files#$q #$q%TargetImage%\programs.wim#$q #$q%ImageName%%#$q --boot --compress=XPRESS --verbose
+If,%pCompressionGroup%,Equal,1,ShellExecute,%ShowWimlib%,%WimlibImagex%,"capture #$q%WinPE_Temp%\Program Files#$q #$q%TargetImage%\programs.wim#$q #$q%ImageName%#$q --boot --compress=LZX --verbose
+Echo,"Wimlib Packing programs.wim return : %ExitCode%"
+If,Not,%ExitCode%,Equal,0,Run,%scriptfile%,ErrorPack,programs.wim
+End
+End
+If,Not,%pScrollB_WimTools%,Equal,Wimlib,Begin
+Echo,"Packing programs.wim with %WimTools%, Be patient..."
+If,%WimTools%,Equal,ImageX,Begin
+If,%pCompressionGroup%,Equal,0,ShellExecute,%ShowImageX%,%IMAGEX%,"/capture #$q%WinPE_Temp%\Program Files#$q #$q%TargetImage%\programs.wim#$q #$q%ImageName%#$q /boot"
+If,%pCompressionGroup%,Equal,1,ShellExecute,%ShowImageX%,%IMAGEX%,"/capture #$q%WinPE_Temp%\Program Files#$q #$q%TargetImage%\programs.wim#$q #$q%ImageName%#$q /boot /compress maximum"
+Echo,"%WimTools% Packing programs.wim return : %ExitCode%"
+If,Not,%ExitCode%,Equal,0,Run,%scriptfile%,ErrorPack,programs.wim
+End
+If,%WimTools%,Equal,WimUtil,Begin
+If,%pCompressionGroup%,Equal,0,ShellExecute,Hide,%WIMUTIL%,"/capture #$q%WinPE_Temp%\Program Files#$q #$q%TargetImage%\programs.wim#$q #$q%ImageName%#$q /boot /xpress %ShowWimUtil%"
+If,%pCompressionGroup%,Equal,1,ShellExecute,Hide,%WIMUTIL%,"/capture #$q%WinPE_Temp%\Program Files#$q #$q%TargetImage%\programs.wim#$q #$q%ImageName%#$q /boot /lzx %ShowWimUtil%"
+Echo,"%WimTools% Packing programs.wim return : %ExitCode%"
+If,Not,%ExitCode%,Equal,0,Run,%scriptfile%,ErrorPack,programs.wim
+End
+End
+//--
+DirDelete,"%WinPE_Temp%\Program Files"
+
+[BcdMenu]
+Echo,"Bcdedit /store bcd set {bootmgr} locale %DistLang%"
+Set,%Win8Bcd%,Noo
+If,%OS%,Equal,Win8,Set,%Win8Bcd%,Yes
+If,%OS%,Equal,Win8.1,Set,%Win8Bcd%,Yes
+If,%OS%,Equal,Win10,Set,%Win8Bcd%,Yes
+// Set description only if Multi-Wim is not selected. Otherwise, the description is written in the latter
+Set,%MultiWim_Selected%,False
+If,ExistFile,%ProjectDir%\OtherOS\zMultiWim.script,IniRead,%ProjectDir%\OtherOS\zMultiWim.script,Main,Selected,%MultiWim_Selected%
+//-
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\Boot\bcd#$q /set {default} locale %DistLang%",%Tools%\%OSArch%\
+If,Not,%MultiWim_Selected%,Equal,True,ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\Boot\bcd#$q /set {default} description #$q%ProjectName% %SourceArch%#$q",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\Boot\bcd#$q /set {bootmgr} locale %DistLang%",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\Boot\bcd#$q /set {memdiag} locale %DistLang%",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\Boot\bcd#$q /set {bootmgr} timeout %tmout%",%Tools%\%OSArch%\
+If,%Win8Bcd%,Equal,Yes,Begin
+// Show progress bars "windows is loading"
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\Boot\bcd#$q /set {default} bootmenupolicy legacy",%Tools%\%OSArch%\
+End
+//-
+If,ExistFile,%TargetDir%\efi\microsoft\boot\bcd,Begin
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {default} locale %DistLang%",%Tools%\%OSArch%\
+If,Not,%MultiWim_Selected%,Equal,True,ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {default} description #$q%ProjectName% %SourceArch% UEFI#$q",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {bootmgr} locale %DistLang%",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {memdiag} locale %DistLang%",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\Boot\bcd#$q /set {bootmgr} timeout %tmout%",%Tools%\%OSArch%\
+If,%Win8Bcd%,Equal,Yes,Begin
+// Show progress bars "windows is loading"
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {default} bootmenupolicy legacy",%Tools%\%OSArch%\
+End
+End
+
+[CleanRecentProgram]
+// Recent Program with Administrator in link does not work for now
+RegHiveLoad,Tmp_Default,%RegDefault%
+If,ExistRegSection,HKLM,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist,Begin
+If,Not,ExistDir,%ProjectTemp%\RecentProgram,DirMake,%ProjectTemp%\RecentProgram
+// Save RecentProgram.reg
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/e #$q%Target_Sys%\RecentProgram.reg#$q #$qHKEY_LOCAL_MACHINE\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{F4E57C4B-2036-45F0-A9AB-443BCFE33D9F}\Count#$q"
+//RegDelete,HKLM,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist
+If,ExistFile,%Target_Sys%\RecentProgram.reg,Begin
+// Save Tmp_RecentProgram.reg
+If,ExistFile,%ProjectTemp%\RecentProgram\Tmp_RecentProgram.reg,Call,FileDelete,%ProjectTemp%\RecentProgram\Tmp_RecentProgram.reg
+FileCopy,%Target_Sys%\RecentProgram.reg,%ProjectTemp%\RecentProgram\Tmp_RecentProgram.reg
+//-
+// Convert [HKEY_LOCAL_MACHINE\Tmp_Default to [HKEY_CURRENT_USER
+Set,%w%,%ProjectTemp%\RecentProgram\Convert.au3
+If,ExistFile,%w%,Call,FileDelete,%w%
+FileCreateBlank,%w%
+TxtAddLine,%w%,"Opt(#$qTrayIconHide#$q, 1)",Append
+TxtAddLine,%w%,"Local $file=$cmdline[1]",Append
+TxtAddLine,%w%,"Local $regrep=FileRead($file)",Append
+TxtAddLine,%w%,"$regrep=StringReplace($regrep,#$q[HKEY_LOCAL_MACHINE\Tmp_Default#$q,#$q[HKEY_CURRENT_USER#$q)",Append
+TxtAddLine,%w%,"FileDelete($file)",Append
+TxtAddLine,%w%,"FileWriteLine($file,$regrep)",Append
+ShellExecute,Open,%Tools%\x86\AU3381.exe,"#$q%w%#$q #$q%Target_Sys%\RecentProgram.reg#$q"
+//AddAutoRun,RecentProgram,%SystemRoot%\regedit.exe,"/s %SystemRoot%\system32\RecentProgram.reg",3
+End
+//-
+// Remove RecentProgram not based on StartMenu that does not work: {N77S5Q77-2R2O-44P3-N6N2-NON601054N51} rot13
+Set,%w%,%ProjectTemp%\RecentProgram\RecentStartMenuOnly.au3
+If,ExistFile,%w%,Call,FileDelete,%w%
+FileCreateBlank,%w%
+TxtAddLine,%w%,"Opt(#$qTrayIconHide#$q, 1)",Append
+TxtAddLine,%w%,"For $i=1 to 99",Append
+TxtAddLine,%w%,"	Local $RProt13=RegEnumVal(#$qHKLM\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{F4E57C4B-2036-45F0-A9AB-443BCFE33D9F}\Count#$q, $i)",Append
+TxtAddLine,%w%,"	If @error <> 0 then ExitLoop",Append
+TxtAddLine,%w%,"	Local $Pos=StringInStr($RProt13, #$q{N77S5Q77-2R2O-44P3-N6N2-NON601054N51}#$q)",Append
+TxtAddLine,%w%,"	If $Pos <> 1 then",Append
+TxtAddLine,%w%,"		RegDelete (#$qHKLM\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{F4E57C4B-2036-45F0-A9AB-443BCFE33D9F}\Count\#$q, $RProt13)",Append
+TxtAddLine,%w%,"		$i-=1",Append
+TxtAddLine,%w%,"	EndIf",Append
+TxtAddLine,%w%,"Next",Append
+ShellExecute,Open,%Tools%\x86\AU3381.exe,"#$q%w%#$q"
+End
+RegHiveUnLoad,Tmp_Default
+
+[ErrorPack]
+If,%WimTools%,Equal,WimUtil,Begin
+Call,HostTempDir
+If,ExistFile,%HostTempDir%\WimUtil.log,Begin
+If,Not,ExistDir,%ProjectTemp%\SupportLog_AddFiles,DirMake,%ProjectTemp%\SupportLog_AddFiles
+FileCopy,%HostTempDir%\WimUtil.log,%ProjectTemp%\SupportLog_AddFiles
+End
+End
+//
+Message,"A problem occurred to Pack #1 with %WimTools% return Code : %ExitCode% !!!#$x#$xExiting..."
+Halt,"A problem occurred to Pack  #1 with %WimTools% return Code : %ExitCode%. Exiting..."
+
+[EchoWarn10]
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+
+[TargetImage_Choice]
+System,CURSOR,Wait
+If,%TargetImage_CheckBox%,Equal,True,Begin
+Visible,%TargetImage_Button%,True,PERMANENT
+Visible,%TargetImageISO_Button%,True,PERMANENT
+Visible,%E_Bevel%,True,PERMANENT
+Visible,%E_TargetImage_Button%,True,PERMANENT
+Visible,%E_TargetImageISO_Button1%,True,PERMANENT
+Visible,%E_ScrollBox%,True,PERMANENT
+Visible,%E_Button1%,True,PERMANENT
+End
+Else,Begin
+Visible,%TargetImage_Button%,False,PERMANENT
+Visible,%TargetImageISO_Button%,False,PERMANENT
+Visible,%E_Bevel%,False,PERMANENT
+Visible,%E_TargetImage_Button%,False,PERMANENT
+Visible,%E_TargetImageISO_Button1%,False,PERMANENT
+Visible,%E_ScrollBox%,False,PERMANENT
+Visible,%E_Button1%,False,PERMANENT
+End
+System,RefreshInterface
+System,CURSOR,Normal
+
+[OpenRootRAMFolder]
+Call,OpenDir,%RootRAMFolder%
+
+[temp]
+pCheckBox2="Pack program.wim (request ramdisk and wim plugins)",1,3,12,60,273,18,False
+
+[Interface]
+pBevel1=pBevel1,1,12,0,95,541,170
+pCompressionGroup=Compression,1,14,196,15,82,67,normal,maximum,0
+pTextL_WimTools="Wim Tools",1,1,6,28,60,18,8,Normal
+pScrollB_WimTools=Wimlib,1,4,4,42,182,21,Wimlib,"Defined in Images configuration"
+TargetImage_CheckBox="Build in Target Image folder",1,3,4,101,191,18,True,_TargetImage_Choice_,True
+TargetImage_Button="       Create new Target Image      ",1,8,4,133,201,30,Process,Target.bmp,False,_Process_,False
+TargetImageISO_Button=" Create new Target Image and ISO",1,8,4,167,201,30,ProcessImageISO,CreateISO.bmp,False,_ProcessImageISO_,False
+IncludeinWimRoot_Bevel=pBevel6,1,12,287,1,215,57
+IncludeinWimRoot_CheckBox=" Include files in boot.wim Root (Ram)",1,3,297,4,204,16,False
+OpenRootWimFolder_Button="Put Files for boot.wim Root Here",1,8,294,19,204,34,OpenRootRAMFolder,CD_16x16.bmp,True,False,_OpenRootRAMFolder_,True
+TargetImage_TextFile=TargetImage.txt,1,6,267,99,268,133
+E_Bevel=pBevel1,1,12,4,220,208,39
+E_TargetImage_Button=,1,8,7,227,28,25,Em_Process,Target.bmp,False,_Em_Process_,False,"__Create new Target Image and Start Emulator"
+E_TargetImageISO_Button1=,1,8,36,227,35,25,Em_ProcessImageISO,CreateISO.bmp,False,_Em_ProcessImageISO_,False,"__Create new Target Image and ISO and Start Emulator"
+E_ScrollBox="Best Emulation",1,4,74,229,108,21,"Best Emulation",VMWare,VirtualBox,VirtualPC,qEmuX,qEmu
+E_Button1=Em,1,8,185,227,25,25,Em_ScrollBox,0,False,False,_Em_ScrollBox_,False,"__Start Emulator"
+Button_Info="More Info",1,8,463,235,71,26,Open_Information,Exclamation.bmp,False,False,_Open_Information_,False,__Information
+WebLabel_Plugin="Plugin Page",1,10,223,0,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,517,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,517,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,517,50,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Del_Desktop_Desktopini_CheckBox="Delete Desktop\Desktop.ini",1,3,297,61,169,18,True
+Optimizations_Bevel=pBevel2,1,12,287,59,215,23
+
+[Open_Information]
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+ExtractFile,%ScriptFile%,Folder,TargetImage_ChrisR.txt,%ProjectTemp%
+Call,StartDoc,%ProjectTemp%\TargetImage_ChrisR.txt
+
+[Em_Process]
+Run,%ScriptFile%,Process
+Run,%ScriptFile%,Em_ScrollBox
+
+[Em_ProcessImageISO]
+Run,%ScriptFile%,ProcessImageISO
+Run,%ScriptFile%,Em_ScrollBox
+
+[Em_ScrollBox]
+If,%E_ScrollBox%,Equal,"Best Emulation",Begin
+If,ExistFile,%ProjectDir%\VirtualTest\AA_Best_Emulation.script,Exec,%ProjectDir%\VirtualTest\AA_Best_Emulation.script,Process
+End
+If,%E_ScrollBox%,Equal,qEmu,Begin
+If,ExistFile,%ProjectDir%\VirtualTest\qEmu.script,Exec,%ProjectDir%\VirtualTest\qEmu.script,Process
+End
+If,%E_ScrollBox%,Equal,qEmuX,Begin
+If,ExistFile,%ProjectDir%\VirtualTest\qEmu_X.Script,Exec,%ProjectDir%\VirtualTest\qEmu_X.Script,Process
+End
+If,%E_ScrollBox%,Equal,VirtualBox,Begin
+If,ExistFile,%ProjectDir%\VirtualTest\VirtualBox.script,Exec,%ProjectDir%\VirtualTest\VirtualBox.script,Process
+End
+If,%E_ScrollBox%,Equal,VirtualPC,Begin
+If,ExistFile,%ProjectDir%\VirtualTest\VirtualPC.script,Exec,%ProjectDir%\VirtualTest\VirtualPC.script,Process
+End
+If,%E_ScrollBox%,Equal,VMWare,Begin
+If,ExistFile,%ProjectDir%\VirtualTest\VMWare.script,Exec,%ProjectDir%\VirtualTest\VMWare.script,Process
+End
+
+[History_OLD]
+History013=JFX - Added Program Files (x86) to capture if they exist
+History014=ChrisR - set locale lang with bcdedit
+History016=ChrisR - Mount/capture with WimUtil in addition if configured
+History018=ChrisR - Using bcdedit.exe (x86) on a x64 HostOS works, thanks Lancelot X 2
+History019=Lancelot IniVariables support added
+History020=Lancelot Unmount after bcdedit.exe check
+History021=Lancelot added new IniVariables
+History022=ChrisR - message-halt if A problem Occurred to Capture boot.wim or programs.wim
+History024=Lancelot SupportLog_Execute.script,Prepack added to the very begining of [Process]
+History025=ChrisR - Write IsoName in Internal ini file MountPEmedia.ini. ISO boot, at startup MountPEmediaIso.exe checks if imdisk exist, if yes and if Iso filename (set in in MountPEmedia.ini) is available on CD-USB drives, it will mount it on drive Y. Same in External Ini file Win7(8)PESE.ini (see PostConfig Plugin). Thank you for the shared idea Lancelot.
+History049=Macro Library updated v049
+
+[AuthorEncoded]
+PostConfig.jpg=2506,3342
+Logo=PostConfig.jpg
+
+[EncodedFile-AuthorEncoded-PostConfig.jpg]
+lines=0
+0=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
+
+[InterfaceEncoded]
+CD_16x16.bmp=669,892
+CreateISO.bmp=1403,1871
+Target.bmp=1043,1391
+TargetImage.txt=302,403
+Exclamation.bmp=452,603
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Exclamation.bmp]
+lines=0
+0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-CD_16x16.bmp]
+lines=0
+0=eJx9klFoUmEUx5dKD8OHRiCO+yDiy54kGIxkQiCDQBtYD9ubIINRQiahUKC1YjJIN2hIGQx0G4JsDZZtSE3cnYhOkKuQhqIbw6vovcSdoiJa3NPXNJFa/eG8nPP7zv9833cU0xPcoQtNoBhDca0XV4aE3UKvfql4PB6GYRKJBMNGeVc5/yGRZDKZ0+n0ut2H6+6Y2/vy8drUlPb6yMilsFKpRHA6k6mTZPswQH/Mrlpg7hloNxLye+o/4OHhYYIgSqXS3tYW+43q4Ikde3leB9p10DVhGRoGm2WQHx8fTyQSAFAkCMh8KcaqlodtzQuYS4IZYA/qFBRtdlOfV6lUmxsbqXgcHWHwHBFgdU9B4wPDd3BBKwUkQL5eS6nVvcEUCsXu9nbqwy58zVA5WFkiF5bDBm98kaEjUK3BCQtpiiqEwxGBQIB4kUgU9vmaeLCwlfK8Odv0vi/gwVUb8yiQDpVDACfnTA7dDrmbTL2pDtbeQYjYXTnX6wjcv3Pqz86/ptahdkx40qkjmi5VkQ9AMpnkcH79y4OZmaKv+NwI9y1kdv+zflaPkrNzd6PRT8HgYaVSYVkWLiQWi7sWVmPY8ASM++D15VV3FrtJl8tdLpdpmobfQo/ZLWGjNwxvf9gZcNY6C5HT2xo1JhRGI1GSJJvNZp+XSqX9hx27Nf2qAccAp0BnS+Ej/CCfPxlsjrz4fP7g30kmb3rO0IkGQLPVarTbHRiQ2Wz+e5fQlprM2ljMT9PMIOxwOP65rGjvuVy5fNJoNFqtVtS2f02kn146f2x4nONxdok3NKswNNNLyi1gGAUjDZgxQ+hAJuzySo/vNzIwAQDaggaZuf2gSwEAAAACAAAAKAAAAFECAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-CreateISO.bmp]
+lines=0
+0=eJx1VOlT01cUtV/60Y+d/gHt1KVuiIhSKkhpwQp1BLHaBhWFARIEAUWMIIRNAiVBQAhLEiVkIQkhAUJICFsSSMgCGBOysYmCYkmgDlOJ5Hf7i7hV2zNzZ968986Z++679xyN2Pr5ltfwQ2MbGl+8ic+2fLnlLRRbN+Mt4BOsra09NJmbOdLsfOrFZNIFbOX123xWh9pssaFHn97/N9xut1o7drWIHRJT4xtG9Aku2HUoZ3tgwd4Ybgh2CFNkJjSoNQYjeu1DluP90ul0MtqHMPiuIAz90C9VvmFlPsGFO/1v7jhK9IntCbqsP37TFnRlIuRSF4UudLlc74jV7wSWqUI1pnT0FL43PKk18HSdX1i5T1DBtoM3vg0tP3Bp+OjVqeCsOd841d6wmp3+2UQSy+VybnLxb57Q2afNolvjKo0xherIzM6Q87TDkaR93+d9fSBrdxjZHzcRin8SkGLcf5K9M6Bwm29WQGj+fbZ481Fyr4bhwcPbXas5nMWURkcs2RidpzyWwgs6Q/H5segrv8y9xyoPp5l+yJ4+fE66O5i0fX/2noBc//DSE/H3dWMTKJ3s/YWmbvP19rVM3otUxvOE+lkM2RyTpziOaw2Irt4RhD8U1RCYOYlWYl9E0zcH8Lu/y/MLLwuMqg2JbS6u7UTpWrBYJ5Nz2WdvyRIbZ1JbV1JaVhIaFmIrbemVKlabvE0goja34mukkVjGniP4XYE5B3/+48hpSugFZiRWgCuU2B12NWi0+tIKZkIq+fgF8rErnNjyURz1CYG/NKLR9b1Gb29vu0hUT6v+6WTRdyergjH08CR+ZIYkGi//vWBQqtQ/A7PJsrTw0mr+Uyo1VdZK0gmccze4HXItSlUoFHq9Xjs62t/f397GzyuhhqcJI671ROUOnSnRxZKM8dUmhnjUANbxB8jSC8/zv1853WvPPQuzL7WaBUlPj0wm0+l0KysraCuo1WqJRFJPZ6Y0TMVVW87XTsfVP7rYNJ9If3RXaEA1dAZkehGxLyDWBcS+uDG/7H68yuFwu7q6UOria2g0GrFYzOK2Z1JtydRZLOMZjrWMYzsvc5zVwgkO2A3j8HAG9DZQGWHI4NEYPOPGAX5bM53WI5EMq1QjIyNoVXhcrmrEWEHXxJcIzxFEF2/3JpJGsFV6mnB4DuxGo3vU7FGMgWQYEciRtj6kc3CVJ2Kw6+oaGjgcDp/HYzKZwwrl2vTi6vxf5gdzXJGmsKY7vZifdKtVOqi2g8NhW1aPuwe0SMcAMDuhngsU7qs69nxNS0cjj0ZrFvD4tt7BFfGQSzm+PjmHzC+tP3UuP3ZNWZ5MjDscUzapt8dsyuF1mQoRSKFZCFUtSGkjFDXAtYp1bP7SpetPM0peEps8VAHS3rcxoEMMk2CdRZWQZy9mbHaUTvT2+qTJ+EquBK4YofKgnAaEu5BTBelEBJO1cSp9Iz4fuUnykGmee0Lo6Ef61R71xMaYxW2dsVhMKJ3yZuYmVUo3q2PjLhOKKZBDhqwywBHgbCZgsiGRANllUEqBWjawxSDqgx4lIh+1atSbM6d6bx52qQypuAe37sC1MrhcCHF4iE6DXzMgKQ/SiyH/DpDvQ5MAGJ3Ak80qVO9m/wOge9aubg+hCnAFkJADv12FEzivTHyOdyeb6E2lusVzT2AfGPzQgwo+9kLruOERmbKRmIucSoOIZIhK9SaEppJRghAp86w2m3HiIy/E/4eroqV22CzWzm5HWY0DX+ogkKZqqNNi6ZTN8j+e/A+09TU6eJzjdS5KTSxJ9Qz210vKLWAYBSMM8LFBaD1W7PLut07OZ2ACABtgB4wBILrMAQAAAAIAAAApAAAALgUAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Target.bmp]
+lines=0
+0=eJw9U21IW1cYdsz93WA/xn6t/7oNxjYRpcx9iNRpV9qObhQ66mZFi0LHGEVrleI0yrZGTampG1rUThx1pq1tbjFaTWITU6PRaPWaxOSGGKf5vrmfufeec2/ujlP78rwcDud54T0Pz1Ny6mhuzv9ViPo91G8e9Cs5b+cclu31/T6s7GHxPFxbE/R6urYWHD8OCgszBQWZ4mJ48aKk02WWlyWaBopyQBbU/ZMkBZOJam3l29p4DBNxnFlcJBB8PnpyMqPVZhobOYOBSibBPp/Ym6NpcWws1tycMBq5nR02nWZisbjX6/X5fPF4giTpSISZmWE1GurePSaV2huNq5Kk2GzC9evkxETC6yVisRjP8+zD4WTL5dQvP3Kjd/jITjQaDYXCCwvp9nbq0SOOZWVRJQjY2QkMBtHjIXC038qC/E0B90NptLkWgak+qXx5lDNjgUAAjVosfFNTZmlJ8KkGg3DtGoxGQTqd5nzr2dMfifNWtOeqG19xr0ejMZrwyd99xlueIEIyKWg0nE5HkapGowwMQIriRVHMXvhCeT4jCgBf2e39dfZ2xyzujmTQC+HNlr0r0hRFsUi1ujpgVisqZJOJxHFP0jYNT35A03Q4SHU3rJ44Mn3iHfPvP61trsdTKVKoKqcMQ0grlytZXg6X1JISxmBYNRoxT8dV4tzn09PmseG5imO2T3IXi151nX3/2R2dddI0jVedJq7WmEwmo9GRl8fUqKWlzNjYCwx7ErpSuVF3zmqdffi3o7LI/ulri0W5S+c/do786Xw6ZX5Rczb48/cYho2Pz+Xn07JaXS0/fkxtbhLMg7+k6q8YhtkJUX0a74WCufN59tvN/i0/+hfNNdUwPW0bGx67PXnmDPSoWi3U66VUihUCnmzxEQiAJMLtIPVg2PXP4POQP4WusiwjySTbZDrNjo5KDQ0yq1qtsLFR8fsBy7Kw9bIy0IVYDMO63asISCYAgGzB5MpStEo8DltawMiI0K9Go0pfn3z3LtzaImPhLeXbQuWPjkQiYbfbHQ4Hsg8c7VdOfRhyzfv94fv3pe5uGAgAWkUW9/lgV5eEDBAKpXgyBX+rz+a/wXydj6Ace0uur+B2/w0GdycmqPZ22ukUAVDgnq/RIi6X0NkpIgP4/ZAk+cCy29mjXdBrCec8RWW2t+HICNBomKkpkuMkNAIPciRJ0OsF/f0Q/fnmTYgiMzi4PjSEj49Tvb2wvh729ECXS+K4gxzh6svcKooSiUCLRbp1S750SSwr20WoqhJu3IAYxofDAELlJRmo/wHSmAy0eJzjCkksSk8t0UvKLWAYBSMPqLFA6JPM2OWvP0p6wMAEAGgNB9LM/W74AQAAAAIAAAAmAAAAyQMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-TargetImage.txt]
+lines=0
+0=eJxVkEFOw0AMRfdI3OHvQqXSA7BrUEFZoFa0F3AyTjLqZIxmHIXcnpkJC1hZst//3/bJU+sY3cjdvZVvVPVsnYH1uFEYWNFMNDB6cYZD9fiAD7ozVpkD2kI+1XZA7WbGxdGKelYVv0vg8e12+tygfSq5HSFfHEiteHL7xKDpsxfIGHheoKP1Q8RidcxTPOM6kXN4D8z+b8Dv9GhMEqC3jiNYu0ORQnTkgIXWmLnqNTApl4B/R5E3aK7nqphtGyZ9istIXisrDjZKAYq1zAonEnOq2omhgsDbJ152PxgfbHp4nOMPSSxKTy3xzE1MT9UrqShhGAUjCvgyQugHOOT5ZdZeZWACAK3ECMXFcAZQAQAAAAIAAAAqAAAA4AAAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[Folder]
+TargetImage_ChrisR.txt=338,451
+SHDirMove.exe=6741,8988
+
+[EncodedFile-Folder-TargetImage_ChrisR.txt]
+lines=0
+0=eJw1kDtuwzAQRHsDusO0AQQfwF2KFGmSIDbgei2upUX4kcmlBeX0WcoOQIDFfPiGZ9EJOklBmlVSPHS708Q4Szy+ARJoZJg4ZCZlB4kgRF5wTd5x3qPZTV/Ee/wwz9bFOFEeWZ8e1KipDhO7fbfrdq/uTlGt9vlSCWTRMTNHXKpqirDz5esosSBzoHaTX2htjJypYZK3so+EOaeL59Ai7EQljpjkzsXUb7biFbXwtXrfY00VAxm/c/1m7jHUoinIL2/UulFb8ihhtmTmx+pNbJsfhuenUHR4LwmHl7bqM1rASaH/dT1EreFWJXNBSNmWzjRwI52c2/8BKNqBxHicEwtJLEpPLfHMTUxPjXfOKMosDtIrqShhGAUjA1QwQui/OOSrtr0SY2ACAFFVDEHHr/MWAQAAAAIAAAAxAAAA/QAAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-SHDirMove.exe]
+lines=2
+0=eJztXA10G9WVfpJlW7blWCF2YoIBxRVtwI5j4wQSTMDGVkhaO5Hlv4T8GFmWLLmy5EqjOO5JIDBxizroNKfL2W27bRcIu2330NNsD21MoKwSpzEpaYlNSmjT3bLdLp2gbAk0P07wRnvvnRlpZMkhpZzu7llGZ2bez/fuve++++69b4JpeWAPy2KM6eCOxxkbZdJVzz742gX3nJsPzGHP5f1s0aim+WeL2t2eoGkw4O8L2AdMDrvP5+dMPU5TIOQzeXympvVtpgF/r7OqsDDfLNOwWhhr1mSzu/LWbFDovsmKNAUa7e3sJqiUy41G+a6XpcOyVpKbseSbhJIrWmWgUf1OvOg67GSsFwuDjO3LvoZJX+P1uEumO8tV5QBFwHtfviyQgakmIV0mxh6s4pzbOSj/wCg1sOtY6gQUXKDXztklCOkIJ1+eioPm+ioJxkZL4WGFeyHc5jRctCoQDDiYrBPQDcuB+550eleZ4sfX/4HLjWvvptKD7nomThcxxh82UIt4Hip7e6FZAqDdSR2/xQ7Cf+MGqO5fAI9PzmdsPJuDxuIcLA1CicDD0Bse+0zdjdhS9PizGsaEksegbLO5oZyoxJcjQLw8H5uiznqmKTaLj6M82QjQHihtrWcbw4VYySpEgPgt4F60+x9VRGYQ+14Kse+riJUBMcFglgl1ACFurnAjis+PnQ1TIbb2gDkFtTQFNS2jPnFgn1ONykNU3pHsXdCpiWWLK3IZ+zJxPf0MSBpfvgOKB0xWmIz4L7D9Qgvjy7cnm36KTbmjqJmYtia6KMpli+dzZp3hKyXqGRbiEiF9cQzIxGkRZhn4lZSBJ0A1bpRC/FJiYNEj9Vfi8RR5l6BwJSnyLsQmbWyGxI05ykzFelgDm3VTN//+lVAeH4+HdDXRWDbB86KcyV2NtjW5GaysslU2NbEAXD8ZR6zNXUykkKNMsBAa9rpxZjfic9EpzrhrFWqbcSlSFMSXY794O2kdi7FsiXwJPmqux2ay4tJCqF+Pj1dBWDEX+sfa4pxZX3Oqrswcukkl4+INiox9NzJ2uh384wvIcyaOJXD3Iq4ScdoMuPc2K7gFiNMhrjgD7sWNCu6dMsD9GmLFC6YMOPODCm4ccc8hrisT3wcU3N8h7nHEfS4DbrNNwQ0hrhdxgQy4JxJrtx5xdyMumAHn61Vwn0JcMeK4DLhAQn9x2E+nz0CS8kIoA+6yXcGdRNxhxG3LgNvareC+j7hvIG57BpzNqeC+iDgOccMZcHMS69aNuGbEfT4D7kJiHncizoy4HRlwC7cquCLETYOtvLAzA+62TQru97DxTp9A3EMZcM1bFNw/I+5ZxO3KgHu7R8H9DeJ2I+6RDLhlCXvxI24z4h7NgHsywfd+xC1DHJ8B9/XEPG5GnAFxuzPg7nMouIuwX0//DvbaCyMZcAcSuFcR9yLivpAB92hiHt9G3BOI+2IG3J7EejyMOC/iHsukl4T9dSGuCXH7M+CeTuCWIq4Mcf+elY77SsKuchF3jqHf0KXjyq0K7jeQyp0+hjjGNOn7IzGP/YjDCAT7TcLdoML9KLE/vgy42MPx5RgtkgCpfuAtYCv+vlgVjprM5q/ZrGJtAWMbDqwDbyG+nKH7CQN2F4OTEL9bnIjCxFAOQu1mnVhcqoTKDTXRTYd0jHII95tdIMnhhCP6wwI5Dzldezker4mOdbR1wSkEqJ7Rjesomf106I9Cu3lNxGAWF0L4hXJzpBkYFObOSD7AyRvEIUMyL9hgm5lkrJwHAa5cKDZLKhBPQ51g4m+gFGky66xiB5Tiy8ziNw2Y6/BjuvBmczXQrhZfAcHCTebF0Av1SvHUnHQJjOL5gqtJsB+S/tAnYBI6WQRXQoTNkgh6qzh5HdHSidenyXC/JEMldlNDJzTwO8yLGTcHXpUz4mZrxGvWj1t0lJyB6GGLHl6VYYsBXlZX2GKUOHrnE9ll/M7rGKcfhxIaNDBYLC6fQ4VKsRIKscUSrzzqWijxrpTqlWI+1HHsHInbMhQCVflbZT6/vA5T0hXdm7YcwkPSx9dHedlaxe9C3jMG73fxHb/lcRds9luepOcz9PwOPZ+F57FjbR2dXcIOc3GX+FvIVISzsGKlI9FhbW207uxDWuFsl/gAGvgb0F5m7RQjWBFHTnH6NlEDKaYwNRLn5o1ceKios6tDLIKW7q1bNsG6dtce3eoKtzCqHEtebZ0C7NCuTjEI7DqFN8T3C5EKkC+2tolVxAtI6rvEp7F8duQCt1h4TThS8Xrkb3F+Rfv1rrBBy0e1rpGjoXfb4iVvwjy6t246pJd5FmAxwQ8I63GOlFuNRLmsov2lIEFxp/iejqZygdtStD9HuFI3FpoTWQv012n5I9q6V7jzFRcnroQ5c2nd+Z23R5qXQFf7yiuRppVX6l4LzYvlKPJYr/Citu41wL+MnRNTWUcqxFh+bVTAt7Y23iUuKEyosEP8dCHNi1T4UqGswvlCs7m0I1K83tYpHi1UaTHqCudsVSkR5wNYndXN6utZq1gGCb16vvyZepguzNBKDNu7IjvMRiHWz/rzYfn+FUhHDLuyjla8yx+pdoXvhAU/JLzOj2sLjodORXrNzCXcf4V/R+sKZ4F/NfJj2rpLoVj31tpJ4SdbXOF5m/jD9WOq5TwGTozkEY6MTD58ww7dyNFgyegSUMzFiYuT/EENiB9ZreUn0TAfBFn5w3rhiIoCf8bY1tFl7TcJvxSrDWQK74ycChU+j4HKFS4C0WIPDy87sISqC6D6yPtQ3BW6eVQHChBOVhyfYRL8eHHtqZj24qnO2gug5YbRPpfLdTF28LJWeEX41cHYzVm/+tJr2knt5OqIbqE2etvLuw5WP9a8zAhcT4Ahz3UVvQQ1YL0OmI1cePidrcDkFxOXR9GCKg5ZxWEQs/YoALq3gDqMKeo4Jpk37CiD8OojB1FS4Qh/HCxvaEEgm78UHzKiqQuvilmgjO6tsK5Yb7P214s1BWT8F0iN8WDJxZPPkyJheUCNBZFGLf866+wSr4dDnDAGioxYtZtcgl6e+PmKQxNTB+pRyOM28UQBGlHq3pPtx9jWCQo30ilHfDFf3n6la8I7zGX8VOnQJ4p+9NjvzOAizJET8BrFr1ixeaPoq2OG0TJ8ZY/ezciKo9sbOgSvuZQm9Qvh5+IZDHxvFoHic2C3GWpP8VP5O+fw0eqYYeRCiApZfPROVzgXtMv/QTf8ky2g3nZz2Sh+BJu4jAouLVAUDNvayPbYQIqNcD8Idx/cLEuTpc3CS5OlXFBnGml+BtzviQmeygNBUcIpnN9LJLci7L1/srDCqxXN5rIDJOuligmb6AX94SbNlXdsm7DZrO/sahP/isnutFi4onKoUx1toh5FEskddIl1eRR0i0f+kzN0iN/Lkz1F8RaQal7Fxa6IIdhqFX+Yx8jJoUuYBCdnVDwCQHUgexnYQiwL/NcMe8iKQtJVi4/k+iN+4Sx4BU2ZxfLHMTf5ZhY5zgXx6njJPowcya5vQxeA+/FnFM1gKO77P1nP+nX9ur17EHAQAO4noLQX8fGS52D8WIdwprUVbDC+nDBvAYZvmY4Lb9TG4yWjgMANPXK0aPdXUYUd+n7tVhd/yRTSZx1x8StM3BT0j1umcHX5S+Whyqwj0CBMwRCuDIDlXD614JzOwgDG5QjHs47EbhWOx24hEGCB3kyYcJzLiZ3knVNMKKhrmQ7lCi166FtUG1+5c4rLilumZblGfOjHdupZqESwTMfmg/suqjg5cTk8N54ljMdyYBy/CFfrKOgGJytNlHdOM/ESHIuI7nZtWA86iFimrWIMv8qEDEJoGgPibbkYGKfausTDevp2h+alGyJ6eiYr7Z+ATj+8YGSq/+mXPuv1g7Ix2O99FtBqxFPYYI2XYA4wlrCHh66zUke/HrpehK6E1WC/7NOmIFaWF+2f7xqZ5BZWnJXiH5hi0f7mHPS+wgTq8g+4c/UV4+B8MCzheKGQmPaz1nhJVCIOahEs+kfObAab6eR/Hu/CTcKFaLn8bsxUrZGRc/8Vj1vFl3KlHWaZVlp+kIt6MUYet7wHdX5Ky2XzU1mhBhf/4wvQcFfoTmgLzZPg7j
+1=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
+2=MykZxFo56oI/1CCmOvFbBlEI/1PjaqaH9kY548VcYRikkSIbXlJ0lr5YgwOAcfmAl76B99KXMi4Fn35qxTH6tDGdFIGCcvxhrAaiAt7VdCtyKfOYiU7H7wEuSbx0rnCQPpL/2oDXX+bfWCBusTkgz1qK0E769ozUkppK11MV5WhOGmuAsc1Q7qNRjRSxh4ljH32pZezTMNcNlGs1QkuAMgT8KtBENtNJ+U+6FeCfyOtoVQO01kHKlNT6YWyf7u57tw94TducgSB4wlXlNVXV5Sanz+Hv9fj6VpV3tK9esqLcFOTAn9u9fp9zVfmwM1h+7z35d9uDQedAj3fYBON9wVXloYDvrqDD7RywB5cMeBwBf9Dv4pY4/AN32YMDVdtqyk0QFDwuCEadamb35JtMCVpre50+zsMNQ5spRSb8lVProBS//IGGgMPt4SDuhAIg1YYVd0j9PvsAVCEEDdp9w+ugUgURrzfk4Ki80R8KNAwOSlAOAs+q8iGPr/b2ctNSEqTXGXQEPIMYFe65e6m6JvUOOn0gomP4HiKQaOAa5AlI7bPNaCbTRKMkdIuitaouCHz+oWAVRlK/b0mj3wcR3BtMDkjo5g61bq5FP4QJ9Xg9js84h9v9n3UikeUrl/fcsaxm2TKHw1XT60oivXZfXwhC6qry22QVwdyWZpx2shnVk3/3UkUFM/4HDB/B9d8Ep8ZkeJzjDfZwySzyzS9L1UutSGUYBSMNuEAoLins0iYvs5MZmABJWQckayVHCwEAAAACAAAAJwAAAAoaAAAAAAAAAQAAAAAAAAAAAAAA
+

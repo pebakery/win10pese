@@ -1,0 +1,449 @@
+[Main]
+Title=Optimizations
+Type=Plugin
+Author=ChrisR, Lancelot
+Description=(Win10PESE - Win8.1SE - Win8PESE) Optimizations required to be made at pre-end of the build
+Credits=http://TheOven.org
+Version=022
+Download_Level=1
+Level=8
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.09.29
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Finals/1-50_Optimizations.script
+Web2=http://win81se.cwcodes.net/Projects/Win8.1SE/Finals/1-50_Optimizations.script
+Web3=http://w8pese.cwcodes.net/Projects/Win8PESE/Finals/1-50_Optimizations.script
+Web4_CANCEL=http://w7pese.cwcodes.net/Projects/Win7PESE/Finals/1-50_Optimizations.script
+CertifiedBy=
+Certification=
+HistoryNotes01=JFX - enabled firewall cause filesharing no longer work - post 20 http://www.msfn.org/board/topic/149758-win7pe-se/page__view__findpost__p__956420
+History001=Lancelot - Delete Some Temp folders during build
+History002=ChrisR - Startup management for Firewall Service - Date:2011.01.28
+History003=Lancelot - add options for firewall settings // set firewall disabled as default since filesharing seems more demanded - shortcuts will help switching easly ;)
+History004=WinFE - Don't mount local harddrives
+History005=RoyM - Write ComputerName
+History006=Brad - fix enable/disable Write ComputerName
+History007=Gearmaker - Changing usb start
+History008=ChrisR - Fix Remove Startup folder
+History009=NetFan Tom - Use static ComputerName
+History010=ChrisR - NoWarnROW implemented
+History011=Lancelot - added option Remove Desktop\desktop.ini
+History012=ChrisR - Firewall available now, display Firewall controls
+History013=ChrisR - Added RamDisk driver with drivers registry hive. Only cosmetic in device manager. Thanks Martt
+History014=ChrisR - Disable Dynamic Disks added for Don't mount local harddrives
+History015=ChrisR - Uses now boot.wim Drivers hive - Date:2014.10.17
+History016=ChrisR - Option to Hide Administrative Tool in Menu - Date:2016.06.09
+History017=Lancelot - Add DUC buttons - Date:2017.01.10
+History020=Lancelot - Add AutoRotation - Reply 3 http://Theoven.org/index.php?topic=2030.0 - Date:2017.02.11
+History021=Lancelot Update hiderun lines - Date:2017.09.23
+History022=Lancelot Add RemoveAccessories_CheckBox RemoveSystemTools_CheckBox - Reply 3 http://theoven.org/index.php?topic=2232.msg24160#msg24160 - Date:2017.09.29
+
+[Variables]
+%CmdexeFolder%=
+%RegeditexeFolder%=
+
+[Interface]
+RemoveLibIcons_CheckBox="Remove Libraries Icons  (Fix Explorer File Rename issue)",0,3,8,8,297,18,False
+RemoveLibIcons_Warn_CheckBox=Warn,0,3,234,24,48,18,False
+RemoveLibIcons_Bevel=pBevel1,0,12,5,7,305,37
+CN_CheckBox="Use static ComputerName",1,3,13,55,157,18,True
+Computername_TextLabel="PE ComputerName",1,1,180,57,99,18,8,Normal
+pComputerName=,1,0,279,55,150,21,Win10PESE
+ComputerName_Bevel=ComputerName_Bevel,1,12,6,48,432,33
+FireWall_Bevel=FireWall_Bevel,1,12,5,89,432,143
+FireWall_ScrollBox="FireWall Disable (default)",1,4,13,97,160,21,"FireWall Enable","FireWall Disable (default)"
+FireWall_TextLabel="Enable FireWall:#$x --> FileSharing NOT work  :(:(#$x --> RecEnv Share work#$x#$xTip:#$x   Disable FireWall as default#$x   and enable when you need it :)",1,1,264,93,167,91,8,Normal
+FireWall_Shortcuts_CheckBox="Add FireWall Enable and Disable Shortcuts",1,3,13,126,228,18,True
+pTextBox_SM="Start Menu folder:",1,0,15,164,135,23,"System Tools"
+pTextBox_DTE="Shortcut Enable Name:",1,0,15,204,135,21,"FireWall Enable"
+pTextBox_DTD="Shortcut Disable Name:",1,0,165,204,135,21,"FireWall Disable"
+AddOption_Bevel=AddOption_Bevel,1,12,5,238,432,88
+RemoveStartup_CheckBox="Remove Startup folder",1,3,13,240,134,18,True
+RemoveAccessories_CheckBox="Remove StartMenu  Accessories",1,3,13,256,200,18,False
+RemoveSystemTools_CheckBox="Remove StartMenu  System Tools",1,3,13,272,200,18,False
+HideAdminTool_CheckBox="Hide Administrative Tool in Menu",1,3,13,288,190,18,True
+DeleteTmp_CheckBox="Delete Some Temp folders during build",1,3,13,304,210,18,False
+DelDesktopdesktopini_CheckBox="Remove Desktop\desktop.ini",1,3,235,245,158,18,True
+NoMountLocalHD_CheckBox="Don't mount local harddrives",1,3,235,261,160,18,False
+Ramdisk_CheckBoxSel="Install Ramdisk driver",1,3,235,277,130,18,True
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+AutoRotation_CheckBox=AutoRotation,1,3,235,294,98,18,True
+
+[Process]
+If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Begin
+If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+End
+If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//--
+RegHiveLoad,Tmp_Software,%RegSoftware%
+//Remove Libraries Icons... Begin
+//Rename folder in explorer to catch the good description and icons
+//Folder not found issue
+//All these library values are BWIM & IWIM hive default values
+If,%RemoveLibIcons_Warn_CheckBox%,Equal,True,Run,%ScriptFile%,Process_RemoveLibIcons_Warn
+If,%RemoveLibIcons_CheckBox%,Equal,True,Run,%ScriptFile%,Process_RemoveLibIcons
+//Remove Libraries Icons... End
+RegHiveUnLoad,Tmp_software
+//  Write ComputerName
+If,%CN_CheckBox%,Equal,True,Run,%ScriptFile%,WriteComputerName
+//  Change Usb start
+If,Not,%ProjectName%%BuildType%,Equal,Win8.1SEOS,Run,%ScriptFile%,UsbStart
+//
+// startup windows firewall to use network share with recovery environment
+// Start Firewall is also managed in plugin "2-Config" and "Penetwork"
+Run,%ScriptFile%,StartFirewallSrv
+//
+// Hide StartupFolder
+If,%RemoveStartup_CheckBox%,Equal,True,Begin
+If,ExistDir,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup",DirDelete,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+If,ExistDir,"%TargetDir%\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",DirDelete,"%TargetDir%\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+End
+If,%RemoveAccessories_CheckBox%,Equal,True,Begin
+//This will Break MultiLangauge Support - only useful if one have no Accessories shortcut (ex: Notepad)
+If,ExistDir,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Accessories",DirDelete,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Accessories"
+If,ExistDir,"%TargetDir%\ProgramData\Microsoft\Windows\Start Menu\Programs\Accessories",DirDelete,"%TargetDir%\ProgramData\Microsoft\Windows\Start Menu\Programs\Accessories"
+End
+If,%RemoveSystemTools_CheckBox%,Equal,True,Begin
+//This will Break MultiLangauge Support - only useful if one have no System Tools shortcut (ex: CMD)
+If,ExistDir,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools",DirDelete,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools"
+If,ExistDir,"%TargetDir%\ProgramData\Microsoft\Windows\Start Menu\Programs\System Tools",DirDelete,"%TargetDir%\ProgramData\Microsoft\Windows\Start Menu\Programs\System Tools"
+End
+// Hide Administrative Tool folder in Menu
+If,%HideAdminTool_CheckBox%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%target_sys%\autorun.cmd,@Echo off
+TXTAddLine,%Target_Sys%\autorun.cmd,"If Exist #$q#$pSystemDrive#$p\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools#$q Attrib +S +H #$q#$pSystemDrive#$p\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools#$q",Prepend
+TXTAddLine,%Target_Sys%\autorun.cmd,"@Echo off",Prepend
+End
+End
+If,%NoMountLocalHD_CheckBox%,Equal,True,Run,%ScriptFile%,NoMountLocalHD
+If,%DeleteTmp_CheckBox%,Equal,True,Run,%ScriptFile%,DeleteSecureProjectTemp
+If,%FireWall_Shortcuts_CheckBox%,Equal,True,Run,%ScriptFile%,StartFirewallShortcuts
+If,%DelDesktopdesktopini_CheckBox%,Equal,True,Begin
+If,ExistFile,%TargetProfilesUserDir%\Desktop\desktop.ini,Call,FileDelete,%TargetProfilesUserDir%\Desktop\desktop.ini
+End
+//
+// Install RamDisk driver to prevent unknown device in device manager (only for Win8pe for now)
+If,%OS%%Ramdisk_CheckBoxSel%,Equal,Win8True,Run,%ScriptFile%,RamDisk
+If,%OS%%Ramdisk_CheckBoxSel%,Equal,Win8.1True,Run,%ScriptFile%,RamDisk
+//-
+Run,%ScriptFile%,Process_AutoRotation
+
+[Process_AutoRotation]
+If,%AutoRotation_CheckBox%,Equal,True,Set,%AutoRotation_V%,1
+Else,Set,%AutoRotation_V%,0
+//0=Lock screen autorotation
+//1=Unlock screen autorotation
+//http://www.eightforums.com/tutorials/30587-screen-autorotation-lock-unlock-windows-8-a.html
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x4,Tmp_Software\Microsoft\Windows\CurrentVersion\AutoRotation,Enable,%AutoRotation_V%
+RegHiveUnLoad,Tmp_Software
+
+[Process_RemoveLibIcons_Warn]
+If,ExistRegSection,HKLM,Tmp_software\Classes\CLSID\{031E4825-7B94-4dc3-B131-E946B44C8DD5},Echo,I_Catch_You_1/8,WARN
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{031E4825-7B94-4dc3-B131-E946B44C8DD5},Echo,I_Catch_You_2/8,WARN
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{2112AB0A-C86A-4ffe-A368-0DE96E47012E},Echo,I_Catch_You_3/8,WARN
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{491E922F-5643-4af4-A7EB-4E7A138D8174},Echo,I_Catch_You_4/8,WARN
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7b0db17d-9cd2-4a93-9733-46cc89022e7c},Echo,I_Catch_You_5/8,WARN
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{A302545D-DEFF-464b-ABE8-61C8648D939B},Echo,I_Catch_You_6/8,WARN
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{A990AE9F-A03B-4e80-94BC-9912D7504104},Echo,I_Catch_You_7/8,WARN
+If,ExistRegKey,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel,{031E4825-7B94-4dc3-B131-E946B44C8DD5},Echo,I_Catch_You_8/8,WARN
+
+[Process_RemoveLibIcons]
+If,ExistRegSection,HKLM,Tmp_software\Classes\CLSID\{031E4825-7B94-4dc3-B131-E946B44C8DD5},RegDelete,HKLM,Tmp_software\Classes\CLSID\{031E4825-7B94-4dc3-B131-E946B44C8DD5}
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{031E4825-7B94-4dc3-B131-E946B44C8DD5},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{031E4825-7B94-4dc3-B131-E946B44C8DD5}
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{2112AB0A-C86A-4ffe-A368-0DE96E47012E},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{2112AB0A-C86A-4ffe-A368-0DE96E47012E}
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{491E922F-5643-4af4-A7EB-4E7A138D8174},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{491E922F-5643-4af4-A7EB-4E7A138D8174}
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7b0db17d-9cd2-4a93-9733-46cc89022e7c},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7b0db17d-9cd2-4a93-9733-46cc89022e7c}
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{A302545D-DEFF-464b-ABE8-61C8648D939B},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{A302545D-DEFF-464b-ABE8-61C8648D939B}
+If,ExistRegSection,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{A990AE9F-A03B-4e80-94BC-9912D7504104},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{A990AE9F-A03B-4e80-94BC-9912D7504104}
+If,ExistRegKey,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel,{031E4825-7B94-4dc3-B131-E946B44C8DD5},RegDelete,HKLM,Tmp_software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel,{031E4825-7B94-4dc3-B131-E946B44C8DD5}
+
+[NoMountLocalHD]
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\mountmgr,NoAutoMount,1
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\partmgr\Parameters,SanPolicy,3
+// DisableDeleteNotification inside collins write protect. It only happens on deleting and who would delete something on a readonly volume!
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\FileSystem,DisableDeleteNotification,1
+//Disable Dynamic Disks
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\volmgrx,Start,4
+RegHiveUnLoad,Tmp_System
+
+[UsbStart]
+RegHiveLoad,Tmp_System,%RegSystem%
+If,%NoWarnROW%,Equal,True,System,ERROROFF,4
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbohci,Start,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbuhci,Start,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbhub,Start,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbstor,Start,0
+RegHiveUnLoad,Tmp_System
+
+[WriteComputerName]
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+//-
+If,-%pComputerName%,Equal,-,Set,%pComputerName%,%ProjectFolderName%
+StrFormat,REPLACE,%pComputerName%,.,"",%pComputerName%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Session Manager\Environment",COMPUTERNAME,%pComputerName%
+//RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion",RegisteredOwner,%pRegisteredOwner%
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion",RegisteredOwner,%pComputerName%
+RegWrite,HKLM,0x4,"Tmp_software\Microsoft\Windows NT\CurrentVersion\WinPE",SkipWaitForNetwork,0
+RegWrite,HKLM,0x4,"Tmp_software\Microsoft\Windows NT\CurrentVersion\WinPE",SetComputerName,0
+If,%NoWarnROW%,Equal,True,System,ERROROFF,4
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ComputerName,ComputerName,%pComputerName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ActiveComputerName,ComputerName,%pComputerName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,"NV Hostname",%pComputerName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,Hostname,%pComputerName%
+RegHiveUnLoad,Tmp_software
+RegHiveUnLoad,Tmp_System
+
+[StartFirewallSrv]
+// startup windows firewall in automatic (Start values 2=Automatic, 3=Manual, 4=Disabled)
+// start firewall can cause some other problems. the firewall is disabled with EnableFirewall registry keys for Standard,Domain and Public Profile
+// JFX Note: Enabling firewall may create problems with filesharing
+If,%FireWall_ScrollBox%,Equal,"FireWall Enable",Set,%FW%,2
+Else,Set,%FW%,4
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MpsSvc,Start,%FW%,NoWarn
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\SharedAccess\Parameters\FirewallPolicy\StandardProfile,EnableFirewall,0,NoWarn
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\SharedAccess\Parameters\FirewallPolicy\DomainProfile,EnableFirewall,0,NoWarn
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\SharedAccess\Parameters\FirewallPolicy\PublicProfile,EnableFirewall,0,NoWarn
+RegHiveUnLoad,Tmp_System
+
+[StartFirewallShortcuts]
+//----
+//Enable-Disable Firewall Shortcut prepare +++
+//
+Call,FileDelete,%Target_Sys%\FireWallEnable.cmd
+FileCreateBlank,%Target_Sys%\FireWallEnable.cmd
+TxtAddline,%Target_Sys%\FireWallEnable.cmd,"REM RecEnvShare needs firewall enabled ALSO Starting firewall cause FileSharing malfunction",Append
+TxtAddline,%Target_Sys%\FireWallEnable.cmd,"sc.exe config MpsSvc start=#$sauto",Append
+TxtAddline,%Target_Sys%\FireWallEnable.cmd,"net.exe start MpsSvc",Append
+TxtAddline,%Target_Sys%\FireWallEnable.cmd,Exit,Append
+//
+Call,FileDelete,%Target_Sys%\FireWallDisable.cmd
+FileCreateBlank,%Target_Sys%\FireWallDisable.cmd
+TxtAddline,%Target_Sys%\FireWallDisable.cmd,"REM FileSharing needs firewall disabled ALSO Disabling firewall cause RecEnvShare malfunction",Append
+TxtAddline,%Target_Sys%\FireWallDisable.cmd,"net.exe stop MpsSvc",Append
+TxtAddline,%Target_Sys%\FireWallDisable.cmd,"sc.exe config MpsSvc start=#$sdisabled",Append
+TxtAddline,%Target_Sys%\FireWallDisable.cmd,Exit,Append
+//net.exe and sc.exe with known dependencies.
+Require_FileQ,net.exe
+Require_FileQ,net1.exe
+Require_FileQ,samlib.dll
+Require_FileQ,ntdsapi.dll
+Require_FileQ,ws2_32.dll
+Require_FileQ,WS2HELP.dll
+Require_FileQ,netmsg.dll
+Require_FileQ,sc.exe
+Require_FileQ,mpr.dll
+// firewall icon
+ExtractAllFiles,%ScriptFile%,Icon,%Target_Sys%
+//
+//Add_Shortcut,StartMenu,"System Tools",#$pSystemRoot#$p\System32\FireWallEnable.cmd,"FireWall Enable"
+//Add_Shortcut,StartMenu,"System Tools",#$pSystemRoot#$p\System32\FireWallDisable.cmd,"FireWall Disable"
+//
+If,Not,ExistFile,%Target_Sys%\HideRun.exe,Require,File,HideRun.exe
+Add_Shortcut,StartMenu,%pTextBox_SM%,#$pSystemRoot#$p\system32\hiderun.exe,%pTextBox_DTE%,#$pSystemRoot#$p\system32,#$pSystemRoot#$p\System32\FireWallEnable.cmd,#$pSystemRoot#$p\System32\FireWallEnable.ico
+Add_Shortcut,StartMenu,%pTextBox_SM%,#$pSystemRoot#$p\system32\hiderun.exe,%pTextBox_DTD%,#$pSystemRoot#$p\system32,#$pSystemRoot#$p\System32\FireWallDisable.cmd,#$pSystemRoot#$p\System32\FireWallDisable.ico
+//Add_Shortcut,Type,StartMenuFolder,(path\)FileName,Title,Work Folder,Parameters,(path\)IconFile#$cIconIndex,StartMode=(1,2,3)#$cHotKey,ToolTipText
+//--
+//Enable-Disable Firewall Shortcut prepare ---
+//----
+
+[RamDisk]
+Echo,"Copy RamDisk Driver"
+//-
+// Copy DriverStore files
+DirCopy,%Source_Sys%\DriverStore\FileRepository\ramdisk.inf_*,%target_sys%\DriverStore\FileRepository
+// Already in boot.wim
+If,Not,ExistFile,%Target_Win%\inf\ramdisk.inf,FileCopy,%Source_Win%\inf\ramdisk.inf,%Target_Win%\inf\ramdisk.inf
+If,Not,ExistFile,%Target_Sys%\drivers\ramdisk.sys,FileCopy,%Source_Sys%\drivers\ramdisk.sys,%Target_Sys%\drivers\ramdisk.sys
+//-
+If,ExistDir,%ProjectTemp%\Ramdisk,DirDelete,%ProjectTemp%\Ramdisk
+If,ExistDir,%ProjectTemp%\Ramdisk,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\Ramdisk#$q"
+If,ExistDir,%ProjectTemp%\Ramdisk,Echo,"%ProjectTemp%\Ramdisk Folder can not be deleted",Warn
+If,ExistDir,%ProjectTemp%\Ramdisk,Message,"%ProjectTemp%\Ramdisk Folder can not be deleted",Error
+If,ExistDir,%ProjectTemp%\Ramdisk,Halt,"%ProjectTemp%\Ramdisk Folder can not be deleted"
+DirMake,%ProjectTemp%\Ramdisk
+ExtractFile,%ScriptFile%,Reg,RamDisk_System_%OS%.reg,%ProjectTemp%\Ramdisk
+ExtractFile,%ScriptFile%,Reg,RamDisk_Drivers_%OS%%SourceArch%.reg,%ProjectTemp%\Ramdisk
+//-
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
+Echo,"Import RamDisk Drivers registry... "
+If,Not,%ProjectName%%BuildType%,Equal,Win8.1SEOS,ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Ramdisk\RamDisk_System_%OS%.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Ramdisk\RamDisk_Drivers_%OS%%SourceArch%.reg#$q"
+RegHiveUnLoad,Tmp_Drivers
+RegHiveUnLoad,Tmp_System
+//-
+DirDelete,%ProjectTemp%\Ramdisk
+//-
+// Load RamDisk driver at startup. Also msports. Tip if needed: devcon disable/enable *ramdisk*; devcon disable/enable=ports
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+TXTAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\ramdisk.inf >nul",Append
+TXTAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\msports.inf >nul",Append
+TXTAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+
+[DeleteSecureProjectTemp]
+If,ExistDir,%ProjectTemp%\TempExtractFolder,Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder,Echo,"Directory NOT DELETED",WARN
+If,ExistDir,%ProjectTemp%\TempLaunchFile,Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempLaunchFile#$q"
+If,ExistDir,%ProjectTemp%\TempLaunchFile,Echo,"Directory NOT DELETED",WARN
+If,ExistDir,%ProjectTemp%\TempInnounp,Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempInnounp#$q"
+If,ExistDir,%ProjectTemp%\TempInnounp,Echo,"Directory NOT DELETED",WARN
+If,ExistDir,%ProjectTemp%\Temp7zExtract,Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C rd /s /q #$q%ProjectTemp%\Temp7zExtract#$q"
+If,ExistDir,%ProjectTemp%\Temp7zExtract,Echo,"Directory NOT DELETED",WARN
+If,ExistDir,%ProjectTemp%\TempWiseExtract,Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempWiseExtract#$q"
+If,ExistDir,%ProjectTemp%\TempWiseExtract,Echo,"Directory NOT DELETED",WARN
+
+[AuthorEncoded]
+Optimizations.jpg=1844,2459
+Logo=Optimizations.jpg
+
+[EncodedFile-AuthorEncoded-Optimizations.jpg]
+lines=0
+0=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
+
+[EncodedFolders]
+Icon
+Reg
+
+[Icon]
+FireWallEnable.ico=2967,3956
+FireWallDisable.ico=2582,3443
+
+[Reg]
+RamDisk_Drivers_Win8.1x64.reg=772,1030
+RamDisk_Drivers_Win8.1x86.reg=763,1018
+RamDisk_Drivers_Win8x64.reg=759,1012
+RamDisk_Drivers_Win8x86.reg=753,1004
+RamDisk_Drivers_Win10x64.reg=743,991
+RamDisk_Drivers_Win10x86.reg=740,987
+RamDisk_System_Win8.1.reg=504,672
+RamDisk_System_Win8.reg=502,670
+RamDisk_System_Win10.reg=566,755
+
+[EncodedFile-Icon-FireWallEnable.ico]
+lines=0
+0=eJy9mHdUlFcaxrHF7JqicZOTaDabzckaFaaDFOlNQaTJgKCiCDGxIcauaKIGUWP3YNdYghqjgiAgRUCaCIj0JgoqiBQFwQKo+e2dySa7OcZkkz1n75w7f3zfnfu85Xmf997R0ekhPu+/r6P51jneX0fnLR0dnaFiikc6ljo/PH/RANRiUldfh8/EBegahqBvdQi52SH0jPcgs45B4liA1DobhfElhst2McJ4Bpt2fENmZh4PHz7k2bNnfP/9939kqn/EL6+swslrAzKbaCQ2p5FYHUdmEY7S6QLyceUoHAuR2ucgNb2IzP47xixMxGrMOoLmrScxKY0nT578T/j5V0qwV+9B4ZQmsJKR2cUIn08i98pHOeUaSq8KpK5lSBwuYaSOYOyaO0idCpDYJvHRiA04q1ewe8+3VF+7TmdX5+/Gz8ouwMIjHNm4PFQuuSiFDXp2ZzHwL0M18xYq/+vIJ1Yhc8vHZHI8jmsakHsWI3UuFLZeEbGKQ2a0n7Fuq1i1eis3amp5+vTpb+KLNep7rR2sDTuL2bjjmE4pxGZyJk7TzjN2egquwcWMXd/AyGWN6M++hWxCAZYz07APbUY2pRqldyVy93Ikwg6piI3MPBs9owgkyqX4TQ0lMSGNhobGF+Lfa7mrPhlbiNXMMzi6zsN32l7cfXZi6rAZhdlWVA5HMJx0Bpc11ah3tGIeXMXopZexCb2LdHo9soBryHyrkHpWIHMtEVy9gp5tHsNHZjJceQor51X4B63l2+OR3G25+4vxv3ClGWO/KBSqQGH7ZiQjBO8NdzHEcC/K8VdQOucy1PIUuqOOMjooDbeNlbjuasZuXTOGC++gP+Mm+n7XUIj8yNUlSN0KkI+6gq71JZwC43FaXIbuiN0YGi8hdP1+Ll7MpbOz8yf8IzF1jJwaha7pNsH9CIbbnETP4huGmh/DQPgm8bkqeCH2HZuDrk08evZR6I+PYtTCDHx238F9exsjF99G+angyORqpJqcuIn1jrm4LUnBbmkteqPyBUcy0DM4gIX1MrJzcrT4qemNaqeppVj4HUdidwz5mFQUo5OQ2p0WONEohG+KgFqUk64hH6/JdSlypyLhXzZSiwQR52MYeUfjsbaICQcbcdp4B7NFdehruKHOx211BjYrBG/GlyF3KRZ7XhaxOELcuRSNbqiXBF9W69rkY+EbLvxLEPtfQeWcKWyIRe6cgv5nDejPuoNymrDDrwbFBBFjzzKkLoWiFgXvrXORmqWI2B3He0MRjisy8NxaxuS9LTh9UY7H5gKsVzcin3pTcFfERtj/kcU+kpIvaOpDbWJyTv22LB2rCbsx8YzH3j8LR/9UHP2ScZyZLnhejb3Is9HSZlRBgm/TapELPZD6VKAnci1x0fA+X+QtDs+NpRhPEM9sE1G6ncZpSRr+X1/DV8TFcV0TI+fdRh5QLfi5g9zLl7XxVxlEq9+UJuM0YQEO7ssY7b4NszEHMHSNwcApGuWYw5gIbrqsrWZcWBtWIS0Yzb2FVOiBbJLghZeG96VCs5KE3xWopmq0qhTZWKFNdunoO8Zg7hODR+hFPj3YgNu2q8gt5lBeXq7Ft7T8Tv03/XNYu61E4RqFcmK50Lvbgs+NKDxKBYdPCc39mmEG29Cz2oHjvFQmHWrBdXM9DqHCp8/qGCEw9dWp+GyvRj5L1MLUH/IkU5cLO4pFLkXOLRMYanICM/VBLOz8uN/WqsX3m3JWrbJPwHbydsxELZnMacR4utAa/watH/LRQte0NhxGargbfYd9uIj6G+El/PokEbfQMiaGNeMWUo3voTuoFoh6nF2H4mORp8lCG8ZXaGtBProQhY3gysjz6Mpn09LSosWvqmxW+81JwcZvO/ZrWrAMbsNoYSvKwBbBecFh50soRqUgFT1J1/wo+q7HcNlwQ3C0QPShXIYYR/ORSThWU+LwCMnDe8dNoVPN2KxpZOQCjR0iFiJPCs9yVK5Crx1yUZgu4MGDB1r8Z8++V0ek1GAZEIbT1nvid+3YrmrBflkLtnNuiLiWCqycH2rSNgqj8adw3nQblbYfif2ETzLjDIZL40RvPo2xVQTWPhE4r8pmyoFbqPffxW6V4H5AJSpvkRPXAszsF/1Mf7JKGrH/dAOfR9YRnt1BfPljSlq7KbvfRXRRG2tP3MB3eRH2AemY+scydkszSk09+VSKOiwSfSofqdFFhslSGSY5j1Q3CT3dSGS2Bwg8eh31ynQCdlcyaVcNtkEpePjO/7E3afFrGzqYvewrps9bwa49ezh/KZcbj9qp6uwm58FTUpq6OFJ0n5D4RuYev86c063YBNei+liTX9F7XDRxyEFilIVEL11gpyIZlii4f5Kp2yqFlh5Cafc15l6HsJsQxiezlzzXf6/XtOLolcfb/ziBymIdRqOW4BrwFTPWHWP1yVROVNSR0vqAlIedZHR0En23i30V7cz/rh6vddXYBpSKes1FYpzOcHmqsCEOC+9T+GwRNjqcQ2ou9NR0P8PkX/LJp8HP4Te3PMLFp5CeL18gYHoJejZ5vCV8GeISjeXco7jPXUfgyrVsiYrl9PUbJIncnGt/zJl7jzhW/5Ctl+8RHHkH788rMPPIFjbEYjUpFo8NdUJ3s8QZIQE96xNC/zfy2YLQ5/Bb27rwmJTP62/GcCqijs37bzJYWc5f7BoZuLKbgdPa+NC9BKtZkUI/V+IwZSWBm/ex/ux5wi6Vc+hGK4fqHrO3potdFV2sjm3is9M1TD14F5vZVRh4iNobk4jEJIwVq7c/h//w0RN8/cW5x+gcxcVNFJWIXu9YxACTGgbM7KTHu8X06BPHIJdaXhlSQf/3chk8Kgm7ZaewDtqDOiiEKSG7WJVQRFjFfXZUd7G9+gmbyx7xRUY7s0404f3VVczV+1m9fudz+KIOWbQ4iznz0+jqesq1a+1Y2mXymkEVr3t10KdPBL377KT3oExe+XslA4dW0GdQBZLQDvqt6qL/8jb+Nr8IXeedGNgH4xK0k4+3JTP7cBUff5XF+EXfMePLXQQuCyHqTNxz+JoRHl5ITEwVjx93k5xyh3c/iKWfrJhXbep57dUDvPXOFnr2/Ra50SU+UOXxpwGFvOtZz1siP71mdNNj8mNeNrzJO9Ic3h2RSN83Injlr2m81C8SM5skCgprabt/n+5/n5V/hn/9ejObtqSTmFjNyVM3GDjoLH9+P1XMLDzcI3B0PEDv3l/i7hpL8MpiBgxKYoCuqJnAdnr4dNPHvJVXB+aIGr7FRP8rDHwnkR49kni5X7zot7d/9fyrGV1dTwgMShTn6FLOxV/lvQ+P0qvvYXq9dIQNG9Px94+kX7/lrFgez4W0myhNEuj/fhxvT2zkJXU7PQfnMmhwqnjXSGbWbQyMounZK4oJEzPo7v7Fs/DP8DXDd3IECQm1VFY2YW0fiU7PMPr0DqGktIFZgRFiz91czq+ho6ObiX6JvC7w+4+opOdr59HpkYCR0OKs7Ho6HnTh7XsSU9MjVFbc+83z/4/P4hMqqK+/L+5VYn/RU155fS/6qq3iTtHN/HmHORtTrI2TZu3CpRn0H3yO3i/FiTiH07fPMcZ5JbNnb4n2TrY8+Az7dmvuRi+8Bzzn/4/vNCNsRyFyw2/IyKzW7lddffOn98/EnLsoi35vxNCr9wmGDD1L8PJkPhxylPBjV7VrLmVV8qT7V++Gv4p/JrKc9RsyfvL3P+fjzieCY2n0fXkLCtlWzqfcErp2FgvzbwSP27Rr/pv7z6/hX869Skf7L9/l7grddR+XjNrzILfrW2hv72Lx4niB3fSH7p+/hP8Czmqn5t2mTenk5dX9y9dnNDW1/x5sLf4L/xj4P41/AjQ5UvJ4nBNyyyxKDU/MyXHNS0zKSdXLTM5nGAUjB+wTgNCu3Njl72u+d2NgAgCpCAo2Jr20+gEAAAACAAAALgAAAEULAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Icon-FireWallDisable.ico]
+lines=0
+0=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
+
+[EncodedFile-Reg-RamDisk_Drivers_Win8.1x64.reg]
+lines=0
+0=eJzVV22L00AQfj4L/ofSTwq9o22SjREEjzsPi3d6eHIiRkqatGextnLp+YL419VnJy+b9BKvSkkry25m52VndjIvya+frzHFHBEW+IIYLbzEGJfExVjiCt+IeULqlLsF9y1ckH5F6pT7OfcO9tHluIs7Mt/iKZ5R5g2GOMELHOKAzyFO+TwkbYDnpPp4hY/4RPwRT5vic3rquw2d45f2Rwhof4ARZ0xMM1o0dUzaFCGfA3qxqftVaU5wS85Q1minbPEZdwFPjyTyPqS2tXleEbsvsToh/hHeU+4rHjLy+ugQN+HaRU/WTUXjJm42oMVLkZ9TbrZTXl+1bVNvobv1t/Dv9+jt8D2y/QVr7wzXhMb/8d2+wyOkZCpyKuzRnhFnSMhmZ1GwCHnEuBx75OlS3uPT5epwBNzb+LG2F+7xhPv0RVO3NtRjQjNCTfaAKu3+DR/F7PKZVY/pqXovNm/3QDRv13erNtz0YOIf48Es1lyJNVdqY5JxKu9QHYl8A9sF2Mthlxlg8KMc7lNDFb8q4VUOO5L1vljY4ljfGqtwilXAO4U6orgzPF4lvyp4wSrdyuCNfVZenzS3U6PJrdRk1VqjamQNT/Wa1JYD6ZtJVLT/kCfDFKu9OJR6ZfPNWVLZHO5dqW0e6bqKbSOrzogNaXHAL/1tZdWqDXVZ9XfezPpA+S+l2AWT/pd1wdvefEf6UpZLSY54aaaEso4Er+PZlrjz0rx1RVbDY9ESCMZEuCfcuoN1pIdl+h6kaygy+twwPdcWWJW+c7VWI9VPI98q3EHhthsW19UKYaL/jP5cSA+PxLdJBpxKT9eUmHPC991O+c9JuaTvNe85efTfY5I3Ef809S6Sb5JIdCTDymWXEjvXPPWYVVfHSFwha0aPd1+/f/0GIf5Jqnickw1KzHXJLM6OdynKLEstKo4Pz8yz0DOsMDPRK0pNZxgFwxx844PQy5mwyysKJfoyMAEAKiMNCQDeUQwBAAAAAgAAADkAAACnAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_Drivers_Win8.1x86.reg]
+lines=0
+0=eJzVV+trE0EQ/30W/B9CPimkJblnThAsrcVgq8VKRTwJ90o9jIn0Uh+I/7r627n39SJBwiWy7N7svHduZufu9683iLFAiCW+IkEPrxDhmrgEK9zgOzFPSY25W3LfwxXpN6TG3C+4N3GIIcd93JP5Ds/wnDJvMcUZXuIYR3xOcc7nMWkTvCDVxWt8wmfiT6gtxpdM6/st6XFr+xN49N+Dz5kQ040VRY1IixHwOWEUuzpfm+UUt+IMZA33yheXeedReyiZ9zHzrU99Veyh5OqM+Mf4QLlveMTM0zAgbsZ1iJGs28rGbZxsQo9XIr+g3Hyvot70bVtvYbjzt/Dv5xjt8Tny/RXv3jluCUX/8dl+wCFkybTIaeGA/vicASGDncWCTsghxuY4IM+Q8g6fNleTw+PewM+No/CAGh4yFl2duqSeEpoT6rIHtFl378QoYZfPvXrCSK2PYvd+T8TybmPX9OFuBNP4lBHMc82WXLPlbkwrzio61EAyv4SNCuwUsM0KKPF+AWu00MZv1fBWAZtS9a542OPItY8LDr0GNyVzvFOBzYolc42e9pPrxe1Th0v/6pJahbuqRW+F6/x2K759Te+QI+mP6dvv/6UepnzHY2qdyl0UEdbkhlK90Kefyief9v2dVM4FsQG99fg1v6vKafqwrnI2j2R+z9f/QqpdLu1vzS63fvUk161sVRXpZHUZyOoLXmWXIVnuZJVji6yCI6kKTzBlBjvCrTrUQHpUbm+crYHIKL1BptcQ2Kp9xyqrpZSW1ZleOYOFzc7ZrLBm1l8wnkvp0aHENs38c+nZipJwzviu+xn/JSnXjL3ivSSP+jtM6yXkn6TahfLNEYqNdOiF7Ery5pZaT3mrqvxIWmTLMeLZN+9Pav4Bt2JF7Xickw1KzHXJLM6OdynKLEstKo4Pz8yz0DOssDDTK0pNZxgFwxzc4oPQ85iwyx/XVV7OwAQAMaQNxQWB7MYBAAAAAgAAADkAAACeAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_Drivers_Win8x64.reg]
+lines=0
+0=eJzVV1Fv0zAQ/p6R+A9Vn0DqpjRJkwUJiWkDUcHGxNAQIqhqk7RUKy1aO2Ca+OvA53PSOF3CNlSlRZbt853vfHe+8yW/f73HGFPEmOE75mjgLRKMiJtjgQtcEfOc1DFXM64bOCP9gtQx11OuO9iFxfYQD6R/xEu8Is8H9PAab3CAfc49HHE+IK2LY1JDvMMXfCX+kNLG+JZK/bQmOWFhfYg+9e9jwD4npp5TFDUhbYyIc5derMu+spM1bsEeyRhvlS4h465P6bFE3nmqW5PyTOyuxOqQ+Kf4TL4feMLIs9EibsjRQlvGdUXjOizrUuOF8E/JN9kqr6/qtq5bsDZ+C/9uR3uL7cjWZ3x7J7gklPzHtl0jIORJ97jTww71GbBHhFxWFg8OoYAYn22HeyzyB5x9jh22Ptcuft7ZC48o4TF9UZfVOfUFoQmhOmtA2enhDR/NWeUzrZ7RU9VerF/vrpy8Wd+t6nDTg9o/uQezWPMl1nx5G3XGecsK1ZLIz2HXgIMl7DMDcvxgCds8oWy/V8B7S7gjWR+Khg22u2vjGFIcA98x3hEHexWW2KW8RXwO5/o5BZ+Z2rRL4aIlps86FZaU7ykf9duyL3VTR0XzL3nSS7FK7x49E/PeXHabLaaebdLVO6j0TDaSVSeiwTnH0cayalWHqqy6nzezOlD8SzGroK5/WRUMbrn5ltSlLJd0jgRppkQyDpYR50ocBWne+sKr4ERO6Qsmj/BAdqsK1pIalp23l46R8Ci5USrXFdgrfOeqUy2xR78KOqptwwYPt1lojqsvRB79J/TnTGp4LL7VGXAkNV1R5uxD3ncz3X9Kyoi+V3uP5Q6TSp4Gin+hZTJOyaP+QLWUmPvUKpbvmlj01M25Rx37A6GyTap4nJMOSsx1ySzOjncpyixLLSqOD8/Ms6gwM9ErSk1nGAXDHvzjg9BzmLDLm/4JXMzABABr+A3pfpsjcQEAAAACAAAANwAAAJwCAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_Drivers_Win8x86.reg]
+lines=0
+0=eJzVV22L00AQfj4L/ofSTwq9I9ekSSMIHneKRe88PDkRIyVvreFqK9f6hvjX1Wdn836pVClpJexmdt52ZnZmJ/n18zUSzBFhgS9YooOXiDElbokVbvCNmMekJlwtuO7givQbUhOu51wPcAiDz13ckfEWT/GMMm8wxnO8wAmO+R7jjO8T0kY4J9XDK3zAR+JPqS3B51Truy3p8SrrU/i030fAsSSmnV0UNSYtQcj3iFFsy7+mnTVuxRHKHO2VLR7zzqf2SDLvOrWtS31l7KHk6oT4h3hPua94wMzro0fchLOBI5m3lY3b8GxEi1ciP6fcbK+iXrdtW6dg7PwU/t2Poz32I1tf8e6d4ROh+D/27TtcQrYMm5w2DmhPwBESsthZbJiEXGIcPgfkMSjv8u1wHvDxubbwY+Mo3KOG+4xFW14X1CeEZoTa7AFNu3u3YrRkl8+sesRIrY9i+3aPZOfdxq5uw+0I6vgUEcxyzZFcc+Ru1BVn5x2qJ5lfwFYJdnPYYQUU+CCH+9yhid+u4O0cHkjVe2Jhh0+mfZhzmBW4LpnhzRLsNvJXPTQb8VX+IjqFfWXbzUr8yhaUYzZo1Fj2qhzj5lnfIcfSH/Xpd/9QD2Oe8ZBaxxILdYOFcosFpPUJW5QPyBHtpHIuxJ5rztOdVU7dhnWVs3kks3u++hdS7nK6v9W73PrZl0yz01lVpJvWZShzkGedJTnmppXjiKyCY6kEXzBFBrvCrTpUT3pUtt8wnUORUXrDVK8lsF35jlW7GuKPrnqd/f2SDzY287NeYfWsv2A8F9KjI4mtzvwz6dmKsuSY8Ky7Kf8lKVPGXvGey6nGa2U6qP5lNum4pIz6w9RaIvKpVSTfLZHYqR/zL/rUb6fdSlR4nJMOSsx1ySzOjncpyixLLSqOD8/Ms6iwMNMrSk1nGAXDHtzjg9DTmLDLv+KXSGVgAgBswQ0Yn4mUAgEAAAACAAAANwAAAJYCAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_Drivers_Win10x64.reg]
+lines=0
+0=eJzVVm1v0zAQfj4j8R+qfgKpQ8mSOM0kJKaNiQoGE0NDiKIqTdoRUVq0dLwI8deBx5cXO6VrC0K0yLJ9vjvbz53PZ//4/hIZpkgxwyfkaOE5RrgkL8ccV/hCzkNKM45mHLdwQfkVpRnHU44D3IPDchu3pL7GIzzmnFcY4Ame4QiH7Ac4ZX9EWQ9PKe3jBd7jA/nHXC3Dx3LVfmN8jJj7xhiy5uRo6YiyDAn7HnHpGV8RkVJSFTUV9ohnyJqQ8olQwSMVkROy7FHH4fyIfcg2YIk59vENb8SGNveOiS8VP7yjhdpHY/Lv4y01P+MOV7iLgy1arXlz1kTatES+G1j6jCLbf5t69YBe3UeHvDFbB66024ytRct6RDyX+VPOm+yU1xex/a1TcLZ+Cn9uh7vDdlTjC2bSCa5Jjf4b24z0hNSElJ61iDrn+5GXNj0g9pvt+ve4e7LzKvQFNoO+yvyhZP5Q7kjheVVnqo68Q4b2LTqq6ZDvkeEPa3qfOyzTVw2+qulATr8vCFssm6PxrFU8ix9Y8eQ19AOL9izaXbumwefVcao1bPtsf9irdJfqNHeKbkBpkC1vi5t2KPmziIr2ihgdlFztxYH8KvQOeuQQQUKNLlsl/wl3KxF9Rm5CxDH/b6si+vcsqTJS899nZ6IiB1WZKFrj9Y780KpzLuIzKqM0kXZYn7Yv5xmVdyaUuZoeyS6xcEx0RaKt/3Id+c1V+3XLNpE5et2kXNcXWjX+GuYmxHIjf7UnXmuh3S7eThN5Z/TnTN6IVHxbRN+pvBlakrOOed7tUv+ckkv6XuueU0f/x4uYTfl316NU3oVU9iiKV8+dS+xcc9UTZjwdI/mSuaa4tH3zvP0TUMDV3HickwlKzHXJLM6OdynKLEstKo4Pz8wzNKgwM9ErSk1nGAXDHXjwQOgeJuzyz6RdMhiYAKIwDNMpk3xDAQAAAAIAAAA3AAAAjAIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_Drivers_Win10x86.reg]
+lines=0
+0=eJzVluuL00AQwOez4P9Q+kmhJ+klTZoDwePOw6KnhycnYqWkSXsGayuXng/Ef1397STNqw+KiK0suzs7r52ZnZ3dXz9fSyxTiWQmXySRhryUkVyDS2QuN/INzGOoMasZ64ZcQb+BGrOesu7IA7Fod+WO9rfyRJ4i80YG8kxeyIkcMw/knPkEWk+eQ+3LK/kon8Cfoi2Wz5nWfmV9KgH7BjKkJ2AMdQQtlpC5h11G4rv4QK52F05XDrBnSA+BHCx0xQbywXi0A3gs5H1mj7FDC1g78kPeqQ9N9g6wL9I4fMBDE6Mx+IfyHs6vcg8N9+Voh14b3Jwe6hhllu+HLX2yqBy/baN6RFQPpQVuzGhJW8dd5lbdsx4Wz1V+itxkr6Jet+1vnYK181P4cz/ae+zHYn1FJZ3ILdDov/GtoJ4BTYCMVN3qhPcjyXx6hO3r/fr3dvd0503Wp7YV1i8qv6eV39M7kkbezStVS9+hAnZKsJ/DHu9RgR/m8CE7rOJ3K3g3hzt6+n21sEFbaO/mHHYFrksua7RLntgVr+w1PF4JdlbyF/aV42FXNK62sqrdklVxtfGlfAOWx/RGHWudTE+/uSEXB5xxlx0GwG1aSPfYL4TTVoqHzohdd5G1F2BDrA34o23K2u29WFSc6r+uXGnSGlOvNOvHQE/QzUZzG/zsToQ6DvP8cPTs/CxrPZU18EhzP1BMkT2+cpu/Wkt/a4v9utkYqozRG2Z6HYXdyl+iuAGB3jh/yYdgSz/r2V3PuAviOdM3INLYpll3rm+CoST0MWfdzPgvoVwTe8N7CY/5b6e5GvE3N6tI636ke6TNzmXnmje3aD2jopn8SFbIFq2N79vX5d8wr9KneJyTCUrMdckszo53KcosSy0qjg/PzDM0qLAw0ytKTWcYBcMdaPBA6A4m7PKih9Y+ZmACAKakDW1UlRfWAQAAAAIAAAA4AAAAiAIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_System_Win8.1.reg]
+lines=0
+0=eJzdlVtLwzAYht9rwf9QBEFhimu3limCooLDIyqKWJE5qxtWJ+vwgPjX1Sdxrpn2wguZICHJ+53ffE3bt9cjtXWrC3X0oEye9pToCl2mnrp6QrOGtY3UQfZ0iL2LtY18i1zVrOYY4xqz80Tr2iDmWGfa1I5WtMx+pi32FWx1bWONdaAb3aHfp4aplSCf/kqWGA/DzfDvKMWWgA3H8ggqfLWNvqKRUzWIzf64eqxn1bg9oZ0h2lAzRJ0zm6AKtydUAKqhiRgz+MyRvcYesVYZDeSKXvpnmXDyT2iRuYd0Y+9opmvkr16rxGfU+/BegqfrP2vv/6VKmnRitq1Pgm6B/Mt0ySPPR4RHbBd8b/N+1ttHk6Ixnaizmt410KT9uuWBZx0upmO72HtqWXuLyEdNceZpzcvn1CXb3xIoGGDTkRy7+soAh06s6Xuex3f0l4U4tgw9hptxmE3z15kFjn/gsHRrhTZ/zu97lpAO5zgqrBoN9aBayNjnSeQ+LvtmIfYdnPPzf3C+4vX/vK8xN9zUuLN/jB7vRzL0RXoHRxPqYHickwxKzHXJLM6OD64sLknNjQ/PzLPQM9QrSk1nGAUjANSwQej5jNjlpy5NuMjABACP5AzIUWjLNAEAAAACAAAANQAAAJ8BAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_System_Win8.reg]
+lines=0
+0=eJzdlVtLwzAYht9rwf9QBEFhimu3limCooLDIyqKWJE5qxtWJ+vwgPjX1Sdxrpn2wguZICHJ+53ffE3bt9cjtXWrC3X0oEye9pToCl2mnrp6QrOGtY3UQfZ0iL2LtY18i1zVrOYY4xqz80Tr2iDmWGfa1I5WtMx+pi32FWx1bWONdaAb3aHfp4aplSCf/kqWGA/DzfDvKMWWgA3H8ggqfLWNvqKRUzWIzf64eqxn1bg9oZ0h2lAzRJ0zm6AKtydUAKqhiRgz+MyRvcYesVYZDeSKXvpnmXDyT2iRuYd0Y+9opmvkr16rxGfU+/BegqfrP2vv/6VKmnRitq1Pgm6B/Mt0ySPPR4RHbBd8b/N+1ttHk6Ixnaizmt410KT9uuWBZx0upmO72HtqWXuLyEdNceZpzcvn1CXb3xIoGGDTkRy7+soAh06s6Xuex3f0l4U4tgw9hptxmE3z15kFjn/gsHRrhTZ/zu97lpAO5zgqrBoN9aBayNjnSeQ+LvtmIfYdnPPzf3C+4vX/vK8xN9zUuLN/jB7vRzL0RXoHRxPqYHicEw9KzHXJLM6OD64sLknNjQ/PzLPQK0pNZxgFIwLUsEHo+YzY5acuTbjIwAQAyeQMZx07Rq4BAAAAAgAAADMAAACfAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-RamDisk_System_Win10.reg]
+lines=0
+0=eJztlF9rE1EQxc+z4HdYCoJCUpLNZtNVhJYqGGqrtKKIW0pMNjaYNiUb1CL96upvZtvsjY0Pgk9FLrv3zJmZM3Nn//z88U4TnWukmb6qVKRDFfoEV2qhuS5hnuOdYM2wI73FP8c7wT7H7mpTLdZ93fPrg15oj5z3OtFLvdKudthPtM++i6+vA7y53uhMF/BH1LBaBXZOhKla5Zmm+Aqwqbdv+cyeakBuCf6ujC5Tv1LYVE2yPnINQQldpuqAMpgeq0lMC/WMvce9yxpgJ7rSsZ9jI9Df0FOuQ6wzn0Wpz9i/Rz0jv6ReFb1Nn2H8ps95rIYeBDkHHlPAPUF/hylF6FQZEblz8BfXval3BDOFsUn0udvsBjDT67rtZWSfXmxir/EvdOr+UzK/6SFnfqTHijl1w+fbAHWW2CZS45BPljgNcm3utU4c8OO1OPcOI1aouNrN8J931gniO0GXYa1Ks+7vtmJYqbfCt4Kq7T/wdfcxT6Lmw+6Ha3Ec4Lq/eOV83QDXiuvvd+d7zXnDrcaF/5kWfB/2vRzf+RNaDVO2Z23v9pi96bqxV0tcb8uVMypnoBH7CFTQxYi4LVYCd/V/Xn85r9xP1SKzmtx28HcdX6/q3G3/15p9M+FfS/MMm3ickwhKzHXJLM6OD64sLknNjQ/PzDM00CtKTWcYBSMBlLFD6HuM2OW3WiouZ2ACACNVDBYAN8ZAAQAAAAIAAAA0AAAA3gEAAAAAAAABAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+Run,%ScriptFile%,Settings_Default
+If,ExistSection,%ScriptFile%,Settings_Default_%ProjectFolderName%,Run,%ScriptFile%,Settings_Default_%ProjectFolderName%
+System,RefreshInterface
+
+[UploadXXX]
+Call,UploadXMultiQ
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+Set,%RemoveAccessories_CheckBox%,False,Permanent
+Set,%RemoveSystemTools_CheckBox%,False,Permanent
+//-
+Set,%pComputerName%,WinPESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,True,PERMANENT
+
+[Settings_Default_Win10PESE]
+Set,%pComputerName%,Win10PESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
+
+[Settings_Default_Win8.1SE]
+Set,%pComputerName%,Win8.1SE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
+
+[Settings_Default_Win8PESE]
+Set,%pComputerName%,Win8PESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
+
+[Settings_Default_Win7PESE]
+Set,%pComputerName%,Win7PESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,True,PERMANENT
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

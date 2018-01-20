@@ -1,0 +1,574 @@
+[Main]
+Title=MS Visual C++ Runtime
+Type=Plugin
+Author=Homes32, ChrisR
+Description=Allows you to run programs created with Microsoft Visual C++ 2005/2008/2010/2012/2013/2017
+Credits=Thanks to JFX for help with reg entries for SideBySide
+Version=015
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.07
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/VcRunTimes.script
+Web1C=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/VcRunTimes_File.script
+CertifiedBy=
+Certification=
+HistoryNotes01=The Plugin Uses a Container File for MS Visual C++ Runtime binary
+History005=ChrisR - Container File. Added some missing manifest files. Adding some components following the installation of VC++ 2005 SP1 and VC++ 2008 SP1
+History006=ChrisR - VC8 and VC9 Lite
+History007=ChrisR - VC++ 2012 Update 4. Embedded version (8.0 - 9.0) following source Win7SP0 Win7SP1 Win8SP0 Win8.1SP0
+History008=ChrisR - Interface changed to be more clear
+History009=ChrisR - VC12 or Visual C++ 2013
+History010=ChrisR - Added Test for Wow64 support. Install VC++ x86 runtime for x86 Build or for x64 Build with Wow64 support.
+History011=Lancelot - Fixed IniVariables,OS - Added DU buttons
+History012=ChrisR - Added Visual C++ 2015 (14.0.23026)
+History014=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History015=ChrisR - Added Visual C++ 2017 (14.11.25325) = VC++ 2015 Update. Copy Embedded SxS registry with CopySoftKey.cmd - Date:2017.11.07
+
+[Variables]
+%ContainerFileFolder%=%scriptdir%
+%ContainerFileName%=VcRunTimes_File.script
+%ContainerFile%=%ContainerFileFolder%\%ContainerFileName%
+%FileContainer%=%ContainerFileFolder%\%ContainerFileName%
+//-
+Extract=Run,%ScriptFile%,PExtract
+ExtractCopyApiUcrt=Run,%ScriptFile%,PExtractCopyApiUcrt
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,Not,ExistFile,%ContainerFile%,Exit,"'%ScriptTitle%' Container File Missing %ContainerFile%"
+StrFormat,RIGHT,%SB_EMB%,1,%EMB%
+StrFormat,RIGHT,%SB_VC8%,1,%VC8%
+StrFormat,RIGHT,%SB_VC9%,1,%VC9%
+StrFormat,RIGHT,%SB_VC10%,1,%VC10%
+StrFormat,RIGHT,%SB_VC11%,1,%VC11%
+StrFormat,RIGHT,%SB_VC12%,1,%VC12%
+StrFormat,RIGHT,%SB_VC14%,1,%VC14%
+//- Install VC++ x86 runtime for x86 Build or for x64 Build with Wow64 support.
+Set,%x86Runtime%,False
+If,%SourceArch%,Equal,x86,Set,%x86Runtime%,True
+If,%SourceArch%,Equal,x64,If,%TargetWOW64%,Equal,x86,Set,%x86Runtime%,True
+//-
+If,ExistDir,%ProjectTemp%\TempExtractFolder\VC++,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\VC++#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\VC++,Call,DirDelete,%ProjectTemp%\TempExtractFolder\VC++
+DirMake,%ProjectTemp%\TempExtractFolder\VC++
+// Embedded version (8.0 - 9.0) (0=None, 1=Full)
+If,%EMB%,Equal,1,Begin
+IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
+IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+ExtractFile,%ScriptFile%,Folder,CopySoftKey.cmd,%ProjectTemp%\TempExtractFolder\VC++
+Echo,"Installing Embedded Visual C++ 2005 - 2008..."
+If,%x86Runtime%,Equal,True,Begin
+Call,DirCopy,%Source_Win%\winsxs\x86_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\,OverWrite
+Call,DirCopy,%Source_Win%\winsxs\x86_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\,OverWrite
+FileCopy,%Source_Win%\winsxs\manifests\x86_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\manifests
+FileCopy,%Source_Win%\winsxs\manifests\x86_policy.8.0.microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\manifests
+FileCopy,%Source_Win%\winsxs\manifests\x86_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
+FileCopy,%Source_Win%\winsxs\manifests\x86_policy.9.0.microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
+End
+If,%SourceArch%,Equal,x64,Begin
+Call,DirCopy,%Source_Win%\winsxs\amd64_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\,OverWrite
+Call,DirCopy,%Source_Win%\winsxs\amd64_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\,OverWrite
+FileCopy,%Source_Win%\winsxs\manifests\amd64_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\manifests
+FileCopy,%Source_Win%\winsxs\manifests\amd64_policy.8.0.microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\manifests
+FileCopy,%Source_Win%\winsxs\manifests\amd64_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
+FileCopy,%Source_Win%\winsxs\manifests\amd64_policy.9.0.microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
+End
+End
+// Visual C++ 2005 (0=None, 1=Full, 2=Lite)
+If,%VC8%,Bigger,0,Begin
+Echo,"Installing Visual C++ 2005..."
+If,%x86Runtime%,Equal,True,Extract,x86,VC8Lite.7z,%target_win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC8Lite.7z,%target_win%\WinSxS
+If,%VC8%,Equal,1,Begin
+If,%x86Runtime%,Equal,True,Extract,x86,VC8.7z,%target_win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC8.7z,%target_win%\WinSxS
+End
+End
+// Visual C++ 2008 (0=None, 1=Full, 2=Lite)
+If,%VC9%,Bigger,0,Begin
+Echo,"Installing Visual C++ 2008..."
+If,%x86Runtime%,Equal,True,Extract,x86,VC9Lite.7z,%target_win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC9Lite.7z,%target_win%\WinSxS
+If,%VC9%,Equal,1,Begin
+If,%x86Runtime%,Equal,True,Extract,x86,VC9.7z,%target_win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC9.7z,%target_win%\WinSxS
+End
+End
+// Visual C++ 2010 (0=None, 1=Full)
+If,%VC10%,Equal,1,Begin
+Echo,"Installing Visual C++ 2010..."
+If,%SourceArch%,Equal,x64,Begin
+If,%x86Runtime%,Equal,True,Extract,x86,VC10.7z,%target_win%\SysWOW64
+Extract,x64,VC10.7z,%target_win%\System32
+End
+Else,Extract,x86,VC10.7z,%target_win%\System32
+End
+// Visual C++ 2012 (0=None, 1=Full)
+If,%VC11%,Equal,1,Begin
+Echo,"Installing Visual C++ 2012..."
+If,%SourceArch%,Equal,x64,Begin
+If,%x86Runtime%,Equal,True,Extract,x86,VC11.7z,%target_win%\SysWOW64
+Extract,x64,VC11.7z,%target_win%\System32
+End
+Else,Extract,x86,VC11.7z,%target_win%\System32
+End
+// Visual C++ 2013 (0=None, 1=Full)
+If,%VC12%,Equal,1,Begin
+Echo,"Installing Visual C++ 2013..."
+If,%SourceArch%,Equal,x64,Begin
+If,%x86Runtime%,Equal,True,Extract,x86,VC12.7z,%target_win%\SysWOW64
+Extract,x64,VC12.7z,%target_win%\System32
+End
+Else,Extract,x86,VC12.7z,%target_win%\System32
+End
+// Visual C++ 2017 (0=None, 1=Full)
+If,%VC14%,Equal,1,Begin
+Echo,"Installing Visual C++ 2017..."
+If,%SourceArch%,Equal,x64,Begin
+If,%x86Runtime%,Equal,True,Extract,x86,VC14.11.7z,%target_win%\SysWOW64
+If,%x86Runtime%,Equal,True,ExtractCopyApiUcrt,x86,VC14.11Ucrt.7z
+Extract,x64,VC14.11.7z,%target_win%\System32
+ExtractCopyApiUcrt,x64,VC14.11Ucrt.7z
+End
+Else,Begin
+Extract,x86,VC14.11.7z,%target_win%\System32
+ExtractCopyApiUcrt,x86,VC14.11Ucrt.7z
+End
+End
+// Register SideBySide for 2005/2008 - 2010-2012 doesn't use crappy SxS :)
+If,%x86Runtime%,Equal,True,Run,%ScriptFile%,SxS_x86
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,SxS_x64
+//Optional
+DirDelete,%ProjectTemp%\TempExtractFolder\VC++,FAST
+
+[PExtract]
+// #1Encoded Folder (x86|x64) - #2 Archive (ex: VC14.11.7z) - #3 Target Folder (ex: %target_win%\System32)
+ExtractFile,%ContainerFile%,#1,#2,%ProjectTemp%\TempExtractFolder\VC++\#1
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\VC++\#1\#2#$q -y -o#$q#3#$q"
+
+[PExtractCopyApiUcrt]
+// #1 Encoded Folder (x86|x64) - #2 Archive (ex: VC14.11Ucrt.7z -> ex ExtractedFolder: ProjectTemp\TempExtractFolder\VC++\x86\VC14.11Ucrt)
+StrFormat,RTRIM,#2,3,%t%
+Set,%ExtractedFolder%,%ProjectTemp%\TempExtractFolder\VC++\#1\%t%
+ExtractFile,%ContainerFile%,#1,#2,%ProjectTemp%\TempExtractFolder\VC++\#1
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\VC++\#1\#2#$q -y -o#$q%ExtractedFolder%#$q"
+//-
+If,%SourceArch%,Equal,x64,Begin
+If,#1,Equal,x86,Set,%TargetCopy%,%target_win%\SysWOW64
+If,#1,Equal,x64,Set,%TargetCopy%,%target_win%\System32
+End
+Else,Set,%TargetCopy%,%target_win%\System32
+// Copy ucrtbase.dll in System32 or SysWOW64 without overwrite
+If,ExistFile,%ExtractedFolder%\ucrtbase.dll,Begin
+If,Not,ExistFile,%TargetCopy%\ucrtbase.dll,FileCopy,%ExtractedFolder%\ucrtbase.dll,%TargetCopy%
+End
+// Copy api-ms-win*.dll files without overwrite in System32\downlevel or SysWOW64\downlevel folder if exist (Win8.1, Win10) else in System32 or SysWOW64 (Win7, Win8)
+// For %F In ("C:\From\*.*") Do If Not Exist "C:\To\%~nxF" Copy "%F" "C:\To\%~nxF"
+If,ExistDir,%TargetCopy%\downlevel,Set,%TargetCopy%,%TargetCopy%\downlevel
+ShellExecute,Hide,cmd.exe,"/C For #$pF In (#$q%ExtractedFolder%\api-ms-win*.dll#$q) Do If Not Exist #$q%TargetCopy%\#$p~nxF#$q Copy #$q#$pF#$q #$q%TargetCopy%\#$p~nxF#$q"
+//DirDelete,%ExtractedFolder%
+
+[SxS_x86]
+RegHiveLoad,Tmp_Software,%RegSoftware%
+// 2005 (VC8) (0=None, 1=Full, 2=Lite)
+If,%VC8%,Bigger,0,Begin
+Echo,"Configuring Visual C++ 2005 SideBySide..."
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_bcab4e08946f6004\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_bcc8f3fc9457ed28\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_bd39c11e9405d29b\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_36654d36d135ea77\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_ffd3ce2ff7491d9e\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_e8ff9ccd99f7096b,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_e8ff9ccd99f7096b\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_e8ff9ccd99f7096b\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_e95fc02599af695c,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_e95fc02599af695c\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_e95fc02599af695c\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_fc7803bb717e28a6,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_fc7803bb717e28a6\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_fc7803bb717e28a6\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_e1ca20498859d627,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_e1ca20498859d627\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_e1ca20498859d627\8.0,8.0.50727.6195,01
+If,%VC8%,Equal,1,Begin
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_bcab4e08946f6004\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_bcab4e08946f6004\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_bcab4e08946f6004\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_bcc8f3fc9457ed28\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_bcc8f3fc9457ed28\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_bcc8f3fc9457ed28\8.0,8.0.50727.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_bcc8f3fc9457ed28\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_bd39c11e9405d29b\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_bd39c11e9405d29b\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_bd39c11e9405d29b\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_36654d36d135ea77\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_36654d36d135ea77\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_36654d36d135ea77\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_ffd3ce2ff7491d9e\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_ffd3ce2ff7491d9e\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_e8ff9ccd99f7096b\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_e8ff9ccd99f7096b\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_e8ff9ccd99f7096b\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7\8.0,8.0.50727.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_e8a8ec119a3821e7\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_e95fc02599af695c\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_e95fc02599af695c\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_e95fc02599af695c\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_fc7803bb717e28a6\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_fc7803bb717e28a6\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_fc7803bb717e28a6\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_e1ca20498859d627\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_e1ca20498859d627\8.0,8.0.50727.762,01
+End
+End
+// 2009 (VC9) (0=None, 1=Full, 2=Lite)
+If,%VC9%,Bigger,0,Begin
+Echo,"Configuring Visual C++ 2008 SideBySide..."
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_ea1622fcb25f4053\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_eaa49612b1f5b2ea\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_389bb7490f8d1de8\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_020a384235a0510f\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275\9.0,9.0.30729.6161,01
+If,%VC9%,Equal,1,Begin
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_ea1622fcb25f4053\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_ea1622fcb25f4053\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_ea1622fcb25f4053\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_ea1622fcb25f4053\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_ea1622fcb25f4053\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.30729.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_ea33c8f0b247cd77\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_eaa49612b1f5b2ea\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_eaa49612b1f5b2ea\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_eaa49612b1f5b2ea\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_eaa49612b1f5b2ea\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_eaa49612b1f5b2ea\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_389bb7490f8d1de8\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_389bb7490f8d1de8\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_389bb7490f8d1de8\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_389bb7490f8d1de8\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_389bb7490f8d1de8\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_020a384235a0510f\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_020a384235a0510f\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_020a384235a0510f\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_020a384235a0510f\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_0326b1c272bc699d\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.30729.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_02d0010672fd8219\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_0386d51a7274c98e\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,9.0.30729.4137,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_814a3bfd2a42d4f4\9.0,9.0.30729.4974,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\x86_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_669c588b411e8275\9.0,9.0.30729.4974,01
+End
+End
+// Embedded version (8.0 - 9.0) - policy... 8.0,,8.0.50727.xxxx or9.0,,9.0.30729.xxxx if higher Lite (Latest) version 8.0.50727.6195 or 9.0.30729.6161
+If,%EMB%,Equal,1,Begin
+If,Not,%SoftwareHive%,Equal,Install.wim,Begin
+Echo,"Configuring Embedded Visual C++ 2005 - 2008 SideBySide..."
+If,ExistFile,%RegistryCache%\install_wim\SOFTWARE,Begin
+RegHiveLoad,Tmp_Install_Software,%RegistryCache%\install_wim\SOFTWARE
+End
+Else,Begin
+If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\TempExtractFolder\VC++
+RegHiveLoad,Tmp_Install_Software,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE
+End
+// CopySoftKey MainKey Key (* accepted in key). Use quotes #$q if there are any spaces in the main key or the searched key
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners x86_microsoft.vc80.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners x86_policy.8.0.microsoft.vc80.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners x86_microsoft.vc90.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners x86_policy.9.0.microsoft.vc90.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+RegHiveunLoad,Tmp_Install_Software
+End
+End
+RegHiveUnLoad,Tmp_Software
+
+[SxS_x64]
+RegHiveLoad,Tmp_Software,%RegSoftware%
+// 2005 (VC8) (0=None, 1=Full, 2=Lite)
+If,%VC8%,Bigger,0,Begin
+Echo,"Configuring Visual C++ 2005 x64 SideBySide..."
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_74fe17317ff336fe\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_751bbd257fdbc422\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_758c8a477f89a995\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_eeb8165fbcb9c171\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_b8269758e2ccf498\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0\8.0,8.0.50727.6195,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_9a1ce97273ddad21,,8.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_9a1ce97273ddad21\8.0,,8.0.50727.6195
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_9a1ce97273ddad21\8.0,8.0.50727.6195,01
+If,%VC8%,Equal,1,Begin
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_74fe17317ff336fe\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_74fe17317ff336fe\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_74fe17317ff336fe\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_74fe17317ff336fe\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_751bbd257fdbc422\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_751bbd257fdbc422\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_751bbd257fdbc422\8.0,8.0.50727.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_751bbd257fdbc422\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_751bbd257fdbc422\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_758c8a477f89a995\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_758c8a477f89a995\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_758c8a477f89a995\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_758c8a477f89a995\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_eeb8165fbcb9c171\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_eeb8165fbcb9c171\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_eeb8165fbcb9c171\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_eeb8165fbcb9c171\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_b8269758e2ccf498\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_b8269758e2ccf498\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_b8269758e2ccf498\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.atl_1fc8b3b9a1e18e3b_none_a15265f6857ae065\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,8.0.50727.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.crt_1fc8b3b9a1e18e3b_none_a0fbb53a85bbf8e1\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfc_1fc8b3b9a1e18e3b_none_a1b2894e85334056\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0\8.0,8.0.50727.5592,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.mfcloc_1fc8b3b9a1e18e3b_none_b4cacce45d01ffa0\8.0,8.0.50727.4053,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_9a1ce97273ddad21\8.0,8.0.50727.42,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_9a1ce97273ddad21\8.0,8.0.50727.762,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.8.0.microsoft.vc80.openmp_1fc8b3b9a1e18e3b_none_9a1ce97273ddad21\8.0,8.0.50727.5592,01
+End
+End
+// 2009 (VC9) (0=None, 1=Full, 2=Lite)
+If,%VC9%,Bigger,0,Begin
+Echo,"Configuring Visual C++ 2008 x64 SideBySide..."
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_a268ec259de3174d\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_a28692199dcba471\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_a2f75f3b9d7989e4\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_f0ee8071fb10f4e2\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_ba5d016b21242809\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee\9.0,9.0.30729.6161,01
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_1eef21b42ca2596f,,9.0
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_1eef21b42ca2596f\9.0,,9.0.30729.6161
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_1eef21b42ca2596f\9.0,9.0.30729.6161,01
+If,%VC9%,Equal,1,Begin
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_a268ec259de3174d\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_a268ec259de3174d\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_a268ec259de3174d\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_a268ec259de3174d\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_a28692199dcba471\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_a28692199dcba471\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_a28692199dcba471\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_a28692199dcba471\9.0,9.0.30729.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_a28692199dcba471\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_a2f75f3b9d7989e4\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_a2f75f3b9d7989e4\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_a2f75f3b9d7989e4\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_a2f75f3b9d7989e4\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_f0ee8071fb10f4e2\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_f0ee8071fb10f4e2\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_f0ee8071fb10f4e2\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_f0ee8071fb10f4e2\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_ba5d016b21242809\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_ba5d016b21242809\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_ba5d016b21242809\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.atl_1fc8b3b9a1e18e3b_none_bb797aeb5e404097\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,9.0.30729.4940,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.crt_1fc8b3b9a1e18e3b_none_bb22ca2f5e815913\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfc_1fc8b3b9a1e18e3b_none_bbd99e435df8a088\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee\9.0,9.0.30729.1,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.mfcloc_1fc8b3b9a1e18e3b_none_399d052615c6abee\9.0,9.0.30729.5570,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_1eef21b42ca2596f\9.0,9.0.21022.8,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_1eef21b42ca2596f\9.0,9.0.30729.4148,01
+RegWrite,HKLM,0x3,Tmp_Software\Microsoft\Windows\CurrentVersion\SideBySide\Winners\amd64_policy.9.0.microsoft.vc90.openmp_1fc8b3b9a1e18e3b_none_1eef21b42ca2596f\9.0,9.0.30729.5570,01
+End
+End
+// Embedded version (8.0 - 9.0) - policy... 8.0,,8.0.50727.xxxx or9.0,,9.0.30729.xxxx if higher Lite (Latest) version 8.0.50727.6195 or 9.0.30729.6161
+If,%EMB%,Equal,1,Begin
+If,Not,%SoftwareHive%,Equal,Install.wim,Begin
+Echo,"Configuring Embedded Visual C++ 2005 - 2008 SideBySide..."
+If,ExistFile,%RegistryCache%\install_wim\SOFTWARE,Begin
+RegHiveLoad,Tmp_Install_Software,%RegistryCache%\install_wim\SOFTWARE
+End
+Else,Begin
+If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\TempExtractFolder\VC++
+RegHiveLoad,Tmp_Install_Software,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE
+End
+// CopySoftKey MainKey Key (* accepted in key). Use quotes #$q if there are any spaces in the main key or the searched key
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners amd64_microsoft.vc80.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners amd64_policy.8.0.microsoft.vc80.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners amd64_microsoft.vc90.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+ShellExecute,Hide,cmd.exe,"/C CopySoftKey.cmd Microsoft\Windows\CurrentVersion\SideBySide\Winners amd64_policy.9.0.microsoft.vc90.crt_*",%ProjectTemp%\TempExtractFolder\VC++
+RegHiveunLoad,Tmp_Install_Software
+End
+End
+RegHiveUnLoad,Tmp_Software
+
+[Interface]
+BVL_Container=pBevel1,1,12,0,17,465,208
+TXT_Ver=RuntimeVer.txt,1,6,265,20,192,200
+LBL_Runtimes="Add the following Runtimes:",1,1,10,23,185,18,8,Bold
+LBL_EMB="Embedded version (8.0 - 9.0)",1,1,18,50,145,18,8,Normal,"__Full x86: 3MB / x64: 4MB / Total: 7MB"
+SB_EMB="Full                      1",1,4,165,48,84,21,"None                   0","Full                      1","__Full x86: 3MB / x64: 4MB / Total: 7MB"
+LBL_VC8="Visual C++ 2005 (8.0)",1,1,18,75,145,18,8,Normal,"__Full x86: 13MB / x64: 24MB / Total: 38MB - Lite x86: 4.5MB / x64: 6.2MB / Total: 10.7MB"
+SB_VC8="Lite (latest)         2",1,4,165,73,84,21,"None                   0","Full                      1","Lite (latest)         2","__Full x86: 13MB / x64: 24MB / Total: 38MB - Lite x86: 4.5MB / x64: 6.2MB / Total: 10.7MB"
+LBL_VC9="Visual C++ 2008 (9.0)",1,1,18,100,145,18,8,Normal,"__Full x86: 42MB / x64: 49MB / Total: 91MB - Lite x86: 9.5MB / x64: 12.3MB / Total: 21.8MB"
+SB_VC9="Lite (latest)         2",1,4,165,98,84,21,"None                   0","Full                      1","Lite (latest)         2","__Full x86: 42MB / x64: 49MB / Total: 91MB - Lite x86: 9.5MB / x64: 12.3MB / Total: 21.8MB"
+LBL_VC10="Visual C++ 2010 (10.0)",1,1,18,125,145,18,8,Normal,"__Full x86: 12MB / x64: 15MB / Total: 27MB"
+SB_VC10="Full                      1",1,4,165,123,84,21,"None                   0","Full                      1","__Full x86: 12MB / x64: 15MB / Total: 27MB"
+LBL_VC11="Visual C++ 2012 (11.0)",1,1,18,150,145,18,8,Normal,"__Full x86: 11MB / x64: 14MB / Total: 25MB"
+SB_VC11="Full                      1",1,4,165,148,84,21,"None                   0","Full                      1","__Full x86: 11MB / x64: 14MB / Total: 25MB"
+LBL_VC12="Visual C++ 2013 (12.0)",1,1,18,175,145,18,8,Normal,"__Full x86: 11MB / x64: 14MB / Total: 25MB"
+SB_VC12="Full                      1",1,4,165,173,84,21,"None                   0","Full                      1","__Full x86: 11MB / x64: 14MB / Total: 25MB"
+LBL_VC14="Visual C++ 2017 (14.11)",1,1,18,200,145,18,8,Normal,"__Full x86: 13MB / x64: 15MB / Total: 28MB"
+SB_VC14="Full                      1",1,4,165,197,84,21,"None                   0","Full                      1","__Full x86: 13MB / x64: 15MB / Total: 28MB"
+LBL_Warning="Warning: ",1,1,4,235,230,18,8,Normal
+LBL_WarnTxt2="Disabling components of this Plugin may cause your programs to stop working.#$xDo not disable individual runtimes unless you know what you are doing!",1,1,4,253,380,28,8,Normal
+WebLabel_Plugin="Plugin Page",1,10,404,0,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,466,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,466,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_Download_Container=,1,8,489,21,24,24,DownloadXXX_Container,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_pButton1_,False,"__Download Container"
+Button_CompareEdit=,1,8,489,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[AuthorEncoded]
+Visual_C++_Icon.jpg=4673,6231
+Logo=Visual_C++_Icon.jpg
+
+[EncodedFile-AuthorEncoded-Visual_C++_Icon.jpg]
+lines=1
+0=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
+1=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+AmperossQetto2Move0016016.bmp=893,1191
+RuntimeVer.txt=322,430
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[DownloadXXX_Container]
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+Call,DownloadXQ,%FileContainer%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-RuntimeVer.txt]
+lines=0
+0=eJyFkT9PxDAMxfdK/Q4dWyEi23H+jeyHdLo7YEaiQ4criBapHx/T6GhcBrL5/eyX+OX0Nc7DtW+e+89peB+nurr//9RVNGAcBAqGqWlPl8eu1IIX8XxEJTI4q+pEoWlfhjGcj6A7E8ONaA/nkjgvnpXqMbmmPbzO/TR3jSIJs1Pc3xGZYiYG9ywty7Iy/NHrKgkhBCITc2GlLRksC0Yr2yzRd1plNSI7+3LnkuidSxL4r7NzAW5JbKpHj79JKBADlkFsJNoYdBAb2weBIIiBMBlLbv3iu4fLITMU5hGsPOvp442zSKuXA1wrNtJFTma/AUM5gSp4nOMLKs0rycxNDUst0iupKGEYBSMLlDNB6K845H+uePOVgQkASKIKoPpuOH4BAAAAAgAAACkAAAD1AAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[EncodedFile-Folder-CopySoftKey.cmd]
+lines=0
+0=eJyNkdFqgzAUhu8F3+EYCN1g0LWwG8ExsXEVrbJ1N4OCuPa0E9KktXadN332JZl1LWOwG5GY75zv/33A+buELAxta4p1IucFByaKN44j5EXDFvi5KcSulMJcgHEclmIRY+PR49C2oiUQ2p1RArjdAyHwKGsJLsvCEzUpSpFVK28cs9c8yQI/ySd+MI5SNntZb/JI7OqC83wql/WhqHBGj4NzNMXDX+glEsoK+iGQBfJyvfMIUOpDlMJV7xlX8LTHqjHGrY8y7scGOE/Ru4aRhEAJgZsrLpAbTVGf2JZtnWWzre77yRYbHdO4tOWYE/d4e3OntgncAjFJLkoyu04DdFjagU4n63hO14ZDqW1dRjLX1Yp7secw1E+l5yqJVNbAqkpWCX4ghwEw/c813Ab7Yb/f1XxdzFQVY1L8GvBftkv4BboFtgx4nON3zi+oDM5PK/FOrdRLzk1hGAUjCqQzQWg3RuzyTGIBXgxMAG6eBzZlTHT/AQAAAAIAAAAqAAAARgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[Folder]
+CopySoftKey.cmd=404,539
+

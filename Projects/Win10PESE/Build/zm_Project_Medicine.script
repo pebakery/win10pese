@@ -1,0 +1,356 @@
+[Main]
+Title=Project Medicine
+Type=Plugin
+Author=JFX, Lancelot
+Description=Everyone needs some medicine now and then - even Projects :) . (Post Core Medicine)
+Credits=Fxscrpt providing the already written codes :)
+Version=030
+Download_Level=0
+Level=1
+Selected=True
+Mandatory=True
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.10.09
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Basic/Build/zm_Project_Medicine.script
+WebRootSubSub=Build
+CertifiedBy=
+Certification=
+HistoryNotes01=Gena by having settingsdrive as systemdrive you may notice interesting things ;)
+History002=Lancelot - Common Files back in registry, thanks for JFX reminding.
+History003=Lancelot - JFX request: (post70) "Highly recommand to put storport.sys (for 2003 and x64)" added. (reminder: mass storage plugins updates storport.sys when w2003sp1 source used)
+History004=Lancelot, Galapo - Plugin name, title, location changed and set mandatory.
+History005=Lancelot only RegAddBoot option now have a checkbox
+History006=Lancelot only capitalization change on 3 values to hunt wb bugies easier.
+History007=Lancelot - profile registry & folder creations now made by profile plugin - relevant info in this plugin will be studied later before removal.... :>.
+History008=Lancelot - LocalizeLID improvment
+History009=Lancelot SourceLocale IniVariables
+History010=Lancelot RegFactory IniVariables
+History011=Lancelot IniVariables OS
+History012=Lancelot Added SysWow64Path
+History015=Lancelot Added Call,CreateCodeBox
+History017=Lancelot Improved PrepareCodeBox_P
+History018a=Lancelot Added "Tmp_Default\Control Panel\Colors",Window --> KYHI Reply 102 - http://TheOven.org/index.php?topic=1413.msg17968#msg17968 --> On some applications (ex: ShowKeyPlus 5730) Missing Colors,Windows value fallback to 0 -> 0 0 0 -> black --> software GUI display on Gui black background (like film negatives ;) )
+History018=Lancelot Plugin Made SE compatible
+History019=Lancelot ReOrganised // Added UserPreferencesMask_NT5
+History020=Lancelot moved UserPreferencesMask_NT6 here to avoid confusion seen on topic
+History021=Lancelot Disabled NT5 fade effects for qEmu // added VisualFXSetting=3 for insurance
+History022=Lancelot Fixed - KYHI http://TheOven.org/index.php?topic=1552
+History023=Lancelot Added Gena Medicine EnvFix_cmd_NT5 - Date:2015.12.20
+History024=Lancelot Improved copy STORPORT.SYS (winbuilder bad development filecopy is default recursive - if found 2 files copies both with subfolders !!!) - Date:2016.10.04
+History025=Lancelot Improved Require,File,storport.sys - Date:2016.10.06
+History026=Lancelot Added Basic_PluginCache_Extract - Date:2016.10.30
+History027=Lancelot Added MultiLanguage Desktop.ini Support - http://TheOven.org/index.php?topic=2024 - http://TheOven.org/index.php?topic=2025 - Date:2017.02.09
+History028=Lancelot Add SE Delete Notepad.lnk Command Prompt.lnk // http://TheOven.org/index.php?topic=2232 - Date:2017.09.27
+History029=ChrisR - bob.omb Avoid ReFS update volumes to be sure volumes accessable after PE --> ChrisR Reply 7 and further bob.omb  .. http://TheOven.org/index.php?topic=2243.msg24272#msg24272 - Date:2017.10.09
+History030=ChrisR - bob.omb Avoid ReFS update volumes starting Win8.1SE , Win10PESE and later. - bob.omb Reply 12 http://TheOven.org/index.php?topic=2243.msg24282#msg24282 - Date:2017.10.09
+
+[Interface]
+pBevel_copy_or_expand=pBevel2,1,12,225,82,195,45
+pCheckBox_storport_sys="put storport.sys (2003 and x64) ",1,3,232,105,179,18,True
+SysWow64Path_CheckBox="Add SysWow64 Path",1,3,19,37,132,18,True,"__For WOW64 (x64)"
+pWebLabel2="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+pTextLabel1=Gena:,1,1,234,89,75,18,8,Bold
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+SE_Bevel=pBevel2,1,12,225,132,195,50
+SE_TextLabel=SE:,1,1,231,141,30,18,8,Bold
+SE_Dini_Main_CheckBox="Add Main Desktop.ini",1,3,232,159,130,18,True
+
+[Process]
+If,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Echo,"Basic PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+IniRead,%ProjectDir%\Script.Project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+IniRead,%ProjectDir%\Script.Project,IniVariables,OS,%OS%
+//-
+RegHiveLoad,Tmp_Default,%RegDefault%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_System,%RegSystem%
+//--
+//To be sure VisualFXSetting always 3 default to have UserPreferencesMask fully operational
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects",VisualFXSetting,3
+//-
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,Process_NT5
+Else,Run,%ScriptFile%,Process_NT6
+//--
+If,%SysWow64Path_CheckBox%,Equal,True,Run,%ScriptFile%,SysWow64Path
+//--
+Run,%ScriptFile%,ColorsWindow
+//--
+RegHiveUnLoad,Tmp_Default
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_System
+
+[ColorsWindow]
+//----------- Film Negative Fix S
+//Ex: ShowKeyPlus 5730
+//RegHiveLoad,Tmp_Default,%RegDefault%
+If,ExistRegKey,HKLM,"Tmp_Default\Control Panel\Colors",Window,Begin
+Set,%t%,""
+RegRead,HKLM,"Tmp_Default\Control Panel\Colors",Window,%t%
+If,%t%-,Equal,-,RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Colors",Window,"255 255 255"
+End
+Else,RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Colors",Window,"255 255 255"
+//RegHiveUnLoad,Tmp_Default
+//----------- Film Negative Fix F
+
+[SysWow64Path]
+//Unlike normal Windows where SysWOW64 and System32 are not syncronized - this setting fixes realted things.
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+//RegHiveLoad,Tmp_System,%RegSystem%
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,%t_Path_A%
+StrFormat,REPLACE,%t_Path_A%,#$pSystemRoot#$p\SysWOW64,"",%t_Path_R%
+If,%t_Path_A%,Equal,%t_Path_R%,Begin
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x2,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,"%t_Path_A%;#$pSystemRoot#$p\SysWOW64"
+End
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,%t_Path_Final%
+//RegHiveUnLoad,Tmp_System
+Echo,"Path_A:%t_Path_A%"
+Echo,"Path_R:%t_Path_R%"
+Echo,"Path_Final:%t_Path_Final%"
+End
+End
+
+[Process_NT6]
+Call,TargetVersion,,4x
+//--
+//AfterWin80=Win8.1 Win10 ......
+Set,%AfterWin80%,0
+If,%TargetVersion1%,Equal,6,Begin
+If,%TargetVersion2%,Bigger,2,Set,%AfterWin80%,1
+End
+If,%TargetVersion1%,Bigger,9,Set,%AfterWin80%,1
+//--
+If,%SE_Dini_Main_CheckBox%,Equal,True,Run,%ScriptFile%,SE_DesktopIni_Main
+//--
+//Some shorcuts comes from source - Remove them so creating shortcuts under full end user control
+Call,FileDelete,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Accessories\Notepad.lnk"
+Call,FileDelete,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk"
+//--
+Run,%ScriptFile%,UserPreferencesMask_NT6
+//--
+If,%AfterWin80%,Equal,1,Begin
+//Avoid ReFS update volumes to be sure volumes accessable on HostOS after PE  --> ChrisR Reply 7 and further bob.omb  .. http://theoven.org/index.php?topic=2243.msg24272#msg24272
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\FileSystem,RefsDisableVolumeUpgrade,1
+End
+
+[Process_NT5]
+If,%pCheckBox_storport_sys%,Equal,True,Require,File,storport.sys
+//-
+Run,%ScriptFile%,EnvFix_cmd_NT5
+//-
+Run,%ScriptFile%,RF_NT5
+//-----
+Run,%ScriptFile%,UserPreferencesMask_NT5
+
+[RF_NT5]
+IniRead,%ProjectDir%\Script.Project,IniVariables,LocalizeLID,%LocalizeLID%
+IniRead,%ProjectDir%\Script.Project,IniVariables,SourceLocale,%SourceLocale%
+//-----
+//TEMPORARY Addings for backward compatibility (mainly to Test Reg Factory) +++
+//--
+//LangID=041f
+Set,%v%,""
+IniRead,%ProjectInfo%,Project,LangID,%v%
+If,%v%,Equal,"",IniWrite,%ProjectInfo%,Project,LangID,%LocalizeLID%
+//TextID=041fXP
+Set,%v%,""
+IniRead,%ProjectInfo%,Project,TextID,%v%
+If,%v%,Equal,"",IniWrite,%ProjectInfo%,Project,TextID,%LocalizeLID%%OS%
+//--
+//AllID=041fXPSP3BB2
+//Set,%v%,""
+//IniRead,%ProjectInfo%,Project,AllID,%v%
+//If,%v%,Equal,"",Begi-n
+//Set,%t%,""
+//If,%SourceLocale%%OS%%OSSubType%,Equal,00000409XPPro,Set,%t%,BB2
+//If,%SourceLocale%%OS%%OSSubType%,Equal,0000041fXPPro,Set,%t%,BB2
+//IniWrite,%ProjectInfo%,Project,AllID,%LocalizeLID%%OS%%OSServicePack%%t%
+//En-d
+//--
+//SourceLocale=0000041f
+Set,%v%,""
+IniRead,%ProjectInfo%,OS,SourceLocale,%v%
+If,%v%,Equal,"",IniWrite,%ProjectInfo%,OS,SourceLocale,%SourceLocale%
+//XpRes=041f
+Set,%v%,""
+IniRead,%ProjectInfo%,OS,XpRes,%v%
+If,%v%,Equal,"",IniWrite,%ProjectInfo%,OS,XpRes,%LocalizeLID%
+//--
+//Keyboards=1
+//Set,%v%,""
+//IniRead,%ProjectInfo%,OS,Keyboards,%v%
+//If,%v%,Equal,"",Begi-n
+//If,%SourceLocale%,Equal,00000409,IniWrite,%ProjectInfo%,OS,Keyboards,1
+//Else,IniWrite,%ProjectInfo%,OS,Keyboards,2
+//En-d
+//--
+//TEMPORARY Addings for backward compatibility (mainly to Test Reg Factory) ---
+
+[UserPreferencesMask_NT6_Info]
+// UserPreferencesMask - Win 8, 8.1, 10 needs this value to make IME Toolbar appear
+// 9e,3e,03,80,12,0x,00,00 : only if x is 1, IME Toolbar appears (to precise, bit 47)
+// Win8PESE, Win10PESE's default value : 9e,3e,03,80,12,00,00,00
+// Windows 10 default value  . . . . . : 9e,1e,07,80,12,00,00,00
+
+[UserPreferencesMask_NT6]
+//RegHiveLoad,Tmp_Default,%RegDefault%
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x3,"Tmp_Default\Control Panel\Desktop",UserPreferencesMask,9e,3e,03,80,12,00,00,00
+//RegHiveUnLoad,Tmp_Default
+
+[UserPreferencesMask_NT5]
+//UserPreferencesMask -> a great set of Explorer settings -> more info at "Tweaks and Settings"
+//We need to close fade effect to get nice qemu-x64 tests so UserPreferencesMask option here to ease tests
+//Also we need a start value so Tweak plugins can change settings (RegWriteBinaryBit)
+//UserPreferencesMask XPsp3x86 default settings: 9E,3E,01,80
+//UserPreferencesMask XPsp3x86 MUI default settings: 9E,3E,07,80
+//9E,20,01,80 -> disable Fade options
+//RegHiveLoad,Tmp_Default,%RegDefault%
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x3,"Tmp_Default\Control Panel\Desktop",UserPreferencesMask,9E,20,01,80
+//RegHiveUnLoad,Tmp_Default
+//-----
+
+[EnvFix_cmd_NT5]
+//Only fixing ProgramFilesDir (+ Wow6432Node ProgramFilesDir) value is enough to fix setup.exe path troubles - others made to avoid in case troubles
+Set,%w%,%ProjectTemp%\EnvFix.cmd
+Call,FileCreateBlank,%w%,OverWrite
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Microsoft\windows\CurrentVersion /v ProgramFilesDir /t REG_SZ /d #$q#$pProgramFiles#$p#$q /f",Append
+//-
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Microsoft\windows\CurrentVersion /v CommonFilesDir /t REG_SZ /d #$q#$pCommonProgramFiles#$p#$q /f",Append
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Microsoft\windows\CurrentVersion /v DevicePath /t REG_SZ /d #$q#$pSystemRoot#$p\inf#$q /f",Append
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Microsoft\windows\CurrentVersion /v ProgramFilesPath /t REG_SZ /d #$q#$pProgramFiles#$p#$q /f",Append
+//----
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Wow6432Node\Microsoft\windows\CurrentVersion /v ProgramFilesDir /t REG_SZ /d #$q#$pProgramFiles(x86)#$p#$q /f",Append
+//--
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Wow6432Node\Microsoft\windows\CurrentVersion /v #$qCommonFilesDir#$q /t REG_SZ /d #$q#$pCommonProgramFiles(x86)#$p#$q /f",Append
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Wow6432Node\Microsoft\windows\CurrentVersion /v #$qCommonFilesDir (x86)#$q /t REG_SZ /d #$q#$pCommonProgramFiles(x86)#$p#$q /f",Append
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Wow6432Node\Microsoft\windows\CurrentVersion /v DevicePath /t REG_SZ /d #$q#$pSystemRoot#$p\inf#$q /f",Append
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Wow6432Node\Microsoft\windows\CurrentVersion /v #$qProgramFilesDir (x86)#$q /t REG_SZ /d #$q#$pProgramFiles(x86)#$p#$q /f",Append
+TxtAddLine,%w%,"reg.exe add HKLM\Software\Wow6432Node\Microsoft\windows\CurrentVersion /v ProgramFilesPath /t REG_SZ /d #$q#$pProgramFiles(x86)#$p#$q /f",Append
+End
+End
+TxtAddLine,%w%,"Exit",Append
+//Call,StartDocNotePad,%w%
+FileCopy,%w%,%Target_Sys%
+//RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\RunOnceEx\320,EnvFix,"hiderun.exe /w cmd.exe /c EnvFix.cmd"
+//RegHiveUnLoad,Tmp_Software
+
+[SE_DesktopIni_Main]
+//Tip_1:
+//...Start Menu\
+//...Start Menu\Programs\
+//...Start Menu\Programs\Startup
+//Folders created by Explorer.exe - Better have them Localized ready for multilanguage source
+// + with Explorer.lnk and "Command Prompt.lnk"
+//----
+//Start Menu - Start
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu"
+If,Not,ExistDir,%f%,DirMake,%f%
+ShellExecute,Hide,attrib.exe,"-S -R #$q%f%#$q"
+ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+//-
+If,Not,ExistFile,%f%\desktop.ini,FileCreateBlank,%f%\desktop.ini
+//-
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21786
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21786
+//-
+IniWrite,"%f%\desktop.ini",LocalizedFileNames,Explorer.lnk,@#$pSystemRoot#$p\system32\shell32.dll#$c-22067
+IniWrite,"%f%\desktop.ini",LocalizedFileNames,"Command Prompt.lnk",@#$pSystemRoot#$p\system32\shell32.dll#$c-22022
+//-
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//Start Menu - Finish
+//-------------
+//Start Menu\Programs Start
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+If,Not,ExistDir,%f%,DirMake,%f%
+ShellExecute,Hide,attrib.exe,"-S -R #$q%f%#$q"
+ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+//-
+If,Not,ExistFile,%f%\desktop.ini,FileCreateBlank,%f%\desktop.ini
+//-
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21782
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21782
+//-
+IniWrite,"%f%\desktop.ini",LocalizedFileNames,Explorer.lnk,@#$pSystemRoot#$p\system32\shell32.dll#$c-22067
+IniWrite,"%f%\desktop.ini",LocalizedFileNames,"Command Prompt.lnk",@#$pSystemRoot#$p\system32\shell32.dll#$c-22022
+//-
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//Start Menu\Programs Finish
+//-------------
+//Start Menu\Programs\Startup Start
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+If,ExistDir,%f%,ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+If,Not,ExistDir,%f%,DirMake,%f%
+ShellExecute,Hide,attrib.exe,"-S -R #$q%f%#$q"
+ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+//-
+If,Not,ExistFile,%f%\desktop.ini,FileCreateBlank,%f%\desktop.ini
+//-
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21787
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21787
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//Start Menu\Programs\Startup Finish
+//-
+
+[AuthorEncoded]
+Project_Medicine.gif=6153,8204
+Logo=Project_Medicine.gif
+
+[EncodedFile-AuthorEncoded-Project_Medicine.gif]
+lines=2
+0=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
+1=5n3+0VJ430MGtWGuLJTcUF0T8DYQ+ktotHbv9++/Xt90c/Thob07P8XTqH7PoqpiaLqzvtlvV3CTvAIjt39xgLQpLDeEJ8LW8c+kC/VuC83pnjt4DUTkM4m2STXz45tXJ3/c9i0enfI6/Sg40AOKKQbLESaKIText33hidxMRSuZsa9sNn6duveW8PDzFBdeCuOezmeiPDADBmYoz5aWR+Gm0sTfVnmqoJplqIvyIPSz5nOqClf7NJ8R0Lt4NFiGUhTLkw6RLW0sphTAObY+BERKu+b7HxB4DFpnAkkW22dqls8vU7itz30GoRPo4LTPkoazXKrDgivjajzHozqhhC00jDekYeIcvZO+KgOenKhjSzJeyfGZl5NixBKHMuTWGRvePNEKyu001mhftqcFNXhq7RjsyQiEyzeMLAbtc09WRjINPARRivs5BPiuX72AQDMcxOHP11n3LZYIZNhvOhfZHTdNJOKzTCIFumg/iGT7JPhnd62kShlA4WKzSJsFQB5k8zUmhHdpTYurEgL0s1nLyRHEdqMcWDiwY4AfKwWL2en+9AxwE6jiNAKglkoiSboUvILfvQ0GmdKBE6UoB8bZVrMUsg3FfpX8IZi/BfADAHW323IxfddyxxccShoAelNMmHjdkjm4x6wSYmpt8HQxMgq5lnXkstvlYjL1QhHYSEehPMa2AexSTUCpA3ksM872fqvdnKlkKuuuNkh9Rkfh7tAwq3uuW7Pcg3R1WeLeWY7o/EWeE3mJI4IkPougFGlblrFA2iWNhWdxLgYocBbINpYRWDvWQFPWtNe8KFGXMRDUKcOxd2YAU/ZksojqffOk6+iXI6aqx93QYLSASUEA63xrdqkJ6y4Ni8M0wmgXoQ814CA1zMOB03bVK4Gxx45m2w1wN3lUX40ww9peYBQosaKJoydgeRx+O3ljvbLBVxhAToNGRaBKqZpKlOSIwA2V+FvOjOV2Xim8WGI8wLCpGZj4NzX7bI2wrxX5igWhrDVksePZegq0P1bcru73BEGmz983NjUD3ykxiOouNiFfUcWNiIX7zDrJIoNtGYDfoPXniLLryh47y3NvGVR1oGCV60zoaqkVz702CJGTmNZIrl4CY5kQLKY1vxrwSDPN4oGhbJOhMdhI2WC5E3xQf3ofbwkbHXkbVCzWFpuX1y4sQsoQcNpUohwW+2mPvAm6yKGkZVIpaiM5auoCF4z9m8bI+KjOTExC6ZhBFFe/FWCymkWkTwKaU9EXmnJyim5dBkIPb0BMepb0V2fcwSkyM5B5H5AtDBl3Fnbb+Xxn2TgYsXXvlxT/Eogr5glMbAyDmW70sYOryYRpgAxHkr2AW+QrsH/JLVdks6Vs239p/pMhSEZ2tvIEimOB60TH4P/7Ks8lSKOi5gXWJp2qTBEw4cqUVaXI8lz2SQ3g1S2Oubtu5sQPamY3gCJI0Fh1ZCOAC2Rwh3pZN4XJnjsRdbmfg97oKJBXNtR/ITIbKZiqrhEs9+x66Sts+K87LOurFs9po1uETrnrtRjoHKEXgiZBS/IoqOi5Ei4NeRTFLJ5c7GWj7mlw6Jc714NDgpQQB0RfgrdQrmd2Q83hOarDbXaeov3SHtZLPPXHQ0atFUBeCwAKkqIT/lb7nObhwWIK9zSxdIJSzJOaYAEsXCDNFJWCWYnx1uK5cg4cLWGKgONgSQoPsC5Tb4Wp6O2r24lDL3TRdXXDQ3YnleM7eVlXa5gQeEpZ3uGCUW7sd4YxSJAJ4jlei4pXXdwithxGd8f2YQunAV/Yq/0cKacOWe6fjSoXkH7ekskhBYHPueF6pDqnTEV7NvY+VKkL+QMSzcWem5NwqECQEyyx2D4vOGzayfr6LiJPFTWWpJ4ZZe74P6PBh0dR5u2ou+uTxdK5MgY4pMabLVIXXyb4/zCfyUYh7XPEuIgHeASIm6BpMY4E7QcUekMIkTTIyUiaoOVw7m4jBoanY8Nb+YuuUe6Q6j5bpN1RAA1YIt0cvaUGuYwDeTQ5cZB2CCdHtBcJX/rzpRgF0RhVwqDZyTgiIp5GfvxiRvS5xDIO3GxrXpWPQgxggesZmSCztOVLUiqYrvi9fjymsUtGDTsC0dxCK/uO7nIb3NgZefwookyAFrwlic3WytI1OTQlradIGqGtcg+4OFAyzQ9SkwXj4UsPE+JMTO43cuvlfsCIxpTlP0+0AK0C7tsi9Nz5W9KAOg4hBSEnKvKAQAeJ476h33PMOuHqWwf31pm73V3lW7kCCZ+yNjcJOKLrNGGfPGLldR1y6X9FgHYs+jx8p1iEUsiOWjPbOhEm7K998J5T0G1DVShHtgl32cHBzhP9kTMIn1xz0NoD1VrXmER3VGTAZuYyHOKGC0qcRUOVsxVHNGC23II1Xa2jfZlzpJUh+4p552SX2kRXy4gfOAjliWqMeuy4fulY/WESDmhPg8ATRIgNMc27WarfZWziyruF4Wkjb49I6NNRQwZXLaIP9YpS7zsTfanp3G9d3XQrRqEfMFj+nzIXFPQ5SMEdVstFRi6OdpOZIBr8GyBoI2y08npHXcOI/EBUoH8GLwyuLFkN6LQPqLGfDixyie9CHwk5foBBJlLQDt3JQShe0nwP6DXgbDv0k7SXn5QxvPG0M1pGDV/xWR/+p/ba9+cF49/HTkk3Hnp+zuvRIEADLWYghgmVpQYInbYpbUesc1KMecZUvtXZ08ibiWQA3acZrxfw5GdU+8oDdiJ6QoaxHcGEDbKI6k9v6ATlrSJClm/bxbSB6kpfG5mWW4swORUY8KFyA0eN1THOQBJhF1E6rCxHhY4WpKTO0ZPo4fMqJa71GLtSvv2i0kPt1TOtRaAU0RPDI9JCLsDjJjQo3Z+HlSbI8Y1WZ7IGTFtw/S5KeGvlYg6z0QRkunugFQcinyU10gcuqIR+mQ2jwCCYC+CC/FglIu1GPOvD/Jso5Bi/Unb8PLziVyjwVSPQFQ4D49/KJvLz96y2t05eVAhD/CjAnTEIypACJcal3ANa0AI381tsuz6WmyeaxlbLmKbL4N76v6jX/Dgh5Eh6t5ITRYiP+uDJEF9ovxZ6TjwArGB8Qr9JR2NubEurdDqlX8+5SoIRvqkQTKQr6cn7VtEwC/SMM8vegnYaIcPLgqhp4WgBorgGGiR6VEK0kuALhr4ojw7MRDnvFTxdSaS3Lb3XuY0zBCqKaptQyS/ZxxKFwpG3JGou4lhsKtAJXvnyCBbgYjqZrsUArRUhzOV6w28xg0KH4bPEhrbIAVWYynWYrPbwbbxHikGP9NPL21S8bRx739Lir43m6vxNDb3dpJZyjXutxC04gaopGVF30ol/C4OtQEl+jRY57ItX1T7VruSZQdujSPpxr+pS58UZEjeU0wYVY3h7Km+qRHoy9gQY8Emwz7RyeJEFZXsnlDr1Hj3ph1SMWDwL1SNeohibUGC5zdsmAVsHBOddbq1AJSOt4u2jUCGy2TgwUP7065O9qcrk66ojwI8BHW00+sEBcEhKNcfA8Xf9QdR3fHtbxF0kWf2gnWpGFkKRN+xdOmf3fRxDXThWj5kUH5aC/ylwrlR76VPpCHFjUzf4ecLlPmPYLDTto56ywS0rdT9w9e+fNhwgDHQFgj6VX68WwJ9IKrpVG9eWbKXw3HhUhFSwOabdDb/FuLcA+YnwZF4Of+95zEZc72wA6Xq49rUcfihwsLq/yQgwTpXUOnIz8x9agDnbwk9C1PnVXPEY2RM260W700D4IUBalqb5dr4uIsge+P5sdf3M/PVM85GXzDqNyVG3301ccYSb29DD++AaQrDC1jm/grjk9WnN+tEIZWrldbeSNN9qmhvfRXPmKqVG2nPYY1PiaXnZ7m/EmiWxetHkW4PsgeTPVYzpLdY2ThFKqGDo35jrNGthXLP4VsZLarWJ9T8SmG1Nr+qMvYEHvph6uTRdgyU5E0mb7RMvGrXH7TW+Hclq/q6LjBn5+mYSFSWUWAF3PJ2pXkqsDHZYf/V3f6f/VX/1e7kQTM/w+9MUv5eJwTCSjKz0pNLon3TU3JTM7MS9VLz0xjGAUjBVwUh9BbxbHLX0sOl2RgAgC2FwssQ1NdHgEAAAACAAAAMAAAALUX
+2=AAAAAAAAAQAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

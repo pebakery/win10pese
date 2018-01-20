@@ -1,0 +1,381 @@
+[Main]
+Title=Best Emulation
+Class=Emulator
+Type=Plugin
+Author=TheOven Chefs, Lancelot, Galapo, ChrisR, JFX
+Description=Runs your ISO with best possible (available) virtual machine (emulator)
+Credits=http://TheOven.org
+Version=022
+Download_Level=1
+Level=8
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.08
+Depend=
+Disable=%ScriptDir%\AA_Best_Emulation.Script,%ScriptDir%\Bochs_Emu.Script,%ScriptDir%\qEmu.Script,%ScriptDir%\qEmu_X.Script,%ScriptDir%\VirtualBox.Script,%ScriptDir%\VirtualPC.Script,%ScriptDir%\VMWare.Script,%ProjectDir%\VirtualTestY\AA_Best_Emulation.Link,%ProjectDir%\VirtualTes\Bochs_Emu.Link,%ProjectDir%\VirtualTestY\qEmu.Link,%ProjectDir%\VirtualTestY\qEmu_X.Link,%ProjectDir%\VirtualTestY\VirtualBox.Link,%ProjectDir%\VirtualTestY\VirtualPC.Link,%ProjectDir%\VirtualTestY\VMWare.Link,%ProjectDir%\VirtualTest\AA_Best_Emulation.Script,%ProjectDir%\VirtualTes\Bochs_Emu.Script,%ProjectDir%\VirtualTest\qEmu.Script,%ProjectDir%\VirtualTest\qEmu_X.Script,%ProjectDir%\VirtualTest\VirtualBox.Script,%ProjectDir%\VirtualTest\VirtualPC.Script,%ProjectDir%\VirtualTest\VMWare.Script
+Web1=http://gena.cwcodes.net/Projects/Gena/VirtualTest/AA_Best_Emulation.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History001=Lancelot Plugin initiated - happy times on improvments :>.
+History002=Galapo fixed VMWare Server check
+History003=Lancelot wb bug with vmware - if detected vmware will not run.....
+History004=Lancelot improved wb bug condition
+History005=Galapo reversed psexec 004 update with encoded RunLimited.au3 in VMWare Plugin (no need to download MS files)
+History008=Lancelot - to avoid WinBuild bug (v77) with Vmware - vmware line bypass
+History009=Lancelot - vmware fixed
+History010=Lancelot - #1 Parameter added for %NoVMwareP% ( when VMWare Plugin fails it returns to Best Emulation to use another Emulator)
+History012=Lancelot - Added DU buttons
+History014=Lancelot - compatibility fix - Date:2016.09.19
+History015=Galapo - added support for VMLite - Date:2016.12.20 // Lancelot - Add WebLabel_Plugin - Date:2017.02.01
+History016=Lancelot - Add NoqEmu_NT6x_CheckBox - Date:2017.02.24
+History017=Lancelot - Add qEmu_X support // Enabled Default For SE (now there is qEmu_X that will always work fine on SE ) - Date:2017.08.20
+History018=Lancelot - Improved qEmu_X support - Date:2017.08.23
+History019=Lancelot - Updated Disable - Date:2017.08.30
+History021=JFX - Reply 1445 Normally on a Windows 10 with enabled Hyper-V, Virtualbox and VMWare notice this and don't start any VM. x2 // Hyper-V active : HKLM\SYSTEM\CurrentControlSet\Control - SystemStartOptions - HYPERVISORLAUNCHTYPE=AUTO (There can be "SPACE" before after this value etc.) - Date:2017.09.12
+History022=Lancelot - Update to get PEBakery compatible Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
+
+[Interface]
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Process_Button="Run ISO with Best Available Virtual Machine",1,8,21,23,298,75,Process,virtual-desktop4848.bmp,False,_Process_,False
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__Download (Update) Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__Upload Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+NOqEmu_NT6x_CheckBox="NO qEmu 0.90 on NT6x",1,3,206,113,138,18,True
+
+[Variables]
+%BestEmuFound%=No
+//----
+%VPcExe%=
+//-----
+%VBPath%=--
+%VBoxManage%=
+//------
+%WS%=--
+%PL%=--
+%SV%=--
+%registrysub%=
+//------
+%NoVMwareP%=0
+
+[Process]
+If,#1,Equal,NoVMware,Set,%NoVMwareP%,1
+//-
+//JFX: Reply 1445 Normally on a Windows 10 with enabled Hyper-V, Virtualbox and VMWare notice this and don't start any VM.
+Set,%HyperV%,0
+//HYPERVISORLAUNCHTYPE=AUTO
+Set,%SystemStartOptions%,-
+If,ExistRegKey,HKLM,System\CurrentControlSet\Control,SystemStartOptions,RegRead,HKLM,System\CurrentControlSet\Control,SystemStartOptions,%SystemStartOptions%
+StrFormat,REPLACE,%SystemStartOptions%,HYPERVISORLAUNCHTYPE=AUTO,-,%SystemStartOptionsTEST%
+If,Not,%SystemStartOptions%,Equal,%SystemStartOptionsTEST%,Set,%HyperV%,1
+//--
+//Set,%NoVMwareP%,1
+If,%NoVMwareP%,Equal,0,Begin
+//If,%version%,Bigger,078,.....
+If,%HyperV%,Equal,0,Begin
+If,ExistFile,%ScriptDir%\VMWare.script,Run,%ScriptFile%,VMWare
+End
+End
+//-
+//Set,%BestEmuFound%,Yes
+If,%BestEmuFound%,Equal,No,Begin
+If,%HyperV%,Equal,0,Begin
+If,ExistFile,%ScriptDir%\VirtualBox.script,Run,%ScriptFile%,VirtualBox
+End
+End
+//-
+//Set,%BestEmuFound%,Yes
+If,%BestEmuFound%,Equal,No,Begin
+If,ExistFile,%ScriptDir%\VirtualPC.script,Run,%ScriptFile%,VirtualPC
+End
+//-
+//Set,%BestEmuFound%,Yes
+//Set,%BestEmuFound%,No
+If,%BestEmuFound%,Equal,No,Begin
+If,ExistFile,%ScriptDir%\qEmu_X.Script,Run,%ScriptFile%,qEmu_X_Process
+End
+//-
+Set,%qEmu_BestEmu%,1
+If,%BestEmuFound%,Equal,No,Set,%qEmu_BestEmu%,1
+If,%NOqEmu_NT6x_CheckBox%%OSFamily%,Equal,TrueNT6,Set,%qEmu_BestEmu%,0
+If,%BestEmuFound%,Equal,Yes,Set,%qEmu_BestEmu%,0
+If,%qEmu_BestEmu%,Equal,1,If,ExistFile,%ScriptDir%\qEmu.Script,Run,%ScriptFile%,qEmu
+//If,%BestEmuFound%,Equal,No,If,ExistFile,%ScriptDir%\qEmu.Script,Run,%ScriptFile%,qEmu
+//-
+If,%BestEmuFound%,Equal,No,Run,%ScriptFile%,NoFound,"No Suitable Virtual Machine (Emulator) Found"
+
+[VMWare]
+Run,%ScriptFile%,VMWare_HuntVM
+//maybe oneday .... :> - try hunt without redirect
+If,%WS%%PL%,Equal,----,Begin
+Set,%registrysub%,Wow6432Node\
+Run,%ScriptFile%,VMWare_HuntVM
+End
+//----
+If,Not,%WS%%PL%,Equal,----,Set,%BestEmuFound%,Yes
+//If,%BestEmuFound%,Equal,Yes,If,%version%,Smaller,80,Run,%ScriptFile%,VMWare_WB_BUG
+If,%BestEmuFound%,Equal,Yes,Call,ExecCall,%ScriptDir%\VMWare.script,Process
+
+[VMWare_HuntVM]
+If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",InstallPath,Begin
+Set,%t%,--
+Set,%tmp%,--
+If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",ProductVersion,RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",ProductVersion,%t%
+RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",InstallPath,%tmp%
+StrFormat,REPLACE,%tmp%,#$q,,%tmp%
+StrFormat,CTRIM,%tmp%,\,%tmp%
+If,ExistFile,%tmp%\vmware.exe,Set,%WS%,%tmp%\vmware.exe
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",InstallPath,Begin
+Set,%t%,--
+Set,%tmp%,--
+If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",ProductVersion,RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",ProductVersion,%t%
+RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",InstallPath,%tmp%
+StrFormat,REPLACE,%tmp%,#$q,,%tmp%
+StrFormat,CTRIM,%tmp%,\,%tmp%
+If,ExistFile,%tmp%\vmplayer.exe,Set,%PL%,%tmp%\vmplayer.exe
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Server",InstallPath,Begin
+Set,%tmp%,--
+RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Server",InstallPath,%tmp%
+StrFormat,REPLACE,%tmp%,#$q,,%tmp%
+StrFormat,CTRIM,%tmp%,\,%tmp%
+If,ExistFile,%tmp%\vmware.exe,Set,%PL%,%tmp%\vmware.exe
+If,ExistFile,%tmp%\vmplayer.exe,Set,%PL%,%tmp%\vmplayer.exe
+End
+
+[VMWare_WB_BUG]
+//If,ExistFile,%WS%,Retrieve,FileVersion,%WS%,%VMwVer%
+//If,ExistFile,%PL%,Retrieve,FileVersion,%PL%,%VMwVer%
+////If,%VMwVer%,Bigger,7.1,Set,%BestEmuFound%,No
+//If,%VMwVer%,Bigger,7.1,If,Not,ExistFile,%Tools%\PsExec.exe,Run,%ScriptFile%,PSExecDownload
+
+[PSExecDownload]
+////http://technet.microsoft.com/en-us/sysinternals/bb897553
+//If,ExistFile,%GlobalTemplates%\Sysinternals_Suite\SysinternalsSuite.zip,Begin
+//ShellExecute,Hide,%Tools%\7z.exe,"e -y -o#$q%Tools%#$q #$q%GlobalTemplates%\Sysinternals_Suite\SysinternalsSuite.zip#$q PsExec.exe"
+//End
+////--
+//If,Not,ExistFile,%Tools%\PsExec.exe,If,ExistFile,%GlobalTemplates%\Sysinternals_Suite\PsExec.exe,FileCopy,%GlobalTemplates%\Sysinternals_Suite\PsExec.exe,%Tools%
+////--
+//If,Not,ExistFile,%Tools%\PsExec.exe,Begin
+//ShellExecute,Open,%Tools%\wget.exe,"-t 6 -O #$q%ProjectTemp%\PsTools.zip#$q http://download.sysinternals.com/Files/PsTools.zip"
+//If,ExistFile,%ProjectTemp%\PsTools.zip,ShellExecute,Hide,%Tools%\7z.exe,"e -y -o#$q%Tools%#$q #$q%ProjectTemp%\PsTools.zip#$q PsExec.exe"
+//End
+////--
+//If,Not,ExistFile,%Tools%\PsExec.exe,Set,%BestEmuFound%,No
+
+[VirtualBox]
+//FindVirtualBox
+If,ExistRegKey,HKLM,SOFTWARE\InnoTek\VirtualBox,InstallDir,RegRead,HKLM,SOFTWARE\InnoTek\VirtualBox,InstallDir,%VBPath%
+If,%VBPath%,Equal,--,If,ExistRegKey,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,RegRead,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,%VBPath%
+If,%VBPath%,Equal,--,Begin
+System,REGREDIRECT,64
+If,ExistRegKey,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,RegRead,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,%VBPath%
+System,REGREDIRECT,OFF
+End
+If,%VBPath%,Equal,--,Begin
+System,REGREDIRECT,64
+If,ExistRegKey,HKLM,SOFTWARE\Sun\VirtualBox,InstallDir,RegRead,HKLM,SOFTWARE\Sun\VirtualBox,InstallDir,%VBPath%
+System,REGREDIRECT,OFF
+End
+If,%VBPath%,Equal,--,Begin
+System,REGREDIRECT,64
+If,ExistRegKey,HKLM,SOFTWARE\Oracle\VirtualBox,InstallDir,RegRead,HKLM,SOFTWARE\Oracle\VirtualBox,InstallDir,%VBPath%
+System,REGREDIRECT,OFF
+End
+If,%VBPath%,Equal,--,Begin
+System,REGREDIRECT,64
+If,ExistRegKey,HKLM,"SOFTWARE\VMLite\VMLite Workstation",InstallDir,RegRead,HKLM,"SOFTWARE\VMLite\VMLite Workstation",InstallDir,%VBPath%
+System,REGREDIRECT,OFF
+End
+//
+Set,%VBoxManage%,%VBPath%VBoxManage.exe
+//-----
+//-----
+If,ExistFile,%VBoxManage%,Set,%BestEmuFound%,Yes
+If,%BestEmuFound%,Equal,Yes,Call,ExecCall,%ScriptDir%\VirtualBox.script,Process
+
+[VirtualPC]
+Set,%Exists%,No
+//-
+//1) SEARCH Virtual PC by Classes
+If,ExistRegSection,HKLM,Software\Classes\Virtual.Machine.VMC\shell\open\command,Begin
+Set,%Var%,--
+//"C:\Program Files (x86)\Microsoft Virtual PC\Virtual PC.exe" -startvm "%1"
+RegRead,HKLM,Software\Classes\Virtual.Machine.VMC\shell\open\command,,%Var%
+StrFormat,REPLACE,%Var%,#$s#$q#$p1#$q,,%Var%
+StrFormat,REPLACE,%Var%,#$s-startvm,,%Var%
+StrFormat,REPLACE,%Var%,#$q,,%VPcExe%
+If,ExistFile,%VPcExe%,Begin
+StrFormat,Filename,%VPcExe%,%Fname%
+If,%Fname%,Equal,"Virtual PC.exe",Set,%Exists%,Yes
+End
+End
+//-
+//2) SEARCH Virtual PC by known path
+//((nstaller do not let custom path ;))
+//2a) Search will hit at first try when ScriptEngine is x86 + Virtual PC x86 ;)
+If,%Exists%,Equal,No,Begin
+RegRead,HKLM,Software\Microsoft\Windows\CurrentVersion,ProgramFilesDir,%PrgFiles%
+If,ExistFile,"%PrgFiles%\Microsoft Virtual PC\Virtual PC.exe",Begin
+Set,%Exists%,Yes
+Set,%VPcExe%,"%PrgFiles%\Microsoft Virtual PC\Virtual PC.exe"
+End
+End
+//2b) in case one day we have "Virtual PC x64"
+If,%Exists%,Equal,No,Begin
+System,REGREDIRECT,64
+RegRead,HKLM,Software\Microsoft\Windows\CurrentVersion,ProgramFilesDir,%PrgFiles%
+System,REGREDIRECT,OFF
+If,ExistFile,"%PrgFiles%\Microsoft Virtual PC\Virtual PC.exe",Begin
+Set,%Exists%,Yes
+Set,%VPcExe%,"%PrgFiles%\Microsoft Virtual PC\Virtual PC.exe"
+End
+End
+//2c) in case one day we have "ScriptEngine x64 + Virtual PC x86"
+If,%Exists%,Equal,No,Begin
+System,REGREDIRECT,64
+If,ExistRegKey,HKLM,Software\Microsoft\Windows\CurrentVersion,"ProgramFilesDir (x86)",RegRead,HKLM,Software\Microsoft\Windows\CurrentVersion,"ProgramFilesDir (x86)",%PrgFiles%
+System,REGREDIRECT,OFF
+If,ExistFile,"%PrgFiles%\Microsoft Virtual PC\Virtual PC.exe",Begin
+Set,%Exists%,Yes
+Set,%VPcExe%,"%PrgFiles%\Microsoft Virtual PC\Virtual PC.exe"
+End
+End
+//----------SEARCH Virtual PC----------
+//-----
+//-----
+If,%Exists%,Equal,Yes,Set,%BestEmuFound%,Yes
+If,%BestEmuFound%,Equal,Yes,Call,ExecCall,%ScriptDir%\VirtualPC.script,Process
+
+[qEmu_X_Process]
+//Check all possible Container files ( following plugin without download requirement)
+Call,HostOSVersion,,1
+Call,HostOSArch
+Set,%FileContainer_x64_Project%,%ScriptDir%\qEmu_X_x64_File.Script
+Set,%FileContainer_x64%,%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_x64_File.Script
+Set,%FileContainer_x86%,%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_x86_File.Script
+Set,%FileContainer_NT5_x86%,%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_NT5x_x86_File.Script
+Set,%FileContainer_NT5_x64%,%BaseDir%\Projects\Yomi\VirtualTestY\qEmu_X_NT5x_x64_File.Script
+If,%HostOSVersion1%,Equal,5,Begin
+If,%HostOSArch%,Equal,x86,Begin
+If,ExistFile,%FileContainer_NT5_x86%,Set,%BestEmuFound%,Yes
+End
+If,%HostOSArch%,Equal,x64,Begin
+If,ExistFile,%FileContainer_NT5_x64%,Set,%BestEmuFound%,Yes
+If,ExistFile,%FileContainer_NT5_x86%,Set,%BestEmuFound%,Yes
+End
+If,Not,%HostOSArch%,Equal,x86,Begin
+If,ExistFile,%FileContainer_NT5_x86%,Set,%BestEmuFound%,Yes
+End
+End
+//-
+If,%HostOSVersion1%,Bigger,5,Begin
+If,%HostOSArch%,Equal,x86,Begin
+If,ExistFile,%FileContainer_x86%,Set,%BestEmuFound%,Yes
+End
+If,%HostOSArch%,Equal,x64,Begin
+If,ExistFile,%FileContainer_x64_Project%,Set,%BestEmuFound%,Yes
+If,ExistFile,%FileContainer_x64%,Set,%BestEmuFound%,Yes
+If,ExistFile,%FileContainer_x86%,Set,%BestEmuFound%,Yes
+End
+If,Not,%HostOSArch%,Equal,x86,Begin
+If,ExistFile,%FileContainer_x86%,Set,%BestEmuFound%,Yes
+End
+End
+//-
+If,%BestEmuFound%,Equal,Yes,Call,ExecCall,%ScriptDir%\qEmu_X.Script,Process
+
+[qEmu]
+Set,%BestEmuFound%,Yes
+Call,ExecCall,%ScriptDir%\qEmu.Script,Process
+
+[NoFound]
+Message,#1,Error,20
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+Echo,#1,Warn
+
+[AuthorEncoded]
+virtual-desktop4848.ico=6318,8424
+Logo=virtual-desktop4848.ico
+
+[EncodedFolders]
+Folder
+
+[Folder]
+VMHDD.vmdk=2234,2979
+nvram=1000,1334
+vmxfile.vmx=499,666
+
+[EncodedFile-Folder-VMHDD.vmdk]
+lines=0
+0=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
+
+[EncodedFile-Folder-nvram]
+lines=0
+0=eJztWF1rFFcYfs7M7AfjJjMxq2ybwE5VWim52OjWj0ba2ezGNKDJYqC0FOmKvYgVIRaRXBg4Y1H3IjSrhNIa6FroRaEpWPoH5qZieyUiXni1l4KCQ1uaXKyZvmeOWdfGUAQxFzkPu/t+zHmf85z3zMzCOXzkw1EGoHh4bJwMONrxpiYSbi3I61zDOYaF2YkFyyBo8WDACKmSJ3twzvFvXAaWGrzPd1Zqq1YwnL/71lOyDrpEn8YvNRl/s30Mz4XQks/n2rQY9H1barli1YSWJrTj06Xj07gdN+niHX1OB+zER2g6/h9dTJSmJ3bhPTss/sqQmalGHAJs2X3twaZkizuN/p44MKVvpcAdnQ/Ds/HSvfKzWs4aT1Q8iafEBBM8l8GXjF869r0cPPnb4/DTN5zbF/+8qT9/aS8VQsuZE6cKQpfTCwyNF0vRBQcYLZRHsoiJVBYz+uDg+MhP+nds6NDY8EgMsRm9UDw4zDTRho+ZpCu7tEdg2AwTyyEX98IAhZonGsw1brqdmAQ3YaMZcjOwDGEaVlKYW1ZKGN+ymyHM61Y6/XcnFWeM1CzwlYesj00UpzV4Dtg1JEUA6K706GdSDmDgFeAzme6AFSBOno1jpIrEMNPvoCjKJZZS7wvr3TLqsOuOPevaVRs8C28HvJ3w+uDl4OXh7YN3AOfLuPAFZmvwfoD3I7wFdFxHlyClNfnLtHoTjWUDOqV4NBnMWgopxMg3UlJRCYklPfKK5GmRl0BiShed641TzYVAx2K0/QUSKlAhajHP+Xnq5MNm2GMG4SMDvZTyM2IfoBlt21o7fZFL7yiVrRCIbs51gv+jXwqYVbbFzHMnkK3Ykd4+QbZzFdn+Lkn27mZpB7pb5BXa6BXyHFVfuWrSWh18a1IfOITW+3CECZrhPEn+SyhvhItJWG56DfFTMePnLdL9AN0t/gyN/vp1k6foGTqJOrfr1+y6b2cb9ho8HM422Ty6B9MtHnGHzH2OOtJZZy0J1dPdZ+TKcARbWqWuGH1AjnZXdbtMk43Jee6HYbhI9qEIyH/UNpgYt/4fY/IyMTKGgGotkVhxglAyWu2EMD5hGtuGXP+u3fl39uzdt//QwVJ/EeuDAtgzcbHEWroKg8XS0CsS5gA3r2pP48FXM+1q7P49MhU2Tf9+0+SxUEFBQWGDYL3evAoKCgoKGwjq1EKdWkCdWqhTixeCOrX4D9SphYKCwsbFer15FRQUFNYb1X8BlryPYnicY80rK0rMZRgFIxTcUITQi5mxy0dOm2nEwAQA4GkFhU/xqIwBAAAAAgAAACEAAACjAwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-vmxfile.vmx]
+lines=0
+0=eJx1kl1r2zAUhu8D+Q/F+Dai7jY2BrsITUIDaR3ijtJL2Tp2RCUdoQ9n2a+f5LiNCt6dfZ73vOdDh4BqkHHV3fy6yU5cMTzZRXH37S6bzxpULe9ID8ZyVFHwI0R7bpyn4uElBV8DYNxqQc9PVEII5atttd8tX/P5rPNgXVnFYFmFfwnS8r9RlOWP68fy8JqHdM7g9uct0QYsKBfh8+H3+gpaLmD0zvJtVW62u3WSx6DnDTyf9SBomEG54JJ28C4p/mddfLZ+WK3yKzLAMIZDZD5rBWp9/tTjZrmropNFr9hEhUs8LbAoPsLjKlfQRwC2+PL9Cql3yMBBk9p5W08U0Yaj4e5MOkPrGlhECo2kIoVeTWI8gYlrI8NX2bYRH6lhE1BNMuutBsUmWezVJSQs1qKgLtwNcYjCkmPXWhJuh9YCkpmuZ6YNMt+4e5Q65NVchGEGR7QOoufFx+swHoudCt4MAkmVH2YMp3yE5k0jV470snLUwfiol1wDMpz+VllHhUiftfP8ffSlC3mhJz1cyb58WR/Kp3zUwB/ulm6fbHBUbDZ59g/qWA4keJzjLsutSMvMSdUD0gyjYMSBFGYIvYoRu7wMX/d8BiYA24gG+Lk9bGoBAAAAAgAAACUAAACqAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-AuthorEncoded-virtual-desktop4848.ico]
+lines=2
+0=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
+1=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
+2=eH5+Z75p5RpUzKXOrDQm/KQXaQzqWvn/sPJ0rdw/fxb/o5Xrz+vTv7Jy/1rN/8pKcXD9lZX/L66D/ryad61P/7B+77pP7BuYFV0r8xN2pbd2rmDuK/sTs589438A9YsiknicEy/LLCopTczRTUktzi7JLzCxMLHQy0zOZxgFIwLsU4XQERLY5aPiA4QZmAAoXQr4jbm+2gEAAAACAAAAMgAAAFgYAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-virtual-desktop4848.bmp]
+lines=1
+0=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
+1=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
+
+[InterfaceEncoded]
+virtual-desktop4848.bmp=6032,8043
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_SE]
+//IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

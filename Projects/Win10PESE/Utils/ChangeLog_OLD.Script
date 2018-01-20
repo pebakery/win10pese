@@ -1,0 +1,198 @@
+[Main]
+Title=ChangeLog OLD
+Type=Plugin
+Author=Galapo, Lancelot and all Supporters :>
+Description=Maintain OLD Changelog
+Credits=Lancelot for his suggestion , Nikzzzz , JFX , ChrisR , JonF , http://TheOven.org
+Version=003
+Download_Level=2
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.02.17
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/ChangeLog_OLD.Script
+Web2=http://yomi.cwcodes.net/Yomi/Utils/ChangeLog_OLD.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History001=Lancelot 2017.02.16 Plugin created
+History003=Lancelot Add to Servers - Date:2017.02.17
+
+[Interface]
+ExtractALL_Opendir_Button="Extract ALL Files",1,8,205,2,119,29,ExtractALL_OpenDir_P_B,opendir.bmp,False,False,_ExtractALL_OpenDir_P_B_,False,"__Open Folder"
+pButton1="Download 'ChangeLog#$q  From server",1,8,61,133,211,25,ChangeLog_Download,0,False,False,_ChangeLog_Download_,False
+pButton2="Compress 'ChangeLog'",1,8,61,158,203,25,ChangeLog_Compress,0,False,False,_ChangeLog_Compress_,False
+pButton3="Attach 'ChangeLog' to 'ChangeLog_OLD...'",1,8,61,183,226,25,Attach_P,0,False,False,_Attach_P_,False
+pButton4="Clear 'ChangeLog'",1,8,61,259,228,25,ChangeLog_Clean,0,False,False,_ChangeLog_Clean_,False
+pButton5="Upload 'ChangeLog'",1,8,61,282,228,25,ChangeLog_Upload,0,False,False,_ChangeLog_Upload_,False
+pButton6="Download 'ChangeLog_OLD_<Project>_File'",1,8,61,108,278,25,ChangeLog_DL_Project,0,False,False,_ChangeLog_DL_Project_,False
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pTextLabel1="Project Admins Only:",1,1,22,31,135,18,8,Bold
+pTextLabel2="Update 'ChangeLog' AND 'ChangeLog_OLD_<Project>_File'",1,1,28,45,364,18,8,Bold
+pTextLabel3="* Buttons are step by step",1,1,36,76,139,18,8,Normal
+WorkFolder_Opendir_Button="Work Folder",1,8,352,183,99,20,WorkFolder_OpenDir_P_B,opendir.bmp,False,False,_WorkFolder_OpenDir_P_B_,False,"__Open Folder"
+pTextLabel4="See  'ChangeLog_OLD...' Plugin (Compare Buton)#$x-> If All OK#$x--> Use Upload button at  'ChangeLog_OLD...' plugin",1,1,65,213,266,43,8,Normal
+pTextLabel5="* Follow Buttons just before updating zip package",1,1,36,92,265,18,8,Normal
+pTextLabel6="* Use Plugin under #$qProject\Utils'",1,1,37,61,171,18,8,Normal
+
+[Variables]
+%WorkFolder%=%ProjectTemp%\ChangeLog_DL_Update
+%TempFile%=%WorkFolder%\ChangeLog_TempFile.ini
+
+[Process]
+Echo,"ChangeLog OLD"
+
+[WorkFolder_OpenDir_P_B]
+Call,OpenDir,%WorkFolder%
+
+[ChangeLog_DL_Project]
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+//-
+IniRead,%ProjectDir%\Utils\ChangeLog.Script,Main,ChangeLogWeb,%ChangeLogWeb%
+StrFormat,PATH,%ChangeLogWeb%,%ChangeLogWebPath%
+Set,%ChangeLogWeb_OLD_File%,%ChangeLogWebPath%ChangeLog_OLD_%ProjectFolderName%_File.Script
+//-
+Call,FileDelete,%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File.Script
+//-
+Call,Download,%ScriptDir%\,%ChangeLogWebPath%ChangeLog_OLD_%ProjectFolderName%_File.Script,10
+//-
+If,Not,ExistFile,%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File.Script,Message,"DOWNLOAD FAILURE- ChangeLog_OLD_%ProjectFolderName%_File"
+
+[ChangeLog_Download]
+Call,DirDeleteMake,%WorkFolder%
+IniRead,%ProjectDir%\Utils\ChangeLog.Script,Main,ChangeLogWeb,%ChangeLogWeb%
+Call,Download,%WorkFolder%\,%ChangeLogWeb%,10
+//Call,OpenDir,%WorkFolder%
+
+[ChangeLog_Compress]
+If,ExistFile,%WorkFolder%\ChangeLog.Script,Begin
+//-
+IniRead,%WorkFolder%\ChangeLog.Script,Main,Version,%CL_Version%
+StrFormat,DATE,%MyDate%,"yyyymmdd"
+//-
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+//-
+Set,%SZext%,7z
+Set,%SZ_Type%,7z
+Set,%SZexe%,%Tools%\7z.exe
+Set,%SZWorkFolder%,%Tools%
+Set,%SZexeSH%,Hide
+//Set,%SZexeSH%,Open
+Set,%SZsfx%,""
+Set,%Compress_S%," -mx9"
+Set,%7z%,ChangeLog_%ProjectFolderName%_Backup_%MyDate%_v%CL_Version%.%SZext%
+//-
+Call,FileDelete,%WorkFolder%\%7z%
+//-
+ShellExecute,%SZexeSH%,%SZexe%,"a -t%SZ_Type% %SZsfx%#$q%WorkFolder%\%7z%#$q #$q%WorkFolder%\ChangeLog.Script#$q%Compress_S%",%SZWorkFolder%
+//-
+If,Not,ExistFile,%WorkFolder%\%7z%,Message,"ChangeLog NOT COMPRESSED",Error
+If,ExistFile,%WorkFolder%\%7z%,Begin
+Call,FileCreateBlank,%TempFile%,OverWrite
+IniWrite,%TempFile%,Info,Compress_FileName,%7z%
+End
+End
+Else,Message,"ChangeLog NOT FOUND",Error
+
+[Attach_P]
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+//-
+Set,%PluginOLDFileName%,ChangeLog_OLD_%ProjectFolderName%_File.Script
+Set,%PluginOLDFile%,%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File.Script
+//-
+IniRead,%TempFile%,Info,Compress_FileName,%t%
+Encode,%PluginOLDFile%,Folder,%WorkFolder%\%t%
+//-
+IniWriteTextLine,%PluginOLDFile%,ExtractALL,"Run,#$pScriptFile#$p,ExtractALL_M,%t%"
+
+[ChangeLog_Clean]
+Set,%w%,%WorkFolder%\ChangeLog.Script
+IniWriteTextLine,%w%,News,"[News_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY]"
+IniDeleteSection,%w%,News_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,News_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,News_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,News_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,News_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+//-
+IniWriteTextLine,%w%,Optimize,"[Optimize_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY]"
+IniDeleteSection,%w%,Optimize_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,Optimize_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,Optimize_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,Optimize_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,Optimize_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+//-
+IniWriteTextLine,%w%,OptimizeFile,"[OptimizeFile_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY]"
+IniDeleteSection,%w%,OptimizeFile_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,OptimizeFile_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,OptimizeFile_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,OptimizeFile_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+IniDeleteSection,%w%,OptimizeFile_DUMMY_DUMMY_DUMMY_DUMMY_DUMMY
+
+[ChangeLog_Upload]
+Set,%w%,%WorkFolder%\ChangeLog.Script
+IniRead,%ProjectDir%\Utils\ChangeLog.Script,Main,ChangeLogWeb,%ChangeLogWeb%
+Call,UploadXQ,%w%,%ChangeLogWeb%
+
+[ExtractALL_OpenDir_P_B]
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+If,Not,ExistFile,%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File.Script,Message,"%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File Plugin NOT FOUND",Error
+If,ExistFile,%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File.Script,Exec,%ScriptDir%\ChangeLog_OLD_%ProjectFolderName%_File.Script,ExtractALL_OpenDir_P_B
+
+[AuthorEncoded]
+Oxygen-Icons.org-Oxygen-Mimetypes-message-news4848.ico=2022,2696
+Logo=Oxygen-Icons.org-Oxygen-Mimetypes-message-news4848.ico
+
+[InterfaceEncoded]
+opendir.bmp=571,762
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-AuthorEncoded-Oxygen-Icons.org-Oxygen-Mimetypes-message-news4848.ico]
+lines=0
+0=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
+
+[EncodedFolders]
+Folder
+
+[Folder]
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-opendir.bmp]
+lines=0
+0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+

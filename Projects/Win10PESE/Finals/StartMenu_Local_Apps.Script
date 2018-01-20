@@ -1,0 +1,381 @@
+[Main]
+Title=StartMenu Local Apps
+Type=Plugin
+Author=Lancelot
+Description=Convert Default Project Start Menu Folders to Local Names
+Credits=http://TheOven.org
+Version=017
+Download_Level=2
+Level=8
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.06
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Finals/StartMenu_Local_Apps.Script
+Web2=http://gena.cwcodes.net/Projects/Gena/Finals/1%20Optimizations/StartMenu_Local_Apps.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=*************************
+HistoryNotes02=Later Follow and test cobraman ideas at Reply 7 (not sure) http://theoven.org/index.php?topic=2033.msg23822#msg23822
+HistoryNotes03=*************************
+HistoryNotes04=Default settings at [Second_Gui_Default]
+HistoryNotes05=SE: Plugin must be last plugin so last shortcut to process ---> + 5 seconds Fallback to avoid greenplay etc.
+HistoryNotes06=Gena: Taiwan do not work -> does not break things -> cmd exit after line: chcp 65001
+HistoryNotes07=Gena: "chcp 65001" does not work before Windows 7. It will cause the batch to terminate immediately. -> http://consolesoft.com/p/cmd-xp-65001-fix/index.html
+HistoryNotes08="chcp 65001"  Console should use TrueType font
+HistoryNotes09="chcp 65001"  Font property for MS console in this case must be of course changed to "Lucida Console".  ?????!!!!!
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2017.02.04 Plugin created
+History002=Spanish - Teik Reply 11 http://TheOven.org/index.php?topic=2024.msg22739#msg22739
+History003=Lancelot Add to servers - Date:2017.02.09
+History004=Lancelot Add Set ___DistLang=..... - Date:2017.02.09
+History005=Gerhard S. - Add de-DE - Deutsch / German - Reply 2 http://TheOven.org/index.php?topic=2033.msg22835#msg22835 - Date:2017.02.12
+History006=ChrisR - Add fr-FR - French - Reply 5 - http://TheOven.org/index.php?topic=2033.msg23779#msg23779 - Date:2017.08.27
+History007=Lancelot Update hiderun lines - Date:2017.09.23
+History008=henrava - Add it-IT - Italian - Reply 11 2017.10.25 http://TheOven.org/index.php?topic=2033.msg24449#msg24449 - Date:2017.11.01
+History009=Lancelot Add chcp 1252 -> French Deutsch Italian Spanish - http://TheOven.org/index.php?topic=2272.0 - https://stackoverflow.com/questions/1427796/batch-file-encoding - Date:2017.11.04
+History010=Lancelot Cobraman Add Taiwan - Tested : "Win10PESEx64-Enu" + "Tweaks\Korean IME" Reply 4 + Reply 13 http://TheOven.org/index.php?topic=2033.msg23778#msg23778 - Date:2017.11.04
+History011=sa mo fixed Supplementary line Reply 6 : http://TheOven.org/index.php?topic=2272.msg24543#msg24543 - Date:2017.11.05
+History012=Lancelot Cobraman Fix 1) Erase Defined on translation 2) There are many places seem to not correct ( I add marks to these place ) Reply 4http://theoven.org/index.php?topic=2033.msg23778#msg23778 - Date:2017.11.06
+History014=NIKZZZZ Add Russian Reply 14 http://TheOven.org/index.php?topic=2033.msg24551#msg24551
+History015=ied206 Add Korean Reply 15 http://TheOven.org/index.php?topic=2033.msg24552#msg24552 - Date:2017.11.06
+History016=NIKZZZZ Add Russian Reply 20 - http://TheOven.org/index.php?topic=2033.msg24559#msg24559 - Date:2017.11.06
+History017=Lancelot Add StartMenu_Local_Apps_Taiwan_zh-TW_Chinese_Traditional_Big5.cmd StartMenu_Local_Apps_Korean_ko-KR_Korean_Windows949.cmd -> not Supports Gena ;) - Date:2017.11.06
+
+[Interface]
+pBevel1=pBevel1,0,12,-3,81,83,84
+pCheckBox1=Desktop,0,3,1,82,59,14,False,"__Desktop Shortcut"
+pCheckBox2="Start Menu",0,3,1,106,76,14,False,"__Start Menu Shortcut"
+pCheckBox3=Quicklaunch,0,3,1,94,76,14,False,"__QuickLaunch Shortcut"
+pCheckBox4=Startup,0,3,1,147,61,14,True
+pTextBox1=,0,0,1,120,75,21,,"__'Start Menu' Folder"
+Edit_TextFile=StartMenu_Local_Apps.cmd,0,6,84,51,340,245
+Button_Launch_Program=Edit,0,8,13,207,59,25,Launch_Program
+pButton_Show_Second_Gui=a,1,8,467,3,16,16,Second_Gui,True,True,False,_Second_Gui_,True,"__Advanced Menu"
+pButton_Show_First_Gui="<--- Go Back to Basic Menu",0,8,431,22,150,58,First_Gui,True,True,False,_First_Gui_,True,"__Back to Basic Menu"
+Select_ScrollBox=Auto,1,4,216,2,114,21,Auto,Deutsch,Spanish,French,Italian,Taiwan,Russian,Korean,Test
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=2033
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Edit_Button="Open Target",0,8,216,28,98,20,Edit_P_B,Oxygen-Icons_0_016016.bmp,False,False,_Edit_P_B_,False,__Edit
+Warn_pTextLabel1="Advanced User Only",0,1,51,6,142,18,10,Bold
+Warn_pTextLabel2="Normal Users:#$x Hit#$x '<--- Go Back to Basic Menu'#$x Button",0,1,432,85,208,84,10,Bold
+CHCP_Button=CHCP,1,8,428,152,40,25,CHCP_B,0,False,False,_CHCP_B_,False,"__HostOS Active code page"
+
+[Variables]
+%ProgramTitle%=StartMenu Local Apps
+%ProgramEXE%=StartMenu_Local_Apps.cmd
+%ProgramFolder%=StartMenu_Local_Apps
+%SetupFile%=%SetupFilex86%
+%SetupFilex86%=StartMenu_Local_Apps.cmd
+%SetupFilex64%=StartMenu_Local_Apps.cmd
+%OpenFile%=%Target_Sys%\%ProgramEXE%
+
+[Process]
+Echo,"Processing %ScriptTitle%..."
+//--
+Run,%ScriptFile%,Extract
+//--
+If,Not,%Lng_Select%,Equal,Auto,Run,%ScriptFile%,Process_B
+
+[Process_B]
+Run,%ScriptFile%,Language_Set
+//--
+If,%pCheckBox4%,Equal,True,Begin
+If,Not,ExistFile,%Target_Sys%\HideRun.exe,Require,File,HideRun.exe
+End
+//--
+If,Not,ExistFile,%Target_Sys%\Sleep.exe,Require,File,Sleep.exe
+//--
+Call,FileDelete,%Target_Sys%\%ProgramEXE%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%,%Target_Sys%
+Set,%Target_Prog%,%Target_Sys%
+Set,%ProgramFolder%,""
+Set,%PE_Programs%,%systemroot%\system32
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+Require,File,Cmd.exe
+Require,File,Chcp.com
+//--
+Set,%C_1252%,"French Deutsch Italian Spanish"
+StrFormat,Replace,%C_1252%,%Lng_Select%,-,%t%
+If,Not,%C_1252%,Equal,%t%,Require_FileQ,c_1252.nls
+//--
+If,%Lng_Select%,Equal,Taiwan,Begin
+//--
+//which NLS file(s) for Taiwan to get chcp 65001 always work
+//c_65001.nls - no such file - Require_FileQ,c_65001.nls
+//I guess Taiwan chcp 950 - but who knows Thai (Windows-874) can be too ?
+//--
+If,%OSFamily%,Equal,NT6,Begin
+Set,%f%,StartMenu_Local_Apps_Taiwan_zh-TW_UTF8.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+//-
+If,%OSFamily%,Equal,NT5,Begin
+Require_FileQ,c_950.nls
+//-
+Set,%f%,StartMenu_Local_Apps_Taiwan_zh-TW_Chinese_Traditional_Big5.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+End
+If,%Lng_Select%,Equal,Russian,Begin
+//Russian chcp 866
+If,%OSFamily%,Equal,NT6,Begin
+Set,%f%,StartMenu_Local_Apps_Russian_ru-RU_UTF8.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+//-
+If,%OSFamily%,Equal,NT5,Begin
+Require_FileQ,c_866.nls
+//-
+Set,%f%,StartMenu_Local_Apps_Russian_ru-RU_Cyrillic_Dos866.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+End
+If,%Lng_Select%,Equal,Korean,Begin
+//Korean chcp 949
+If,%OSFamily%,Equal,NT6,Begin
+Set,%f%,StartMenu_Local_Apps_Korean_ko-KR_UTF8.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+//-
+If,%OSFamily%,Equal,NT5,Begin
+Require_FileQ,c_949.nls
+//-
+Set,%f%,StartMenu_Local_Apps_Korean_ko-KR_Korean_Windows949.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+//-
+Set,%test%,0
+//Set,%test%,1
+If,%test%,Equal,1,Begin
+Require_FileQ,c_949.nls
+//-
+Set,%f%,StartMenu_Local_Apps_Korean_ko-KR_Korean_Windows949.cmd
+ExtractFile,%ScriptFile%,Folder,%f%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%f%,%Target_Sys%
+End
+//-
+End
+//--
+//Registry - Use Utils\RegCPE
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun
+If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\hiderun.exe,%ProgramTitle%,#$q%PE_Programs%#$q,"/w #$q%PE_Programs%\%ProgramEXE%#$q"
+
+[Language_Set]
+If,Not,%Lng_Select%,Equal,Test,Begin
+Set,%w%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%SetupFile%
+TXTAddLine,%w%,"Call :%Lng_Select%",Prepend
+//Fall Back to English for new or missing variables
+TXTAddLine,%w%,"Call :English",Prepend
+End
+
+[Extract]
+//--
+//LocalizeLocale=en-us
+//LocalizeLocale=es-es
+//German - Deutsch
+//LocalizeLocale=de-DE
+Set,%Lng_Select%,%Select_ScrollBox%
+//-
+If,%Select_ScrollBox%,Equal,Auto,Begin
+IniRead,%ProjectDir%\script.project,IniVariables,LocalizeLocale,%LocalizeLocale%
+If,%LocalizeLocale%,Equal,de-DE,Set,%Lng_Select%,Deutsch
+If,%LocalizeLocale%,Equal,es-es,Set,%Lng_Select%,Spanish
+If,%LocalizeLocale%,Equal,fr-FR,Set,%Lng_Select%,French
+If,%LocalizeLocale%,Equal,it-IT,Set,%Lng_Select%,Italian
+If,%LocalizeLocale%,Equal,zh-TW,Set,%Lng_Select%,Taiwan
+If,%LocalizeLocale%,Equal,ru-RU,Set,%Lng_Select%,Russian
+If,%LocalizeLocale%,Equal,ko-KR,Set,%Lng_Select%,Korean
+End
+//--
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%ScriptFile%,InterfaceEncoded,%SetupFile%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+//Extracting-7z-Finish
+//--
+//Run,%ScriptFile%,Language_Set
+
+[Launch_Program]
+Run,%ScriptFile%,Extract
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+Echo,"Close Editor. Waiting......."
+System,FILEREDIRECT,OFF
+ShellExecute,Open,notepad.exe,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+System,FILEREDIRECT,ON
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%
+System,RefreshInterface
+
+[Second_Gui_Default]
+Echo,Test,Warn
+Set,%pCheckBox1%,False,Permanent
+Set,%pCheckBox2%,False,Permanent
+Set,%pCheckBox3%,False,Permanent
+Set,%pCheckBox4%,True,Permanent
+Set,%Select_ScrollBox%,Auto,Permanent
+
+[Second_Gui]
+System,CURSOR,Wait
+Run,%ScriptFile%,Show-Hide-First_Gui,False
+Run,%ScriptFile%,Show-Hide-Second_Gui,True
+System,RefreshInterface
+System,CURSOR,Normal
+
+[First_Gui]
+System,CURSOR,Wait
+Run,%ScriptFile%,Second_Gui_Default
+Run,%ScriptFile%,Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Show-Hide-First_Gui,True
+System,RefreshInterface
+System,CURSOR,Normal
+
+[Show-Hide-Second_Gui]
+Visible,%pBevel1%,#1,PERMANENT
+Visible,%pCheckBox1%,#1,PERMANENT
+Visible,%pCheckBox2%,#1,PERMANENT
+Visible,%pCheckBox3%,#1,PERMANENT
+Visible,%pCheckBox4%,#1,PERMANENT
+Visible,%pTextBox1%,#1,PERMANENT
+Visible,%Edit_TextFile%,#1,PERMANENT
+Visible,%Button_Launch_Program%,#1,PERMANENT
+//Visible,%Select_ScrollBox%,#1,PERMANENT
+Visible,%Edit_Button%,#1,PERMANENT
+Visible,%Warn_pTextLabel1%,#1,PERMANENT
+Visible,%Warn_pTextLabel2%,#1,PERMANENT
+//--
+Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+
+[Show-Hide-First_Gui]
+Visible,%Button_Upload%,#1,PERMANENT
+//--
+Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+
+[CHCP_B]
+Run,%ScriptFile%,CHCP_B_P
+
+[CHCP_B_P]
+Echo,"Waiting Close CMD screen 'Active Code Page'"
+System,FILEREDIRECT,OFF
+ShellExecute,Open,cmd.exe,"cmd.exe /c Title: 'Active Code Page'&chcp&pause&exit"
+System,FILEREDIRECT,ON
+
+[AuthorEncoded]
+worldtravel_4848.ico=5944,7926
+Logo=worldtravel_4848.ico
+
+[EncodedFile-AuthorEncoded-worldtravel_4848.ico]
+lines=1
+0=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
+1=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
+
+[InterfaceEncoded]
+Launch.bmp=913,1218
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+StartMenu_Local_Apps.cmd=3611,4815
+Oxygen-Icons_0_016016.bmp=710,947
+
+[EncodedFile-InterfaceEncoded-Launch.bmp]
+lines=0
+0=eJxN0WtMFFcUAGCM/W/SXzSxaZOmTX8YtdLSJk1jQsIPpUZNSGMTWk1tKvFVMDVGCaIWRKWGgrLaRbq4AruwT92XWoshUVAhKtFAYVmWZXdgdmdnZ+beedy587gdXJr05JyTm3O/5J7kVuywrS15E+VWfWzVOqvetmpNSemb+b7V+/8HI5vLgggx+K73x2/sP1Tb9+QBRXEwrxAG4qyk0lClgcxAhRBi+RN/L1T9efTM+OUQgZ38qyvceHW0YWNrVe2z7M/j7OGXuYNP0keD443PmcHnScvvdbbXPTz4gtBVd2sqQ19vi+yqffHb7uBPW7tPHM+QujjfEOdqwzORR8PR0IDlNzeXX50fmCTshp7yj65vXt/xbmVg//6RptIDa05myeEptmGG/d73OjI3N70wY/myXze1TfXO6sInPV+WXn7vw65Pz0LSkHy67tuSJo7Uz3Dn4uze4GSMQs8oYPmd16p33N3zWX/F5wNbKz3bym5u6dZIa+r+O4fWnufI8Vm+dY7bd2fyr2X5ZZqx/BGvw5/wD9H3jzz6pe5xfWcieo/I2/u/qLhxqjlLTs0LzQnu2IPpO6zqja/4jleZGm99cMo3QWanyNI0EWsCu8u6djUmwOkkbEyClhRoHk20zxUuTaQs75wHLlY8FLF91bLlgwNvbTr9flVf04UMOk+pZ5LCSqbAxTgT/mcJIGz53oVCRCFejUTISt4mpEckXTncRsELadCyCFsWhba0NEbxxf9yLhRCkuli8S3esBc0O610MehqDlm9dRFepJQ2ClxKwdF0oehdiyAsmR6o9YtGH685AHEUkJ3F13JKO610LMPfl8ROGo1luKJ3Z8CwSvyi7gG6W8C3CoqTQw5e6ykgW06x5dCVnGzLCKOZ1X2GKPAAkaho+CTNJ+o+qLtFw5lXbuZRd16+zqAbednBoKdLQtEPUmAYkduyFlRwUMbWYh5Bc0tmn/WWbHQzkp03/qClCRoWvUdQR1RzBJv3kBlTjZhihJDmFbWAZAwJ2MXjQQH7eXWCWfVuWgwDHBNxTDKioh6GWgjggIADvOrnsItTvSyyZ+Wx7KoHmlFM0TBF3YS6aZ3hf0Pe6lhnNUPWjKL/F4rXcD14nOPySSzNS87QS8otYBgFIw9MY4bQ7szY5SXNdJ4zMAEARyYGGuVhjnsBAAAAAgAAACYAAABHAwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+Run,%ScriptFile%,First_Gui
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[Edit_P_B]
+If,ExistFile,%OpenFile%,Call,StartDocNotePad,%OpenFile%
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nJP0r6hMT83T9UzOzyuON4g3MDQDIr2k3AKGUTACQBkLhM5nwi6/K8vLh4EJAIwhCu0OuYbLAQAAAAIAAAAzAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[Folder]
+StartMenu_Local_Apps_Taiwan_zh-TW_UTF8.cmd=849,1132
+StartMenu_Local_Apps_Taiwan_zh-TW_Unicode.cmd=921,1228
+StartMenu_Local_Apps_Korean_ko-KR_UTF8.cmd=897,1196
+StartMenu_Local_Apps_Russian_ru-RU_UTF8.cmd=978,1304
+StartMenu_Local_Apps_Russian_ru-RU_Cyrillic_Dos866.cmd=878,1171
+StartMenu_Local_Apps_Korean_ko-KR_Korean_Windows949.cmd=841,1122
+StartMenu_Local_Apps_Taiwan_zh-TW_Chinese_Traditional_Big5.cmd=800,1067
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Taiwan_zh-TW_UTF8.cmd]
+lines=0
+0=eJxlU1tPGkEUfjfxP2zS56LFNjYkk8ZKtaa1NUL1kQzLABuXnc3uUMSnWsEL3uolRKyNF2yKQqFqFFu0/hlnZ/epf6GzEWHBh92dme+c2e+c7zv/ajceP5QSUOns8HgEEQc1GIOK4O5+0uvqfu5yPxNGkSonhadClBDV09VFogh/RIoLa5EuSQmhSZcaVV8QrEoicHf39LhiesTd09v7/NH9orOjs8OHiBAIBLySTt5CJQKmoo/94zbg8dShPlFEui4FJVkiSWDlUvSkxAqL9GrVkd/vHfMC++U4G5BkFPBDfUIHxvGmsT9Pq99putrMwTFVs6/GCqD5DXZZbk3tx2oSmIdzZv66FRjg5QHjyw79tdgKfFBkLE4A80feWsk6mLz21nmw/RI72G3j4UVhDUaANbfMzlOOjsCIgnXCu2cW/hjZavuvQkhGBNVLsz6n6MpuI2QoBiMS76axtUdnVnlIAxl+OQr409iPIpGrpoHbmzL9e+Tg/A6RBNYmALs4NasVR3wME7s3ioJEAqzpPVasWJ/yrLrtIKihBJRlYG2dsukiW5h13DuCNQKDMgI0vUzLC2b+2wMxfUiMa7bY7KzGzk94FE0XGmifQiSfmkxAjd+xumxlN8zijlnbtYqbLTFjkhbXbQpGZb0BvEFJWz2kcU+szBulDDu4alNyBOo6rzykA1qZ5XADuFPXTn0gsC+uqjKKIYVAjXvmapNmjtpUHsAaUnSuprW2Zv7capwPwhjiNKczxvxp81CDalQSOYXrEy4g+31Md7JNDeMykYZRSIKAHm7T43Vn6e/DYUlE4O7jpJjUCYoF/BjL+n1j230YjHMb5g6tpaberyZVmTPXAn2hEFbuJ4ldXrPyvj2LmT2anrmtXTS9Ph4YUsLYtjqnZZ7NmYWMwz0RPui8RSxXs5ZSTmOOc1lwQufik7gK6jvhziGOMriqJA5laQoSe27N3Fdjo0SXeHMGMcGCB+Hwf2OAB+Z4nNMKLkksKvFNzSuN98lPTsyJdywoKI4PScwsT8yLr8rQDQmPDw1xs9BLzk1hGAXDD+xmgdDPmbDLhy9KUmFgAgDzkxL496FhQQEAAAACAAAARgAAAOcCAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Taiwan_zh-TW_Unicode.cmd]
+lines=0
+0=eJyFVU1ME1EQnoOJCcR4MRyMhyacBa0aSJONQWrBH6ClStFikHa3pbR013aBtggnYyj+VYs9cEGPXL144awnQqKcjMaD8Wbk5sX48810acB9xUx237735n++mf3z20fXaIJSNId3lo5QC/lAHoqTSTHK4XRabjzkpVN0mrqoA2s33l46h9NhMsiiDBXxfRbPJNkgCzo6QTb2BjTN4p2FjAmNSZynsNNxVsCZBR6LzoPXxJqCZU1snQF1wHoeEl58d4G6qd11wj7zE4Y+Gx6MC/mhKY/9VfE+CZ0l2DmJaCMNCY50v1QPrMdxkgelEH8KkaVwX4S8v5YZay0dHVfb64XFETxa40vNFxCdBr4473lK49FoZap/8uutuZBKr4mILeRt1ysT8Wj0frRj8SDtvZJN9vtw+dfSQZwBpxoandBbxw7ivA6+DPTG4bVGX8q1qjrGfkS/P75MYa2gjs+PXUJwxjXafOpfUNeS77OwzTWtY8S3/Nr4n7eMsYzcG06W71XWwm6pS4LypGSC/fAktoIrU26+AboAxGvO6r7nbog7eM+B7/vQehO8DMpuTjqCs/lqYeeRWt80eOxGTbMgtmFD5nZlp9Re+aDIGGeBEcNdnQGho2ppK5BT+xIUL2zwxiRbiC9Ujn5aao72sPgwA6nd7vh5985COTqpqHAPPOaahQWP7FFObGyGq88/Ln9+vL3aXGZE4pgRDHlr79JuzivYFRsY5qwz71K8Jb1RUOM5KLjMO7nXhf9NdKPg5tyL913NzVEfhp+WzEKumSERcKycnWNP1ofV+A+IF8ydd3AdWhl94Obrk0lsiA+XK96YioO7iKcp62G+O+NbwanFtogKxzPwkzM8gHNd+kuj4zee3VRVYwgdmhCtXLe9u2aZKEqfch54DpigjHjEKGk+B2LwirtPr3VW3RwX8bewpB45qQajRAeZkrt6d2uLL+f9tRfDvaEfg6q5FJFez8J/U6bS9urbhy3L6r5LOn+QegXnZw9VVRMh4iDPBJ7yTmfYggTtnzsPcU+pM1bHOctNyB+nhNVuzPro/W96m0ytPpkFJuR88l9N0F+Q7oY1eJzTDS5JLCrxTc0rjffJT07MiXcsKCiOD0nMLE/Mi6/K0A0Jjw/Ny0zOT0nVS85NYRgFwwwcYofQuszY5cNDHOsZmAAe3RPYo7BeSAEAAAACAAAASAAAAC0DAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Korean_ko-KR_UTF8.cmd]
+lines=0
+0=eJx9VG1P2lAU/k7Cf2iyz74MdYkkzeJEnXFuCzj9SGq5QEPpbdrLkH1CrQkDEl1GF4xgWMKmLiRDRMVMs//Te5v9hZ1OoMVlIym59zw95zz3PM/trx8/gytYQ4Li9wWDnIRigcknXBipco57PMMlCVGDExMkifBbpIxjLTEhKTG0Na4m1acEq5LIByanpsbTeiIwPTMTeDRY+H1+X3hhlUvhsZXw/VJMiio3Oz17vxv7/8/JjyDCRaPRkKSTF4KS4Pu1HKJ9aE4Uka5Lm5IskRzPGh+s61tmnHuS50PrId7588QWJRlF1wQ9pfN2uczqt5zVzdOvLTcJp1XNKYyVwRvMNNmVOVpiHqu5AU4vLtlOaxRfhFENO3TybPf9KP5GkbGYGnY4bli9gm12WaPmIfs81KdKKxVWbNrbrYdsQyiuCQkPzj63rfY2/XbK6mXPFIWEgnUCirETg5ZOH3KJIRkR5DmPden2WE4LCQkkYPUu/d5jJ+4kVp+FeXiG+zASwSoaPygwBF4iksVaiqdG0y722FEZqHqy0pg4E1UUJBKeHR1YnTMOJsE+dT1ENZQVZJmn7TP7sEI7d57yr7FGhE0Z8bTVZUaT3VQ9YASJGc2xCL3oMrMwjM8pRIqouaygIZ6Ze2AddlehH2tOZ+u8PfLeuqRlQIX2OSs1hsAKyjkqIw2stNPk7EOT1XsuJ0HX4cwxSLsxaDtPOwW76sL3+ju5/9A+klFVGaWRQgQN7F1r2KUeKG+XXGaLcHcVHUS191u0UWal+hBaEtJI561OmR0bblAT1KQkQvy6R4+rduXOVTIjE2kVxSSBp2d5aAJKO6byKPAqHpdEGFW1aVduwW1erjmdoHR0DWMZzlOqOV7cq3F03/D6KIQ2M3+sSjuGdbM3jC9sqTKcRIvOxWJYgWHuHsB1sXptjl7lrXYeVrT4xb0UG9FlJY5526yCWuzoFEiCZibI67FUAj4cMDfaKLCTvMOn2PPemw0QDmd1MAfJqHx/x/3lHdCdZARZeicQ53sAZNjuNtjP71vCBHNBhOO/AQQhSj54nNMKLkksKvFNzSuN98lPTsyJdywoKI73zi9KTcyLz87X9Q6KDw1xs9BLzk1hGAXDD7iyQmhxZuzyhgeOn2ZgAgCYZBKeF9/O+AEAAAACAAAARgAAABcDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Russian_ru-RU_UTF8.cmd]
+lines=0
+0=eJyFVF1PE0EUfW/S/7CJz3wE5MEmG4NUkCBoylfiS7Nsp+3G7c5md1asT7SgxoBCkERjjGLwBxS0sbQU/sLML/EveO70a5tobdLN7syZc+8999z53bpJZaIwdCwvmUiljJXFpSf4GRnmu2VjatIoCuGnJiZEkfFnzBvnQWHC8XLs+bhf9O8K7ju2OTU5PT1eCgtTt2dm7tzqvSQTq0wY2Ww27YTioeUVzCAay6wnExSnuzVr2wyxtxzXEWVTnqmKqqodeS0v6U1eyJqBxwUWfsramLxQ+70PoumSzKU30iY9Ymvzjsuya1b4NDTld1mTl7KFc3S+bqhdUDew0ECw/QENL/kBZcM9Ux6pHfUSIGQA8DW+9oe557iPhD+B9AY8lDKgso0jCLA3iDh8ah7SmfIrNhqqIpsjkOuey+2npjwF4Jc815BmP1ITwgyf7Z9+kO7VfdIJ8r+60ywfWAWC19Ue+Gvyh7ySddkGuqZeAX0Ya6VV8Hgo0HSi19g25Klo5ia1ZbiIHHOZYKY81iCCkUhUQotC/FuuxZJVcOAZLcA5Tlep5IoB0LlO8hf+V7LRP7B8L2Pi3//OMBuGDUaGjsm2wsQ2DyD4N8hQVQcxnhIX1G/PY7aAR8l9XYo2dL00sKAVULvyJlZ/wLYt1+3aDymTcVuxiI95IKwtl2k/wGBVXWiLBKlgYU9VY+BVZkeBnpEPaMobaiGJPRgkTzirfnnbCsB3pHtH5oVf0PVKrNsE3HCCKBwNW2Jl8ioLwrhd0eGWeqdeo/jLQR1WGEK6nEbWtEFbsb50jKyJziBZx8d1tRMvLvJ9l5WYJ6wAFZ5QNjBW4y+e7Rc8zwPmhdqHI+Bd8IJVYoj/Uf4YGuSFwPKLjo2d92Qp+HDYw8uRK5xllnMsU35GjJY60PQ0HT+H5uJRPu/YUP4LcahKvLZyKFgpu8a5G5K5GtqJdXC0Rw/lVlQgviq2aogWz+v+c99F+UF2Npfjnp50uoZI93bH2urQUG9lE027IcVRXZ0qHFwSm9lFL89JkjZSJsBVb9j1iOmHtuUu2bt/uTVic1HAvU79OkXMeufm7u9uwjx8O4RvReR3L/be/JF9YaYuJKYVfCkiy3VeWEJfwsfamDRXNHANGvnefZRMLHDBjRTjefpIJv4APs6Bknic0w4uSSwq8U3NK433yU9OzIl3LCgojg8qLS7OTMyLLyrVDQqNDw1xs9BLzk1hGAXDDpxgg9DpzNjld2s7fGdgAgDvnBOpVIXJOAEAAAACAAAARwAAAGcDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Russian_ru-RU_Cyrillic_Dos866.cmd]
+lines=0
+0=eJxtlN1u0zAUx+8r9R0icb0NbXBBJQvByj4EA9QNJnFTZambRUvjKHYY5QpBJSaEYGg8gJs1mtc03is5bgFN5eMVsKG0ZmrVJo3Ph//nnF9cqcUYe3ZQLlUq1sPN+8/Ux6rB0G9by9etfULCytIS2YfoOQwWUeQueUEDvlgM98PbBIWeA5avr6wstrC7fOPmzVvX/v0pl7Yhser1etXD5IEduCCKF2pPyiW9z8R0x3Gg2nvP8z3SBieFFPy8kAm1koT36EIy1jcdMfFfrT6tAn0x1tY8H9Z3bHyAwWd6nvFknFpDyTImx7M41AojvRMKwCvxhSVUcjH+P8UqCtvgHb9ggic0Z6k1+pPtf6c1VTv4yFnRn2t+EvjIOQDH9Kyb8b7O1KdTx6nrRnWit6PyzNVbhc3IdkEnHQl6OkhzSb+yX0ZDbTdAmKjWdxg9zXkhWZ9eVdKAPiQQvOZFIWnOkyydU9Rmy3Y9NZpj2uWSWoXFu4Ke0QGbemzdrQH1mz7XoKNAiK7kNap7CMkhig7Ap1R+N6JaiOgeBwF0CDjpURWWj8+tnhI/vDC0R/DQ9n09SpHwzMj7GEXE3vOhar+QtJulVsFH0nDYhk4caY7e0ksmqYlZQLztsH1oRxC8yiVLmBgWs25r81MvivE8433Y1kOHEZ7MvZ/9/Jaez2TZGKt6G8pMBc9mjfvLgo47yRUMqTClxmHowxYMiB21QUcMT5kBwVT3GopggPWYr3hM7Ot2C2JwdGqgvB7Z4b7nYPBG0JFJxVbsE28LNjwbvB9m3yUbpD2DqUfNpudA8GHEClNnGxPYqu8g5GPwiRUyHeRzcd2LXfBBZrRn7HjvReirAqL6nUYDBYp2fsGzXNHyy/rRLy4yLlIx897YrW8GTQSO8hEXA827YlF9uRj2/ryQzIDJVUeKatxxmqojY7q+q+aEDrECgcShPk00npesb00MRmFq3CS2fe+lTfSZ8JoJOaQZO/v7npVL64ggqwJRUz+US78BqsdH/HicMwsuSSwq8U3NK433yU9OzIl3LCgojg8qLS7OTMyLLyrVDQqNd64syszJyUyOd8kvtjAz00vOTWEYBcMDKLNC6B9M2OWzBSOeMTABAFAWF3gWPLCkAQAAAAIAAABSAAAA+AIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Korean_ko-KR_Korean_Windows949.cmd]
+lines=0
+0=eJx9U1trE0EUfg/kPyz43ItpKxgYpDZtLTUqSW0fw3QzSYZsdpadiWn8N6lSKNK4oY3NbrK52NzE0hYU662ghSoilIoQ+yDiLEk3myIu7DLzfXPOfnO+c7zzREVQdru8XgGjsGf0mhBAipQWrk4IMcYU78gIiyHyAMnDRI2OYDmMVoaVmHKDEQWLwDM6NjacoFHP+MSE58rFwu1yuwLTfiFOhuYD3aUYExXh+vj17m7o/48VH0RMCIVCPkzZbShHQS+XJbRHTYoiohQvYwmzNKit5t6VDEfklG/RB6yPA5vBEgotQBqnoFmv7gva70K2H0ASimplJHKXLR/sfBoMnSJKussZevHrIDfDa9PL+rLYGeTuyxIR4122+jl31HpbW3PIuuXricqfmUZjfVCWD0VUGL2gas+01cJZ1XQUCEZlQhk3o3a+9fHyf8NIQgxdaM4VbH4uAaOY17W6q+8+z9iw/2YA8NfeB5DIzVdBN9aG7yCWImocbB42s5VOY91xPkGYVShZRiIDlXPtSKitlU8dulSUgpIE9C/tDSPryHmPqAwuSwjoT0qb9YyDCSIxqVomG4Vy20YnZYaDSjoFVQTKrZJRf58/4f/SGgMnFrGapED/ZvbheZS2zEIqBQ1NaGere30NkFJ+sTAFxg/9QD9vP7KprodW0D8cDCYVRUIJJDOopkH1abNSyDZL/UvzIZMpt6j5a7to1m18FiYQBdrr6qs+pEIlhkUKcofbmVb/tv6kxLAfhTEEhTfNkr6bP3NU9W4kgkUEKtVWy3QOQTBNGUqEFgiRKDB3eAt9EPJ5Rxv40HLSai69k/tug9MrisQVq6HJcJjIvEpmsZM7Fow9LZM73nrR79ul0JwcIaC1nz+p/CmfCrXHRsHRClE+vLwc23qtYxrNrKOpl3j9SYpyZ1lSAb2dcMl2bh1LQgk/hMyaSS1T/NnecLtmCSOCF5HIXym28tp4nDMPLkksKvFNzSuN98lPTsyJdywoKI73zi9KTcyLz87X9Q6CccIz81Lyy4stTSz1knNTGEbBsAB7WCD0DSbs8tdPzVZlYAIA/6wY6IEs/q4BAAAAAgAAAE0AAADYAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-StartMenu_Local_Apps_Taiwan_zh-TW_Chinese_Traditional_Big5.cmd]
+lines=0
+0=eJxdk01PE0EYx+9N+h028WzBooE0mRhsAQlWCS0vxsM63U63I7szm5lZluKnIZRCEAy2FNpipYAlISYiJoZ4wIsniAcT8eBB4izgdtvDvsz/mWeel98zkSTEDiTBQCSiaDTFoAmJEu6+0xvq7guF7yljyDJyyl0lK4QV6eoSWURnEAlRpndhkkazIStr3RfUwhoId/f0hEyuh3t6e/tu/f8JBoKBBBKKqqoxzMUjSHQwl72dnHQNkciNqV/TEOc4hQ0scmDl8v1p+WVh3ucbjU3EgPvyaYPYQGoS8mkOGoevT/L28vfWfmpazD2SEtBY2H3a7hSlVg7UD7Z5uzwoSwJbLzbi7fI4Mag2DSrHe+e+6A9jN7HLTu1TW+wYyjCog7VXxS++2qFOKBeyT5sDe2pngDQykEBXZex+XfvhmYdNqGPZsdV4tdQ49OT4gzEgH289hjSJhYG1kw3Vl+JjJBzKpkHtonLh22tS4baAEKQJsL1VOy3xuu3LiCEHGgZYfpf/3fjpO26UMgFTBgJLIwWn8qGDUAJpNnPpLYvix4KzeOlZ+onACSvnQIZA/mhzfudziTTP2swTmNlcRlxlnjyCci4PxDh4s9ecqU+1gRmFnMva0tI4Up/y5GtUrk8HrYRtWQYyERGQ5cB2cWm8DdkgZYhwCadZ3D/21CFoIg6q0UalJTFoZbHGwduZamm/Uj1qMbENgeMojSEoZDeivgKfZDJYQ+D6488pxwUy1SSlBr/qWscUpWwdrC/s/PGkgVnLkIkytT+dpuR66nef176tXC4+y1cWf7Vmc1IdJhkqR7N5VjlfT/rg6/ISyg6Uyc5f30BNyk5Th0uIwrbAzUpxKfvylZCEDQ08B4V7rcrnjUb+IBgYooIqEUQz/wDC87EfeJyzCy5JLCrxTc0rjffJT07MiXcsKCiOD0nMLE/Mi6/K0A0Jj3fOyMxLLU6NDylKTMksyczPA6pyykw31UvOTWEYBUMb+LBA6MVM2OX71n85wcAEANKDG+s7JextAQAAAAIAAABZAAAAowIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-StartMenu_Local_Apps.cmd]
+lines=1
+0=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
+1=P3ZoMaJubYXZCb8lIqPZeutY20J8ndJK+XHzaKP2ed9vI1iaUMWl3vtsjODJEWwFS9X3YBvblrM38R0EIqQ3RpXayY5LhsaTafQy5vXixiWfegrS5mNHHV4EFd3twYxZi6B215x6Npy/pyWk1hqm2DZjV1r6DllZS7gk4XqtLLwRdo1t3ItVGdv8ZaKcpbPwvV8pS4tW8fL831olnxdHWBFzvk8jJS08qyN6G+sDS0uupLXt1lmsW1bPBloS49NbmqeJIaN7Pb2kZxa7230HRr3a6kzQb9+QWsjzrdZdVTX8vV5KudNkpp0IWOUudvw9pEqkV4Ka/Zy4QYyguc1aabu4A3ObB7Te/JS/95kUne1RW+J625yi+zKFX1pHY+HNUsnE8A/PgYV7M+b2i/O/S2wxNV31LbrRXspVO/cF6u4rnd3TIdrqY6P435KspLP60C2v0MRbN0G7117slr7m9UzL/q5L3bFX8+0/1Z/mn745RRHnEzTgls92DLk+JoK06uNwQdznNOr+SXHd8N0XcDIDd3fQvvc0ruz8PFlvGZODq+/EwsRRu4UJPiV3/nObsIxu0vioHGuc9tvPl99v9xxX8AbLdQGXickwguSSwq8U3NK433yU9OzIl3LCgo1kvOTWEYBSMBKDlD6MO82OVZj7fbMzABANZKDCSLutiiAQAAAAIAAAA0AAAAww0AAAAAAAABAAAAAAAAAAAAAAA
+

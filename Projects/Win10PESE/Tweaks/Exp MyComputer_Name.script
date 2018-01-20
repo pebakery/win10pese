@@ -1,0 +1,221 @@
+[Main]
+Title=My Computer - Name
+Type=Plugin
+Author=apinux
+Description=Change 'My Computer' Name
+Credits=http://TheOven.org/index.php?topic=778
+Version=008
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=778
+Date=2017.11.24
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks%20Explorer/Exp%20MyComputer_Name.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks%20Explorer/Exp%20MyComputer_Name.script
+Web3=http://w8pese.cwcodes.net/Projects/Win8PESE/Tweaks/Exp%20MyComputer_Name.script
+Web4=http://win81se.cwcodes.net/Projects/Win8.1SE/Tweaks/Exp%20MyComputer_Name.script
+Web5=http://win10se.cwcodes.net/Projects/Win10PESE/Tweaks/Exp%20MyComputer_Name.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Back to Default Settings button hidden
+HistoryNotes02=Adding %UserName% variable not possible --> explorer starts without %UserName% available (same problem with RegAddBoot) result with "%UserName% on Gena" (=> here we do not mean depracated %UserName% on old builder)
+HistoryNotes03=Another way: Venerence Reply 4 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,Computer
+History002=Chris old Computer Name (on Win8 to change  "This PC" to "Computer" ) Reply 13 http://TheOven.org/index.php?topic=851.msg10894#msg10894 - 2014.01.30
+History003=Lancelot Added DU buttons - 2015.10.12
+History004=Lancelot Added New Servers - Date:2016.02.09
+History005=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History006=Lancelot Changed Logo 48x48 jpg -- ied206 reply 5 - http://TheOven.org/index.php?topic=2082.msg23172#msg23172 - Date:2017.04.02
+History007=Lancelot Added Venerence Reply 4 Tmp_Default way --> does not require RegAddBoot with Gena  -> removed RegAddBoot // Improved Download // Improved ProjectName - Date:2017.09.01
+History008=Lancelot %UserName% deprecated ( use Call,HostUserName when required (Already used on plugin) ) - Date:2017.11.24
+
+[InterFace]
+pButton1="Back to Default Settings",0,8,255,243,156,25,Process_Default,0,False,False,_Process_Default_,False
+pRadioGroup1=Options:,1,14,31,40,238,91,"'HostUserName' on %ComputerName%",'ProjectName',"Old 'Computer' name Localized String",Custom,2
+pTextBox1=Custom:,1,0,93,151,158,21,Heyooooooo
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=778
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%wRegAddBoot%=0
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,%OSFamily%,Equal,NT5,Begin
+Set,%wRegAddBoot%,1
+IniRead,%ProjectDir%\script.project,IniVariables,RegFactoryState,%RegFactoryState%
+If,%RegFactoryState%,Equal,Enabled,Begin
+IniRead,%ProjectDir%\script.project,IniVariables,PostApiRegScript,%PostApiRegScript%
+IniWriteTextLine,%PostApiRegScript%,ProcessEnd,"Exec,#$q%ScriptFile%#$q,Process_Main"
+Set,%wRegAddBoot%,0
+End
+End
+//-
+Run,%ScriptFile%,Process_Main
+
+[Process_Main]
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_Default,%RegDefault%
+//-
+If,%pRadioGroup1%,Equal,0,Begin
+//--
+//Adding %UserName% not possible -> here %UserName% uses HostUserName
+//Using HostUserName is still a good idea ex: "ChrisR on Win10PESE"
+//-
+//If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
+//RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
+//--
+Set,%UN%,TheOven.org
+Set,%t%,""
+//Override HostUser Name with Author name
+If,ExistFile,%GlobalTemplates%\Download_1Upload\9_Info.ini,IniRead,%GlobalTemplates%\Download_1Upload\9_Info.ini,Info,Author,%t%
+If,Not,%t%,Equal,"",Set,%UN%,%t%
+If,%t%,Equal,"",Begin
+Call,HostUserName
+Set,%t%,1
+If,%HostUserName%,Equal,Administrator,Set,%t%,0
+If,%HostUserName%,Equal,Guest,Set,%t%,0
+If,%HostUserName%,Equal,System,Set,%t%,0
+If,%t%,Equal,1,Set,%UN%,%HostUserName%
+End
+//-
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%UN% on #$pCOMPUTERNAME#$p"
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%UN% on #$pCOMPUTERNAME#$p"
+End
+//-
+If,%pRadioGroup1%,Equal,1,Begin
+IniRead,%ProjectDir%\script.project,Main,Title,%PName%
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%PName%"
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%PName%"
+End
+//-
+If,%pRadioGroup1%,Equal,2,Begin
+If,%OSFamily%,Equal,NT5,Begin
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
+End
+Else,Begin
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-33010"
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"@#$pSystemRoot#$p\system32\shell32.dll,-33010"
+End
+End
+//-
+If,%pRadioGroup1%,Equal,3,Begin
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%pTextBox1%"
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%pTextBox1%"
+End
+//-
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+//-
+//History007 Venerence Reply 4 Tmp_Default way --> does not require RegAddBoot -> removed RegAddBoot
+Set,%wRegAddBoot%,0
+//-
+If,%wRegAddBoot%,Equal,1,Begin
+//If,%pRadioGroup1%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
+//-
+//"Cemal on Gena"=> we can escape this with 3 ### but this ends with "%UserName% on Gena"
+//  So better leave as it is ( a surprise to end-user having HostUserName on top of desktop ;)
+//If,%pRadioGroup1%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"###$pUSERNAME###$p on #$pCOMPUTERNAME#$p"
+//-
+If,%pRadioGroup1%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%UN% on #$pCOMPUTERNAME#$p"
+If,%pRadioGroup1%,Equal,1,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%PName%"
+If,%pRadioGroup1%,Equal,2,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
+If,%pRadioGroup1%,Equal,3,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%pTextBox1%"
+End
+
+[Process_Default]
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_Default,%RegDefault%
+//XPSP3 - "LocalizedString"=@%SystemRoot%\system32\SHELL32.dll,-9216
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x2,"Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}","LocalizedString","@#$pSystemRoot#$p\system32\SHELL32.dll#$c-9216"
+RegDelete,HKLM,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+
+[AuthorEncoded]
+MyCustomComputerB.jpg=3923,5231
+Logo=MyCustomComputerB.jpg
+
+[EncodedFile-AuthorEncoded-MyCustomComputerB.jpg]
+lines=1
+0=eJztlXk01P3bx7+DIcvdGLshKjvZd4nfTRFCBkPWbMkM5iajsReR3V0aNJZJqOyVGVsIYynKvmTLMklEZtIwWcaj+/49yx/PH8/y33Oe9+dc53Odc73Pda7X+ZxzfQ4/HC4AvJZmFmYACAQCrh4d4HARXHgBG3ANACwsFIFjAACwABogFkDgKJM9ioC7bADo6DY4in8chYaauq6BmpaBmsZJNT0DTV0DTXXgb7ECrKC/vexHAWL5O0f+6vjPXAn8t/PwP85xZP1VPJwBTAF2NjA7mI2dHczOwcF+jIuXi4uTk0vgOISHV1hARERYQEgIdkJGEiYmJS4kdPLMSSlZOQVFBVFJZTVleTUZeQX5X01AHBwcXMe4+Lm4+OVhQjD5/7YO2wHoMUANUGMFnQZYoCBWKOiwC5A8mhMM+kv/5D1CZD2al+MYJxf3kYHEC7CAWFlZ2FjBYDa2o2rMUR1gg4L5Tqn/zs5v58VxOkRA4/a94mNSJi86BOHDVGlN79B4Ti4hYRFRmIysnLyCopa2jq6evoHp+Qtm5hctLO0dHBFOzldcfHz9rvlfD0DeCMOE38RGRCbcSUy6m5ySej/7AS4nN+8h/nFJadmTp8/KK17WEUn1DY1NzZ3kru6e3jdv+0ZGx8YnJj9MTS8uUT4tf175srpG+771g769w/i5+4sLdPRs/6r/lAt6xMXCxsbKxvGLC8Ry85cBygY+pc7O97sdh1cI/2mN28cETO4Vv+jglNKEUwW9Q4e5hKS1FmVov9D+IvuvgcX/j8j+DezfuaYBHlbQ0eOxQgFjoGQxQ/acv71OnZtYmHMRvC8/ZfpVMqtUAevHV+91F+eIn7zkQg5WV5x7D75X9NJrODp3TAY9X+Ayed9AB/eUvxOG8PQNYycFWFKgmvgB6stTm9JPP69s1dXC1G36Ee+qUe31LrHZoQuuSlW+n7WuSc3fUGc63ougNq8phRcp28z0edTq9pWstS81Z/jYCwvdMLO5Wez5zsl4yc1tFR9WKgRJSNx88P58Mfx+xscVM65SdaRbP/reCp705yhaaOpbUM2J21eH1P3aeyLa6YLwGmymsarzy4NJ3F5KrNtKC8am+fS3lFqwTfj5CcTo3Fw3OkCsP0QKSE6QxtNBpciQ0h1hxNYjxNk/VWbFt7bEefybv9UaU2tehv0WPmMHjeg8bSpn8ruI3s7nVuTWklMSyfochWCf+aFZ0LeJXUdUZLNjn7NKyRt1OffbRFZ52PMHIWok98BNn3sjwUZT5bOmzxKCggT8kkYsZkUgebuY1dTRCcGV5/V73K5veaX67+t0JgK7/j+0+5BMlZHFV80E25yzXx+aglPHhNyKlt8APAeojHhRcEq8hd+F7Idwfa5K8RW248SyweSdeoOf5V7wdMfW34yh1igVUmBOAwGVI+/H/zILJ/Lyqv9r1klt+EMBCy62FBb5dbBRw9PjF6deFcUgi0bcOpyCiNVma32u/a7cTdWnBh8a/lF3+qrv8q329pVVh8rnQtPh1cE7mpfuzXQ8ZUu88OMyUdMcdOaJELjAQn6WC7PFKRdylbP/QZ55HuVLrWVb0xClSRUV8EQaWt3v/FZ6Ygv9O1rl/XDV1U8N2V3LBD1WuYiqAxUrTvzEfoaB1c/A3kJUvlWY8oolN5MOkz7FByXKX4O82pvKCtyIEl4nkQaEUodoPIjnX3cLXEJMfXPhVWDJyDzyn42BBek+BVtX6BU3nTSQA72HU3+tRdD/Un+txf91k/9fi/+31uL3zam0haIM2s6SL5N9ssULs1BtNNjhoUOr2s0pLHZlZDm2JrTvgudT0D8K5axaJvbP+umUYMoCdrZmSN9e+CBf+3lp0SrRnhOeSfNUy1o2RsYCNCBWY2x4eHbtNW+bDNa/fTdigMdWLimadVEyObIJka4Zk83kq7RAhL7oD7+36buffpBn6F3Exjig1nk0EtanA4sUiNTtBpWF1DYJWvQNrH2X2NRDB7ltHVKkaxQb4NcoeCCGZaWkN8fmowTHhzK/y3tnrgq2z2Bg4MZL0Y0zahhFEwrbVQmOnfCAeyEqGPw1tb6t6N7fzCG5fnRqo5t0uV3ZhuJkz1CPZenqsHN5Y9QZaQpz5FFrnY3ORSbfgN6g6sK7fOnusbcvA31pP2uC4nt9NA1E0t1dPJ3Iy3npzXqR8G5zMNhFm7aGfAIrLaM7Ss99zipiah4CHbptovvqDDtKho0AFVxU7LdY+TVB926L8VI1Gv4yfgJisLYL4cPO90ichrpPz3A/nKDYUmvy+k6ZhcutZK2ghY9awAwxj7GRW127cr0Q0AlW21RjIspIW6dNclj5UyjCeEOS7wMyMrMwUGb6YvY6lD2mXxxQNY7Yv8poFU6NPrXkzofC4TCF3E4jH3X8/DBjZ1SURUV4F5KupG6cStKbnuqOjtqz0pJQYQRQXd3x3IUm59yu77wP8FoRrbV3orpN4015chAGuHex0VTXHn9SXeFSkoXM+Z+mtbkZfdjKJAVfiGD+0h8v3r0Q+eLzQi9dWtOAxKy2giAKFHoFPe47wh6slleUq2AUFEJDXzdTs43fRDsWdwvUnTnOIWiYJphrKK3m8GzZ04F8LSxEkddKKUkMn1+ZO35/u6IE/dD9K7pnPk0CyFpUTQ8y5I+iZIGwkw6tL8YxYlGbd/Hdh0BymEKQlmu14gDzIiYtQ+pSXRPUtjqgXcy8EeGa6N3OtbX2Az191tJdlcJBPg/jx4aUMqJo543ydpSxtJcoSXChLyr3VQveXuuG9MPGnLMFOsHKgcvKKEjB5OwyA5dKNqvygyP3W+iOemP56T6DCj3pPjaqhW/lO3XSHbxnSwuWP9OKbO+8qZv+IM5X8AeTDHFRK9e16xhPCE0taF01ozWHBruQoq6oEDqK+GmemdGOjxhW7dMqT5ckhVHTuNak2yXXqdoDZTHP3sw8ypyQZkor+kW4lV42F3uv2SsQ/HWvSbi9NrM5KDe1xY8ieYzxyvyuzXgwwWn48fC3MBxpXLb1wliQL003mTKqdbZQHWPVpKyMqQWRaRITbBmf24jE+OlrWd8h246MA+P1btpoh6ToY+ohsC+jhvWIMTlhdT7TCquK1ir0t24e0dYsc5tTiP/N5ePId9dCwz6qqfY7i4CQEDCpa6T2hz5FkqFEWDenpbXDijKWVDNhquQp7Qz2nYtjROOU+kjCbUz1OYySQmBZQngTKqgMyT+T8ob/ukF9pe9A4qPW++qfnXpCjCVpg6yff8iRRcXVnc+QVZwNEUhq6DuZu451XIIhYThBUTIErqVGjEmMvGdt2bJsY3M55JyRBHX0VvTFtyXxS7ukEJLG/m5SkJVskpersn0OPyitcwh3xQtp172kRjoEiKh+qE1GZAjukg5M+1xfaIbnACFRQsFTItqKdjOJqXhB9da+6OJr7rXmO3zOVjHPkHaoZrPWxx82aIiaIWLGE2XSwKOG+Q85RhKkN1fQ+LPOc5OzsWpTa0bSVEj85OL7+dukQci056p/50c56kRVPVOMOBT4I20GFVXpGqOvjVWp5huRD6x+NEx3durPIwrjsYkytoObafMNcu3urN1FxjTPznne6/MihjeWGjH57lKdkpzV9GofcnXl2n2y8kRtLXYHPkxU5rAckR3zytlGnTOYccJrFyiTxj+kwOLeHXCYTjymnmcKjdEPAd6A8DYpdD120JTam6L9Xpi8S383GerRjypfndAdmkGGDxOfjJFmQy20X+b53UyZc82XVDlJWSNM4xS9NSqIX7wWzSF5ttA0MrxWUGS8yy60dgNnYT5vtz3yVFtkNLfu4oGJcxs3lcyR2BdaUKLavlgxlmvELdW5QCX5iJjQqpPLrOGYgk8/ZTxaCiP6bNzGZQYmm5hDuzu3MYR0JsdotCRNNFbma6wgVbLrlWfyzi7meQwHue30hKEddU6rUGjSmXR/mwxvJVhT6bM78e4uh4ALKWfCStnee9ql35gwEYwrWY088cAlPMsL9eRDe7F3fV3iyZR/bJKA2d5XOs5FFrLEyvXvhi+f2OXatY/3OPaO3/nqUJ5azeWwoo+oNKjhElAYfQpziBiHKeHGti/fJZ
+1=Ujas9dYcp0/VxaEv9Y7weDQDg7BcpHHlDgyEIVv+MRZrwZ6xt+QiNWeHvcyulWXbIx2EiDMdrRdvLoH9u8Q+CPvkLd6Yybfk3FYTfJRiw0ROvCPM8hcHUVsfut6RDg5EjValX8en749QuiVaW7vyNzuK2eOTBSE0TnHpQduf4ZrVE7ItIiRXWl3LyL3kfXYrMuDbecWEBPWV2kbt4iMl5fj0sw5qQTkuJEjHhiByPndlJa5OL2jLCbZuPRN2j2lxg7e6YBr6n5AbCsDqvWs5fGa5jqX2OlaRzJwbFKa3HQaNWFm3jK2tVTliGpl7Ozy10cDqq8ixUtLieqVnk10QQp+n3pMRUPcLA/y2yhyThx7WCeBjBP4JoZPDjEwuSB//pMqKNkfaGtV/KnYsvL6cj+KW1hBF+5gZaUS6vq+zWl7c1ejzMHuLBavrfPsJqLm+u0UoYrOdJ/Q6ySOShxiibcBZlKWErHHwLxP+KmorZvExajPc4wTBcht5rZq48/rWB8N77VMB2esneT0d87L1lCW4+VpPYmVRk6LhWaUooqIVn7amNt/F9zjcCM59vzLPTNtDZZhvA1Aq+RQEzDtiJDeGFmLhKd5Xmi5dwzxujNDUFqdu/rOn9yHD/j7OIgmXAL77mvpHosWpNK6IpLhjl1zTNcIhHFB4QgmtEh0GOkpfeY+PwQcC6yc0kXVwhVbGzW2aYvp4UtIkh6DuShEksRC7KYR7UvVe/tmXNIjwFBdXW6DHkMh/YRH8BdURhbCaOOo9ef9XJV2BTq9wlWOpYbOsjdKbHJdn6nFdOq2DbyB7n/+/3Ubci02EWq0G3aHiUzgVrjrhGXBJPrgaTgzckpP6yDbfm+jGK5rWlPGvwXfoZlQd/HVbyvXb2PjTyhv67dhLG2tEaMP26L2uspmLWg0OkikcNdl4uT0/2PTZbYEL0QitqnYM/Tx5AX9OUHFBEFDni4tezGjZVKeJgSokTBJLQEUSZnENRXMKffqG9iLSdvUdlNzE+z6fc5nPoXXmsog3icE/WtdC4tLsnPdc7PLSgtSS1y0ssqSGcYBSMEfBCE0P/4sMsvC9rpy8AEAOC8DGTzKRfxAQAAAAIAAAAxAAAA/g4AAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFolders]
+Folder
+
+[Folder]
+
+[DownloadXXX]
+Call,DownloadXQ
+Run,%ScriptFile%,Settings_Default
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+StrFormat,RIGHT,%ProjectFolderName%,2,%ProjectFolderNameR2%
+If,%ProjectFolderNameR2%,Equal,SE,Begin
+If,ExistSection,%ScriptFile%,Settings_Default_SE,Run,%ScriptFile%,Settings_Default_SE
+End
+If,ExistSection,%ScriptFile%,Settings_Default_%ProjectFolderName%,Run,%ScriptFile%,Settings_Default_%ProjectFolderName%
+System,RefreshInterface
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,0
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,True
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,2
+
+[Settings_Default_Win10PESE]
+IniWrite,%ScriptFile%,Main,Selected,False
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,2
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Selected,True
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,0
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,0
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

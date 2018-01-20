@@ -1,0 +1,214 @@
+[main]
+Title=Revision Check
+Type=Plugin
+Author=Galapo, Lancelot
+Description='Revision Check' provides updates of project plugins that are updated with Revision number.
+Credits=http://TheOven.org
+Version=097
+Download_Level=0
+Level=0
+Selected=None
+Mandatory=True
+NoWarning=False
+Contact=http://TheOven.org
+Date=2018.01.05
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/Revision%20Check.script
+Web2=http://gena.cwcodes.net/Projects/Gena/Basic/Revision%20Check.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Plugin Designed to be runned by a Preparation Plugin (Runned by 'PrepPE' on Gena and 'Main Configuration' config.script on Win7PE SE Win8PE SE)
+HistoryNotes02=Seperated pluginst better 1) to ease frequent revision updates 2) shorter script.project processing to ease reading log
+HistoryNotes03=If,ExistFile,"%ProjectDir%\Build\Revision Check.script",Run,"%ProjectDir%\Build\Revision Check.script",RevisionUpdateOnce,"%ProjectDir%\Build\Revision Check.script"
+HistoryNotes04=If,ExistFile,"%ProjectDir%\Basic\Revision Check.script",Run,"%ProjectDir%\Basic\Revision Check.script",RevisionUpdateOnce,"%ProjectDir%\Basic\Revision Check.script"
+History057=Lancelot [CANCELLED_GenaStarter]
+History071=Lancelot updated v071
+History072=Lancelot updated v072
+History073=Lancelot updated v073
+History074=Lancelot updated v074 - Date:2016.09.19
+History075=Lancelot updated v075 - Date:2016.09.21
+History076=Lancelot updated v076 - Date:2016.10.03
+History077=Lancelot updated v077 - Date:2016.10.06
+History078=Lancelot updated v078 - Date:2016.10.07
+History079=Lancelot updated v079 - Date:2016.10.12
+History080=Lancelot updated v080 - Date:2016.10.21
+History081=Lancelot updated v081 - Date:2016.10.31
+History082=Lancelot updated v082 - Date:2016.11.06
+History083=Lancelot updated v083 - Date:2016.11.06
+History084=Lancelot updated v084 - Date:2016.11.06
+History085=Lancelot updated v085 - Date:2016.11.08
+History086=Lancelot updated v086 - Date:2016.11.08
+History087=Lancelot updated v087 - Date:2016.11.11
+History088=Lancelot updated v088 - Date:2016.11.19
+History089=Lancelot updated v089 - Date:2017.02.11
+History090=Lancelot updated v090 - Date:2017.06.25
+History091=Lancelot updated v091 - Date:2017.09.14
+History092=Lancelot updated v092 - Date:2017.09.14
+History093=Lancelot updated v093 - Date:2017.10.18
+History094=Lancelot updated v094 - Date:2017.10.18
+History095=Lancelot updated v095 - Date:2017.10.27
+History096=Lancelot updated v096 - Date:2017.11.19
+History097=Lancelot updated v097 - Date:2018.01.05
+
+[Interface]
+pButton1="Download Revisions Manually (for tests)",1,8,141,33,214,25,RevisionUpdateOnceB
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+
+[IniVariables]
+MLVersionServer=43
+MLRevisionServer=101
+xnetworkVersionServer=004
+xnetworkRevisionServer=019
+GenaStarterVersionServer=1.2.0.0
+
+[Process]
+Echo,"Nothing to process Here",WARN
+
+[RevisionUpdateOnceB]
+Run,%ScriptFile%,RevisionUpdateOnce
+
+[RevisionUpdateOnce]
+If,#1-,Equal,-,If,ExistFile,"%ProjectDir%\Build\Revision Check.script",Set,#1,"%ProjectDir%\Build\Revision Check.script"
+If,#1-,Equal,-,If,ExistFile,"%ProjectDir%\Basic\Revision Check.script",Set,#1,"%ProjectDir%\Basic\Revision Check.script"
+//--
+Echo,"Revision Check ---BEGIN-------------------------------"
+IniRead,#1,IniVariables,MLVersionServer,%MLVersionServer%
+IniRead,#1,IniVariables,MLRevisionServer,%MLRevisionServer%
+IniRead,#1,IniVariables,xnetworkVersionServer,%xnetworkVersionServer%
+IniRead,#1,IniVariables,xnetworkRevisionServer,%xnetworkRevisionServer%
+IniRead,#1,IniVariables,GenaStarterVersionServer,%GenaStarterVersionServer%
+//Set,%MLVersionServer%,42
+//Set,%MLRevisionServer%,25
+//Set,%xnetworkVersionServer%,4
+//Set,%xnetworkRevisionServer%,14
+//Set,%GenaStarterVersionServer%,1.2.0.0
+//----
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+//----
+Set,%RevisionScript_MLOK%,Yes
+IniRead,%api%,Main,Version,%MLVersion%
+IniRead,%api%,Main,Revision,%MLRevision%
+If,%MLVersion%,Smaller,%MLVersionServer%,Set,%RevisionScript_MLOK%,No
+If,%MLVersion%,Equal,%MLVersionServer%,If,%MLRevision%,Smaller,%MLRevisionServer%,Set,%RevisionScript_MLOK%,No
+If,%RevisionScript_MLOK%,Equal,No,Begin
+Message,"%ProjectName% requires Macro Library to be updated.#$x Download will be attempted from:#$xhttp://gena.cwcodes.net/Projects/Gena/Basic/Build/Macro_Library.script",INFORMATION,10
+Call,FileDelete,%ProjectTemp%\Download\Macro_Library.script
+Call,FileDelete,%ProjectTemp%\Macro_Library_TEMP.script
+FileCopy,%api%,%ProjectTemp%\Macro_Library_TEMP.script
+Set,%_Reserve_Api%,%api%
+Set,%api%,%ProjectTemp%\Macro_Library_TEMP.script
+Echo,"Downloading Macro Library"
+Call,Download,%ProjectTemp%\Download\Macro_Library.script,http://gena.cwcodes.net/Projects/Gena/Basic/Build/Macro_Library.script
+Set,%api%,%_Reserve_Api%
+If,ExistFile,%ProjectTemp%\Download\Macro_Library.script,FileCopy,%ProjectTemp%\Download\Macro_Library.script,%api%
+Else,Begin
+Message,"%ProjectName% requires Macro Library to be updated but download was not successful.#$x Build cannot continue until Macro Library is updated either with another automatic attempt or manually.",ERROR,10
+Halt,"Build cannot proceed until Macro Library is updated."
+End
+End
+//--
+If,%ProjectName%,Equal,Gena,Begin
+Set,%xnetworkScript%,"%ProjectDir%\Components\Core\1 System\Network\xnetwork.script"
+If,ExistFile,%xnetworkScript%,Begin
+Set,%RevisionScript_xnetworkOK%,Yes
+IniRead,%xnetworkScript%,Main,Version,%xnetworkVersion%
+IniRead,%xnetworkScript%,Main,Revision,%xnetworkRevision%
+If,%xnetworkVersion%,Smaller,%xnetworkVersionServer%,Set,%RevisionScript_xnetworkOK%,No
+If,%xnetworkVersion%,Equal,%xnetworkVersionServer%,If,%xnetworkRevision%,Smaller,%xnetworkRevisionServer%,Set,%RevisionScript_xnetworkOK%,No
+If,%RevisionScript_xnetworkOK%,Equal,No,Begin
+Call,FileDelete,%ProjectTemp%\xnetwork.script
+Message,"%ProjectName% requires xnetwork.script to be updated.#$x Download will be attempted from:#$xhttp://gena.cwcodes.net/Projects/Gena/Components/Core/1 System/Network/xnetwork.script",INFORMATION,10
+Echo,"Downloading XNetwork"
+Call,Download,%ProjectTemp%\Download\xnetwork.script,"http://gena.cwcodes.net/Projects/Gena/Components/Core/1 System/Network/xnetwork.script"
+If,ExistFile,%ProjectTemp%\Download\xnetwork.script,FileCopy,%ProjectTemp%\Download\xnetwork.script,%xnetworkScript%
+Else,Begin
+Message,"xnetwork.script download was not successful.#$xIt is advised to update xnetwork.script with another automatic attempt or manually.",ERROR,10
+End
+End
+End
+//[CANCELLED_GenaStarter]
+End
+//--
+Echo,"Revision Check ---END---------------------------------"
+
+[CANCELLED_GenaStarter]
+Set,%GenaStarterToolsEXE%,"%Tools%\WinBuilder077RC2 Starter.exe"
+Set,%GenaStarterBaseEXE%,"%BaseDir%\WinBuilder077RC2 Starter.exe"
+Set,%GenaStarterToolsOK%,Yes
+Set,%GenaStarterBaseOK%,Yes
+Retrieve,FILEVERSION,%GenaStarterToolsEXE%,%GenaStarterToolsEXEVersion%
+Retrieve,FILEVERSION,%GenaStarterBaseEXE%,%GenaStarterBaseEXEVersion%
+Call,CompareVersions,%GenaStarterToolsEXEVersion%,%GenaStarterVersionServer%
+If,%CompareVersions%,Equal,Smaller,Set,%GenaStarterToolsOK%,No
+If,%GenaStarterToolsOK%,Equal,No,Begin
+If,ExistFile,%GenaStarterToolsEXE%,FileDelete,%GenaStarterToolsEXE%
+Message,"%ProjectName% requires %GenaStarterToolsEXE% to be updated.#$x Download will be attempted from:#$xhttp://gena.cwcodes.net/Projects/Tools/Gena/WinBuilder077RC2 Starter.exe",INFORMATION,10
+If,ExistFile,"%ProjectTemp%\WinBuilder077RC2 Starter.exe",FileCopy,"%ProjectTemp%\WinBuilder077RC2 Starter.exe",%GenaStarterToolsEXE%
+Else,Begin
+Message,"%GenaStarterToolsEXE% download was not successful.#$xIt is advised to update %GenaStarterToolsEXE% with another automatic attempt or manually.",ERROR,10
+End
+End
+Call,CompareVersions,%GenaStarterBaseEXEVersion%,%GenaStarterToolsEXEVersion%
+If,%CompareVersions%,Equal,Smaller,Set,%GenaStarterBaseOK%,No
+If,%GenaStarterBaseOK%,Equal,No,Begin
+If,RUNS,%GenaStarterBaseEXE%,Begin
+Message,"%ProjectName% requires %GenaStarterBaseEXE% to be updated.#$xUpdate will be attempted by copying %GenaStarterToolsEXE%.#$xPlease restart %GenaStarterBaseEXE% once complete.",INFORMATION,15
+StrFormat,FILENAME,%GenaStarterBaseEXE%,%GenaStarterBaseEXEFilename%
+ShellExecute,Hide,taskkill.exe,"/f /im #$q%GenaStarterBaseEXEFilename%#$q"
+FileDelete,%GenaStarterBaseEXE%
+FileCopy,%GenaStarterToolsEXE%,%GenaStarterBaseEXE%
+Halt,"%GenaStarterBaseEXE% updated. Please restart process."
+End
+Else,Begin
+FileDelete,%GenaStarterBaseEXE%
+FileCopy,%GenaStarterToolsEXE%,%GenaStarterBaseEXE%
+If,%version%,Smaller,80,Begin
+Message,"%ProjectName% requires %GenaStarterBaseEXE% to be updated.#$x Update will be attempted by copying %GenaStarterToolsEXE%.#$x Please restart %GenaStarterBaseEXE% once complete.",INFORMATION,10
+End
+End
+End
+
+[AuthorEncoded]
+IcojamBlueBitsDocumentblue0048048.ico=4312,5750
+Logo=IcojamBlueBitsDocumentblue0048048.ico
+
+[EncodedFile-AuthorEncoded-IcojamBlueBitsDocumentblue0048048.ico]
+lines=1
+0=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
+1=ty/Up7xhzwkdWO3LjGGTmSOXAFixv4kYONbvgM31ttizmx46NrDSU6WtY7sFEDfsaJj2CWalMduHK5A5clO7Au0Z73L7Lj/G/tOGeOLWfOtOG106x4yb9Y8Nw/DuMwXxP4J1vM0KfYEjzgupUO8MERGpzoCGZZ8iSzUbfChuqWW1PDShtG0eFUW2pcbQctdgQtBi/WyQ5woHpwV6fYU/lSeypZbMeF8ba0d4Et586zpazZNpQxw5pXf21JSX8xp9mTh/A07WDyHzFw/lmRn8VWJA6lQ0nDuHKxOVUtNueqJepN1cnmVLPUgmuWWVJtihXVr7BmlOjAvNjykVV2ooPEhwZ8XbPcjqqW2nLpElvSJdpSwSIbzp9vQ7lzrXl7nBVtjrWi1V9ZcOI/D6NZ0UPo65BB/Gf/QaQZ7zhhoPwzwwfFli4azGXxn3F5wmd8KGEIVyYO5SroqV48jPVLzFk01C6z5LrlVsIPD6z5cKoNiwbJU32qLeuX2XDFEhsuSbLhA/HWvG+BNe+aZ805s6048xsLTptuzqlfDuP4Pw3huKjB/G+a3/PnEz/lRXFTHo4Y4fjpwPn/KbZ4wSASDaXxg0k0lCcMIaMn8GGY8qM62YLgA9ekwIvlViQa6uFDTYo1VSVbc2mSFekSrKhwoRXvnm9JuXMsKSvOkjNmWFBbdTr3dV+h3lsX6O71M3z5XCsdb9LTkYaaHyZPjgwbKLs8seA/+O3vqWTBIC5ZOJjK4uFFwmf0QUNl0lDkCjqgQZ9swfqlliQaxIvqpVZUvtiSShItuWiRJe371pLy51pw9iwL2vaNOW2JMef104bR+eYi/umnn0jqhx9+4J6eHjp16tT7mJiYqaawf+DXzf+UoYFFQ+nCQSwaypGnCmTpUCLyBA3iQzWyJBokT1VLLLgs0ZwPLrLgwgXmvHeeOefNHsbZceacGTuM06cP5fX/PpSXThnCp5uKmIhY2Ht7e7n1eOub6dOnf2Equzxzv3CKLYbvpYnWXJZkQxWLJce2dCjZjiqxQ6qX2WOfOJA+xZFqVzhxzQonqsLXFcmy0x2oMN6B9mGn5823p+w5drQtzpbTY7Hb/8Oalk215AVfmFNbo47fv39P0vcavb7nq6++GvDfu79+tmxcMfOv//Uj/fTX/+SP3x/qV//N3797Sy+eP6fHj/u4u/se3bx5gy5f7uLOzk46efIkHT16jPX6Gios0tGOrJ28Zu0GOn26U2VmV25uY0zMl5a/Fbs827dumcl/w2Pw/0d+9eo19/c/QQ7u861bt/nKlat89tx5PtXWzseaW7i2roEP6Eo4KyeP165P46QlyxlZf5uQkJA4e/bs3/2W7PIkJyf9sbm5uf1/qqampvb6+vr2Kr2+o6yiokOnK+7Yt7+gY1f+7o7snJyOzMztHZs2p3esTF3dsSghqWNm3JyOmBkzO2bNmpMzdepU+9+a+1fPJ/+L9f/+MST4lzfJhyl/f/9Nb2O/PjG+/8H4/p3x/Y/Gt5XxncLqRz75uN//DdIVJVh4nFP1TM7PSsx1yilNdcosKXbJTy7NTc0rSQLyDQxMLIBILzM5n2EUDFOwTxVClwlgl4+uXq3OwAQA3ecQXvc1/IQBAAAAAgAAAD4AAAB2EAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

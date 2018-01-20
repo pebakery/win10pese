@@ -1,0 +1,251 @@
+[Main]
+Title=Additional Files
+Type=Plugin
+Author=yahooUK
+Description=Any files and folders you want to add manually :).
+Credits=http://TheOven.org
+Version=022
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.12.18
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Additional_Files.script
+Web2=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks/Additional_Files.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Lancelot put away source directory to global templates to avoid wb thingies and ease project packing
+HistoryNotes02=Lancelot added x86-x64-ia64 support (ps: ia64 lines commented out for now)  // example folder(+sub) creation to see what is where etc. ;).
+History014=Lancelot Cosmetics ;)
+History015=Lancelot Added Gena Support
+History016=Galapo added additional lines to [PE1Process] section (http://TheOven.org/index.php?topic=471.0)
+History017=Lancelot Added DU buttons
+History018=Lancelot FileCopy * have unicode bug - workaround with DirCopy * bug - nbsp http://TheOven.org/index.php?topic=1724.0 - Date:2016.04.03
+History020=Lancelot Added Components_PluginCache_Extract x 2- Date:2016.11.10 - Date:2016.11.10 - Date:2016.11.14
+History021=Lancelot Add Reminder_Desktop_TextLabel - Date:2017.02.27
+History022=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+
+[Cache_SCD_Info_Additional_Plugin]
+IniRead,%ScriptFile%,Main,Selected,%t%
+If,%t%,Equal,True,Begin
+Run,%api%,Cache_SCD_Info_Additional_Plugin_ML,#1,#2,#3,#4,#5,#6,#7,#8,#9
+//-
+Call,RetrieveFolderUniqueID,%SourceExternal%
+IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_SourceExternal_RetrieveFolderUniqueID,%RetrieveFolderUniqueID%
+If,%RetrieveFolderUniqueID%,Equal,1,IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_SourceExternal_RetrieveFolderUniqueID,"%RetrieveFolderUniqueID% : Directory Not Exists"
+If,%RetrieveFolderUniqueID%,Equal,2,IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_SourceExternal_RetrieveFolderUniqueID,"%RetrieveFolderUniqueID% : Directory exists but empty"
+//-
+Echo,"Cache_SCD_Info_Additional_Plugin - Finish - %Plugin_FName%"
+End
+
+[InterFace]
+OpenSourcepBevel=pBevel2,1,12,16,49,212,102
+OpenSourceFilesbutton="Open Source Directory",1,8,50,55,132,24,OpenSourceFilesDir,_OpenSourceFilesDir_,False
+OpenSourcepTextLabel="'All' Folder copied with All builds#$x'x86' Folder copied with only x86 builds#$x'x64' Folder copied with only x64 builds",1,1,23,94,197,42,8,Normal
+OpenSourceExamplespBevel=pBevel1,1,12,266,49,257,104
+OpenSourceExamplesDirbutton="Directory Example",1,8,340,56,112,25,OpenSourceExamplesDir,0,False,False,_OpenSourceExamplesDir_,False
+OpenSourceExamplespTextLabel="This only creates 'Example Folder' and subfolders#$x to ease remembering what is where.#$xHave no effect on build.#$x(no file copied from this folder)",1,1,272,89,245,56,8,Normal
+Reminder_RootCD_TextLabel="Reminder:#$xAlso check#$x''Put Files for 'RootCD' Here''#$xoption on 'Finals' plugin(s)",1,1,97,235,197,68,10,Normal
+Reminder_Desktop_TextLabel="Reminder:#$xTo add Files to 'Desktop' see#$xComponents(Y)\Tweaks\'Additional Files Other' plugin#$x( \Downloads\ComponentsY\Tweaks\'Additional Files Other' )",1,1,32,163,357,70,10,Normal
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://TheOven.org/index.php?board=9
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%SourceExternal%=%GlobalTemplates%\%ProjectName%\AdditionalFiles
+%SourceExternalBase%=DirCopy_
+%SourceExternalAll%=%SourceExternal%\%SourceExternalBase%All
+%SourceExternalExamples%=%SourceExternal%\Example_Directories
+%SourceExternalx86%=%SourceExternal%\%SourceExternalBase%x86
+%SourceExternalx64%=%SourceExternal%\%SourceExternalBase%x64
+%SourceExternalIA64%=%SourceExternal%\%SourceExternalBase%IA64
+DirExample=Run,%ScriptFile%,CheckExamplesSourceDirCreator
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+Echo,"Processing Adding Addition files to System folder..."
+If,%OSFamily%,Equal,NT6,Run,%ScriptFile%,PEXProcess
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,PE1Process
+
+[OpenSourceFilesDir]
+If,%OSFamily%,Equal,NT6,Run,%ScriptFile%,PEXCheckSourceDir
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,PE1CheckSourceDir
+//Call,OpenDir,%SourceExternalAll%
+Call,OpenDir,%SourceExternal%
+
+[OpenSourceExamplesDir]
+If,%OSFamily%,Equal,NT6,Run,%ScriptFile%,PEXCheckExamplesSourceDir
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,PE1CheckExamplesSourceDir
+Call,OpenDir,%SourceExternalExamples%
+
+[PEXProcess]
+Run,%ScriptFile%,PEXCheckSourceDir
+//FileCopy * have unicode bug - workaround with DirCopy * bug
+//DirCopy,%scriptdir%\Additional_Files\*,%TargetDir%\
+DirCopy,%SourceExternalAll%\*,%TargetDir%
+If,%SourceArch%,Equal,x64,DirCopy,%SourceExternalx64%\*,%TargetDir%
+If,%SourceArch%,Equal,x86,DirCopy,%SourceExternalx86%\*,%TargetDir%
+//If,%SourceArch%,Equal,IA64,DirCopy,%SourceExternalIA64%\*,%TargetDir%
+
+[PEXCheckSourceDir]
+Run,%ScriptFile%,PEXCheckSourceDirAll
+Run,%ScriptFile%,PEXCheckSourceDirx86
+Run,%ScriptFile%,PEXCheckSourceDirx64
+//Run,%ScriptFile%,PEXCheckSourceDirIA64
+
+[PEXCheckSourceDirAll]
+If,Not,ExistDir,%SourceExternalAll%\Windows\System32,DirMake,%SourceExternalAll%\Windows\System32
+
+[PEXCheckSourceDirx86]
+If,Not,ExistDir,%SourceExternalx86%\Windows\System32,DirMake,%SourceExternalx86%\Windows\System32
+
+[PEXCheckSourceDirx64]
+If,Not,ExistDir,%SourceExternalx64%\Windows\System32,DirMake,%SourceExternalx64%\Windows\System32
+If,Not,ExistDir,%SourceExternalx64%\Windows\SysWOW64,DirMake,%SourceExternalx64%\Windows\SysWOW64
+
+[PEXCheckSourceDirIA64]
+If,Not,ExistDir,%SourceExternalIA64%\Windows\System32,DirMake,%SourceExternalIA64%\Windows\System32
+If,Not,ExistDir,%SourceExternalIA64%\Windows\SysWOW64,DirMake,%SourceExternalIA64%\Windows\SysWOW64
+
+[PEXCheckExamplesSourceDir]
+DirExample,Windows\System32
+DirExample,Windows\SysWOW64
+DirExample,Boot
+DirExample,"Program Files"
+DirExample,"Programs"
+DirExample,Users\Default\AppData\Local\Microsoft\Windows\GameExplorer
+DirExample,Users\Default\AppData\Local\Microsoft\Windows\History
+DirExample,"Users\Default\AppData\Local\Microsoft\Windows\Temporary Internet Files"
+DirExample,Users\Default\AppData\Local\Temp
+DirExample,Users\Default\AppData\Roaming\Microsoft\Windows\Cookies
+DirExample,"Users\Default\AppData\Roaming\Microsoft\Windows\Network Shortcuts"
+DirExample,"Users\Default\AppData\Roaming\Microsoft\Windows\Printer Shortcuts"
+DirExample,Users\Default\AppData\Roaming\Microsoft\Windows\Recent
+DirExample,Users\Default\AppData\Roaming\Microsoft\Windows\SendTo
+DirExample,Users\Default\AppData\Roaming\Microsoft\Windows\Start Menu
+DirExample,Users\Default\AppData\Roaming\Microsoft\Windows\Templates
+DirExample,Users\Default\Desktop
+DirExample,Users\Default\Documents
+DirExample,Users\Default\Downloads
+DirExample,Users\Default\Favorites
+DirExample,Users\Default\Links
+DirExample,Users\Default\Music
+DirExample,Users\Default\Pictures
+DirExample,Users\Default\Saved Games
+DirExample,Users\Default\Videos
+DirExample,Users\Public\Desktop
+DirExample,Users\Public\Documents
+DirExample,Users\Public\Downloads
+DirExample,Users\Public\Favorites
+DirExample,Users\Public\Music
+DirExample,Users\Public\Pictures
+DirExample,Users\Public\Videos
+
+[PE1Process]
+Run,%ScriptFile%,PE1CheckSourceDir
+//FileCopy * have unicode bug - workaround with DirCopy * bug
+DirCopy,%SourceExternalAll%\*,%TargetDir%
+If,%SourceArch%,Equal,x64,DirCopy,%SourceExternalx64%\*,%TargetDir%
+If,%SourceArch%,Equal,x86,DirCopy,%SourceExternalx86%\*,%TargetDir%
+//If,%SourceArch%,Equal,IA64,DirCopy,%SourceExternalIA64%\*,%TargetDir%
+
+[PE1CheckSourceDir]
+Run,%ScriptFile%,PE1CheckSourceDirAll
+Run,%ScriptFile%,PE1CheckSourceDirx86
+Run,%ScriptFile%,PE1CheckSourceDirx64
+//Run,%ScriptFile%,PE1CheckSourceDirIA64
+
+[PE1CheckSourceDirAll]
+If,Not,ExistDir,%SourceExternalAll%,DirMake,%SourceExternalAll%
+
+[PE1CheckSourceDirx86]
+If,Not,ExistDir,%SourceExternalx86%\I386\System32,DirMake,%SourceExternalx86%\I386\System32
+
+[PE1CheckSourceDirx64]
+If,Not,ExistDir,%SourceExternalx64%\AMD64\System32,DirMake,%SourceExternalx64%\AMD64\System32
+If,Not,ExistDir,%SourceExternalx64%\AMD64\SysWOW64,DirMake,%SourceExternalx64%\AMD64\SysWOW64
+
+[PE1CheckSourceDirIA64]
+If,Not,ExistDir,%SourceExternalIA64%\IA64\System32,DirMake,%SourceExternalIA64%\IA64\System32
+If,Not,ExistDir,%SourceExternalIA64%\IA64\SysWOW64,DirMake,%SourceExternalIA64%\IA64\SysWOW64
+
+[PE1CheckExamplesSourceDir]
+DirExample,I386\Fonts
+DirExample,I386\Help
+DirExample,I386\Inf
+DirExample,I386\Media
+//DirExample,I386\System32
+DirExample,I386\SYSTEM32\config
+DirExample,I386\SYSTEM32\DRIVERS
+DirExample,I386\WinSxS\Manifests
+DirExample,AMD64\Fonts
+DirExample,AMD64\Help
+DirExample,AMD64\Inf
+DirExample,AMD64\Media
+//DirExample,AMD64\System32
+//DirExample,AMD64\SysWOW64
+DirExample,AMD64\SYSTEM32\config
+DirExample,AMD64\SYSTEM32\DRIVERS
+DirExample,AMD64\SysWOW64\Drivers
+DirExample,AMD64\WinSxS\Manifests
+DirExample,AMD64\WinSxS\policies
+DirExample,AMD64\WinSxS\setuppolicies
+DirExample,IA64\Fonts
+DirExample,IA64\Help
+DirExample,IA64\Inf
+DirExample,IA64\Media
+//DirExample,IA64\System32
+//DirExample,IA64\SysWOW64
+DirExample,IA64\SYSTEM32\config
+DirExample,IA64\SYSTEM32\DRIVERS
+DirExample,IA64\SysWOW64\Drivers
+DirExample,IA64\WinSxS\Manifests
+DirExample,IA64\WinSxS\policies
+DirExample,IA64\WinSxS\setuppolicies
+
+[CheckExamplesSourceDirCreator]
+If,Not,ExistDir,"%SourceExternalExamples%\#1",DirMake,%SourceExternalExamples%\#1
+
+[AuthorEncoded]
+AddFiles.jpg=2481,3308
+Logo=AddFiles.jpg
+
+[EncodedFile-AuthorEncoded-AddFiles.jpg]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

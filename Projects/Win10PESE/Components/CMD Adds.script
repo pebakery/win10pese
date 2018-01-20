@@ -1,0 +1,637 @@
+[Main]
+Title=CMD Adds
+Type=Plugin
+Author=Lancelot
+Description=Adds useful Standalone Command Utilities from your Source into your build. (NO network related)
+Credits=ChrisR, FiZiX, http://TheOven.org
+Version=018
+Download_Level=0
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.09.27
+Depend=
+Disable=
+CertifiedBy=
+Certification=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/CMD%20Adds.script
+WebRootSubSub=Components
+HistoryNotes01=Lancelot - for perfect Plugin dependencies must be investigated one by one ;), so far many dependencies found , will be better in time with contributions.
+HistoryNotes02=Lancelot Regini.exe dependencies not checked.....
+HistoryNotes03=Lancelot - waik notes taken with kb3aik.iso - let's see what will happen at kb3aik :>.
+HistoryNotes04=Lancelot GetFileSupc not used by current Plugin , added for future reference :>.
+History018=Lancelot Thanks amalux for icacls.exe
+History012=Lancelot - fixes for x64 builds, some dependencies added
+History012a=Lancelot improvement with better (but not perfect ;)) dependency list, (for future remember to check different dependencies between w2003-xp-x64), also Plugin organisation better for future improvments.
+History012b=Lancelot there were 2 find.exe checkbox (inherited from v1 of the Plugin ;)). one of them removed.
+History014=Lancelot bugy line for tree.com fixed , edit.com unselected as default (requires 16bit support and I believe not required as default) , a little speed enhancement ;)
+History015=Lancelot ws03res.dll does not exists on none-english-w2003 sources !!
+History016=Olegpov fix cacls dependency
+History001a=Lancelot New Plugin for Gena - long story to short, totally reorganised ;). // ws03res issue solved (thanks a lot to fxscrpt) , on sources other than enu ws03res.dll is in SPRS%XpRes%.dll , %XPRes% is languageid ex: 0412
+History001b=Lancelot Require_FileQ is sooooo good :> GetFile internal macro droped :>:>.
+History001c=Lancelot minor enhancements - organisations
+History001c=JFX expand.exe does require dpx.dll on pe3
+History002=Arvy makecab.exe selected default to get Gena build inside Gena (+ some others)
+History003=Lancelot LocalizeLID
+History004=Lancelot IniVariables OS
+History005=Lancelot Cosmetics: -waik notes added // filenames normalized
+History007=Lancelot minor improvments on dependencies.....
+History008=Lancelot added cmd.exe dependency
+History008=Lancelot POSReady2009 - CACLS_EXE Regini.exe not exists
+History010=Lancelot Added NetSh.exe
+History011=ChrisR Cacls.exe and Regini.exe exists on Win10
+History012=Lancelot Added DU buttons // Settings Default Gena ;)
+History012a=Lancelot build PE inside PE --> requires attrib.exe (32bit) ( Can not found attrib.exe ) --> [Settings_Default] :  True: pCheckBox_WOW64CmdFiles pCheckBox_Attrib pCheckBox_Attrib_WOW64
+History012b=Lancelot build PE inside PE --> [Settings_Default] :  True: pCheckBox_Cmd pCheckBox_Cmd_WOW64 pCheckBox_Expand pCheckBox_Expand_WOW64 pCheckBox_Reg pCheckBox_Reg_WOW64 pCheckBox_Xcopy pCheckBox_Xcopy_WOW64
+History015=Lancelot Added IpConfig.exe http://TheOven.org/index.php?topic=1551 - 2015.12.09
+History016=Lancelot syntax updated - Date:2016.02.01
+History017=Lancelot Added Components_PluginCache_Extract - Date:2016.11.07
+History018=Lancelot Add INFO_CMD_SH_Button http://TheOven.org/index.php?topic=2232.msg24143 - Date:2017.09.27
+
+[Variables]
+GetFile=Run,%ScriptFile%,ScriptApiGetFile
+GetFileSupc=Run,%ScriptFile%,ScriptApiGetFileSupportCab
+
+[ScriptApiGetFile]
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,ScriptApiGetFilePE1,#1
+Else,Require_FileQ,#1
+
+[ScriptApiGetFilePE1]
+If,%targetdirvalue%,Equal,%Target_Sys%,CopyOrExpand,%source_sys%\#1,%Target_Sys%\#1
+If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,CopyOrExpand,%SourceDir%\i386\W#1,%Target_Win%\SysWOW64\#1
+
+[ScriptApiGetFileSupportCab]
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,ScriptApiGetFileSupportCabA,#1
+Else,Require_FileQ,#1
+
+[ScriptApiGetFileSupportCabA]
+If,Not,ExistFile,%SourceDir%\SUPPORT\TOOLS\SUPPORT.CAB,Echo,"Support.cab Missing - #1 requires support.cab for %OS%%SourceArch% builds"
+Else,Run,%ScriptFile%,ScriptApiGetFileSupportCabB,#1
+
+[ScriptApiGetFileSupportCabB]
+If,%targetdirvalue%,Equal,%Target_Sys%,ShellExecute,hide,expand.exe,"#$q%SourceDir%\SUPPORT\TOOLS\SUPPORT.CAB#$q -F:#1 #$q%targetdirvalue%#$q"
+If,Not,ExistFile,%Target_Sys%\#1,Echo,"Support.cab does not contain #1 REPORT this error to project - Plugin author",Warn
+If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,Echo,"Support.cab does not contain 32bit files :) #1",Warn
+
+[Interface]
+pWebLabel1="MS Command-line reference A-Z (XP)",1,10,324,166,154,18,http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/ntcmds.mspx?mfr=true
+pWebLabel2="CommandWindows XP",1,10,337,185,200,18,http://commandwindows.com/command3.htm
+pWebLabel3="CommandWindows Vista",1,10,337,204,200,18,http://commandwindows.com/vista-commands.htm
+pWebLabel4=ss64,1,10,322,241,200,18,http://ss64.com/nt/
+WebLabel_Plugin="Plugin Page",1,10,317,147,55,18,http://TheOven.org/index.php?board=9
+pCheckBox_WOW64CmdFiles="Add WOW64 cmd files",1,3,262,4,131,18,True
+pCheckBox_Cmd=Cmd.exe,1,3,36,19,110,14,True
+pCheckBox_Cmd_WOW64=,1,3,12,19,14,14,True
+pCheckBox_Attrib=Attrib.exe,1,3,36,40,110,14,True
+pCheckBox_Attrib_WOW64=,1,3,12,40,14,14,True
+pCheckBox_Cacls="Cacls.exe  -w",1,3,36,55,110,14,True
+pCheckBox_Cacls_WOW64=,1,3,12,55,14,14,False
+pCheckBox_Chcp=Chcp.com,1,3,36,70,110,14,True
+pCheckBox_Chkdsk=Chkdsk.exe,1,3,36,85,110,14,True
+pCheckBox_Chkdsk_WOW64=,1,3,12,85,14,14,False
+pCheckBox_Chkntfs=Chkntfs.exe,1,3,36,100,110,14,True
+pCheckBox_Chkntfs_WOW64=,1,3,12,100,14,14,False
+pCheckBox_Cipher=Cipher.exe,1,3,36,115,110,14,True
+pCheckBox_Cipher_WOW64=,1,3,12,115,14,14,False
+pCheckBox_Comp="Comp.exe  -w",1,3,36,130,110,14,True
+pCheckBox_Comp_WOW64=,1,3,12,130,14,14,False
+pCheckBox_Compact="Compact.exe  -w",1,3,36,145,110,14,True
+pCheckBox_Compact_WOW64=,1,3,12,145,14,14,False
+pCheckBox_Convert=Convert.exe,1,3,36,160,110,14,True
+pCheckBox_Convert_WOW64=,1,3,12,160,14,14,False
+pCheckBox_Diskcomp="Diskcomp.com  -w -10",1,3,36,175,126,14,True
+pCheckBox_Diskcopy="Diskcopy.com  -w -10",1,3,36,190,122,14,True
+pCheckBox_Doskey=Doskey.exe,1,3,36,205,110,14,True
+pCheckBox_Doskey_WOW64=,1,3,12,205,14,14,False
+pCheckBox_Expand=Expand.exe,1,3,36,220,110,14,True
+pCheckBox_Expand_WOW64=,1,3,12,220,14,14,True
+pCheckBox_Fc="Fc.exe  -w",1,3,36,235,110,14,True
+pCheckBox_Fc_WOW64=,1,3,12,235,14,14,True
+pCheckBox_Find=Find.exe,1,3,36,250,110,14,True
+pCheckBox_Find_WOW64=,1,3,12,250,14,14,True
+pCheckBox_Findstr="Findstr.exe  -w",1,3,36,265,110,14,True
+pCheckBox_Findstr_WOW64=,1,3,12,265,14,14,True
+pCheckBox_Format=Format.com,1,3,36,280,110,14,True
+pCheckBox_Format_WOW64=,1,3,12,280,14,14,True
+pCheckBox_Fsutil="Fsutil.exe  -w",1,3,36,295,110,14,True
+pCheckBox_Fsutil_WOW64=,1,3,12,295,14,14,True
+pCheckBox_Help=Help.exe,1,3,190,40,110,14,True
+pCheckBox_Help_WOW64=,1,3,167,39,14,14,False
+pCheckBox_Label="Label.exe  -w",1,3,190,55,110,14,True
+pCheckBox_Label_WOW64=,1,3,167,54,14,14,False
+pCheckBox_Makecab="Makecab.exe  -w",1,3,190,70,110,14,True
+pCheckBox_Makecab_WOW64=,1,3,167,70,14,14,True
+pCheckBox_Mode=Mode.com,1,3,190,85,110,14,True
+pCheckBox_More=More.com,1,3,190,100,110,14,True
+pCheckBox_More_WOW64=,1,3,167,100,14,14,False
+pCheckBox_MountVol=MountVol.exe,1,3,190,115,110,14,True
+pCheckBox_MountVol_WOW64=,1,3,167,115,14,14,False
+pCheckBox_Net=Net.exe,1,3,190,130,62,14,True
+pCheckBox_Net_WOW64=,1,3,167,130,14,14,True
+pCheckBox_Net_Hlp="net.hlp (PE1)",1,3,208,145,92,14,True
+pCheckBox_Net_Hlp_WOW64=,1,3,175,145,14,14,False
+pCheckBox_Ntsd="Ntsd.exe (PE1)",1,3,190,160,110,14,True
+pCheckBox_Ntsd_WOW64=,1,3,167,160,14,14,False
+pCheckBox_Recover=Recover.exe,1,3,190,175,110,14,True
+pCheckBox_Recover_WOW64=,1,3,167,175,14,14,True
+pCheckBox_Reg=Reg.exe,1,3,190,190,110,14,True
+pCheckBox_Reg_WOW64=,1,3,167,190,14,14,True
+pCheckBox_Regsvr32=Regsvr32.exe,1,3,190,205,110,14,True
+pCheckBox_Regsvr32_WOW64=,1,3,167,205,14,14,True
+pCheckBox_Regini="Regini.exe",1,3,190,220,110,14,True
+pCheckBox_Replace=Replace.exe,1,3,190,235,110,14,True
+pCheckBox_Replace_WOW64=,1,3,167,236,14,14,False
+pCheckBox_Sc="Sc.exe  -w",1,3,190,250,110,14,True
+pCheckBox_Sc_WOW64=,1,3,167,251,14,13,False
+pCheckBox_Sort=Sort.exe,1,3,190,265,74,14,True
+pCheckBox_Sort_WOW64=,1,3,167,265,14,14,False
+pCheckBox_Subts=Subts.exe,1,3,190,280,70,14,True
+pCheckBox_Subts_WOW64=,1,3,167,280,14,14,False
+pCheckBox_Tree=Tree.com,1,3,190,295,69,14,True
+pCheckBox_Xcopy=Xcopy.exe,1,3,190,310,110,14,True
+pCheckBox_Xcopy_WOW64=,1,3,167,310,14,14,True
+pTextLabel3="Note:#$x2nd checkbox on left is only for SysWOW64.#$x-w means known not exists at waik#$x-10 means known not exists at Win10",1,1,308,44,217,60,8,Normal
+pTextLabel_Help="List in cmd HELP",1,1,388,271,85,19,8,Normal
+pButton_Help=Help,1,8,440,273,25,16,HelpView_Process
+pWebLabel5="CommandWindows Win7",1,10,337,219,200,18,http://commandwindows.com/windows7-commands.htm
+pCheckBox_NetSh=NetSh.exe,1,3,299,269,86,18,True
+pCheckBox_NetSh_WOW64=,1,3,283,271,14,14,True
+pCheckBox_IpConfig=IpConfig.exe,1,3,299,285,86,18,True
+pCheckBox_IpConfig_WOW64=,1,3,283,287,14,14,True
+CheckBox_NoWarn="No Warning known situations",1,3,362,126,163,18,True
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+INFO_CMD_SH_Button="Info: CMD Shortcut",1,8,147,0,110,25,INFO_CMD_SH_P_B,0,False,False,_INFO_CMD_SH_P_B_,False
+
+[INFO_CMD_SH_P_B]
+Message,"INFO: Cmd Shortcut / Pin Available at :#$x#$xSE\Build\'2-Shell & Config' plugin#$xSE\Finals\'1 -Pins' plugin#$x#$xGena\Components\Tweaks CMD\'CMD Shortcut' plugin#$xGena\Components\Tweaks Explorer\'Start Menu Pin' plugin#$x#$xDownloads\ComponentsY\Tweaks CMD\'CMD Shortcut' plugin#$x#$x#$x#$x",Information
+
+[HelpView_Process]
+Call,HostWindowsDir
+Call,OpenDir,%HostWindowsDir%
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+IniRead,%ProjectDir%\script.project,IniVariables,LocalizeLID,%LocalizeLID%
+//--
+If,Not,ExistVar,%OS%,IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+//--
+Set,%targetdirvalue%,%Target_Sys%
+Set,%sourcedirvalue%,%source_sys%
+//--
+Set,%Dependencies_Disk_File_Common_Processed%,No
+Set,%Dependencies_ulibdll_Common%,No
+Run,%ScriptFile%,Process_Main
+//--
+IF,%pCheckBox_WOW64CmdFiles%%TargetWOW64%,Equal,Truex86,Begin
+If,Not,%SourceArch%,Equal,x86,Run,%ScriptFile%,Process_WOW64
+End
+
+[Process_WOW64]
+Set,%PluginArch%,x86
+//--
+Set,%targetdirvalue%,%Target_Win%\SysWOW64
+If,%OSFamily%,Equal,NT5,Set,%sourcedirvalue%,%SourceDir%\I386
+Else,Set,%sourcedirvalue%,%InstallSRC%\Windows\SysWow64
+//--
+Set,%Dependencies_Disk_File_Common_Processed%,No
+Set,%Dependencies_ulibdll_Common%,No
+Run,%ScriptFile%,Process_Main_WOW64
+
+[Process_Main]
+If,%pCheckBox_Cmd%,Equal,True,Run,%ScriptFile%,Dependencies_Cmd_EXE
+If,%pCheckBox_Attrib%,Equal,True,Run,%ScriptFile%,Dependencies_Attrib_EXE
+If,%pCheckBox_Cacls%,Equal,True,Run,%ScriptFile%,Dependencies_Cacls_EXE
+If,%pCheckBox_Chcp%,Equal,True,Run,%ScriptFile%,Dependencies_Chcp_COM
+If,%pCheckBox_Chkdsk%,Equal,True,Run,%ScriptFile%,Dependencies_Chkdsk_EXE
+If,%pCheckBox_Chkntfs%,Equal,True,Run,%ScriptFile%,Dependencies_Chkntfs_EXE
+If,%pCheckBox_Cipher%,Equal,True,Run,%ScriptFile%,Dependencies_Cipher_EXE
+If,%pCheckBox_Comp%,Equal,True,Run,%ScriptFile%,Dependencies_Comp_EXE
+If,%pCheckBox_Compact%,Equal,True,Run,%ScriptFile%,Dependencies_Compact_EXE
+If,%pCheckBox_Convert%,Equal,True,Run,%ScriptFile%,Dependencies_Convert_EXE
+If,%pCheckBox_Diskcomp%,Equal,True,Run,%ScriptFile%,Dependencies_Diskcomp_COM
+If,%pCheckBox_Diskcopy%,Equal,True,Run,%ScriptFile%,Dependencies_Diskcopy_COM
+If,%pCheckBox_Doskey%,Equal,True,Run,%ScriptFile%,Dependencies_Doskey_EXE
+If,%pCheckBox_Expand%,Equal,True,Run,%ScriptFile%,Dependencies_Expand_EXE
+If,%pCheckBox_Fc%,Equal,True,Run,%ScriptFile%,Dependencies_Fc_EXE
+If,%pCheckBox_Find%,Equal,True,Run,%ScriptFile%,Dependencies_Find_EXE
+If,%pCheckBox_Findstr%,Equal,True,Run,%ScriptFile%,Dependencies_Findstr_EXE
+If,%pCheckBox_Format%,Equal,True,Run,%ScriptFile%,Dependencies_Format_COM
+If,%pCheckBox_Fsutil%,Equal,True,Run,%ScriptFile%,Dependencies_Fsutil_EXE
+If,%pCheckBox_Help%,Equal,True,Run,%ScriptFile%,Dependencies_Help_EXE
+If,%pCheckBox_Label%,Equal,True,Run,%ScriptFile%,Dependencies_Label_EXE
+If,%pCheckBox_Makecab%,Equal,True,Run,%ScriptFile%,Dependencies_Makecab_EXE
+If,%pCheckBox_Mode%,Equal,True,Run,%ScriptFile%,Dependencies_Mode_COM
+If,%pCheckBox_More%,Equal,True,Run,%ScriptFile%,Dependencies_More_COM
+If,%pCheckBox_MountVol%,Equal,True,Run,%ScriptFile%,Dependencies_MountVol_EXE
+If,%pCheckBox_Net%,Equal,True,Run,%ScriptFile%,Dependencies_Net_EXE
+If,%OSFamily%%pCheckBox_Ntsd%,Equal,NT5True,Run,%ScriptFile%,Dependencies_Ntsd_EXE
+If,%pCheckBox_Recover%,Equal,True,Run,%ScriptFile%,Dependencies_Recover_EXE
+If,%pCheckBox_Reg%,Equal,True,Run,%ScriptFile%,Dependencies_Reg_EXE
+If,%pCheckBox_Regini%,Equal,True,Run,%ScriptFile%,Dependencies_Regini_EXE
+If,%pCheckBox_Regsvr32%,Equal,True,Run,%ScriptFile%,Dependencies_Regsvr32_EXE
+If,%pCheckBox_Replace%,Equal,True,Run,%ScriptFile%,Dependencies_Replace_EXE
+If,%pCheckBox_Sc%,Equal,True,Run,%ScriptFile%,Dependencies_Sc_EXE
+If,%pCheckBox_Sort%,Equal,True,Run,%ScriptFile%,Dependencies_Sort_EXE
+If,%pCheckBox_Subts%,Equal,True,Run,%ScriptFile%,Dependencies_Subst_EXE
+If,%pCheckBox_Tree%,Equal,True,Run,%ScriptFile%,Dependencies_Tree_COM
+If,%pCheckBox_Xcopy%,Equal,True,Run,%ScriptFile%,Dependencies_Xcopy_EXE
+//-
+If,%pCheckBox_NetSh%,Equal,True,Run,%ScriptFile%,Dependencies_NetSh_EXE
+If,%pCheckBox_IpConfig%,Equal,True,Run,%ScriptFile%,Dependencies_IpConfig_EXE
+
+[Process_Main_WOW64]
+If,%pCheckBox_Cmd_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Cmd_EXE
+If,%pCheckBox_Attrib_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Attrib_EXE
+If,%pCheckBox_Cacls_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Cacls_EXE
+If,%pCheckBox_Chkdsk_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Chkdsk_EXE
+If,%pCheckBox_Chkntfs_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Chkntfs_EXE
+If,%pCheckBox_Cipher_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Cipher_EXE
+If,%pCheckBox_Comp_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Comp_EXE
+If,%pCheckBox_Compact_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Compact_EXE
+If,%pCheckBox_Convert_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Convert_EXE
+If,%pCheckBox_Doskey_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Doskey_EXE
+If,%pCheckBox_Expand_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Expand_EXE
+If,%pCheckBox_Fc_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Fc_EXE
+If,%pCheckBox_Find_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Find_EXE
+If,%pCheckBox_Findstr_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Findstr_EXE
+If,%pCheckBox_Format_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Format_COM
+If,%pCheckBox_Fsutil_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Fsutil_EXE
+If,%pCheckBox_Help_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Help_EXE
+If,%pCheckBox_Label_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Label_EXE
+If,%pCheckBox_Makecab_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Makecab_EXE
+If,%pCheckBox_More_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_More_COM
+If,%pCheckBox_MountVol_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_MountVol_EXE
+If,%pCheckBox_Net_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Net_EXE
+If,%OSFamily%%pCheckBox_Ntsd_WOW64%,Equal,NT5True,Run,%ScriptFile%,Dependencies_Ntsd_EXE
+If,%pCheckBox_Recover_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Recover_EXE
+If,%pCheckBox_Reg_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Reg_EXE
+If,%pCheckBox_Regsvr32_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Regsvr32_EXE
+If,%pCheckBox_Replace_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Replace_EXE
+If,%pCheckBox_Sc_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Sc_EXE
+If,%pCheckBox_Sort_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Sort_EXE
+If,%pCheckBox_Subts_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Subst_EXE
+If,%pCheckBox_Xcopy_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Xcopy_EXE
+//-
+If,%pCheckBox_NetSh_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_NetSh_EXE
+If,%pCheckBox_IpConfig_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_IpConfig_EXE
+
+[Dependencies_Cmd_EXE]
+If,Not,ExistFile,%targetdirvalue%\Cmd.exe,Require_FileQ,Cmd.exe
+//--
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+//2k3x86sp2-XPx64sp2 requires mpr.dll to get cmd.exe work (else cmd.exe only blinks ;))
+If,Not,ExistFile,%targetdirvalue%\mpr.dll,Require_FileQ,mpr.dll
+End
+End
+
+[Dependencies_ATTRIB_EXE]
+If,Not,ExistFile,%targetdirvalue%\Attrib.exe,Require_FileQ,Attrib.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_CACLS_EXE]
+//Cacls.exe not exists at waik and POSReady2009
+If,ExistFile,%Source_Sys%\CACLS.EX?,Begin
+If,Not,ExistFile,%targetdirvalue%\Cacls.exe,Require_FileQ,Cacls.exe
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,%targetdirvalue%\ws03res.dll,Run,%ScriptFile%,Get_ws03resdll
+End
+End
+End
+Else,Begin
+If,Not,%CheckBox_NoWarn%,Equal,True,Echo,"Cacls.exe not exists",Warn
+End
+
+[Dependencies_Chcp_COM]
+If,Not,ExistFile,%targetdirvalue%\Chcp.com,Require_FileQ,Chcp.com
+
+[Dependencies_CHKDSK_EXE]
+If,Not,ExistFile,%targetdirvalue%\Chkdsk.exe,Require_FileQ,Chkdsk.exe
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+//If you use for fat/fat32, than ufat.dll, (not mandatory)
+If,Not,ExistFile,%targetdirvalue%\ufat.dll,Require_FileQ,ufat.dll
+//If you use for ntfs, than untfs.dll, (not mandatory)
+If,Not,ExistFile,%targetdirvalue%\untfs.dll,Require_FileQ,untfs.dll
+
+[Dependencies_CHKNTFS_EXE]
+If,Not,ExistFile,%targetdirvalue%\Chkntfs.exe,Require_FileQ,Chkntfs.exe
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+
+[Dependencies_Cipher_EXE]
+If,Not,ExistFile,%targetdirvalue%\Cipher.exe,Require_FileQ,Cipher.exe
+
+[Dependencies_COMP_EXE]
+//Comp.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Comp.exe,Require_FileQ,Comp.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_Compact_EXE]
+//Compact.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Compact.exe,Require_FileQ,Compact.exe
+
+[Dependencies_CONVERT_EXE]
+If,Not,ExistFile,%targetdirvalue%\Convert.exe,Require_FileQ,Convert.exe
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+If,Not,ExistFile,%targetdirvalue%\cabinet.dll,Require_FileQ,cabinet.dll
+If,Not,ExistFile,%targetdirvalue%\cnvfat.dll,Require_FileQ,cnvfat.dll
+If,Not,ExistFile,%targetdirvalue%\osuninst.dll,Require_FileQ,osuninst.dll
+If,Not,ExistFile,%targetdirvalue%\scecli.dll,Require_FileQ,scecli.dll
+If,Not,ExistFile,%targetdirvalue%\ufat.dll,Require_FileQ,ufat.dll
+If,Not,ExistFile,%targetdirvalue%\untfs.dll,Require_FileQ,untfs.dll
+If,Not,ExistFile,%targetdirvalue%\userenv.dll,Require_FileQ,userenv.dll
+
+[Dependencies_DISKCOMP_COM]
+//Diskcomp.com not exists at waik Win10
+If,ExistFile,%Source_Sys%\Diskcomp.co?,Begin
+If,Not,ExistFile,%targetdirvalue%\Diskcomp.com,Require_FileQ,Diskcomp.com
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+End
+Else,Begin
+If,Not,%CheckBox_NoWarn%,Equal,True,Echo,"Diskcomp.com not exists",Warn
+End
+
+[Dependencies_DISKCOPY_COM]
+//Diskcopy.com not exists at waik Win10
+If,ExistFile,%Source_Sys%\Diskcomp.co?,Begin
+If,Not,ExistFile,%targetdirvalue%\Diskcopy.com,Require_FileQ,Diskcopy.com
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+End
+Else,Begin
+If,Not,%CheckBox_NoWarn%,Equal,True,Echo,"Diskcopy.com not exists",Warn
+End
+
+[Dependencies_DOSKEY_EXE]
+If,Not,ExistFile,%targetdirvalue%\Doskey.exe,Require_FileQ,Doskey.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_Expand_EXE]
+If,Not,ExistFile,%targetdirvalue%\Expand.exe,Require_FileQ,Expand.exe
+If,Not,ExistFile,%targetdirvalue%\cabinet.dll,Require_FileQ,cabinet.dll
+If,Not,%OSFamily%,Equal,NT5,Begin
+If,Not,ExistFile,%targetdirvalue%\dpx.dll,Require_FileQ,dpx.dll
+End
+
+[Dependencies_FC_EXE]
+//Fc.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Fc.exe,Require_FileQ,Fc.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_FIND_EXE]
+If,Not,ExistFile,%targetdirvalue%\Find.exe,Require_FileQ,Find.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_Findstr_EXE]
+//Findstr.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Findstr.exe,Require_FileQ,Findstr.exe
+
+[Dependencies_FORMAT_COM]
+If,Not,ExistFile,%targetdirvalue%\Format.com,Require_FileQ,Format.com
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+//If you use for fat/fat32, than ufat.dll, (not mandatory)
+If,Not,ExistFile,%targetdirvalue%\ufat.dll,Require_FileQ,ufat.dll
+//If you use for ntfs, than untfs.dll, (not mandatory)
+If,Not,ExistFile,%targetdirvalue%\untfs.dll,Require_FileQ,untfs.dll
+//lpk.dll
+// Lancelot -- following are from amalux's "System Files" script but my tests shows format.com do not need them, maybe I miss something so keep here for further inspection.
+//Require_FileQ,riched20.dll
+//Require_FileQ,riched32.dll
+//Require_FileQ,apphelp.dll
+
+[Dependencies_Fsutil_EXE]
+//Fsutil.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Fsutil.exe,Require_FileQ,Fsutil.exe
+
+[Dependencies_Help_EXE]
+If,Not,ExistFile,%targetdirvalue%\Help.exe,Require_FileQ,Help.exe
+
+[Dependencies_LABEL_EXE]
+//Label.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Label.exe,Require_FileQ,Label.exe
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+
+[Dependencies_Makecab_EXE]
+//Makecab.exe not exists at waik
+If,Not,ExistFile,%targetdirvalue%\Makecab.exe,Require_FileQ,Makecab.exe
+
+[Dependencies_MODE_COM]
+//Lancelot: not fully checked
+If,Not,ExistFile,%targetdirvalue%\Mode.com,Require_FileQ,Mode.com
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+If,Not,ExistFile,%targetdirvalue%\ureg.dll,Require_FileQ,ureg.dll
+
+[Dependencies_MORE_COM]
+If,Not,ExistFile,%targetdirvalue%\More.com,Require_FileQ,More.com
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_MountVol_EXE]
+If,Not,ExistFile,%targetdirvalue%\MountVol.exe,Require_FileQ,MountVol.exe
+
+[Dependencies_Net_EXE]
+//For a mini test use following ;).
+//net start beep
+//net stop beep
+//tip: net.exe requires lsass.exe and probably services.exe...
+If,Not,ExistFile,%targetdirvalue%\Net.exe,Require_FileQ,Net.exe
+If,Not,ExistFile,%targetdirvalue%\net1.exe,Require_FileQ,net1.exe
+If,Not,ExistFile,%targetdirvalue%\samlib.dll,Require_FileQ,samlib.dll
+If,Not,ExistFile,%targetdirvalue%\ntdsapi.dll,Require_FileQ,ntdsapi.dll
+If,Not,ExistFile,%targetdirvalue%\ws2_32.dll,Require_FileQ,ws2_32.dll
+If,Not,ExistFile,%targetdirvalue%\ws2help.dll,Require_FileQ,ws2help.dll
+//-
+If,Not,ExistFile,%targetdirvalue%\netmsg.dll,Require_FileQ,netmsg.dll
+//-
+If,%OSFamily%,Equal,NT5,Begin
+//netrap.dll not exists on win7 source ;)
+Set,%netrapdlx%,netrap.dl
+If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,Set,%netrapdlx%,Wnetrap.dl
+If,ExistFile,%sourcedirvalue%\%netrapdlx%?,Begin
+If,Not,ExistFile,%targetdirvalue%\Netrap.dll,Require_FileQ,Netrap.dll
+End
+//--
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,%targetdirvalue%\ole32.dll,Require_FileQ,ole32.dll
+If,Not,ExistFile,%targetdirvalue%\oleaut32.dll,Require_FileQ,oleaut32.dll
+End
+End
+//-
+//net.hlp is not mandatory, only ~100kb help file to response on cmd gui in case needed - not exists on pe2/3
+If,%OSFamily%,Equal,NT5,Begin
+Set,%nethlx%,net.hl
+If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,Set,%nethlx%,Wnet.hl
+If,ExistFile,%sourcedirvalue%\%nethlx%?,Begin
+If,%pCheckBox_Net_Hlp%,Equal,True,Begin
+If,Not,ExistFile,%targetdirvalue%\Net.hlp,Require_FileQ,net.hlp
+End
+End
+End
+
+[Dependencies_Ntsd_EXE]
+//Ntsd.exe is Microsoft symbolic debugger tool for NT5
+If,Not,ExistFile,%targetdirvalue%\Ntsd.exe,Require_FileQ,Ntsd.exe
+//ps: dbgeng.dll and dbghelp.dll also exists on pe2/3
+If,Not,ExistFile,%targetdirvalue%\dbgeng.dll,Require_FileQ,dbgeng.dll
+If,Not,ExistFile,%targetdirvalue%\dbghelp.dll,Require_FileQ,dbghelp.dll
+
+[Dependencies_RECOVER_EXE]
+If,Not,ExistFile,%targetdirvalue%\Recover.exe,Require_FileQ,Recover.exe
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+If,Not,ExistFile,%targetdirvalue%\untfs.dll,Require_FileQ,untfs.dll
+
+[Dependencies_Reg_EXE]
+If,Not,ExistFile,%targetdirvalue%\Reg.exe,Require_FileQ,Reg.exe
+If,Not,ExistFile,%targetdirvalue%\ws2_32.dll,Require_FileQ,ws2_32.dll
+If,Not,ExistFile,%targetdirvalue%\ws2help.dll,Require_FileQ,ws2help.dll
+
+[Dependencies_Regini_EXE]
+If,Not,ExistFile,%targetdirvalue%\Reg.exe,Require_FileQ,Regini.exe
+
+[Dependencies_Regsvr32_EXE]
+If,Not,ExistFile,%targetdirvalue%\Regsvr32.exe,Require_FileQ,Regsvr32.exe
+
+[Dependencies_REPLACE_EXE]
+If,Not,ExistFile,%targetdirvalue%\Replace.exe,Require_FileQ,Replace.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_Sc_EXE]
+//Sc.exe.exe not exists at waik
+//sc query beep
+//sc stop beep
+//sc start beep
+If,Not,ExistFile,%targetdirvalue%\Sc.exe,Require_FileQ,Sc.exe
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+//2k3x86sp2-XPx64sp2 requires mpr.dll to get cmd.exe work (else cmd.exe only blinks ;))
+If,Not,ExistFile,%targetdirvalue%\mpr.dll,Require_FileQ,mpr.dll
+End
+End
+
+[Dependencies_Sort_EXE]
+If,Not,ExistFile,%targetdirvalue%\Sort.exe,Require_FileQ,Sort.exe
+
+[Dependencies_SUBST_EXE]
+If,Not,ExistFile,%targetdirvalue%\Subst.exe,Require_FileQ,Subst.exe
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_TREE_COM]
+If,Not,ExistFile,%targetdirvalue%\Tree.com,Require_FileQ,Tree.com
+If,Not,%Dependencies_ulibdll_Common%,Equal,Yes,Run,%ScriptFile%,Dependencies_COMMON_ulib_dll
+
+[Dependencies_XCOPY_EXE]
+If,Not,ExistFile,%targetdirvalue%\Xcopy.exe,Require_FileQ,Xcopy.exe
+If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+
+[Dependencies_Disk_File_Common]
+//"format.exe 32bit" needs atl.dll on x64 but does not need at x86 !! --> due to expanding files on winxsys --> keep safe ;) add system root ;)
+Set,%Dependencies_Disk_File_Common_Processed%,Yes
+If,Not,ExistFile,%targetdirvalue%\cfgmgr32.dll,Require_FileQ,cfgmgr32.dll
+If,Not,ExistFile,%targetdirvalue%\ifsutil.dll,Require_FileQ,ifsutil.dll
+If,Not,ExistFile,%targetdirvalue%\setupapi.dll,Require_FileQ,setupapi.dll
+If,Not,ExistFile,%targetdirvalue%\ulib.dll,Require_FileQ,ulib.dll
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,%targetdirvalue%\atl.dll,Require_FileQ,atl.dll
+If,Not,ExistFile,%targetdirvalue%\vssapi.dll,Require_FileQ,vssapi.dll
+If,Not,ExistFile,%targetdirvalue%\winspool.drv,Require_FileQ,winspool.drv
+If,Not,ExistFile,%targetdirvalue%\ole32.dll,Require_FileQ,ole32.dll
+If,Not,ExistFile,%targetdirvalue%\oleaut32.dll,Require_FileQ,oleaut32.dll
+End
+End
+
+[Dependencies_COMMON_ulib_dll]
+Set,%Dependencies_ulibdll_Common%,Yes
+If,Not,ExistFile,%targetdirvalue%\ulib.dll,Require_FileQ,ulib.dll
+
+[Get_ws03resdll]
+//Thanks a lot to fxscrpt, initial codes taken from fxscprt's core_main script, I love you fxscrpt (Lancelot)
+If,%LocalizeLID%,Equal,0409,Begin
+If,%targetdirvalue%,Equal,%Target_Sys%,Begin
+If,ExistFile,%Source_Win%\ws03res.dl?,CopyOrExpand,%Source_Win%\ws03res.dll,%Target_Sys%\ws03res.dll
+End
+If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,Begin
+If,ExistFile,%SourceDir%\i386\Wws03res.dl?,CopyOrExpand,%SourceDir%\i386\Wws03res.dll,%Target_Win%\SysWOW64\ws03res.dll
+End
+End
+Else,Begin
+If,%targetdirvalue%,Equal,%Target_Sys%,Begin
+If,ExistFile,%Source_Win%\SPRS%LocalizeLID%.dl?,CopyOrExpand,%Source_Win%\SPRS%LocalizeLID%.dll,%Target_Sys%\ws03res.dll
+End
+If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,Begin
+If,ExistFile,%SourceDir%\i386\WSPRS%LocalizeLID%.dl?,CopyOrExpand,%SourceDir%\i386\WSPRS%LocalizeLID%.dll,%Target_Win%\SysWOW64\ws03res.dll
+End
+End
+
+[Dependencies_NetSh_EXE]
+Require,File,NetSh.exe
+
+[Dependencies_IpConfig_EXE]
+Require,File,IpConfig.exe
+
+[AuthorEncoded]
+cmdICON4848.ico=1699,2266
+Logo=cmdICON4848.ico
+
+[EncodedFile-AuthorEncoded-cmdICON4848.ico]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1
+
+[Settings_Default]
+Set,%pCheckBox_Chkdsk%,True,Permanent
+Set,%pCheckBox_Chkdsk_WOW64%,False,Permanent
+Set,%pCheckBox_Chkntfs%,True,Permanent
+Set,%pCheckBox_Chkntfs_WOW64%,False,Permanent
+//--
+//Build PE in PE
+Set,%pCheckBox_WOW64CmdFiles%,True,Permanent
+Set,%pCheckBox_Cmd%,True,Permanent
+Set,%pCheckBox_Cmd_WOW64%,True,Permanent
+Set,%pCheckBox_Attrib%,True,Permanent
+Set,%pCheckBox_Attrib_WOW64%,True,Permanent
+Set,%pCheckBox_Expand%,True,Permanent
+Set,%pCheckBox_Expand_WOW64%,True,Permanent
+Set,%pCheckBox_Reg%,True,Permanent
+Set,%pCheckBox_Reg_WOW64%,True,Permanent
+Set,%pCheckBox_Xcopy%,True,Permanent
+Set,%pCheckBox_Xcopy_WOW64%,True,Permanent
+
+[Settings_Default_Gena]
+//JFX: Gena - Avoid chkdsk on new disks
+Set,%pCheckBox_Chkdsk%,False,Permanent
+Set,%pCheckBox_Chkdsk_WOW64%,False,Permanent
+//Added Chkntfs False to avoid more ;)
+Set,%pCheckBox_Chkntfs%,False,Permanent
+Set,%pCheckBox_Chkntfs_WOW64%,False,Permanent
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

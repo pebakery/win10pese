@@ -1,0 +1,452 @@
+[Main]
+Title=Search
+Type=Plugin
+Author=Dera, ChrisR, ied206
+Description=Search programs and files - Search in
+Credits=Dera
+Version=018
+Download_Level=0
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.12.21
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Search.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History004=ChrisR - Cosmetics - HostOSTools
+History005=ChrisR - Added SearchFolder.dll and StructuredQuery.dll to work regardless of the display script
+History006=ChrisR - Win8.1 Compatibility
+History007=ChrisR - Typo
+History008=ChrisR - Win10 Compatibility
+History009=ied206 - ko-KR support by adding korwbrkr.lex, korwbrkr.dll
+History010=ied206 - Add Win7PESE compatibility back to version 8, Fixed version 8's 'stack is empty' bug in Win8PESE
+History011=ied206 - en-US support by ading prm0009.dll
+History012=ied206,mynhow - support for pt-BR, it-IT and probably others languages
+History013=ChrisR - RegDelete VolumeInfoCache if exist
+History015=ChrisR - Test if msshooks.dll exist, not present in Win10 redstone 1 - Date:2016.07.19
+History016=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History017=Lancelot - workaround yet another winbuilder bug - I/O error 145: [FileCopy,%Source_sys%\prm*.dll,%Target_sys%] - log_20161110_130800_Win10PESE_Support.7z - Reply 19 http://TheOven.org/index.php?topic=1924 - Date:2016.11.11
+History018=Lancelot - PEBakery no need workaround to winbuilder bug - I/O error 145 anymore: http://TheOven.org/index.php?topic=2330.0 - Date:2017.12.21
+
+[Interface]
+Image_Software=Search.jpg,1,5,151,51,249,47,
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramEXE%=
+%ProgramFolder%=
+%RegeditexeFolder%=
+%RegexeFolder%=
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Set,%RegexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%SysType%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Run,%ScriptFile%,%OS%_FileCopy
+Run,%ScriptFile%,Search_Registry
+
+[Win7_FileCopy]
+Require_FileQ,mssrch.dll
+Require_FileQ,NaturalLanguage6.dll
+Require_FileQ,SearchFolder.dll
+Require_FileQ,StructuredQuery.dll
+Require_FileQ,tquery.dll
+//-
+Require_FileQ,NOISE.DAT
+If,%DistLang%,Equal,th-TH,Begin
+Require_FileQ,NOISE.THA
+Require_FileQ,thawbrkr.dll
+End
+If,%DistLang%,Equal,ja-JP,Begin
+Require_FileQ,noise.jpn
+End
+If,%DistLang%,Equal,zh-CN,Begin
+Require_FileQ,NOISE.CHS
+Require_FileQ,chsbrkr.dll
+End
+If,%DistLang%,Equal,zh-TW,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,chtbrkr.dll
+End
+If,%DistLang%,Equal,zh-HK,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,chtbrkr.dll
+End
+If,%DistLang%,Equal,ko-KR,Begin
+Require_FileQ,noise.kor
+Require_FileQ,korwbrkr.lex
+Require_FileQ,korwbrkr.dll
+End
+// prm000X.dll Ms Neutral language data and code seems not require in 7, 8 and 8.1 with NaturalLanguage6.dll
+
+[Win8_FileCopy]
+Require_FileQ,mssrch.dll
+Require_FileQ,NaturalLanguage6.dll
+Require_FileQ,SearchFolder.dll
+Require_FileQ,StructuredQuery.dll
+Require_FileQ,tquery.dll
+//-
+Require_FileQ,NOISE.DAT
+If,%DistLang%,Equal,th-TH,Begin
+Require_FileQ,NOISE.THA
+Require_FileQ,thawbrkr.dll
+End
+If,%DistLang%,Equal,ja-JP,Begin
+Require_FileQ,noise.jpn
+End
+If,%DistLang%,Equal,zh-CN,Begin
+Require_FileQ,NOISE.CHS
+Require_FileQ,chsbrkr.dll
+End
+If,%DistLang%,Equal,zh-TW,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,chtbrkr.dll
+End
+If,%DistLang%,Equal,zh-HK,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,chtbrkr.dll
+End
+If,%DistLang%,Equal,ko-KR,Begin
+Require_FileQ,korwbrkr.lex
+Require_FileQ,korwbrkr.dll
+End
+// prm000X.dll Ms Neutral language data and code seems not require in 7, 8 and 8.1 with NaturalLanguage6.dll
+
+[Win8.1_FileCopy]
+Require_FileQ,mssrch.dll
+Require_FileQ,NaturalLanguage6.dll
+Require_FileQ,SearchFolder.dll
+Require_FileQ,StructuredQuery.dll
+Require_FileQ,tquery.dll
+//-
+// Is this helpful
+//Require_FileQ,SearchFilterHost.exe
+//Require_FileQ,SearchIndexer.exe
+//Require_FileQ,srchadmin.dll
+//Require_FileQ,SearchProtocolHost.exe
+// win8.1 modern search
+//Require_FileQ,Windows.UI.Search.dll
+//-
+Require_FileQ,NOISE.DAT
+Require_FileQ,MSWB7.dll
+If,%DistLang%,Equal,th-TH,Begin
+Require_FileQ,NOISE.THA
+Require_FileQ,MSWB7001E.dll
+Require_FileQ,NL7Data001E.dll
+End
+If,%DistLang%,Equal,ja-JP,Begin
+Require_FileQ,noise.jpn
+Require_FileQ,MSWB70011.dll
+Require_FileQ,NL7Data0011.dll
+End
+If,%DistLang%,Equal,zh-CN,Begin
+Require_FileQ,NOISE.CHS
+Require_FileQ,MSWB70804.dll
+Require_FileQ,NL7Data0804.dll
+End
+If,%DistLang%,Equal,zh-TW,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,MSWB70404.dll
+Require_FileQ,NL7Data0404.dll
+End
+If,%DistLang%,Equal,zh-HK,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,MSWB70404.dll
+Require_FileQ,NL7Data0404.dll
+End
+If,%DistLang%,Equal,ko-KR,Begin
+Require_FileQ,korwbrkr.lex
+Require_FileQ,korwbrkr.dll
+End
+// prm000X.dll Ms Neutral language data and code seems not require in 7, 8 and 8.1 with NaturalLanguage6.dll
+
+[Win10_FileCopy]
+Require_FileQ,query.exe
+Require_FileQ,query.dll
+Require_FileQ,SearchFilterHost.exe
+Require_FileQ,SearchFolder.dll
+Require_FileQ,SearchIndexer.exe
+Require_FileQ,SearchProtocolHost.exe
+Require_FileQ,srchadmin.dll
+Require_FileQ,StructuredQuery.dll
+Require_FileQ,tquery.dll
+Require_FileQ,NaturalLanguage6.dll
+Require_FileQ,explorerframe.dll
+//-
+If,ExistFile,%Source_Sys%\msshooks.dll,Require_FileQ,msshooks.dll
+Require_FileQ,mssph.dll
+Require_FileQ,mssprxy.dll
+Require_FileQ,mssrch.dll
+Require_FileQ,mssvp.dll
+Require_FileQ,mssitlb.dll
+Require_FileQ,wsepno.dll
+//-
+// Outlook MSSearchConector Require_FileQ,mssphtb.dll
+// PKM perfmon counter Require_FileQ,msscntrs.dll
+// Sticky notes search Require_FileQ,sntsearch.dll
+// File History Search API Require_FileQ,fhsrchapi.dll
+// File History Search Protocol handler Require_FileQ,fhsrchph.dll
+// Microsoft Text prediction Require_FileQ,mstextprediction.dll
+//-
+DirCopy,%Source_Win%\inf\wsearchidxpi,%target_win%\inf
+Require_FileQ,Windows.Shell.Search.UriHandler.dll
+//Require_FileQ,Windows.UI.Search.dll
+//- need for SearchIndexer.exe in win10
+Require_FileQ,esent.dll
+//- need for win10
+//Require_FileQ,Windows.Globalization.dll
+Require_FileQ,Windows.Storage.Search.dll
+//-
+Require_FileQ,NOISE.DAT
+Require_FileQ,MSWB7.dll
+If,%DistLang%,Equal,th-TH,Begin
+Require_FileQ,NOISE.THA
+Require_FileQ,MSWB7001E.dll
+Require_FileQ,NL7Data001E.dll
+End
+If,%DistLang%,Equal,ja-JP,Begin
+Require_FileQ,noise.jpn
+Require_FileQ,MSWB70011.dll
+Require_FileQ,NL7Data0011.dll
+End
+If,%DistLang%,Equal,zh-CN,Begin
+Require_FileQ,NOISE.CHS
+Require_FileQ,MSWB70804.dll
+Require_FileQ,NL7Data0804.dll
+End
+If,%DistLang%,Equal,zh-TW,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,MSWB70404.dll
+Require_FileQ,NL7Data0404.dll
+End
+If,%DistLang%,Equal,zh-HK,Begin
+Require_FileQ,NOISE.CHT
+Require_FileQ,MSWB70404.dll
+Require_FileQ,NL7Data0404.dll
+End
+If,%DistLang%,Equal,ko-KR,Begin
+Require_FileQ,korwbrkr.lex
+Require_FileQ,korwbrkr.dll
+End
+// ied206: en-US needs prm0009.dll Microsoft english Natural Language Data and Code.
+// mynhow: pt-BR and it-IT needs MLS6.dll: Microsoft Neutral Natural Language Server Data and Code.
+// the nlsdata*.dll Search seems not reuired.
+// prm*.dll files based on StrFormat,LEFT,%DistLang%,2,%DistLang2% :
+// fi=prm000b.dll, tr=prm001f.dll,ar=prm0001.dll,cs=prm0005.dll,da=prm0006.dll,de=prm0007.dll,el=prm0008.dll,en=prm0009.dll,nl=prm0013.dll,pl=prm0015.dll,ru=prm0019.dll
+// Copy only if files exist in system32 Source. On Windows 10 RTM, the Natural Language Data and Code exist only for the product language (only prm0009.dll exist on win10 en-US without others prm*.dll files)
+//Error I/O error 145 --> If,ExistFile,%Source_sys%\prm*.dll,FileCopy,%Source_sys%\prm*.dll,%Target_Sys%
+//-
+If,ExistVar,%EngineVersion%,Begin
+If,ExistFile,%Source_Sys%\prm*.dll,FileCopy,%Source_Sys%\prm*.dll,%Target_Sys%,NOREC
+End
+Else,Begin
+Call,ExistFile,%Source_Sys%\prm*.dll
+Echo,"prm*.dll : %ExistFile%"
+Call,FileCopy,%Source_sys%\prm*.dll,%Target_Sys%
+End
+//-
+If,ExistFile,%Source_sys%\MLS*.dll,FileCopy,%Source_sys%\MLS*.dll,%Target_Sys%
+//If,ExistFile,%Source_sys%\NlsData*.dll,FileCopy,%Source_sys%\NlsData*.dll,%Target_Sys%
+
+[Search_Registry]
+IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
+IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+//-
+If,ExistDir,%ProjectTemp%\Search,DirDelete,%ProjectTemp%\Search
+If,ExistDir,%ProjectTemp%\Search,Call,DirDelete,%ProjectTemp%\Search
+DirMake,%ProjectTemp%\Search
+ExtractFile,%ScriptFile%,Search,Search_%OS%.7z,%ProjectTemp%\Search
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\Search\Search_%OS%.7z#$q -y -o#$q%ProjectTemp%\Search#$q"
+//-
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_Default,%RegDefault%
+//-
+Run,%ScriptFile%,%OS%_Search_Registry
+//-
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+DirDelete,%ProjectTemp%\Search
+
+[Win7_Search_Registry]
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
+//-
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchSoft.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchSys.reg#$q"
+
+[Win8_Search_Registry]
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
+//-
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchClasses.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WindowsSearchSoft.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
+
+[Win8.1_Search_Registry]
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
+// Use NaturalLanguage6.dll instead of MSWB7.dll used in Win8.1
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{61A48126-EF74-4D4A-9DDA-43FD542CAD1E}\InprocServer32,,#$pSystemRoot#$p\System32\NaturalLanguage6.dll
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{61A48126-EF74-4D4A-9DDA-43FD542CAD1E}\InprocServer32,ThreadingModel,Both
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{9DAA54E8-CD95-4107-8E7F-BA3F24732D95}\InprocServer32,,#$pSystemRoot#$p\System32\NaturalLanguage6.dll
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{9DAA54E8-CD95-4107-8E7F-BA3F24732D95}\InprocServer32,ThreadingModel,Both
+// Failed to get data VolumeInfoCache\C:,DriveType in x64 build > Delete + Write
+If,ExistRegSection,HKLM,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache",RegDelete,HKLM,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache"
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\C:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\C:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\D:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\D:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\E:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\E:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\F:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\F:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\G:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\G:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\H:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\H:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",VolumeLabel,
+//-
+If,%BuildType%,Equal,PE,Begin
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
+End
+// disable WSearch service. It cause search very slowly
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WSearch,Start,4
+
+[Win10_Search_Registry]
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
+//-
+If,%SoftwareHive%,Equal,Boot.wim,Begin
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchClasses.reg#$q"
+If,ExistFile,%RegistryCache%\PreparedHive.Done,Begin
+RegHiveLoad,Tmp_InsSoftware,%RegistryCache%\install_wim\SOFTWARE
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_InsSoftware\Windows Search#$q #$qHKLM\Tmp_Software\Microsoft\Windows Search#$q /s /f"
+RegHiveunLoad,Tmp_InsSoftware
+End
+Else,ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WindowsSearchSoft.reg#$q"
+End
+// Failed to get data VolumeInfoCache\C:,DriveType in x64 build > Delete + Write
+If,ExistRegSection,HKLM,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache",RegDelete,HKLM,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache"
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\C:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\C:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\D:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\D:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\E:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\E:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\F:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\F:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\G:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\G:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\H:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\H:",VolumeLabel,
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",DriveType,3
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",VolumeLabel,
+//-
+If,ExistFile,%RegistryCache%\PreparedHive.Done,Begin
+RegHiveLoad,Tmp_InsSystem,%RegistryCache%\install_wim\SYSTEM
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\ContentIndex HKLM\Tmp_System\ControlSet001\Control\ContentIndex /s /f"
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\services\WSearch HKLM\Tmp_System\ControlSet001\services\WSearch /s /f"
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\services\WSearchIdxPi HKLM\Tmp_System\ControlSet001\services\WSearchIdxPi /s /f"
+RegHiveunLoad,Tmp_InsSystem
+End
+Else,Begin
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
+End
+// disable WSearch service. It cause search very slowly
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WSearch,Start,4
+
+[AuthorEncoded]
+Logo=SearchLogo.jpg
+SearchLogo.jpg=1261,1682
+
+[EncodedFile-AuthorEncoded-SearchLogo.jpg]
+lines=0
+0=eJz7f+P/AwYBLzdPNwZGRgYGRiBk+H+bwZmBmYkJhICABYhYOVhZWVhYudjZ2Th4uHh4uLm4uXn5hAR4+QT5uLkFxAQEhUVERUV5+MUlxEQkhERERUCGMDID9bCwcrKycorwcvOKkAz+H2AQ5GAwYDBgZlRiYBJkZBZk/H+EQR7oTlZGMGCAAkYmoBvZ2Dk4ubiBCrYKMDAxMjMzsTCDXA2UrQXKM7AIsgopGjqyCQcmsisVihg1TlzIoey08aBo0MUPKsZJRU2cXGLiEpJSqmrqGppaJqZm5haWVs4urm7uHp5ewSGhYeERkVHJKalp6RmZWcUlpWXlFZVVzS2tbe0dnV2TJk+ZOm36jJmzFi1esnTZ8hUrV23avGXrtu07du46dPjI0WPHT5w8denylavXrt+4eevho8dPnj57/uLlq4+fPn/5+u37j5+/QP5iZGBmhAGs/hIE+ouJhYWZhR3kL0amcpACQRZWRUM2IcdA9sRCYSWjRg4Rp4kLNx7kVDYO+iCaVHSRS0zF5KHqR5DXwD4jzmNNZPkM7jGEv24x8DAzAiOPWZDBnuFv8HqTH8c/ptrJZx7idq38Gt2k3KQxwXpL7/fA8GV+nCcfMM7zZPgVW3OVhf1ovaTp27gHlS+Xeqtu3WR/N9Lmp1Lar7cNerXaVSJXvbr0k6Uulzx40tX/4XD8x4ne+8Vfu1nKP/vNU7j2tPv89zYLp1scUAzRX7B6Wj3n+hoj3+Ntpa+7I6e0fdqmIr274CJrzOPfpw7f2qu49n3spiiW5wuCsjLWrgv/8cj+A5P2zW8lU3JTKr2W+mXfnbpP8k/grqtfhR++F1RojgoxcjSI7S5Z3fCnhG9JT+ON5gvXl18/u1987h7rlS923XFwrcxeGXliveQxl81LV6/8plRQ+Kr50r6uDTt+x04Rrj/vwvsrvDuMSzgzp+rLk6ciN5P26Nla/xOs75r1derxdw+uyty9vZOBeedpAb76fe8sZSOS99le2pf6d/E/jZebbt8ynbvqnm+6tmnLiSe2R+YcObPjNUfaDf4/W4qPiUquSlQXP9M1JeTqzLcBtyVFUorvLTXbF6Hygb04TvvBe/E/iZdqbDMLax+s2Prj1N/X3C/+HLBOTdXwPGZlZsuw/FWdwY/Dj2OvRYU3Xj6s+C+4dnXMsUOGdzoW63l+OZ18RerFt+NWS5OtH/Mtqwl/vJ63wtn/79sz1yfG382V/LR2Qe2r6Ms1pyXk35lvrTVddvvvpEP35H8+a6z3+vS+eT/zog8s06O2raz4db7j/ewzu6+oyxtvT2D/sOKFSAFr1dViP7+8Ny+9Th2fWJPwo5N3ae/dHl3jlxdObNvem3E7be/O+q9VtTv//S6duEsp3eK5nPmH7gPX68X+5P5n4JRbtuHkslsePG536hefeMW1fpK1o9RTJdmD5a8VmRd93H7gP4NkRfuRWWVzXnNnGDhcW/TtXkxOZ//7G4o/W67Lf7p40iJmwblHx1/4c1REXT5kpbpvfqbQcRkPcS7DCyHbL/Jc377dO0JI44qWwgGm+Y0vvV0VuDQWNdj/vwkAckE45Xic4wtOTSxKzvDJT8/XyypIZxgFIwsYsULo+SzY5bt099QxMAEAkzsIMpysXLoBAAAAAgAAACoAAACfBAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Search.jpg=4094,5459
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-Search.jpg]
+lines=1
+0=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
+1=9UkEIvhYCCXNtbo0NeEODd804eWQEBAlVKDFWSd69w5aMWP2dfoSgCNbk16JFzH3/SgOGDPXHHhoiK7v2rnp6Zgk306j62IKqxv+httnp+u5KJ5HMFBirYDWtPfRyDYLP7I67++OxT/DCP63XmENBXhXLbqkdOwnuucu/dEbDGiYWiYy0TKHg4pYlxwZi3vjL+Em+YT5qIXXSxa78UgXEyN6qcnkYTz2xRHV4wSr23jEDf8KUbJtDCjjDEHN6D6780QMCtUluaG7bHub9p6N3ivfrkMOv02qRmI6BpUH3Rk8CwyTasr4zVh3dFZpYtIuCcmJ8UBDDlwuyEx5MM6dwq8KZAsQ8CxNIZYqgdl01fXUbnfFwEPc4vGta3xr6DTyIK+Ve9QVdCEbjqFrqiRMR6kgqKUSKdcJSJH3e4dySxv7C+8vEc0drlhuEeMT/jj3BF+spps6DAZ5E1WLsJAdGRmgTk2saclR9NvfQOZtY+GgIQ1/CUHiSpe4QDAlLDQRorXKeJyyGmmXbk9Y4mhrB7BxyXveDtoxmkK6FiBlzbWNCiJNzwwnIuWI3BIRpThjJp1WYSEMCjOIbdFnGAgHeoQoaG3rchTLL7f61Wg08JYck+2C0hnwJwbsYAAiZzQKKjlYciHAT3tmxMkBypeVACnJovW6a4esD99kcdksH0CbMCL3tZJQgBOtwYCpcPBDRmbecbvF+aS7lPSb4BTsNvGOngF3e89bnhdoZhGml6OrCvaFpSgea3fH3j+WSu8augQGf4eMMlP+GCJEWgj1rZhaQbvGsy3Apc0qMdSn4UupPemyfHkHCZkVsan9HRP1qVAUxtR0UHhijcu/onYFuK5R7MusICliKYiVk18cR+yz6m7pz/QUa4CASQhBcgIPLihmVK6BBBE/xXQySpWAkCZs36wK/QJ77j6Pss599qspXifDHf2oJEF2uYk8ICzJhBCgS0mDR+l8V3Je5x8+WFGxk+jPyr7WVM7R+VMCBbK3hliiYExOY++g/46vxii/rTNnvPuMmHR7ycCzpznpm89Iofqmd1tVoBUvDa40l/M9TPDoyT3suMc3l0JvGHeP6FwWLyG3OMa8iz/Oq2V1XYivvZEHD5czWKunEbhig3Fr0tIvUV4hmMKy+zYEc1RyNmqnsGb7vluAjKdxnF9tYH+ftp5v71nQvF9x8cWi0c+GRLziMp31P3qzxOfDqQmtiteay1ec+LS112yOzCNvjc6O7MwCyB8rOZ2um9jV6FBjPQwP8AomnlTnic4wpOTSxKztDLKkhnGAUjDxQLQ+it/NjlS5JMMxiYAE3TBo9DXKimAQAAAAIAAAAlAAAAtQ8AAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Search
+
+[Search]
+Search_Win7.7z=5569,7426
+Search_Win8.7z=6000,8000
+Search_Win8.1.7z=6002,8003
+Search_Win10.7z=3919,5226
+
+[EncodedFile-Search-Search_Win7.7z]
+lines=1
+0=N3q8ryccAAMKUDKaNRUAAAAAAAAiAAAAAAAAAOFO1FTguXsUu10Af7+GiQMs9AFCgNY6KPFaZ0yWMRlFvk2FuWH8sovr24Fr/gUif0PGiV2MhuehqXIfb0txmm8PYsb82g5FyC8MYgIxZ2WMt7MYFh8r+lEvVIwZB58VDU/NeoqS2U/CRBokXXDaD9fkMXo8h5/U4ZQ1blfu4ogadBdhg4HGnzaSo5Nr19FGyVKNrqUMrUb1+Da49peErze1Z0H5gymkRXG+xwJvmL0Gd/mFdqZvA+f5v4hbCUJK1MT/j/Ms8vWTxsgIS75HhJhHmAW5I38ctLjgh7YMcaGuSsaXFUOookvDP8gbddWgL5F3uqRE76nLQRanpZE5GuZWSfrE010FIskpVgoy4ZyPFzCa+hO0OmJf61K42EGvjpajqjFx0/ZShZVJiiemrbGln8ZxqMzL3071p1uZxoe/0F6pQPzsJbKYjqO7DpMwUZaAesWoE8V1FqwHUchs0brIlMSmci7vDV6UR9dAsRiRuO0RCCUhWIj+217YfGhBfXmygKtpN+Tn/9LDuXNRkh95yPMHWb26J7b4yfv6Sdyt2GpXSVUaJXXLt16jN4rvYh/NzMk1QyGM896OA8w5zYcUs07ut11sI5E6cCn/JVX254OeqPhbiNq+ORsTrMyHCXUT+ON45ZwS4yKyMQdH/fm4teVxBSECHCwAnhXbrvkXnYnfCf7tGqnrZWWPPaxiXKU76WeJtzvLb3/qOQ6KkGsDZ3Nn3+p8iKHLAFGKKriPAiaaE+Cxk2Z0Qf6GtfRI9hrzzLwtCX5zG+xTg3/f/UIRlRxaDk/pn4kLTB39adfLMqkc9AzkAmUCuhzRAuLfgVHuECpZwixinwhfhVlKwNHWAlDUksDNPmEhQ+D5Wdu88E0099DHp5Jf30g8t5QviUveq5Z/cf0VvG4KKC7wm1Zfq4SHfl2b+wa4h4eqM/+M4W1ue7bgrpfToJhqBS+aqwz1klQaM02Cb6390Bu38lJnn1rkxhcKvlWZHOBCIlqN5E2yxXZ9prCAJJZjYq3BYH31rISY0n7/QeeyobFiz9GvBI3lZ+QAXhxD1rl/6l4vb9gcNh84Li8JeFgV4v2cmvtgyHL0uMfPksSqXFlwEyxsneWE4G8Cs/1QotEFlD3ckjzgB+1d4JHTlTlTM9SHU6VNwGF9NkwNQWCRA8gyKUE7taqUvGRhd4QK3l/IUAfc5ESOJAe3GuS69dPmmRUhl50+wrMc0Bq8CLS4UO0uLP4AcxmbGVCu8ugSKjvC9XBRHjaa3vhzXpSOurMfOezJbABlxqaaod9jvGWlRs+jBIy+rCKX85ojx6DtOc4hgxjeCVQbm+uLDKJwQ/n69O/9eNOtIKLjaBXaBBJdVOrYwTomGkhlrE+/KklSXr28Y24lHNz+ckA/H1BH7R8OqRFwpsuoTEYDcHgmwIKSTFMeDNma25Jtl0Zx5VZIKbVg/k17vU4YjCLhR+FAsuVT6rXd8TLjykaO7f+wiuKz6ulBz1mQb4qiUtlyjvm9lHUAICw6EBYty9jeWxOHLPvPAnVlaWm0KoGpeSJmvcjbsdNuxc1XsR+YJSPVWmWPH+w6tavv/m6lYBdvHbnez20AsmILAOql7zUiAjGsWnBLniFDFuFOdKVix/4mb1cHz0MVxn95dmUyZuM593Xnayq6kcoxSW3rjvQQsB+96XS85l2X6tR2zWW7XKvkD9hVoxK0lr2/vR8tq5h+Gx0twhIFs4P/0z6sbpTqXcIoIedACYTTubauPBV+gwxg5VoguK29D29uwNiNNUz3pscKaSClwYqLgZk07MgADYoba7Az2QLRmoRYnDkpLKJQ+aDb4Q8J6ZxxcdQKSlWr/PcadpPqfGdxyWmeUszhvT1BeYTlf0qbgz4OyAlwH6d+fTsd3ViursYBHuZKxM0v/wu2QeznEuMedzxq5tQqbRBp3T3b/Kv4QeYVbV/DgS3kwT21APNIH5XEsMXaSrV4YA3xr8NDVpsPzi0+1qbtkT8nMr8wXrQ/ulk7T1/kwfIknROuTInhHj+qKYIbqNgKrI2yebZyajsPIgAsr0baro369tajkfzQY832pQh/M6RCtRidWX7dVZU+2zqLuUC/syGtBBaKe+a6TPj9DuDAj2WGbABAal5l+72JcV6pXguF4I89XOmFMIWJdRK+kXoV+lDtl3BlZOQ1z8nb8YG3lZxMMXHP+X/RuRKTnhEoa/6G/KDJuFzI/dNJIYu4EiNlPc3rEf+UKdN5Rrnvw1zOZCSRVw+Z2kP9Ejeoh7NaT+dyy/bd/ECSfuZL6irmgZWajn24pC4U9QOkTZXXTLf27tXaLqRcaA/WgQUaI6tVDCdORhXLveoXi0DvmNq5y6jVhG9mHzz+pgmalaYGTNtl+rWXD6DCgw1hwQpy3AosFDz6yf+kjGwYasMSGGIj1Bs+f1p5UF83wubuVg36nUsmqxpbtYGqeEA+9I2syVLrzjsH3oLdQchFLNU+OsIu9lGuGixZH2BJQlIdN9oGif2tDVigwh3o2LeLUgEo8ku3xeu0j2sP63dcZbjZDkzQnjxvBu6+ijJVlQjJJk/EvoFbKoUAk3n1plB+Jl1nspB9KAEi9C2ZbA3uSSO+kVuaC6/tyPCbBUAGZE4rGSta10piMqtGsYkohstyGv8SkDzdK55OgxRA0rU1YwFNqXO5xLGsVkznhhIfUSGlUZPTB9zQo6nad/nf3wDj7IJqszw7/6yIdwmYI7H8Il0b3EU9ulQQ2vgwr4YQm8aDkTwvvT1N0Hc0nL26w6kW7uYYqb3reAr9RrcCIZePlo90QTCGhsaBXTUSDsPvOudLC66xDAR7DpFPe7ATQZZLwN2Cr1G/e4S/HUN7f0hxy8sailfG5ypVWNv4YqrqPcCroUWglbUsWCYsihZPexGLGu4yaz3P0uBj0hW0L9KQYpfa9m/cxqzyNm/MNLIwncPQsvpVkfGH0y28AHqvI9sIyb1w0kidbiixfYQ2nGo5UNYzS3CMmfZMC5qJ7uaO9ZOibQACFnNvGfcxSZxCgg9KQmrjBzJxKkVMVnozRSoA9w5oqcVFsYF3+Usd8br7VVjcAnTcbgFgS5jLTkb7lczdBPNwifYjbG1o/8VJaihwzG882vP0H3VEVAkOuY1n+3ImRsQYcCzDvrWmU5Hwd18/SwGf/5ZDBIML2JNZTF/6mry+G42mBweuypZDjDYxb+HVMsGEPOO+Njzqy5axDJAbL2v0Ko0EYx1Fwqq7VsR0PIqooKfEwhi5PvCE11H3yMrOllDcD3LB1pLARMcKnikQDEmyMJhodWOZqIk3atynUpTQNr8MurWAjhZHcMGLOVxSirYOzLFhOiOkRcNzCyI3qrZ+krvY/bBry7zwnGScvoX6ZRCmKfwJgTEJ7p1Q8Hy0WZJajec9fRLcBhU/L3WR3fpDtIwxzgZNbpwN4RKJdTNWL5JI5NPnyyRxkbxc7RmxLslofAGIcfP5e+u8gBhxCEOB3H5BjfCLv8tb8N+bebgzt7S9M0+J96RVUbWHHvlsaGXtpDTNHdMpfvqTpFbDncNelBW0aOIraSrsUr/dQkCkcWbXAaogeIFvmI5ZM95e80QGf78GL9brqwdVdui7QZnyRtue62wAovG77zgzkGPDDj8GyJskJ755Z4ZY6o3yXJqMyVa3knshoZS0qwZ/mZYMK7JSCVpaW5zzPnDcNB1A/Ah0UyntwCvQtROEq2FqlRV2vbZoPopoQkql/6Gx5ayeuFTMPPC1ubHxBrCBZKjwzkooXOpVmaGXNcUUXD0IzhLZTXDI2tcVUx6FRutEf/kUZxjTpatEqqHzyad6vvlwdD7/zMcTbTCcjA//N5ug+0tEFbvRE4Lwt64A75tTPNLwk9OgbP7B1tnbUMlmE1m3OQiXXmQiBFX3Ac7JK5wo7uAUSTR9CpEzVOlCZ3osWzjvRd/pWUVW8mng5cheH9nkwo2HQmPM+/KjJEqeIQHAW8mJUEYm22yfETEKXI4ddkDplbWrGCTBSuDttmigW4D8YBdVT7YkL642jYGwB9c6GV12X5taB8x3AY+1mj52x/
+1=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
+
+[EncodedFile-Search-Search_Win8.7z]
+lines=1
+0=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
+1=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
+
+[EncodedFile-Search-Search_Win8.1.7z]
+lines=1
+0=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
+1=v+cVF9tdi0hmNhkMSSOSJ+rx3mePZtvUknnARlyfST4XMUXwkVxBR1EBKQ1TS8Jq2qScs5rO4SpFEohz43meo750gG7/eXGlOrajVFT+nPP1KHsazC/R6B4eVNnSEEjdgm3u62iPpcBiwl0TQAlT3AU1/ngEQFDt9MrOl+3/yXzcZ2l2i06x3y3wFCl5jum8VXYmrJlE4k5xw22qsjixTCftaZ8jzItjfmx9zHmbJB05YgntPp9WNxis/V4cmJjYb9QJILlgmmU7a2ltuiNYGSXOcW4ovRMs0a+gKv9H0Gcbi8fltYYYw9L21te0m2SAhL3CaueL2TXfDPxwlMt3Cs4sggc96+HOlHeQSrjYTDCcCYI05QQUMK+DGwXiqmOIT3qbW+Mj2S0FKEV0O7AE5TeyV8UpaTf709aqSvGW93kRz4+i+yBBaRnWTYGJiY+gjdcSj3bak2H+tRmRTKfwKxAg2+4varSR7T6jyGUV7PtHHKgn9N6VHZyyrXPyd/UKnZhle3Ncy6+n1GK0EAU8mAXRES3PzgQ/TB67X+NZ8aBUthqluvFI5pqtrpJO7bwgBlJxcKWnXtdwWVhFXDucvLa56hcknfkNQqFcVCkmeU+rbFcoJhru/R/g405KrYF3GP2ffX7OWJQ2pX2tu7BqWFqMGlXESF3c5MJiu4Sv+PHPD3dOqMPiGGCNptdbABorHYhyrld/JKvmaNrqXrY0IDkRjbbDHgvx6RcRdpxOb6WtIGM82k32eNbp9y+V2lG1FMM+dVUZA6shGD+Dlc1F9yMIxBFwCFVBRw8b4et/olZjn2aanSVDDSc/gvl/5bkwxv+5i1SVd+5Tn8APJ3UZt3xO2xYenmIOV782kHQyQpL+IBCbvM3FHF5WzVSS9KX4k0UU5FinynpUoNQLyjCucAW+zwjFq/Ddn8TpuyS5Ni3UfZDYQ4iBLL5pAnsuKjRlRTCGla+0SyfXpIsmGrfs3NOUY/TY9xd1g6B+YOWPtcAuqYmDh8wkXO01QZCNZ2Hj7iKTNSP3D7oxcHhjvsOqTeuI6WVcoskZQO0++1+wcv3sCPwU8hNDJ8VZOsyRm/P6LJ96N7cBfqxVS+UY20Xt/AUi6/6R9cmjTJK9quSiyNUbkhvvmC6ekcH5MM0HHFm1OTyj84M7ETL7x2NJLwi0kb4gPoe+yMdCZxqng25deLXdEyJy0aAkktkDQSWZLtilbc847uXab7arOy8FmmNjtQDNn6fVJQwZVz11NDePdf43IPG2pQhnpTCGFPmsHcLmbbWnTnQ1DNidlf0ptgvzaRIQ94XnwA0vl7jrmAHFbHDw//Ri6SddfJs3l0rHASUcPofRXYJsz4QE21veFAD8JIifpYxZYiCMZZvqINcXuExFa1y+Tcbbz215F1Rw1MKI9KmGiyKziRTD+F8uxyDyegm0NoHhasXJUftw2F1Mn6j+GZs2/MulSsnYHiB1Octc1C5KE3YD85O15wTkAMfWAFSc1DY09wSN2Ps804PbRr9wq6BxLdptu9cMwYNVaqCSsAdMOhxHsYcdc+p0YVFgnPQqXNF97622d6uWZ3p1QEwg6uTIYfp7hmRBgvlExf+cwT/sCWSg6pumG8x2bowD5y/ms8zHiI78sLdkVebwYniD8yECi/5ulTPxa6XBoNibZdL4czQESSPSDCwJ8Guy/t3on4O3TiTSP/5vS3SEL30hyQqZTn07WJ4Stm9TM5tQcie7XV0CU+IA/UY4Z5Qbe7ExyQERijq3nrbMWOQ+rrjwAdNeqG8SoXjdRvv2p6iNeR7CH5HKAMMo/CdEjbXu1TJDhxdMZMoi9A+2rLdaoYgtmfRfl9mOXoO1nD8a5dsyY6Cg0dnhvxZ+8XOtxhzrmBo47lZo18VMFcZ4/Dj91m8a1Ze503jSZgqXrYddaqLUZKvdTcU70Nya7qtaR0UK6fa9dHljOxj/dGS+jqvCRKYybIAJSm9rDfhQzwZ7mnfPoafjBDWuzgNqqv5SkSKYVRg/l71MhU5Wo3+CtvDarqLcLpUWC5iUuiuSL8lArfktSQ06eM3E+JCL02/Dt5TSNw4J30fzZu9dULOdrkQLEyqXjGmdpR8VnUolKGVbXG2tb3DONiY8Ro3tunH7cBJQG2SXK0IXsRrND5gqBGbJTJOcNu3f8te59F9HH2ixBxvjZPolSWxsWcLA8D+fJd65waT/otjP1IYZlSp2nuoC+4h9strQp+TFX53bU/K3mv/7+yWN2jZPrCk83Fh6Fpu38REKSku6TkP8vXbxlwE+X32bkDdIAGOBRLNTdNoNX7HI/tiGwpKrDLL6PfKUYsWBiRaOwOJ39EFBFOBWesHnzbzC1R1zUT4bN+5Jf9NNUesX1VxntRtxEyxJyqjuZcy3s0RDlGiCyNtmOZUQkNjeC9xWyWKND93tYUuncyQsGbwdehN1xfxO2g5yJ2AhABEgiiqJEtCg8VdQWZRBJ2vzn4FJ3YtypsCN3LhqY+Io8Ixy+PxlTjkqZIhLmhH4F3Wc2G8tiEHNaEMiDNEIdLNWlmsddr/S5llo2+jZHZRkUgVdL8tLHfoGJixKL7rDWid2rDSaCK0fjRpl4pmgoctCjN8Q+IoA0WmZOiHUEnP2JzO8kX5//KJZdvPwyUQGYjEVIB8PZCQUBGZKjZE2HABzVzWohNJGutVlWJgPn6OuNR9by7vQr72MknUGnqwkRjUE4O//U3XiVLFjS+q2eP3TvGEX7c22DmQ9s/yywKBKCUNx+R48+Vbm2gi54c07GXhYKb5Fto+FaaVJGZ/x6FBnLu9Qqo4tGAMUAblhYpyVf6mtAh+RLt11Wd4lZedfDIP9h/lgDzNZgOdKevNJg+pGYL8ODw/5zAmmY2RN7KH9orYVVTTiNUDPg9GHfEMAlh6UyOdrCiZxYJwk1MPsimq8MZoZ7BPuJHB9bRGECyXbrE29Nkj0bIkqlKgxMI26bZ7xs8TP7hsZgbwMAeau0sGRdFOhFvGyjmc8eO+7O4BkeOySBzrWy1P8TraA1RpXrzvyci1OpjzXIqCV30J1R3UdqFDr9afhv/JFbR0+uP9t7pxLdXQHhRHnLpn59J3HcbS0kQ5Q5DItru8Ues4ny2ySfUEp0VEYi82ooFjN8fIbtAFNmjleB82WxTLA10dRWVcfQyi/Den+5NhLlxsVGwn2IFtNHLWueceOTvzEUhKwBCJX9t8LUdqLS8CLYAqKzwjkMduxILrf9hYPeMy258YR0AIDRT3p1tZl5Tbg9hhMtcZ/dTQIYCf50Yaa1eAYEQwMMiuH79mqlvGnLfINn4Vx2z0NTlo9FooA/YFCehJk1QJqjBXLkUlFc8OWXJTW01sQtTHmN5c6rLCi5HyacEVNwQd0qkbU4v8556iBJw9CHxwVuW2Mzw7MO/xaFUMgTomk2HQbcAaaZl8C6626PAbJos852aqoiWgNs71RizLHUYIEVeSfyqPwxuloXqsMQyyamhjA7c0DRi46/eBf+4nEYAAACBMweuD9YfdXv5xmbajfPt0KKmARa+vLKbpb2/aCmJHjqdUHr+m1DPloKDxaBqG48sKw6diGXFYMxKIEp9S6hwsxYEWfT/rRA+kCNg0FW8ay8SvfzgLtQeiLdsG2nm4DR9DJqwhw7KdBNNUpgqXVcTb9JfUvi21wh/yOCCVE22WJhMhNj2oI4QCHDwEsfWk6mrFxwwEXZZC/+g7ONqP4Dv2bVplnYCzdHOLwWhIKDqDivMsI8appJF/34nDtRsNALRIOsE4jYXBpYbAQmAyAAHCwEAASMDAQEFXQAQAAAMgUIKAXeDbswAAHicEwhOTSxKzogPz8yz0DPUM69iGAUjCaiJ45f3WGP8lZEBAInyB8Ro4X+JAQAAAAIAAAAoAAAAJhcAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Search-Search_Win10.7z]
+lines=1
+0=N3q8ryccAAQNIHbowQ4AAAAAAAAjAAAAAAAAAM+4L+XggisN8F0Af7+GiQMs9AFCgNY6KPFaZ0yWMRlFvk2FuWH8sovr24Fr/gUif0PGiV2MhuehqXIfb0txmm8PYsb82g5FyC8MYgIxZ2WMt7MYFh8r+lEvVIwZB58VDU/NeoqS2U/CRFI2rytM0+vhmXkGwW4AfZVIeZpGvhLz/kVz4l+UeC+NUXmHHS/V4Q+dfumUZQdePXeGa9Vk6CpbSa2qggRCsZxFrIqvYoI3FBnnq3l5a3lsonPtmo7qvUnqLMjiQq9lyIIp30I57GQMs7aQCX8WJj8oT/YP/yEHEkMAuXyEM3JfekI9YZFiVvgvh2epJA/mdYBa/DENj1WUmEPUMtzjJb1n5SsNn0M1exEKf+vbHYPvK/mO3MlxaCVzGt/eVzIM8mjaPq+zdyoAKuH3ek4xFE8LX/8ZwnBkbC8G98Myz2urIQq85amVgW2GNRV7YxIMqIXPXK4KMi1606ZTA3DAfodgybn4LRhtgdNlEH9PNmgwmZhVh1Av4vp9bHJPvUa6VgczSgI2tb2AxMNkYeXIUfP/tQPUuRJkGGluziCGaqQK0EW0Nzv14KCviFXM1T2ZXJ3gWOU6Ugs+SV6uv/sBDqyFflDANVSSmcTXxTTYQNheAeMZuOpi9jNWNo2tSKVYtLCMjuIwWNs53WfLBIz8AiImBMbRMfC8IOcTqv/SiPNGIjGZ8k7ieV/AZjyrAXJeis8wTbZd0CVU7OU7hbZHYo8R/djYXuyNAXIEI7DQI8Xuz1iRLVd8uGQ8os0bBDbYYHf5aZLbZ+Xc91dtK6wQC5G108B8TvY+gQeiXQBdrRGy9qWZUGG/rQLNoh+LKT975BHl6w+a03rcW2fQ0IKVSYask1TnxbreEJK4PSv7SSd9iDjxKdTsXvyw6RELS14x8RW+V3jTFN5e5mZrBQ7yR9YyrAEL+15mfb/03eP18WeDoqMEaj/2wm4ZML/UAu38Dwvq1Gl24iut5TqLMQM1S3SSQs2jnf51h3jlqzsFD/x7KK5WpeYe9HFILO2gVX0h+7pORbo7igRDx7BvjYvxRaE/ChUh+pVv8XR7uvwm/aRiM7Wmlq+Uy7XP/gU6SJxfbHaR3TPBFJpwM1YYb5ODfomOKTYZKnkbdBYmPF0XhMFKNETJl7f9qCoyvVws4Ih9Ap6F0lLIEYyXDgHrI53DE0YKZsOaD/ZuGW7zWP2O3TyZa+zCWJyKqIoFiqI9LXTQbcATraDfHvWTg3/r78+FX/SgWDM36Q+TqqKGkPabqi8yaz578eYQxJVX7WOnn1qs86u017OmDHPibqqZzgRW90C8sPzoSdnUikGY/s2yBhBGai5NwF33+nyrJUKAT+Gx5BRQSwZnmxk19pLqU6uy92BmsQYKFp+uEriPdoruqPT9HaK3ukS16nhP2xbfKfSRo/yJlC4DbhuUmRQsKawK4QO5z9pmS9HiOuRZBOBXgzxgxDJx0nFrLtJYlaO/8NqvzIgDnd/hOmLN3Vx0FXPz2+zWOTul/Sr9DjrHS57JhvhkOGFz/OPBWPEwpGBiDn0LOjyYTLwhifGU9UWg+zxwDXwjbH9HkCa1irM3ZFVYajd/dAiBMWZKMJce1MdR8CMsXpYQ3mViZtusCzzCnd60PuGAGBHKJwr+M04D7oI2f7JUg1l2czFS48FP5/QcBI1WhYNsYXaLxprFErurz71oCayb1N2/5WxwU/1L5VnXVDjS2Mxj5s+VDGrc0pwGbA3uRawoH5YlNpB3rbwbbycidLSuCnwvUJONJwTyxasT6TNHHrxmZVPWCGANFeZNN6EEfplLlgD2XwQ2sdizOPM8TqxdpG/dZR4J7EG77o4hlrnfDZK/bjCo3dDshUMoE8xaykqrQuJB20JWQ/Jg0jFehRyyLr2tEmtxJqekbtmUhnyeISU3phdRRtfhzdOZkZ6INKr8aXfCMgAnqP89J7/Jq5kU4pUPVGy9LD1V/u/Xo/V07975EMZ8Ur9CLiAdkPCxGYgPWEdZpariF5NKZiJ4akAxQJAF8P4Hyc/s1FfdZzsgK8Jx5MqCRTx9dy9NKgQ/vAMnsz+q6K7HNgb+x2Koej4bniM0HOZ0pdFay2NcbjpgWZeAFn3pjvqIaFd0GwA+lb4f5MrhDw0JPq8Iz2muuFL9lhSDLUqRqC+8oTDz0kTvU7aGBE37zpQxyRRRyKviYIFj9ojWK0U6CZ+VqUb/IOeLeKD5CL0/Y3CVeusSg/nviOmtiHY0Pws6Ap5OfGYK6IWMLM94PFJ6uhV01SsLoIL0mP7+/RUtfsLz7Fj691GguLfkrOyxNPeC0bEMH8YvYndEz1QhdZewuYNyyaJez7pi8dzWEb0cYLwUwWNsBN8FdJtPLx5uiPyD+ix8ZkP/niAwviBQhY2v3VlF7Asezh/A/v7cw51HbK0OMe6pcTsGIdZ7cXBafYGYwpEan/oQreHO38BWrZR6l02yiZG1E8YbuF2RG+L25kV+99ioVR0V6s6OimuuOf66d8JKv2g+0mfdf7OV3bE2Pc3DwOj+1Ca8g4548mmzwkICH0jmV/Lh1woBpEZ20yJsPOPqeXDgIsP109PE2pU2qJmopBBSr1am8QFeT4tVU9C+xnRm3m2BuuhJo7AJSiiOiS8l7KfXu9VvNoP8dYAHvImipu2Cu79ea662v1ZdOM/xgdgsRnbvTo+b4w46qdwgYQyZNX3yeYj+hopkjNm5vGhzh/LdbCMZnEDobbLFlQQIE9lihADpYoCAixOn78Hnmk1nwjRUpZqs8/zJfTFheDPXWXayyl3NUhDIosyIj60CLtqOufB9E9jy8Hgxu1aA3uPdA3kGtFBpCmzUDf6+JUPv++G5qSTEcq7wMtiolpuPxI6v0jcC8a/ryTXl437ntW0FDPR1/qUmkLssJCeePhz6mp/8vKrlJcmaY90X8+9F1e85wNU9fwJi2ciZl2bM/DLytVKl4dZBf7DCFIm7+2998yv1P/eOj4eyY4x90YakxyHNM/JvoM6uov/mNfBXiugyfS/Htgx8FCiKeMyr8C2BboDXIj7tZwcGzJe3s41uJ1O5QGY2SoY+SUVc2kVfDYddbvVl8myhHFuKlzqGFnyjiBuipxVsED/UHSU/z+m3KPFIHD28P2PNjYmCXy65RbWLw/dD+Le5n9Vr5Hb3cnH1y6gWrhIA714NhXEoD44FZyjgUZInmeVIHRL7+OJLCDvu4FALApF+nnT+wcqChm/zF1mB60TrDwGyIIOsQlN8UXJpo0eq8b8VXDMG8EpfwRHxtmroRp8DPnSRQl5JHB1gA2v+rEeqylxXP5PWn2jmzY9BOupf/hlR8Wa4fOb17hKohC0JFlY5zQspRxxn4NSuvaqI9cRsUhYCDUNOp180VIH30dwcCFhS8rNJL/MuJEH6O8Ie5kLcvU1/7RUyT2Eyk6AKwMV9PdUYAAPWNYxZ4E1ejnsBzKRY18opV+K2KExIDIF+KLzv+0oipBhV2NWnuajyzJ69Ve49PCMe/jhBCSXpnSfO4AGZKzSlvgall2ZTzM3PEHLV66jKx/zqK4XMxu4oWKgnDPU33OSwvpstjA9vjHEsO/LEiNHtidRUON/LZj6PgCAl5qqjhu6yxy1MjQUdPvXB6fVNtOLncyjAFURmxRyAhUzF7w7/NaEcv7PQJ5wlrG1nLA5Y3qNykaxMLa36MadU9olZhrFj4C4cumJTYhxhHyh62X5APDc3bhjYyP3KeT4VJLEgJwQNAvtWnPMp3TDqHpAFdkwX/YEzRWns2EQt6cKZ2m8jQr0HgYg5TeQNsNwspiu3HBaSRqTA6nMjbQlAMeEnKOfwnbkBMePgSNZK/gP49Kr6OTIT6cTMBVNjrPbqKeZtcIUY8MhfyZKkTAzNzssu9XkrZ0CalWgjeGx9qTr8ghTLhqNLePsoGGQD1n5E3+yIReJrcUxRR/a8LQJ1Yt17ZGNtNE7dcabThlow8S6jX5fUC9Y2x+RFzDCTY7cBqnm+UWZLZ+mOAnEGVNFBA6/Q/oK+bsed751VGENeyMqse5vc0OD6NLAe1Dd9Nnw5N8k+C/
+1=2tNvGxg3FhYvYB0QArxGECuieYU+mX/X8fB+NbBb+FR7+JticqXZ4SG8Wyf0Vwq21kkOR+n/PAcFizPtUIb8qfcjSzFt76FFD+5Cnom12QaD6hON56pleKrrOo3akAkv7cmbnWpC/vWoCqoGpDppNEzOF/3TQ7WYTj5dKkaW50pXkSzqHyuL0gqPobdZOzIOBTYvrNvtpg7vVBHikv/VUrGWS3r24kl9IVx8EE9ZSDweELAzYzwJ54K+juyqIpZmh7j1dAMKVXbeJHUO9mvHfNWk+gQ1FDmnNWICwyhong5IvI+WKXmff5N1g5KRnRJoudwNh1iguaXWVK4dIJntsFRRy3T971TI1jxiYvneZAs/xCXjNN0W7Jec20wvUMRq9D/f7ZDAbUYrSw6Qc9o4u/ZgjGfIHL9nnDAQSKAFo4BU5g933w7dtllNGd2aeq1YPVu4hJ8d8DLuGCSpHaniGiPc8dzlN53vHnX+SdOk+nzNcAG0v+/usd2+oOKV+8CxWJSrHQsDPIMoh7UqFtE+abJNYHGLOpeBKWCiB2c9tOjSp/wLYQIayuN0ha0jU1m7U2bXDF0ah818EYjUK6am6zaZkam0bu/S4+aeILthuOMa1tBDVqZXs7eoZ0wR5VTaQco5ZFZcGWbhp13Ul1I7dA9jWSuhE4DyDK4aKRWixhsAh24I++w7spH+cur1MuD9o2D9Bvsw/g8QayrQAAAIEzB64P1cFWsJclR1cF0xrTce+br5lc5Y2ciW+051Ao7QzrFU1QgE21/Az2KG/nm9UQ0UUpufjtihtqnBlZ4ZYZzWQaYq6iZ3Dc4UT5sxspAQVRENhGvWvmeZjkQAEmP2UzdQgf0koppNNvx6v3/tMcMocwEnRS7ctGkox2UXs6k2K3ffS1ONXykbb6JePyRjeZ723i193XKM3MsvfojYgH2YZ7bUqlE7yYdjBfPJHlv3EcyR+haEbqulwifRnD2qtHMEyhWwAXBo34AQmAyQAHCwEAASMDAQEFXQAQAAAMgUIKAWN1PzoAAHic4w9OTSxKzogPz8wzNNAzr2IYBSMKsPDjl3+XutGOkQEAE3kHiWZU2GQBAAAAAgAAACcAAAAEDwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

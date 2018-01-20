@@ -1,0 +1,158 @@
+[Main]
+Title=HWmonitor MultiArch - MultiExe - SameFolder
+Type=Plugin
+Author=Provide Files Plugin Template
+Description=(x86/x64 v) Copy from Provide File Sub Folder
+Credits=http://TheOven.org
+Version=011
+Download_Level=1
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=1119
+Date=2017.12.18
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Plugin_Creator_20_ProvideFiles_Template_40_MultiArch.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+HistoryNotes41=PC Provide Files - "MultiArch - MultiExe - SameFolder"
+HistoryNotes42=Find and organise HWmonitor lines inside plugin for your application .....
+HistoryNotes43=Change [Main] Title - Author - Description
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+HistoryNotes52=To add Registry see line starting with //Registry
+HistoryNotes53='Provide Files' http://TheOven.org/index.php?topic=1119
+History001=Lancelot 2014.12.14 Plugin created
+History006=Lancelot updated - Date:2015.01.29
+History007=Lancelot Add DUC Buttons - Date:2017.02.14
+History008=Lancelot More Registry info: Added HistoryNotes52 // Explanation at line "//Registry - Use Utils\RegCPE" - http://TheOven.org/index.php?topic=2184 - Date:2017.08.16
+History009=Lancelot Improved Interface - Date:2017.09.04
+History010=Lancelot Removed Pack to desktop option - seems to be not used - Date:2017.10.08
+History011=Lancelot Update empty Home Page WebLabel to https://Write_Homepage_Here - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+
+[Interface]
+pBevel1=pBevel1,1,12,-3,-3,83,84
+pCheckBox1=Desktop,1,3,1,1,59,14,False,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pCheckBox4=Startup,1,3,1,65,61,14,False
+pTextBox1=,1,0,1,43,75,21,,"__'Start Menu' Folder"
+Image_Software=,1,5,85,47,358,223
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+Button_Launch_Program=Launch,1,8,2,206,60,25,Launch_Program,Launch.bmp,False,_Launch_Program_,False
+Button_ProvideFiles="Provide Files",1,8,0,145,86,25,ProvideFiles_Process,opendir.bmp,False,_ProvideFiles_Process_,False
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,https://Write_Homepage_Here
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=1119
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=HWmonitor
+%ProgramEXE%=HWMonitor_x32.exe
+%ProgramEXEx64%=HWMonitor_x64.exe
+%ProgramFolder%=HWmonitor
+%ProgramSourceFiles%=Provide_Folder_HWmonitor
+%ProvideFiles%=%GlobalTemplates%\%ProgramSourceFiles%
+%ProvideFilesCopy%=%GlobalTemplates%\%ProgramSourceFiles%\%ProgramFolder%
+
+[Process]
+//Arch,x86|x64
+Echo,"Processing %ScriptTitle%..."
+//--
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,PluginSetx64
+//--
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Call,Echo,"%ScriptTitle% - File(s) not found - Exit",Warn
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Exit,"-"
+//--
+StrFormat,REPLACE,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+DirCopy,%ProvideFilesCopy%,%Target_Prog%
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+//Registry - Use Utils\RegCPE Plugin - Copy/Paste Registry lines here.
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun
+
+[ProvideFiles_Process]
+If,Not,ExistDir,%ProvideFilesCopy%,DirMake,%ProvideFilesCopy%
+Call,OpenDir,%ProvideFiles%
+
+[Launch_Program]
+Call,HostOSArch
+If,%HostOSArch%,Equal,x64,Run,%ScriptFile%,PluginSetx64
+//--
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Call,Echo,"%ScriptTitle% - File(s) not found - Exit",Warn
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Exit,"-"
+//--
+Call,Start,,%ProgramEXE%,,%ProvideFilesCopy%
+
+[PluginSetx64]
+Set,%ProgramEXE%,%ProgramEXEx64%
+
+[AuthorEncoded]
+Packed4848.ico=4481,5975
+Logo=Packed4848.ico
+
+[EncodedFile-AuthorEncoded-Packed4848.ico]
+lines=1
+0=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
+1=ezWvOqc7hbuda4Y+Ntam3cgv1QgoM7jGovf4/vZIzHd6rV6dwL/118r4LvriInjmNM38+afUmA/8sB/m/AeS3YALYS813E9hCo0nzw44jfxh/5nq/V5uccb6NfbEfJFcpeJfYV0r17XpvXLj/xIbmuxuWuEpd3H/lgE+2tJ6/MJI8MYwy/QkwXw1/tba707/OovSjjFrBD2wcxWz6E/+Ef8UdH6ERxtSWcgOtxbR9Cnd9GQuJJ+u8q8+Fi+fYfP/X+Ev7epPoVbu9Jct9hUbnUYt3IvLOYfHkP/FnbKN2bmZ+1fap1YBPYzr3d4ABcD2l8NR/ila6PwLGGWJyE5yn0eBpg1b6Eo1azDledhEWcl67dVv/xwMH9bdr7+a+HL7lhkjepjrxfTZ44QLy2Mz+WU+MPJvZziHM5dhVj7220tEHbpzKZd2l7Uxa4W+IDYxKdqzgn2E9onNUeioITrg6nH05XPdzPEKtzogs6LpOnrN/zS7irIzm1MZP1878ylsXjOyLx9t3UtptZX/yWum0KuWUNPFfDdx1W7bW9r+2pWa0H4XwkMBbRiv2EFm+1/6NxddeTixuICfA1BM4bNbi911nT7ZBVq3bM+6X81ZGa3nze66sjV6u9qP3UyPukZOBMycoaSt28gtivhfsGbb/YbFGx30t+rNLGoc1+XNOzPbBvpeKtuGu83Q0Bvs3Ab9WaIT7hBu9vkWPHqgruBP/0zPrlbl89c9Bp2qjW9vu691whffsUke+fpQ/QjuUdeCv+O7EHiP1heBzT9KLi7ghwV7zdPuLsbsKPhh/ueZvIEc307WWJM7YSnzfPvbxwbtSd4J+deyLZ42v8zuM7rdVi9sQa6sIPZejQUvF5S6k7VzNm16P/TYE92r1+/uRCFXs1Lh1a3BVv4uxr1jg7Emvpk1Pcr/PH36f26D7j2SYpHfHI7+4E99sH8361y1MvygenG03TdlHxchk4sKsYDE9TM6i8sxkfdpJr9sD/kKZ7u9r7VLHXNNPM+82aVf7YHOQd9OVwndb2F72+S/TZ5+Tn1TfHjy9JvJP8s3NrMpQ+1Z4mczJt1tBmjQwePJU1eTfmq8USFbUL698Lj7cdRjs1/nzorNPi7tL2QOvxp9afM+kb5aPDeVrbC7XZ/yQOd43q13bXPP/bkZFVu1jpVPWBykV2xxHxJO2RQYMekb79+jE+VD26m3nhFOvlZnw4B9fzcD+r1WgubwPxxqfE41q/JCSe0PKSw3mOuH8hBku93D9m/ru/BvfbR3rmqQ1ur+JfDfbCYzf8dkp+j7+j9h8rvXpNlNzc54lzObwOanvJic4bPPcZ46KFWuE2LoLL1ECX6bNL9OdemTpt2bsvvjgr6Nfkr47UtGMPuj0Hm9zeD9D1Zq2uSLBvZY6rZC22mJrlSenRY5z07j1e8vMn4U8Za6klkpb6tqSlbaX2+IAaeg/18y7WciulX785N2b/7pmHf23ePz7cnv1hHt+2nOSUd8qSkip2e30bPnE4N/1zgr3yr073u+hlDeOxnDXJEklJeZ41ylzqjtnMGWX48NCffUkjPjFbstbp9TGlo0eP+EU1wp04fEkbg8IjkjvodMExwSHRZl1QrDMkxJ4RGurKDwlxdQsNdWYFh5jdwcGRVh6Piolx/uo6+Vs45PbxHwGr081X5i86/4myIQGru2354bufs8WB37F/Dtz/iS3+wf6lnfa7ttj/iefPWPk5Kz+yL/x3G6RszQ9WxUk+0+k6KftPAYvDzkBAi7UA1wTJj47/BLSerfB4nOMLSEzOTk0xsTCx0MtMzmcYBSML7FOF0MaC2OXbtlt4MjABAO+YB3/1ZvW7AQAAAAIAAAAqAAAAMxEAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Launch.bmp=913,1218
+opendir.bmp=571,762
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFolders]
+Folder
+
+[Folder]
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,None
+IniWrite,%ScriptFile%,Main,Level,0
+
+[EncodedFile-InterfaceEncoded-Launch.bmp]
+lines=0
+0=eJxN0WtMFFcUAGCM/W/SXzSxaZOmTX8YtdLSJk1jQsIPpUZNSGMTWk1tKvFVMDVGCaIWRKWGgrLaRbq4AruwT92XWoshUVAhKtFAYVmWZXdgdmdnZ+beedy587gdXJr05JyTm3O/5J7kVuywrS15E+VWfWzVOqvetmpNSemb+b7V+/8HI5vLgggx+K73x2/sP1Tb9+QBRXEwrxAG4qyk0lClgcxAhRBi+RN/L1T9efTM+OUQgZ38qyvceHW0YWNrVe2z7M/j7OGXuYNP0keD443PmcHnScvvdbbXPTz4gtBVd2sqQ19vi+yqffHb7uBPW7tPHM+QujjfEOdqwzORR8PR0IDlNzeXX50fmCTshp7yj65vXt/xbmVg//6RptIDa05myeEptmGG/d73OjI3N70wY/myXze1TfXO6sInPV+WXn7vw65Pz0LSkHy67tuSJo7Uz3Dn4uze4GSMQs8oYPmd16p33N3zWX/F5wNbKz3bym5u6dZIa+r+O4fWnufI8Vm+dY7bd2fyr2X5ZZqx/BGvw5/wD9H3jzz6pe5xfWcieo/I2/u/qLhxqjlLTs0LzQnu2IPpO6zqja/4jleZGm99cMo3QWanyNI0EWsCu8u6djUmwOkkbEyClhRoHk20zxUuTaQs75wHLlY8FLF91bLlgwNvbTr9flVf04UMOk+pZ5LCSqbAxTgT/mcJIGz53oVCRCFejUTISt4mpEckXTncRsELadCyCFsWhba0NEbxxf9yLhRCkuli8S3esBc0O610MehqDlm9dRFepJQ2ClxKwdF0oehdiyAsmR6o9YtGH685AHEUkJ3F13JKO610LMPfl8ROGo1luKJ3Z8CwSvyi7gG6W8C3CoqTQw5e6ykgW06x5dCVnGzLCKOZ1X2GKPAAkaho+CTNJ+o+qLtFw5lXbuZRd16+zqAbednBoKdLQtEPUmAYkduyFlRwUMbWYh5Bc0tmn/WWbHQzkp03/qClCRoWvUdQR1RzBJv3kBlTjZhihJDmFbWAZAwJ2MXjQQH7eXWCWfVuWgwDHBNxTDKioh6GWgjggIADvOrnsItTvSyyZ+Wx7KoHmlFM0TBF3YS6aZ3hf0Pe6lhnNUPWjKL/F4rXcD14nOPySSzNS87QS8otYBgFIw9MY4bQ7szY5SXNdJ4zMAEARyYGGuVhjnsBAAAAAgAAACYAAABHAwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-opendir.bmp]
+lines=0
+0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

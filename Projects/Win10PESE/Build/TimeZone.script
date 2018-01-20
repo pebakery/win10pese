@@ -1,0 +1,1583 @@
+[Main]
+Title=TimeZone
+Type=Plugin
+Author=ChrisR
+Description=TimeZone information for Win7PE, you can not run this Plugin directly.
+Credits=http://TheOven.org
+Version=004
+Download_Level=0
+Level=0
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.02.18
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/TimeZone.script
+CertifiedBy=
+Certification=
+HistoryNotes01=To add a choice (seems complete), add the choice to config Plugin and change TimeZone Plugin: New section eg: [xxx_Standard_Time] and change section Run_TimeZone_Choice.
+HistoryNotes02=To switch between visible/nonevisible change Level=1 Level=0
+HistoryNotes03=Variables are not used if the Plugin is called from another Plugin. Use Set,%variable%,""
+HistoryNotes04=Au3 source in attachment to help build the Plugin. It use Ms tzutil tool (Win7 only) and RegCpe :). Launch on Win7SP1 EN.
+History002=ChrisR - Date:2012.06.22
+History003=Lancelot - Added DU Buttons - Date:2016.01.28
+History004=Lancelot - Add Compare Button - Date:2017.02.18
+
+[Info]
+The Plugin is designed to be called from other Plugin (eg: 1 - Copy Files) or if Not Auto directly
+If,ExistFile,%ProjectDir%\Build\TimeZone.script,Run,%ProjectDir%\Build\TimeZone.script,Called_process,%ProjectDir%\Build\TimeZone.script,Auto
+If,ExistFile,%ScriptDir%\TimeZone.script,Run,%ScriptDir%\TimeZone.script,Called_process,%ScriptDir%\TimeZone.script,Auto
+If,ExistFile,%ScriptDir%\TimeZone.script,Run,%ScriptDir%\TimeZone.script,Called_process,%ScriptDir%\TimeZone.script,"(UTC+01:00) Brussels, Copenhagen, Madrid, Paris"
+
+[Variables]
+
+[Interface]
+pTextLabel1="The Plugin is designed to be called from other Plugin",1,1,8,21,299,18,8,Bold
+pTextL_TimeZone=TimeZone,1,1,8,52,76,18,8,Normal
+pScroll_TimeZone=Auto,1,4,102,50,350,21,Auto,"(UTC-12:00) International Date Line West","(UTC-11:00) Coordinated Universal Time-11","(UTC-11:00) Samoa","(UTC-10:00) Hawaii","(UTC-09:00) Alaska","(UTC-08:00) Baja California","(UTC-08:00) Pacific Time (US & Canada)","(UTC-07:00) Arizona","(UTC-07:00) Chihuahua, La Paz, Mazatlan","(UTC-07:00) Mountain Time (US & Canada)","(UTC-06:00) Central America","(UTC-06:00) Central Time (US & Canada)","(UTC-06:00) Guadalajara, Mexico City, Monterrey","(UTC-06:00) Saskatchewan","(UTC-05:00) Bogota, Lima, Quito","(UTC-05:00) Eastern Time (US & Canada)","(UTC-05:00) Indiana (East)","(UTC-04:30) Caracas","(UTC-04:00) Asuncion","(UTC-04:00) Atlantic Time (Canada)","(UTC-04:00) Cuiaba","(UTC-04:00) Georgetown, La Paz, Manaus, San Juan","(UTC-04:00) Santiago","(UTC-03:30) Newfoundland","(UTC-03:00) Brasilia","(UTC-03:00) Buenos Aires","(UTC-03:00) Cayenne, Fortaleza","(UTC-03:00) Greenland","(UTC-03:00) Montevideo","(UTC-02:00) Coordinated Universal Time-02","(UTC-02:00) Mid-Atlantic","(UTC-01:00) Azores","(UTC-01:00) Cape Verde Is.","(UTC) Casablanca","(UTC) Coordinated Universal Time","(UTC) Dublin, Edinburgh, Lisbon, London","(UTC) Monrovia, Reykjavik","(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna","(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague","(UTC+01:00) Brussels, Copenhagen, Madrid, Paris","(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb","(UTC+01:00) West Central Africa","(UTC+01:00) Windhoek","(UTC+02:00) Amman","(UTC+02:00) Athens, Bucharest, Istanbul","(UTC+02:00) Beirut","(UTC+02:00) Cairo","(UTC+02:00) Damascus","(UTC+02:00) Harare, Pretoria","(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius","(UTC+02:00) Jerusalem","(UTC+02:00) Minsk","(UTC+03:00) Baghdad","(UTC+03:00) Kuwait, Riyadh","(UTC+03:00) Moscow, St. Petersburg, Volgograd","(UTC+03:00) Nairobi","(UTC+03:30) Tehran","(UTC+04:00) Abu Dhabi, Muscat","(UTC+04:00) Baku","(UTC+04:00) Port Louis","(UTC+04:00) Tbilisi","(UTC+04:00) Yerevan","(UTC+04:30) Kabul","(UTC+05:00) Ekaterinburg","(UTC+05:00) Islamabad, Karachi","(UTC+05:00) Tashkent","(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi","(UTC+05:30) Sri Jayawardenepura","(UTC+05:45) Kathmandu","(UTC+06:00) Astana","(UTC+06:00) Dhaka","(UTC+06:00) Novosibirsk","(UTC+06:30) Yangon (Rangoon)","(UTC+07:00) Bangkok, Hanoi, Jakarta","(UTC+07:00) Krasnoyarsk","(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi","(UTC+08:00) Irkutsk","(UTC+08:00) Kuala Lumpur, Singapore","(UTC+08:00) Perth","(UTC+08:00) Taipei","(UTC+08:00) Ulaanbaatar","(UTC+09:00) Osaka, Sapporo, Tokyo","(UTC+09:00) Seoul","(UTC+09:00) Yakutsk","(UTC+09:30) Adelaide","(UTC+09:30) Darwin","(UTC+10:00) Brisbane","(UTC+10:00) Canberra, Melbourne, Sydney","(UTC+10:00) Guam, Port Moresby","(UTC+10:00) Hobart","(UTC+10:00) Vladivostok","(UTC+11:00) Magadan","(UTC+11:00) Solomon Is., New Caledonia","(UTC+12:00) Auckland, Wellington","(UTC+12:00) Coordinated Universal Time+12","(UTC+12:00) Fiji","(UTC+12:00) Petropavlovsk-Kamchatsky - Old","(UTC+13:00) Nuku'alofa"
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Called_Process]
+Set,%TimeZoneScript%,#1
+If,-#1,Equal,-,Set,%TimeZoneScript%,%ScriptFile%
+Set,%TimeZone%,#2
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing %TimeZone% time zone information..."
+If,%TimeZone%,Equal,Auto,Run,%TimeZoneScript%,Auto
+Else,If,Not,-%TimeZone%,Equal,-,Run,%TimeZoneScript%,Run_TimeZone_Choice
+
+[Process]
+// Comment Exit for tests
+Exit,"The Plugin is designed to be called from other Plugin"
+Set,%TimeZoneScript%,%ScriptFile%
+Set,%TimeZone%,%pScroll_TimeZone%
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing %TimeZone% time zone information..."
+If,%TimeZone%,Equal,Auto,Run,%TimeZoneScript%,Auto
+Else,If,Not,-%TimeZone%,Equal,-,Run,%TimeZoneScript%,Run_TimeZone_Choice
+
+[Run_TimeZone_Choice]
+RegHiveLoad,Tmp_System,%RegSystem%
+If,%TimeZone%,Equal,"(UTC-12:00) International Date Line West",run,%TimeZoneScript%,Dateline_Standard_Time
+If,%TimeZone%,Equal,"(UTC-11:00) Coordinated Universal Time-11",run,%TimeZoneScript%,UTC-11
+If,%TimeZone%,Equal,"(UTC-11:00) Samoa",run,%TimeZoneScript%,Samoa_Standard_Time
+If,%TimeZone%,Equal,"(UTC-10:00) Hawaii",run,%TimeZoneScript%,Hawaiian_Standard_Time
+If,%TimeZone%,Equal,"(UTC-09:00) Alaska",run,%TimeZoneScript%,Alaskan_Standard_Time
+If,%TimeZone%,Equal,"(UTC-08:00) Baja California",run,%TimeZoneScript%,Pacific_Standard_Time_(Mexico)
+If,%TimeZone%,Equal,"(UTC-08:00) Pacific Time (US & Canada)",run,%TimeZoneScript%,Pacific_Standard_Time
+If,%TimeZone%,Equal,"(UTC-07:00) Arizona",run,%TimeZoneScript%,US_Mountain_Standard_Time
+If,%TimeZone%,Equal,"(UTC-07:00) Chihuahua, La Paz, Mazatlan",run,%TimeZoneScript%,Mountain_Standard_Time_(Mexico)
+If,%TimeZone%,Equal,"(UTC-07:00) Mountain Time (US & Canada)",run,%TimeZoneScript%,Mountain_Standard_Time
+If,%TimeZone%,Equal,"(UTC-06:00) Central America",run,%TimeZoneScript%,Central_America_Standard_Time
+If,%TimeZone%,Equal,"(UTC-06:00) Central Time (US & Canada)",run,%TimeZoneScript%,Central_Standard_Time
+If,%TimeZone%,Equal,"(UTC-06:00) Guadalajara, Mexico City, Monterrey",run,%TimeZoneScript%,Central_Standard_Time_(Mexico)
+If,%TimeZone%,Equal,"(UTC-06:00) Saskatchewan",run,%TimeZoneScript%,Canada_Central_Standard_Time
+If,%TimeZone%,Equal,"(UTC-05:00) Bogota, Lima, Quito",run,%TimeZoneScript%,SA_Pacific_Standard_Time
+If,%TimeZone%,Equal,"(UTC-05:00) Eastern Time (US & Canada)",run,%TimeZoneScript%,Eastern_Standard_Time
+If,%TimeZone%,Equal,"(UTC-05:00) Indiana (East)",run,%TimeZoneScript%,US_Eastern_Standard_Time
+If,%TimeZone%,Equal,"(UTC-04:30) Caracas",run,%TimeZoneScript%,Venezuela_Standard_Time
+If,%TimeZone%,Equal,"(UTC-04:00) Asuncion",run,%TimeZoneScript%,Paraguay_Standard_Time
+If,%TimeZone%,Equal,"(UTC-04:00) Atlantic Time (Canada)",run,%TimeZoneScript%,Atlantic_Standard_Time
+If,%TimeZone%,Equal,"(UTC-04:00) Cuiaba",run,%TimeZoneScript%,Central_Brazilian_Standard_Time
+If,%TimeZone%,Equal,"(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",run,%TimeZoneScript%,SA_Western_Standard_Time
+If,%TimeZone%,Equal,"(UTC-04:00) Santiago",run,%TimeZoneScript%,Pacific_SA_Standard_Time
+If,%TimeZone%,Equal,"(UTC-03:30) Newfoundland",run,%TimeZoneScript%,Newfoundland_Standard_Time
+If,%TimeZone%,Equal,"(UTC-03:00) Brasilia",run,%TimeZoneScript%,E._South_America_Standard_Time
+If,%TimeZone%,Equal,"(UTC-03:00) Buenos Aires",run,%TimeZoneScript%,Argentina_Standard_Time
+If,%TimeZone%,Equal,"(UTC-03:00) Cayenne, Fortaleza",run,%TimeZoneScript%,SA_Eastern_Standard_Time
+If,%TimeZone%,Equal,"(UTC-03:00) Greenland",run,%TimeZoneScript%,Greenland_Standard_Time
+If,%TimeZone%,Equal,"(UTC-03:00) Montevideo",run,%TimeZoneScript%,Montevideo_Standard_Time
+If,%TimeZone%,Equal,"(UTC-02:00) Coordinated Universal Time-02",run,%TimeZoneScript%,UTC-02
+If,%TimeZone%,Equal,"(UTC-02:00) Mid-Atlantic",run,%TimeZoneScript%,Mid-Atlantic_Standard_Time
+If,%TimeZone%,Equal,"(UTC-01:00) Azores",run,%TimeZoneScript%,Azores_Standard_Time
+If,%TimeZone%,Equal,"(UTC-01:00) Cape Verde Is.",run,%TimeZoneScript%,Cape_Verde_Standard_Time
+If,%TimeZone%,Equal,"(UTC) Casablanca",run,%TimeZoneScript%,Morocco_Standard_Time
+If,%TimeZone%,Equal,"(UTC) Coordinated Universal Time",run,%TimeZoneScript%,UTC
+If,%TimeZone%,Equal,"(UTC) Dublin, Edinburgh, Lisbon, London",run,%TimeZoneScript%,GMT_Standard_Time
+If,%TimeZone%,Equal,"(UTC) Monrovia, Reykjavik",run,%TimeZoneScript%,Greenwich_Standard_Time
+If,%TimeZone%,Equal,"(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",run,%TimeZoneScript%,W._Europe_Standard_Time
+If,%TimeZone%,Equal,"(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",run,%TimeZoneScript%,Central_Europe_Standard_Time
+If,%TimeZone%,Equal,"(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",run,%TimeZoneScript%,Romance_Standard_Time
+If,%TimeZone%,Equal,"(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",run,%TimeZoneScript%,Central_European_Standard_Time
+If,%TimeZone%,Equal,"(UTC+01:00) West Central Africa",run,%TimeZoneScript%,W._Central_Africa_Standard_Time
+If,%TimeZone%,Equal,"(UTC+01:00) Windhoek",run,%TimeZoneScript%,Namibia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Amman",run,%TimeZoneScript%,Jordan_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Athens, Bucharest, Istanbul",run,%TimeZoneScript%,GTB_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Beirut",run,%TimeZoneScript%,Middle_East_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Cairo",run,%TimeZoneScript%,Egypt_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Damascus",run,%TimeZoneScript%,Syria_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Harare, Pretoria",run,%TimeZoneScript%,South_Africa_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",run,%TimeZoneScript%,FLE_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Jerusalem",run,%TimeZoneScript%,Israel_Standard_Time
+If,%TimeZone%,Equal,"(UTC+02:00) Minsk",run,%TimeZoneScript%,E._Europe_Standard_Time
+If,%TimeZone%,Equal,"(UTC+03:00) Baghdad",run,%TimeZoneScript%,Arabic_Standard_Time
+If,%TimeZone%,Equal,"(UTC+03:00) Kuwait, Riyadh",run,%TimeZoneScript%,Arab_Standard_Time
+If,%TimeZone%,Equal,"(UTC+03:00) Moscow, St. Petersburg, Volgograd",run,%TimeZoneScript%,Russian_Standard_Time
+If,%TimeZone%,Equal,"(UTC+03:00) Nairobi",run,%TimeZoneScript%,E._Africa_Standard_Time
+If,%TimeZone%,Equal,"(UTC+03:30) Tehran",run,%TimeZoneScript%,Iran_Standard_Time
+If,%TimeZone%,Equal,"(UTC+04:00) Abu Dhabi, Muscat",run,%TimeZoneScript%,Arabian_Standard_Time
+If,%TimeZone%,Equal,"(UTC+04:00) Baku",run,%TimeZoneScript%,Azerbaijan_Standard_Time
+If,%TimeZone%,Equal,"(UTC+04:00) Port Louis",run,%TimeZoneScript%,Mauritius_Standard_Time
+If,%TimeZone%,Equal,"(UTC+04:00) Tbilisi",run,%TimeZoneScript%,Georgian_Standard_Time
+If,%TimeZone%,Equal,"(UTC+04:00) Yerevan",run,%TimeZoneScript%,Caucasus_Standard_Time
+If,%TimeZone%,Equal,"(UTC+04:30) Kabul",run,%TimeZoneScript%,Afghanistan_Standard_Time
+If,%TimeZone%,Equal,"(UTC+05:00) Ekaterinburg",run,%TimeZoneScript%,Ekaterinburg_Standard_Time
+If,%TimeZone%,Equal,"(UTC+05:00) Islamabad, Karachi",run,%TimeZoneScript%,Pakistan_Standard_Time
+If,%TimeZone%,Equal,"(UTC+05:00) Tashkent",run,%TimeZoneScript%,West_Asia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",run,%TimeZoneScript%,India_Standard_Time
+If,%TimeZone%,Equal,"(UTC+05:30) Sri Jayawardenepura",run,%TimeZoneScript%,Sri_Lanka_Standard_Time
+If,%TimeZone%,Equal,"(UTC+05:45) Kathmandu",run,%TimeZoneScript%,Nepal_Standard_Time
+If,%TimeZone%,Equal,"(UTC+06:00) Astana",run,%TimeZoneScript%,Central_Asia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+06:00) Dhaka",run,%TimeZoneScript%,Bangladesh_Standard_Time
+If,%TimeZone%,Equal,"(UTC+06:00) Novosibirsk",run,%TimeZoneScript%,N._Central_Asia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+06:30) Yangon (Rangoon)",run,%TimeZoneScript%,Myanmar_Standard_Time
+If,%TimeZone%,Equal,"(UTC+07:00) Bangkok, Hanoi, Jakarta",run,%TimeZoneScript%,SE_Asia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+07:00) Krasnoyarsk",run,%TimeZoneScript%,North_Asia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",run,%TimeZoneScript%,China_Standard_Time
+If,%TimeZone%,Equal,"(UTC+08:00) Irkutsk",run,%TimeZoneScript%,North_Asia_East_Standard_Time
+If,%TimeZone%,Equal,"(UTC+08:00) Kuala Lumpur, Singapore",run,%TimeZoneScript%,Singapore_Standard_Time
+If,%TimeZone%,Equal,"(UTC+08:00) Perth",run,%TimeZoneScript%,W._Australia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+08:00) Taipei",run,%TimeZoneScript%,Taipei_Standard_Time
+If,%TimeZone%,Equal,"(UTC+08:00) Ulaanbaatar",run,%TimeZoneScript%,Ulaanbaatar_Standard_Time
+If,%TimeZone%,Equal,"(UTC+09:00) Osaka, Sapporo, Tokyo",run,%TimeZoneScript%,Tokyo_Standard_Time
+If,%TimeZone%,Equal,"(UTC+09:00) Seoul",run,%TimeZoneScript%,Korea_Standard_Time
+If,%TimeZone%,Equal,"(UTC+09:00) Yakutsk",run,%TimeZoneScript%,Yakutsk_Standard_Time
+If,%TimeZone%,Equal,"(UTC+09:30) Adelaide",run,%TimeZoneScript%,Cen._Australia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+09:30) Darwin",run,%TimeZoneScript%,AUS_Central_Standard_Time
+If,%TimeZone%,Equal,"(UTC+10:00) Brisbane",run,%TimeZoneScript%,E._Australia_Standard_Time
+If,%TimeZone%,Equal,"(UTC+10:00) Canberra, Melbourne, Sydney",run,%TimeZoneScript%,AUS_Eastern_Standard_Time
+If,%TimeZone%,Equal,"(UTC+10:00) Guam, Port Moresby",run,%TimeZoneScript%,West_Pacific_Standard_Time
+If,%TimeZone%,Equal,"(UTC+10:00) Hobart",run,%TimeZoneScript%,Tasmania_Standard_Time
+If,%TimeZone%,Equal,"(UTC+10:00) Vladivostok",run,%TimeZoneScript%,Vladivostok_Standard_Time
+If,%TimeZone%,Equal,"(UTC+11:00) Magadan",run,%TimeZoneScript%,Magadan_Standard_Time
+If,%TimeZone%,Equal,"(UTC+11:00) Solomon Is., New Caledonia",run,%TimeZoneScript%,Central_Pacific_Standard_Time
+If,%TimeZone%,Equal,"(UTC+12:00) Auckland, Wellington",run,%TimeZoneScript%,New_Zealand_Standard_Time
+If,%TimeZone%,Equal,"(UTC+12:00) Coordinated Universal Time+12",run,%TimeZoneScript%,UTC+12
+If,%TimeZone%,Equal,"(UTC+12:00) Fiji",run,%TimeZoneScript%,Fiji_Standard_Time
+If,%TimeZone%,Equal,"(UTC+12:00) Petropavlovsk-Kamchatsky - Old",run,%TimeZoneScript%,Kamchatka_Standard_Time
+If,%TimeZone%,Equal,"(UTC+13:00) Nuku'alofa",run,%TimeZoneScript%,Tonga_Standard_Time
+RegHiveUnLoad,Tmp_System
+
+[Auto]
+//Copy installwim hives to %ProjectTemp%\RWHive
+If,ExistDir,%ProjectTemp%\RWHive,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\RWHive#$q"
+If,ExistDir,%ProjectTemp%\RWHive,Echo,"ProjectTemp\RWHive Folder can not be deleted",Warn
+If,ExistDir,%ProjectTemp%\RWHive,Message,"ProjectTemp\RWHive Folder can not be deleted",Error
+If,ExistDir,%ProjectTemp%\RWHive,Halt,"ProjectTemp\RWHive Folder can not be deleted"
+DirMake,%ProjectTemp%\RWHive
+FileCopy,%InstallSRC%\Windows\System32\config\system,%ProjectTemp%\RWHive
+//-
+// workaround Wb80 for regread-regwrite with binary data
+Set,%w%,%ProjectTemp%\RWHive\TimeZone.txt
+FileCreateBlank,%w%
+TxtAddline,%w%,[WriteReg],Append
+//-
+RegHiveLoad,WB-SYST,%ProjectTemp%\RWHive\system
+RegHiveLoad,Tmp_System,%RegSystem%
+//-
+RegWrite,HKLM,0x1,Tmp_System\Setup\AllowStart\W32Time
+// Change startup type for the W32Time service in automatic
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\W32Time,Start,2
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,Bias,Begin
+Set,%Bias%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,Bias,%Bias%
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,%Bias%
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DaylightBias,Begin
+Set,%DaylightBias%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DaylightBias,%DaylightBias%
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,%DaylightBias%
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DaylightName,Begin
+Set,%DaylightName%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DaylightName,%DaylightName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,%DaylightName%
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DaylightStart,Begin
+Set,%DaylightStart%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DaylightStart,%DaylightStart%
+StrFormat,REPLACE,%DaylightStart%,#$q,,%DaylightStart%
+TxtAddline,%w%,"System,ERROROFF",Append
+TxtAddline,%w%,"If,Not,#$q%DaylightStart%#$q,Equal,#$q#$q,RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,%DaylightStart%",Append
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,Begin
+Set,%DynamicDaylightTimeDisabled%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,%DynamicDaylightTimeDisabled%
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,%DynamicDaylightTimeDisabled%
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,StandardBias,Begin
+Set,%StandardBias%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,StandardBias,%StandardBias%
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,%StandardBias%
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,StandardName,Begin
+Set,%StandardName%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,StandardName,%StandardName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,%StandardName%
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,StandardStart,Begin
+Set,%StandardStart%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,StandardStart,%StandardStart%
+StrFormat,REPLACE,%StandardStart%,#$q,,%StandardStart%
+TxtAddline,%w%,"System,ERROROFF",Append
+TxtAddline,%w%,"If,Not,#$q%StandardStart%#$q,Equal,#$q#$q,RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,%StandardStart%",Append
+End
+//-
+If,ExistRegKey,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,Begin
+Set,%TimeZoneKeyName%,""
+RegRead,HKLM,WB-SYST\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,%TimeZoneKeyName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,%TimeZoneKeyName%
+End
+//-
+Run,%w%,WriteReg
+RegHiveUnLoad,Tmp_System
+RegHiveunLoad,WB-SYST
+//-
+//Maybe remove RWHive after all finished
+If,ExistDir,%ProjectTemp%\RWHive,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\RWHive#$q"
+If,ExistDir,%ProjectTemp%\RWHive,Echo,"ProjectTemp\RWHive Folder can not be deleted",Warn
+If,ExistDir,%ProjectTemp%\RWHive,Message,"ProjectTemp\RWHive Folder can not be deleted",Error
+
+[Afghanistan_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-270
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-461"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-462"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Afghanistan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-270
+
+[Alaskan_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,540
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-221"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-222"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Alaskan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,480
+
+[Arab_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-391"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-392"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Arab Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Arabian_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-441"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-442"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Arabian Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-240
+
+[Arabic_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-401"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-402"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Arabic Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Argentina_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-841"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-842"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Argentina Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,180
+
+[Atlantic_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-81"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-82"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Atlantic Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,180
+
+[AUS_Central_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-570
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-651"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-652"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"AUS Central Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-570
+
+[AUS_Eastern_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-600
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-671"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-672"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,04,00,01,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"AUS Eastern Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-600
+
+[Azerbaijan_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-448"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,04,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-449"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,05,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Azerbaijan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-300
+
+[Azores_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-11"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-12"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Azores Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,0
+
+[Bangladesh_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1021"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1022"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Bangladesh Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-360
+
+[Canada_Central_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-141"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-142"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Canada Central Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,360
+
+[Cape_Verde_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-21"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-22"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Cape Verde Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,60
+
+[Caucasus_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-451"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-452"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Caucasus Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-300
+
+[Cen._Australia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-570
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-661"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-662"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,04,00,01,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Cen. Australia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-570
+
+[Central_America_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-151"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-152"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central America Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,360
+
+[Central_Asia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-511"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-512"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central Asia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-360
+
+[Central_Brazilian_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-104"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,03,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-105"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,02,00,04,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central Brazilian Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,240
+
+[Central_Europe_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-281"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-282"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central Europe Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-120
+
+[Central_European_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-291"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-292"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central European Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-120
+
+[Central_Pacific_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-660
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-721"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-722"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central Pacific Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-660
+
+[Central_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-161"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-162"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,300
+
+[Central_Standard_Time_(Mexico)]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-171"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,04,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-172"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Central Standard Time (Mexico)"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,300
+
+[China_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-571"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-572"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"China Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-480
+
+[Dateline_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,720
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-251"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-252"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Dateline Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,720
+
+[E._Africa_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-411"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-412"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"E. Africa Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[E._Australia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-600
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-681"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-682"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"E. Australia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-600
+
+[E._Europe_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-331"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-332"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"E. Europe Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[E._South_America_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-41"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,03,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-42"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,02,00,04,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"E. South America Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,180
+
+[Eastern_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,300
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-111"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-112"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Eastern Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,240
+
+[Egypt_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-341"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,04,00,05,00,17,00,3b,00,3b,00,e7,03,04,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-342"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,09,00,05,00,17,00,3b,00,3b,00,e7,03,04,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Egypt Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Ekaterinburg_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-300
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-471"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-472"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Ekaterinburg Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-360
+
+[Fiji_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-720
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-731"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,04,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-732"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,03,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Fiji Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-720
+
+[FLE_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-351"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-352"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,04,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"FLE Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Georgian_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-434"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-435"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Georgian Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-240
+
+[GMT_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-261"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,01,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-262"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"GMT Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-60
+
+[Greenland_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-51"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,04,00,16,00,00,00,00,00,00,00,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-52"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,17,00,00,00,00,00,00,00,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Greenland Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,120
+
+[Greenwich_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-271"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-272"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Greenwich Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,0
+
+[GTB_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-361"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-362"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,04,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"GTB Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Hawaiian_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,600
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-231"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-232"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Hawaiian Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,600
+
+[India_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-330
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-491"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-492"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"India Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-330
+
+[Iran_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-210
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-431"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,03,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-432"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,09,00,03,00,17,00,3b,00,3b,00,e7,03,01,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Iran Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-270
+
+[Israel_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-371"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,05,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-372"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,09,00,04,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Israel Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Jordan_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-334"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,17,00,3b,00,3b,00,e7,03,04,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-335"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,01,00,00,00,00,00,00,00,05,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Jordan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Kamchatka_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-334"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,17,00,3b,00,3b,00,e7,03,04,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-335"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,01,00,00,00,00,00,00,00,05,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Jordan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Korea_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-540
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-621"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-622"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Korea Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-540
+
+[Magadan_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-660
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1471"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1472"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Magadan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-720
+
+[Mauritius_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-911"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-912"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Mauritius Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-240
+
+[Mid-Atlantic_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-31"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-32"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,09,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Mid-Atlantic Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,60
+
+[Middle_East_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-364"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,04,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-365"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Middle East Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Montevideo_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-771"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-772"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Montevideo Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,180
+
+[Morocco_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-891"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-892"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Morocco Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,0
+
+[Mountain_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,420
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-191"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-192"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Mountain Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,360
+
+[Mountain_Standard_Time_(Mexico)]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,420
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-181"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,04,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-182"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Mountain Standard Time (Mexico)"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,360
+
+[Myanmar_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-390
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-541"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-542"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Myanmar Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-390
+
+[N._Central_Asia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-360
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-521"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-522"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"N. Central Asia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-420
+
+[Namibia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-384"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,09,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-385"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,04,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Namibia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-60
+
+[Nepal_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-345
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-501"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-502"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Nepal Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-345
+
+[New_Zealand_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-720
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-741"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,09,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-742"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,04,00,01,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"New Zealand Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-720
+
+[Newfoundland_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,210
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-71"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,00,00,01,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-72"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,00,00,01,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Newfoundland Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,150
+
+[North_Asia_East_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-581"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-582"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"North Asia East Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-540
+
+[North_Asia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-420
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-551"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-552"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"North Asia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-480
+
+[Pacific_SA_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-91"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,02,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-92"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,03,00,02,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Pacific SA Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,240
+
+[Pacific_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-211"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-212"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Pacific Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,420
+
+[Pacific_Standard_Time_(Mexico)]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-214"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,04,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-215"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Pacific Standard Time (Mexico)"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,420
+
+[Pakistan_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-300
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-871"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-872"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Pakistan Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-300
+
+[Paraguay_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-961"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,01,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-962"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,04,00,01,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Paraguay Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,240
+
+[Romance_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-301"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-302"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Romance Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-120
+
+[Russian_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-421"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-422"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Russian Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-240
+
+[SA_Eastern_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,180
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-831"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-832"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"SA Eastern Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,180
+
+[SA_Pacific_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,300
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-121"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-122"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"SA Pacific Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,300
+
+[SA_Western_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,240
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-791"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-792"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"SA Western Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,240
+
+[Samoa_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,660
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-241"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,09,00,05,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-242"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,03,00,05,00,17,00,3b,00,3b,00,e7,03,06,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Samoa Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,660
+
+[SE_Asia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-420
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-561"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-562"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"SE Asia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-420
+
+[Singapore_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-591"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-592"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Singapore Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-480
+
+[South_Africa_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-381"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-382"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"South Africa Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-120
+
+[Sri_Lanka_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-330
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-531"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-532"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Sri Lanka Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-330
+
+[Syria_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1411"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,04,00,01,00,17,00,3b,00,3b,00,e7,03,04,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1412"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,17,00,3b,00,3b,00,e7,03,04,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Syria Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-180
+
+[Taipei_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-601"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-602"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Taipei Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-480
+
+[Tasmania_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-600
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-691"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,0a,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-692"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,04,00,01,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Tasmania Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-600
+
+[Tokyo_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-540
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-631"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-632"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Tokyo Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-540
+
+[Tonga_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-780
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-751"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-752"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Tonga Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-780
+
+[Ulaanbaatar_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1041"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1042"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Ulaanbaatar Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-480
+
+[US_Eastern_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,300
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-131"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,02,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-132"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0b,00,01,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"US Eastern Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,240
+
+[US_Mountain_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,420
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-201"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-202"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"US Mountain Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,420
+
+[UTC]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,0
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-931"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-932"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,UTC
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,0
+
+[UTC+12]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-720
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1381"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1382"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,UTC+12
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-720
+
+[UTC-02]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,120
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1161"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1162"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,UTC-02
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,120
+
+[UTC-11]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,660
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-1251"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-1252"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,UTC-11
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,660
+
+[Venezuela_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,270
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-811"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-812"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Venezuela Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,270
+
+[Vladivostok_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-600
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-701"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-702"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Vladivostok Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-660
+
+[W._Australia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-480
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-611"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-612"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"W. Australia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-480
+
+[W._Central_Africa_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-311"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-312"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"W. Central Africa Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-60
+
+[W._Europe_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-60
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-321"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-322"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"W. Europe Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-120
+
+[West_Asia_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-300
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-481"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-482"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"West Asia Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-300
+
+[West_Pacific_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-600
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-711"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-712"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"West Pacific Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-600
+
+[Yakutsk_Standard_Time]
+If,%NoWarnROW%,Equal,True,System,ERROROFF,9
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,Bias,-540
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightBias,-60
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightName,"@tzres.dll,-641"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,DaylightStart,00,00,03,00,05,00,02,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardBias,0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardName,"@tzres.dll,-642"
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Control\TimeZoneInformation,StandardStart,00,00,0a,00,05,00,03,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\TimeZoneInformation,TimeZoneKeyName,"Yakutsk Standard Time"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,0
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,-600
+
+[AuthorEncoded]
+TimeZone.jpg=5037,6716
+Logo=TimeZone.jpg
+
+[EncodedFile-AuthorEncoded-TimeZone.jpg]
+lines=1
+0=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
+1=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
+
+[EncodedFolders]
+Src
+
+[Src]
+TimeZone.au3=1599,2132
+
+[EncodedFile-Src-TimeZone.au3]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

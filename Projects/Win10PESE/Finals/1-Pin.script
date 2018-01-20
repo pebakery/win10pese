@@ -1,0 +1,218 @@
+[Main]
+Title=1 - Pins
+Type=Plugin
+Author=Rui Paz
+Description=Pins programs on Win7 Explorer, Only on the taskbar on Win8 with Ex7ForW8 (Explorer7 for Windows8), and on Win8.1 with StartIsBack and ClassicShell
+Credits=http://www.flos-freeware.ch
+Version=016
+Download_Level=1
+Level=8
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.02.25
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Finals/1-Pin.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History004=ChrisR - 'Add Pin Information for Plugin developers' Updated with Add_Pin,RecentPrograms (thanks 2aCD)
+History005=ChrisR - 2aCD Add $Desktop for RecentPrograms in 'Add Pin Information for Plugin developers'
+History006=ChrisR - add a note in 'Add Pin Information for Plugin developers':  there are no RecentPrograms shortcuts created if the Apps is already Pinned to StartMenu or even Taskbar only.
+History007=ChrisR - Path to Opera11. Can not be pinned on removable devices (CD UFD etc.).
+History008=ChrisR - Link For Opera 12
+History009=Aeolis - ChrisR - Small code fix to avoid Taskbar pin exceptions. The "...verbs.DoIt" method is imitating the first "explorer.exe" shortcut it finds in Startmenu and coping it to the taskbar.  (ex without explorer shortcut, it Pin the "Show Desktop" shortcut: explorer.exe shell:::{3080F90D-D7AD-11D9-BD98-0000947B0257}.
+History010=ChrisR - Change the path to Command Prompt cmd.exe
+History011=ChrisR - Exception: remove SIB+ StartScreen in PE buildType (only for OS mode) - 2015.03.10
+History012=Lancelot - Added DU Buttons
+History013=ChrisR - SE projects uses Firefox now as default browser
+History015=ChrisR - Pin to Ex7ForW8 works now. Default value Pin to Start Menu changed for Win8pese - Date:2016.07.06 // Lancelot Add Compare Button - Date:2017.01.10
+History016=Lancelot - Added "Add Pin" Macro library topic instead of .htm to have latest info about pin after this topic. http://TheOven.org/index.php?topic=2052 - Date:2017.02.25
+
+[Variables]
+%ProgramEXE%=
+%ProgramFolder%=
+//These lines store the temporary folder for taskbar shortcuts path.
+%TBPETempFolder%="#$pAppData#$p\Microsoft\Windows\TaskBarTmp"
+
+[Interface]
+pTextLabel4="Pin to?",1,1,84,15,45,20,10,Bold
+pTextLabel1=Taskbar:,1,1,50,35,46,20,8,Normal
+pTextLabel2=StartMenu:,1,1,115,35,60,20,8,Normal
+pTextLabel3=Enable:,1,1,5,35,40,20,8,Normal
+pCheckBox0=,1,3,15,55,20,20,True
+pScrollBox0=5,1,4,50,55,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox10=AUTO,1,4,115,55,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox0="FULL Path to Program inside WinPE:",1,0,185,55,345,20,%systemroot%\explorer.exe
+pCheckBox1=,1,3,15,85,20,20,True
+pScrollBox1=2,1,4,50,85,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox11=NO,1,4,115,85,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox1=,1,0,185,85,345,20,$Start_Menu\Programs\Network\PENetwork.lnk
+pCheckBox2=,1,3,15,115,20,20,False
+pScrollBox2=0,1,4,50,115,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox12=NO,1,4,115,115,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox2=,1,0,185,115,345,20,%SystemRoot%\System32\ShutdownPE.exe
+pCheckBox3=,1,3,15,145,20,20,True
+pScrollBox3=3,1,4,50,145,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox13=AUTO,1,4,115,145,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox3=,1,0,185,145,345,20,"$Start_Menu\Programs\Network\Mozilla Firefox.lnk"
+pCheckBox4=,1,3,15,175,20,20,True
+pScrollBox4=4,1,4,50,175,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox14=AUTO,1,4,115,175,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox4=,1,0,185,175,345,20,"%systemdrive%\Program Files\Internet Explorer\iexplore.exe"
+pCheckBox5=,1,3,15,205,20,20,True
+pScrollBox5=1,1,4,50,205,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox15=NO,1,4,115,205,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox5=,1,0,185,205,345,20,%systemroot%\system32\cmd.exe
+pCheckBox6=,1,3,15,235,20,20,False
+pScrollBox6=NO,1,4,50,235,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox16=NO,1,4,115,235,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox6=,1,0,185,235,345,20,"$Desktop\My Computer.lnk"
+pCheckBox7=,1,3,15,265,20,20,False
+pScrollBox7=NO,1,4,50,265,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox17=NO,1,4,115,265,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox7=,1,0,185,265,345,20,
+pCheckBox8=,1,3,15,295,20,20,False
+pScrollBox8=NO,1,4,50,295,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox18=NO,1,4,115,295,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox8=,1,0,185,295,345,20,
+pCheckBox9=,1,3,15,325,20,20,False
+pScrollBox9=NO,1,4,50,325,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pScrollBox19=NO,1,4,115,325,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
+pTextBox9=,1,0,185,325,345,20,
+pWebLabel2="Plugin Page",1,10,395,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,453,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,453,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,475,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pWebLabel3="Add Pin Syntax and Info",1,10,255,8,117,18,http://TheOven.org/index.php?topic=37
+
+[Process]
+If,%pCheckBox0%,Equal,True,Run,%ScriptFile%,Process-Pin,0
+If,%pCheckBox1%,Equal,True,Run,%ScriptFile%,Process-Pin,1
+If,%pCheckBox2%,Equal,True,Run,%ScriptFile%,Process-Pin,2
+If,%pCheckBox3%,Equal,True,Run,%ScriptFile%,Process-Pin,3
+If,%pCheckBox4%,Equal,True,Run,%ScriptFile%,Process-Pin,4
+If,%pCheckBox5%,Equal,True,Run,%ScriptFile%,Process-Pin,5
+If,%pCheckBox6%,Equal,True,Run,%ScriptFile%,Process-Pin,6
+If,%pCheckBox7%,Equal,True,Run,%ScriptFile%,Process-Pin,7
+If,%pCheckBox8%,Equal,True,Run,%ScriptFile%,Process-Pin,8
+If,%pCheckBox9%,Equal,True,Run,%ScriptFile%,Process-Pin,9
+
+[Process-Pin]
+// the path field must be filled...
+If,Not,-%pTextBox#1%-,Equal,--,BEGIN
+// This line will get the filename from the input path ("explorer.exe", for instance).
+StrFormat,FILENAME,%pTextBox#1%,%FN#1%
+// Exception: remove SIB+ StartScreen in PE buildType (only for OS mode)
+If,%BuildType%%FN#1%,Equal,PEStartScreen.exe,Begin
+Set,%pScrollBox#1%,NO
+Set,%pScrollBox1#1%,NO
+End
+// Taskbar
+If,Not,%pScrollBox#1%,Equal,NO,BEGIN
+// This line will get the file extension from the input path (".exe", for instance).
+StrFormat,EXT,%pTextBox#1%,%FE#1%
+// This line will format the file extension from the input path to upper case (".EXE", for instance).
+StrFormat,UCASE,%FE#1%,%FEU#1%
+// This line will get the filename without extension (FileNameTitle) from the input path ("explorer", for instance).
+StrFormat,REPLACE,%FN#1%,%FE#1%,,%FNT#1%
+//This line will convert the filename from the input path to taskbar shortcut name ("explorer.lnk", for instance).
+StrFormat,REPLACE,%FN#1%,%FE#1%,.lnk,%FNSC#1%
+//This line will check if the input path is already for a shortcut or to a file in general.
+If,Not,%FEU#1%,Equal,".LNK",Begin
+// If the input path is not a shortcut, we make a shortcut to the input path in ..\..\TaskbarTmp folder ("%AppData%\Microsoft\Windows\TaskBarTmp")
+// Instead of pinning the program (exe, cmd, vbs,...), we pin the link .lnk
+Add_Shortcut,StartMenu,..\..\TaskbarTmp,%pTextBox#1%,%FNT#1%
+// This line will convert the input path into a path to the new shortcut created in the temporary folder for taskbar shortcuts: ..\..\TaskbarTmp.
+Set,%pTextBox#1%,"%TBPETempFolder%\%FNSC#1%"
+End
+//
+If,%pScrollBox#1%,Equal,AUTO,Add_Pin,TaskBar,,%pTextBox#1%
+Else,Add_Pin,TaskBar,%pScrollBox#1%,%pTextBox#1%
+End
+// StartMenu
+If,Not,%pScrollBox1#1%,Equal,NO,BEGIN
+If,%pScrollBox1#1%,Equal,AUTO,Add_Pin,StartMenu,,%pTextBox#1%
+Else,Add_Pin,StartMenu,%pScrollBox1#1%,%pTextBox#1%
+End
+End
+
+[EncodedFile-AuthorEncoded-Pins.jpg]
+lines=0
+0=eJydkXk81Gkcx5/fzG/MmBnDMIMy2zAGLesojFhR7BJW1pUrTQk5dhPacdWKirJaakhbbcgiRyRXcqsRkmtdoTCKJNuMI0OZ2dFrj3/2j919P9//vsfr8349omHRBJCxtbKxAhAEACR+QDQKLAESgdgoMbC4UBgUCoZRWDRaAoPH4vE4LA4nRZCVkSIQCTicjLwMUY5EJpPx0gqK8iRFWRKZtHEEQop3YJQkCiVJksJJkf4zoiZAxAA9oIeEaABBhJBESPQQUMU5UdBHwB9ACHFGCTRGEosTD1TKAASERCJg5EZqcfekuA9gIkpWZdtuCTnHQ2haKGl73MVsjKpFWTPZqZdH1/cJi5fEyisobtqspq6x9VNNA0OG0Q5jE8svvrSy3mNj6+zius/N3cPzsK+f/5GAwKDw49+xIiKjok+fOZuQeO580iV2WvrljCs/Xb2Z80tuXv6tgsK75RWVVdX3au63PHjIaX3U1t7R92v/wODQ8NORSe7Ui5fTM69mX/MXFpeW360IVtc2vCCAhP7kH72IYi8EDCNh9IYXhIjYGCDCKJVtErK7HdGHQuVo2+MwJIuL2WXNkqr6TjyyT1gvVp5uMKnG31D7aPbvxOL/l9lfYn97jQA8EhJ/HpIIzMG6880ki9DBU1iB3JTbPJ+v1GQuY4jz1moZMYn8vm+Ny1H4+scjN5zl0ny6SrJtmg+CiQjD5ZBHjck9J2i8ZLZna4ZQtW5fiv0djbeNH5aOGQ/XwGs89P6UTpwIkIIZTsFlkQvGptaBxft3vuxkU+xJnWHemNnuXSbHKaHM4FS/wso5bmC4c7SWkCEC+i/1r8fkBhloega7rVGzqeUa8xmTsSMarLQeo8Q6L1mFk+pRlsUd6E6emQTPJF1Zb0nZvyGhtOWt5LV6NJdwoUhAE3JnnKsbkuxgF7MYW8Vvv9J93m3xeXxk6dgoixWvT4sKI6PSKBMrZE6mX9rdtbJ0hd+61ljVswUDbH/ytv4XhaXRO2PGonbAQ83MCt15bb7PInflfJ3WRFGjwGophVCdTr8z8siQ004sKmfTqtBPWm5RCDbd1Bi3J+YVpS2zSz/7CVUD9FarJQwSXSuS/W0skultJuWayXpzlbupx2fY6gWJ+edFICApsEhrPjzf8GzUpAiEqhcvV70zdTjQ0BhM4lOTlg+XBLNHrcwGlHcxUKuswlNZ4ZlpwEaj/kQjX5VjtIU2oNJXrBw8+r59EKPN3RTly8LeyqmhxwmGsgUi4GqSl+pl2ZA8evCue5vApdv8/tHHwvYJlnLo/pk3AXN5woEDcrV8netsDn3By2M1WamjJnLYeivy9OmmbvunlDhm0VCRKYOwNy3Ed8m2nV61YM7I2WvId3RVq/Ws96odW1dfvyKE3T/AAsfcyBPWpKsPRCAvKMM2Z/uze0q82PtZMNNvS159WColzo6Z2F+gWR5+bSCz1IKYT8a8SagtDvC4ohl3yaYJUWfJHT93tC6kcFaI77mzEiECpn2U+SQE9NnzUyWKKyOu0e3e3ZxPYp3KeJzlBnbW+JzCIippR3YypstdQuch715XzFTuMSZ+2gy2m5t3sB6sZBJfO0wfYBre4FBmHqdoqEDG8+xhADrLtbjUN8YT0pRZBn9UaVw6iNdKrNQ2bjLSfjZ9IaGV/uIS40bodaCVIdB4jwgcxwrp7pHVLvxvhGpse9bljh73H3w9GKklM51ho2F7kJSJd5yYsVi5M5mLUP/Q+iu+Wxa/LZPK16xnFroV4YeUsLrSm1MuzoboevfO2Om07C0smS3xuy0CtwlZeKxnWzUfnSkCOm5ay7a9CVNd1NfPzJ8rlm5dchA9/R127ZcceJzjCMjMK9bLKkhnGAUjEfxjhdBZrNjlCyc9CGNgAgDIkga/4YUrfQEAAAACAAAAJAAAAGoFAAAAAAAAAQAAAAAAAAAAAAAA
+
+[AuthorEncoded]
+Pins.jpg=1458,1944
+Logo=Pins.jpg
+
+[EncodedFolders]
+Folder
+
+[Folder]
+
+[DownloadXXX]
+Call,DownloadXQ
+Run,%ScriptFile%,Settings_Default
+If,ExistSection,%ScriptFile%,Settings_Default_%ProjectName%,Run,%ScriptFile%,Settings_Default_%ProjectName%
+System,RefreshInterface
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox10,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pCheckBox2,"False"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pTextBox2,"#$pSystemRoot#$p\System32\ShutdownPE.exe"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox13,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox14,"AUTO"
+
+[Settings_Default_Win10PESE]
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox10,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pCheckBox2,"False"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pTextBox2,"#$pSystemRoot#$p\System32\ShutdownPE.exe"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox13,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox14,"AUTO"
+
+[Settings_Default_Win8.1SE]
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox10,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pCheckBox2,"False"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pTextBox2,"#$psystemdrive#$p\Program Files\StartIsBack\StartScreen.exe"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox13,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox14,"AUTO"
+
+[Settings_Default_Win8PESE]
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox10,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pCheckBox2,"False"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pTextBox2,"#$pSystemRoot#$p\System32\ShutdownPE.exe"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox13,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox14,"AUTO"
+
+[Settings_Default_Win7PESE]
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox10,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pCheckBox2,"True"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pTextBox2,"#$pSystemRoot#$p\System32\ShutdownPE.exe"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox13,"AUTO"
+ChangeInterface,Write,Value,%ScriptFile%,Interface,pScrollBox14,"AUTO"
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

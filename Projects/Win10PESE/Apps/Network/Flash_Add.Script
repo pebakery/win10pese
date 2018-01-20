@@ -1,0 +1,310 @@
+[Main]
+Title=Flash Add
+Type=Plugin
+Author=Lancelot
+Description=Adds Flash Player.
+Credits=http://TheOven.org
+Version=012
+Download_Level=2
+Level=5
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.24
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Network/Flash_Add.Script
+Web1C1=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Network/Flash_Package.script
+Web1C2=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Network/Flash_Package64.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Plugin also used with "Mozilla FireFox" and "Mozilla Light" plugins by KYHI
+HistoryNotes09=Lancelot Par2 and Par3 reserved (add Flash to Opera 12 on Gena)
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2015.12.25 Plugin created
+History002=Lancelot more info
+History003=ChrisR use %ProjectDir% for path plugins - Date:2016.06.27
+History004=Lancelot Added Download Container buttons - Date:2016.07.22
+History005=Prz42 Used %ScriptDir% to solve problem if location is changed (MyPlugins_Direct\Apps\Network) - Date:2016.07.23 - Date:2016.08.22
+History006=KYHI Added Installer Download For Easier DLL Comparing and Updating - Date:2017.01.07
+History007=KYHI Reworked get container file version and RunOnce.bat to copy dll lib from host for attachment into container - Date:2017.01.10 - Date:2017.01.13
+History008=ChrisR Auto update Flash Player Plugin File - Date:2017.01.14 // Lancelot - Add Compare Button - Date:2017.01.14
+History009=Lancelot Fixed Broken plugin for plugins that are not in the same folder. http://TheOven.org/index.php?topic=2137 - Date:2017.06.21
+History010=Lancelot winbuilder bug workaround: no parameter under Process - Date:2017.09.14
+History011=Lancelot Fixed typo - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
+History012=Lancelot %UserName% deprecated - Date:2017.11.24
+
+[Info]
+//Adding Flash to individual plugins 3 lines ok for SE:
+//--
+If,%FlashPlayer_Checkbox%,Equal,True,Run,%ScriptFile%,FlashPlayer
+//-
+//[FlashPlayer]
+Set,%t%,%ScriptDir%\Flash_Add.Script
+If,ExistFile,%t%,Run,%t%,Add_Flash,%t%
+Else,Echo,"Flash Plugin required to enable flash",Warn
+//--
+
+[InterFace]
+WebLabel_Plugin="Plugin Page",1,10,379,36,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,405,4,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,440,4,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,440,33,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Download_Container1=,1,8,335,4,24,24,DownloadXXX_Container1,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container1_,False,"__Download Container Flash x86"
+Button_Download_Container2=,1,8,370,4,24,24,DownloadXXX_Container2,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container2_,False,"__Download Container Flash x64"
+Interface_Default_Button=R,1,8,519,-1,13,13,Settings_Default,0,False,_Settings_Default_,False,"__Reset Interface To Default Values"
+Update_Container_Button=U,1,8,540,-1,13,13,Update_Container,0,False,_Update_Container_,False,"__Update Flash Player Plugin File"
+pButton1="Download Latest Flash Player Installer",1,8,8,4,221,25,Download,0,False,False,_Download_,False
+pTextLabel1="Flash Player Installer Version:",1,1,9,45,154,18,8,Normal
+pTextLabel2="Flash Player Plugin File Version:",1,1,9,65,154,18,8,Normal
+InstallerVer=,1,1,165,45,74,18,8,Bold
+ContainerVer=,1,1,165,65,74,18,8,Bold
+
+[Variables]
+%ProgramFolder%=Flash_Player_Installer
+%ProvideFiles%=%GlobalTemplates%\%ProgramFolder%
+%SetupFile%=install_flash_player.exe
+%SetupURL%=https://fpdownload.macromedia.com/pub/flashplayer/latest/help/install_flash_player.exe
+%ProgramEXE%=RunOnce.bat
+
+[Process]
+//winbuilder bug workaround: no parameter under Process
+StrFormat,LTrim,#1,1,%t%
+If,%t%,Equal,1,Set,#1,""
+//---
+If,#1-,Equal,-,Set,%t%,%ScriptDir%\Flash_Add.Script
+Else,Set,%t%,#1
+//leads to an error with plugins that are not in the same folder. --> Set,%t%,%ScriptDir%\Flash_Add.Script
+//---
+Run,%t%,Add_Flash,%t%
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+Set,%PluginArch%,x86
+Run,%t%,Add_Flash,%t%
+End
+End
+
+[Add_Flash]
+If,#1-,Equal,-,Set,#1,%ScriptDir%
+StrFormat,Path,#1,%FlashPackagePath%
+StrFormat,CTRIM,%FlashPackagePath%,\,%FlashPackagePath%
+//---
+Set,%FlashPackageS%,%FlashPackagePath%\Flash_Package.script
+//leads to an error with plugins that are not in the same folder. --> Set,%FlashPackageS%,%ScriptDir%\Flash_Package.script
+//---
+Set,%FlashFolder%,%Target_Sys%\Macromed\Flash
+Set,%PEFlashFolder%,X:\Windows\system32\Macromed\Flash
+Set,%FlashPackageFile%,NPSWF32.dll
+//--
+If,%OSFamily%,Equal,NT5,Begin
+Set,%PEFlashFolder%,X:\I386\system32\Macromed\Flash
+If,%SourceArch%,Equal,x64,Set,%PEFlashFolder%,X:\AMD64\system32\Macromed\Flash
+End
+//-
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%SourceArch%,Equal,x64,Begin
+//---
+Set,%FlashPackageS%,%FlashPackagePath%\Flash_Package64.script
+//leads to an error with plugins that are not in the same folder. --> Set,%FlashPackageS%,%ScriptDir%\Flash_Package64.script
+//---
+Set,%FlashPackageFile%,NPSWF64.dll
+End
+If,%PluginArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+//---
+Set,%FlashPackageS%,%FlashPackagePath%\Flash_Package.script
+//leads to an error with plugins that are not in the same folder. --> Set,%FlashPackageS%,%ScriptDir%\Flash_Package.script
+//---
+Set,%FlashFolder%,%Target_Win%\SysWOW64\Macromed\Flash
+Set,%PEFlashFolder%,X:\Windows\SysWOW64\Macromed\Flash
+Set,%FlashPackageFile%,NPSWF32.dll
+If,%OSFamily%,Equal,NT5,Begin
+If,%SourceArch%,Equal,x64,Set,%PEFlashFolder%,X:\AMD64\SysWOW64\Macromed\Flash
+End
+End
+End
+End
+//-
+If,Not,ExistFile,%FlashPackageS%,Echo,"Flash Plugin required to enable flash",Warn
+//-
+If,ExistFile,%FlashPackageS%,Begin
+If,Not,#2-,Equal,-,Set,%FlashFolder%,#2
+If,#3,Equal,-,Set,%PEFlashFolder%,""
+Else,Begin
+If,Not,#3-,Equal,-,Set,%PEFlashFolder%,#3
+End
+//-
+//[SFlashPackageS_Extract]
+If,ExistFile,%FlashFolder%\%FlashPackageFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%FlashFolder%\%FlashPackageFile%#$q"
+//Test With http://www.adobe.com/software/flash/about/ Available at HomePage_pScrollBox Launch button would show test result
+Run,%FlashPackageS%,FlashPackageS_Extract,%FlashPackageS%,,%FlashPackageFile%,%FlashFolder%
+//-
+//[SFlashPackageS_Registry]
+If,%OSFamily%,Equal,NT5,Run,%FlashPackageS%,FlashPackageS_Registry,%FlashPackageS%
+Else,Run,%FlashPackageS%,FlashPackageS_Registry,%FlashPackageS%,%FlashPackageFile%,%PEFlashFolder%
+//-
+//[SFlashPackageS_Requirements]
+If,%Pure64bit%,Equal,False,Set,%PluginArch%,x86
+Run,%FlashPackageS%,FlashPackageS_Requirements
+//---
+End
+
+[Download]
+If,Existfile,%ProjectTemp%\FlashPackageExtract\NPSWF32.dll,Begin
+Retrieve,FileVersion,%ProjectTemp%\FlashPackageExtract\NPSWF32.dll,%ContainerVer%
+ChangeInterface,Write,Value,,,ContainerVer,%ContainerVer%
+End
+If,Not,Existfile,%ProjectTemp%\FlashPackageExtract\NPSWF32.dll,Begin
+Set,%FlashPackageS%,%ScriptDir%\Flash_Package.script
+Run,%FlashPackageS%,FlashPackageS_Extract,%FlashPackageS%,,%FlashPackageFile%
+Retrieve,FileVersion,%ProjectTemp%\FlashPackageExtract\NPSWF32.dll,%ContainerVer%
+ChangeInterface,Write,Value,,,ContainerVer,%ContainerVer%
+End
+//-
+If,ExistDir,%ProvideFiles%,DirDelete,%ProvideFiles%
+If,ExistDir,%ProvideFiles%,Call,DirDelete,%ProvideFiles%
+DirMake,%ProvideFiles%
+Call,Download,%ProvideFiles%\%SetupFile%,%SetupURL%
+Retrieve,FileVersion,%ProvideFiles%\%SetupFile%,%InstallerVer%
+ChangeInterface,Write,Value,,,InstallerVer,%installerVer%
+System,REFRESHINTERFACE
+//-
+If,%installerVer%,BIGGER,%ContainerVer%,Begin
+Run,%ScriptFile%,GetFlashLib
+Call,OpenDir,%ProvideFiles%
+//Call,Start,,%ProgramEXE%,,%ProvideFiles%
+End
+
+[GetFlashLib]
+Set,%vw%,%ProvideFiles%\RunOnce.bat
+If,ExistFile,%vw%,Call,FileDelete,%vw%
+FileCreateBlank,%vw%
+TXTAddLine,%vw%,"",Append
+TXTAddLine,%vw%,"@echo off",Append
+TXTAddLine,%vw%,"echo. Installing Flash Player... Please Wait..",Append
+TXTAddLine,%vw%,"cd /d #$q%~dp0#$q",Append
+TXTAddLine,%vw%,"%SetupFile% -install",Append
+TXTAddLine,%vw%,"del /q /f NPSWF32.dll",Append
+TXTAddLine,%vw%,"del /q /f NPSWF64.dll",Append
+TXTAddLine,%vw%,"xcopy /y #$pWinDir#$p\System32\Macromed\Flash\NPSWF64*.dll #$q%~dp0NPSWF64.dll*#$q",Append
+TXTAddLine,%vw%,"xcopy /y #$pWinDir#$p\SysWOW64\Macromed\Flash\NPSWF32*.dll #$q%~dp0NPSWF32.dll*#$q",Append
+TXTAddLine,%vw%,"xcopy /y #$pWinDir#$p\System32\Macromed\Flash\NPSWF32*.dll #$q%~dp0NPSWF32.dll*#$q",Append
+TXTAddLine,%vw%,"del /q /f Y|del %SetupFile%",Append
+TXTAddLine,%vw%,"del %0",Append
+
+[Update_Container]
+If,%InstallerVer%-,Equal,-,Call,Echo,"Flash Player Installer Version is empty on Interface #$xDownload Latest Flash Player Installer (button) and run RunOnce.bat first.",Warn,1,MessageError,,Exit
+If,%ContainerVer%-,Equal,-,Call,Echo,"Flash Player Plugin File is empty on Interface #$xDownload Latest Flash Player Installer (button) and run RunOnce.bat first.",Warn,1,MessageError,,Exit
+If,Not,%installerVer%,BIGGER,%ContainerVer%,Call,Echo,"No need to update, Flash Player Plugins File seems up to date.",Warn,1,MessageError,,Exit
+If,Not,ExistFile,%ScriptDir%\Flash_Package.script,Call,Echo,"Flash Player Plugin File required to update flash",Warn,1,MessageError,,Exit
+If,Not,ExistFile,%ScriptDir%\Flash_Package64.script,Call,Echo,"Flash Player Plugin File 64 required to update flash",Warn,1,MessageError,,Exit
+If,Not,Existfile,%ProvideFiles%\NPSWF32.dll,Call,Echo,"NPSWF32.dll not found in Download Installer Folder#$xDownload Latest Flash Player Installer (button) and run RunOnce.bat first.",Warn,1,MessageError,,Exit
+If,Not,Existfile,%ProvideFiles%\NPSWF64.dll,Call,Echo,"NPSWF64.dll not found in Download Installer Folder#$xDownload Latest Flash Player Installer (button) and run RunOnce.bat first.",Warn,1,MessageError,,Exit
+Retrieve,FileVersion,%ProvideFiles%\NPSWF32.dll,%NPSWF32Ver%
+If,Not,%NPSWF32Ver%,Equal,%InstallerVer%,Call,Echo,"NPSWF32.dll Version is different from the Installer Version#$xDownload Latest Flash Player Installer (button) and run RunOnce.bat first.",Warn,1,MessageError,,Exit
+Retrieve,FileVersion,%ProvideFiles%\NPSWF64.dll,%NPSWF64Ver%
+If,Not,%NPSWF64Ver%,Equal,%InstallerVer%,Call,Echo,"NPSWF64.dll Version is different from the Installer Version#$xDownload Latest Flash Player Installer (button) and run RunOnce.bat first.",Warn,1,MessageError,,Exit
+//-
+If,ExistDir,%ProjectTemp%\FlashPackageExtract,DirDelete,%ProjectTemp%\FlashPackageExtract
+If,ExistDir,%ProjectTemp%\FlashPackageExtract,Call,DirDelete,%ProjectTemp%\FlashPackageExtract
+DirMake,%ProjectTemp%\FlashPackageExtract
+//-
+IniRead,%ScriptDir%\Flash_Package.script,Main,Version,%FP32Version%
+StrFormat,INC,%FP32Version%,1
+Set,%History%,History%FP32Version%
+If,%FP32Version%,SMALLER,10,Set,%History%,History00%FP32Version%
+If,%FP32Version%,SMALLER,100,Set,%History%,History0%FP32Version%
+Retrieve,FILESIZE,%ProvideFiles%\NPSWF32.dll,%NPSWF32Size%
+StrFormat,DIV,%NPSWF32Size%,1048576
+ShellExecute,Hide,%Tools%\7z.exe,"a -y -m0=lzma2 -mx=9 -aoa -t7z #$q%ProvideFiles%\NPSWF32.7z#$q #$q%ProvideFiles%\NPSWF32.dll#$q"
+Encode,%ScriptDir%\Flash_Package.script,x86,%ProvideFiles%\NPSWF32.7z
+IniWrite,%ScriptDir%\Flash_Package.script,Variables,#$pflashversion#$p,%NPSWF32Ver%
+IniWrite,%ScriptDir%\Flash_Package.script,Main,Description,"(v%NPSWF32Ver% - (x86 %NPSWF32Size% MB)) This is a Flash Package Plugin to be used by other Plugins."
+Call,HostUserName
+IniWrite,%ScriptDir%\Flash_Package.script,Main,%History%,"%HostUserName% Auto updated %NPSWF32Ver%)"
+//-
+IniRead,%ScriptDir%\Flash_Package64.script,Main,Version,%FP64Version%
+StrFormat,INC,%FP64Version%,1
+Set,%History%,History%FP64Version%
+If,%FP64Version%,SMALLER,10,Set,%History%,History00%FP64Version%
+If,%FP64Version%,SMALLER,100,Set,%History%,History0%FP64Version%
+Retrieve,FILESIZE,%ProvideFiles%\NPSWF64.dll,%NPSWF64Size%
+StrFormat,DIV,%NPSWF64Size%,1048576
+ShellExecute,Hide,%Tools%\7z.exe,"a -y -m0=lzma2 -mx=9 -aoa -t7z #$q%ProvideFiles%\NPSWF64.7z#$q #$q%ProvideFiles%\NPSWF64.dll#$q"
+Encode,%ScriptDir%\Flash_Package64.script,x64,%ProvideFiles%\NPSWF64.7z
+IniWrite,%ScriptDir%\Flash_Package64.script,Variables,#$pflashversion#$p,%NPSWF64Ver%
+IniWrite,%ScriptDir%\Flash_Package64.script,Main,Description,"(v%NPSWF64Ver% - (x64 %NPSWF64Size% MB)) This is a Flash Package Plugin to be used by other Plugins."
+IniWrite,%ScriptDir%\Flash_Package64.script,Main,%History%,"%HostUserName% Auto updated %NPSWF64Ver%)"
+//-
+ChangeInterface,Write,Value,,,ContainerVer,%NPSWF32Ver%
+System,REFRESHINTERFACE
+
+[AuthorEncoded]
+flash4848.ico=2749,3666
+Logo=flash4848.ico
+
+[EncodedFile-AuthorEncoded-flash4848.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,5
+IniWrite,%ScriptFile%,Main,Selected,False
+ChangeInterface,Write,Value,,,InstallerVer,""
+ChangeInterface,Write,Value,,,ContainerVer,""
+System,REFRESHINTERFACE
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Level,0
+IniWrite,%ScriptFile%,Main,Selected,False
+ChangeInterface,Write,Value,,,InstallerVer,""
+ChangeInterface,Write,Value,,,ContainerVer,""
+System,REFRESHINTERFACE
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[DownloadXXX_Container1]
+IniRead,%ScriptFile%,Main,Web1C1,%WebFileContainer%
+Set,%FileContainer%,%ScriptDir%\Flash_Package.script
+Call,DownloadXQ,%FileContainer%,%WebFileContainer%
+
+[DownloadXXX_Container2]
+IniRead,%ScriptFile%,Main,Web1C2,%WebFileContainer%
+Set,%FileContainer%,%ScriptDir%\Flash_Package64.script
+Call,DownloadXQ,%FileContainer%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

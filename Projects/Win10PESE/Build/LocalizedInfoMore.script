@@ -1,0 +1,688 @@
+[Main]
+Title=Retrieve More Localized Info
+Type=Plugin
+Author=FxScrpt, Lancelot, Max_Real QNX, BlueLife, ChrisR
+Description=Provides detailed Localization informations of Source and HostOS by using LCID.exe of fxscrpt. Additionaly provides HostOS Utilities.
+Credits=fxscrpt for LCID.exe
+Version=025
+Download_Level=0
+Level=1
+Selected=True
+Mandatory=True
+NoWarning=False
+Contact=http://TheOven.org
+Date=2018.01.04_13:00.13 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Basic/Build/LocalizedInfoMore.script
+WebRootSubSub=Build
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History003=fxscrpt - cosmetic changes in [processlcidexe]
+History005=Lancelot - bugy fixed at [Test_Lcid_PathToFile]
+History006=fxscrpt - Lcid.exe updated - notes: For real OS there are 37 values under HKCU\ControlPanel\International. For PE only 22. I think all missing values are created now by LCIDUtil.
+History007=Lancelot - Test_Lcid_PathToFile_Button added
+History007=Lancelot - naughtyPE support added
+History008=Lancelot - av false positive check added - some quotes removed
+History009a=Lancelot - %LocalizeInfoTemp% etc. added to get localization utilities use LCIDutil.exe freely. (ex: autolocalization plugin)
+History009b=Lancelot Interface hidden not to scare users who do not know the plugin
+History010=Lancelot - syntax not valid fix
+History011=Lancelot - %LocalizeLID% added to ease updating some files easly from sourcecd and updates. (mostly xpsp3res.dll)
+History012=naughty support removed (naughty updated itsself a lot time before)
+History012=Max_Real QNX - implemented pe2/3 support + hostos lcid info also added
+History012=Thanks to BlueLife for improving au3 codes
+History012=to keep compatibility with pe2/3 projects permanent variable %LocalizeLocale% changed to %DistLang% ( //Set,%LocalizeLocale%,%LocalizeLocale%,PERMANENT)
+History012=new %LCIDHostOS% %LCIDHostOSmui% introduced along with other hostos variables (check [ResultsEcho])
+History013=%DistLang% is a value for sourcedvd of pe2/3 not pe1, %LocalizeLocale% is back :>.
+History013=%DistLangHost% is a value for winnt6x , not 5x, %LocalizeLocaleHostOS% is back :>.
+History013=autoit..exe location fixed.
+History014=Lancelot checkini lines improved // [ResultsEcho] section fixed&improved to ease log reading
+History014=ChrisR mui read bug fixed
+History015=Lancelot Standalone plugin for PE1 :>:>. ( get LangID value from HIVESYS.INF )
+History016=Lancelot LCIDUtil.exe unupxed to avoid idiot AV companies ;).
+History017=Lancelot speed enhancements (again wb bug workaround and round and round....)
+History018=Lancelot minor bug fix
+History019=Lancelot IniVariables SysType
+History020=ChrisR - Following AU3381 updated
+History021=ChrisR - FindLangIDNumberPEX new scholl (SYSTEM\ControlSet001\Control\MUI\UILanguages ...) (error with the old method and win8 source en-gb)
+History023=Lancelot syntax updated - Date:2016.02.01
+History024=Lancelot Added Basic_PluginCache_Extract - Date:2016.10.30
+History025=Lancelot Depreciate old syntax (PEBakery Support) - Date:2017.12.07 - Date:2018.01.04
+
+[Interface]
+pTextLabel_Introduction1="This plugin provides localization informations like date format, codepage  etc. from your source cd locale info.",1,1,15,26,337,40,9,Bold
+pTextLabel_Introduction2="There are no options to set here. :)",1,1,34,73,230,18,9,Bold
+HostOSTools_CheckBox="Add HostOS Utilities",0,3,38,183,117,18,False
+pWebLabel2="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%LanguageTestF%=LanguageTestF
+%LCIDUtildir%=%ProjectTemp%\LCIDutil
+//--
+%LCIDoutputfile%=LcidInfo.ini
+%LocalizeInfoMore%=%LCIDUtildir%\%LCIDoutputfile%
+//--
+%LCIDHostOS%=LcidInfoHostOS.ini
+%LocalizeInfoMoreHostOS%=%LCIDUtildir%\%LCIDHostOS%
+//--
+%LCIDHostOSmui%=LcidInfoHostOSmui.ini
+%LocalizeInfoMoreHostOSmui%=%LCIDUtildir%\%LCIDHostOSmui%
+//--
+%LocalizeInfoTemp%=%LCIDUtildir%\Temp
+
+[Process]
+If,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Echo,"Basic PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+Run,%ScriptFile%,Prepare
+//--
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeInfoMore,%LocalizeInfoMore%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeInfoMoreHostOS,%LocalizeInfoMoreHostOS%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeInfoMoreHostOSmui,%LocalizeInfoMoreHostOSmui%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeInfoTemp,%LocalizeInfoTemp%
+//--
+Run,%ScriptFile%,HostOSInfo
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,PE1FindLangID
+Else,Run,%ScriptFile%,FindLangIDNumberPEX
+//Message,%LangIDNumber%,Information
+//Message,%ProjectInfo%,Information
+If,%HostOSTools_CheckBox%,Equal,True,Run,%ScriptFile%,HostOSTools
+Run,%ScriptFile%,SourceMoreInfo
+Run,%ScriptFile%,ResultsSetPermanent
+Run,%ScriptFile%,ResultsEcho
+
+[PE1FindLangID]
+//IniRead,%ProjectInfo%,Project,LangID,%LangIDNumber%
+Set,%t%,""
+IniRead,%ProjectInfo%,Project,LangID,%t%
+If,ExistDir,%ProjectTemp%\HiveSysTemp,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\HiveSysTemp#$q"
+If,ExistDir,%ProjectTemp%\HiveSysTemp,Echo,"Directory NOT DELETED",WARN
+DirMake,%ProjectTemp%\HiveSysTemp
+CopyOrExpand,%Source_Win%\HIVESYS.INF,%ProjectTemp%\HiveSysTemp
+ShellExecute,Hide,cmd.exe,"/c type #$q%ProjectTemp%\HiveSysTemp\HIVESYS.INF#$q > #$q%ProjectTemp%\HiveSysTemp\HIVESYS_Ansi.INF#$q"
+IniRead,%ProjectTemp%\HiveSysTemp\HIVESYS_Ansi.INF,Strings,INSTALL_LANGUAGE,%LangIDNumber%
+StrFormat,REPLACE,%LangIDNumber%,#$q,,%LangIDNumber%
+If,Not,%t%,Equal,"",If,Not,%t%,Equal,%LangIDNumber%,Echo,"LangID MISMATCH",WARN
+
+[Prepare]
+If,ExistDir,%LCIDUtildir%,DirDelete,%LCIDUtildir%
+If,Not,EXISTDIR,%LCIDUtildir%,DirMake,%LCIDUtildir%
+If,Not,EXISTDIR,%LocalizeInfoTemp%,DirMake,%LocalizeInfoTemp%
+ExtractFile,%ScriptFile%,LCIDutil,LCIDutil.exe,%LCIDUtildir%
+ExtractFile,%ScriptFile%,LCIDutil,LCIDutil.exe,%LocalizeInfoTemp%
+If,ExistFile,%LocalizeInfoMore%,FileDelete,%LocalizeInfoMore%
+If,Not,ExistFile,%LCIDUtildir%\LCIDutil.exe,Message,"Your AV makes False Positive flag for LCIDutil.exe - LCIDutil.exe deleted - Disable your AV",Warning
+If,Not,ExistFile,%LCIDUtildir%\LCIDutil.exe,Halt,"Your AV makes False Positive flag for LCIDutil.exe - LCIDutil.exe deleted - Disable your AV"
+
+[HostOSInfo_Example_and_Info]
+//english XP with no additional mui:
+//[infohosos]
+//osarc=X64
+//oslang=0409
+//muilang=0000
+//english XP with turkish mui (no info here about muilang):
+//[infohosos]
+//osarc=X64
+//oslang=0409
+//muilang=0000
+//english w7 with no additional mui:
+//[infohosos]
+//osarc=X86
+//oslang=0409
+//muilang=0409
+//
+//More MUI info:
+//ON XP/2K3 - normaly there is no (or minor) mui
+//If Mui installed 2 values exists to control mui setting
+//HKCU\Control Panel\Desktop,MUILanguagePending
+//HKCU\Control Panel\Desktop,MultiUILanguageId
+//normally these 2 values are equal, IF end user change his/her mui setting,
+// than MUILanguagePending value changed and user asked to re-logon
+//  after logon windows change mui settings by reading MUILanguagePending value and set MultiUILanguageId same :).
+//   Hence best to read MultiUILanguageId value
+//Example values for MUILanguagePending & MultiUILanguageId :
+//0000041F
+//00000409
+//Where are Mui Files on XP/2k3:
+//Giving example with installing Turkish mui package to XPx86Enu
+//C:\WINDOWS\mui\FALLBACK\041F=====> Main MUI Folder (42MB)
+//C:\WINDOWS\Help\MUI\041F==> 21.8MB
+//C:\WINDOWS\system32\wbem\MUI\041f (2.75MB , 45 files)
+//Minor cosmetic mui's
+//C:\WINDOWS\system32\mui\041f --> Here ShellStyle.dll.mui and themeui.dll.mui mui files added along with hhctrlui.dll & tourstart.exe
+//C:\WINDOWS\Resources\Themes\Luna\MUI\041F
+//C:\WINDOWS\Resources\Themes\Luna\Shell\NormalColor\MUI\041F
+//C:\WINDOWS\Resources\Themes\Luna\Shell\Metallic\MUI\041F
+//C:\WINDOWS\Resources\Themes\Luna\Shell\Homestead\MUI\041F
+//
+//On Vista/W7 - There ALWAYS must be mui. (mechanism all changed)
+//Value saved in
+//HKCU\Control Panel\International,LocaleName
+//Example values for LocaleName
+//en-US
+//tr-TR
+//Where are Mui Files on Vista/W7:
+//Here mui files always in subfolder of the location of file ;).
+//But keep in mind, in case mui file not exists for local mui, there might be one at en-US
+//
+//
+//more more id info http://superuser.com/questions/60918/how-to-use-english-as-a-default-language-for-software-in-windows-xp
+
+[HostOSInfo]
+Set,%w%,%LCIDUtildir%\InfoHostOS.au3
+FileCreateBlank,%w%
+TxtAddline,%w%,"#NoTrayIcon",Append
+TxtAddline,%w%,"#RequireAdmin",Append
+TxtAddline,%w%,"IniWrite(#$qInfoHostOSIni.ini#$q,#$qinfohostos#$q,#$qosarch#$q,@OSArch)",Append
+TxtAddline,%w%,"IniWrite(#$qInfoHostOSIni.ini#$q,#$qinfohostos#$q,#$qoslang#$q,@OSLang)",Append
+TxtAddline,%w%,"IniWrite(#$qInfoHostOSIni.ini#$q,#$qinfohostos#$q,#$qmuilang#$q,@MUILang)",Append
+//Here it must be \x86\ ---> %Tools%\x86\AU3381.exe --> to be sure all the time ;).
+ShellExecute,Hide,%Tools%\x86\AU3381.exe,"#$q%w%#$q",%LCIDUtildir%
+IniRead,%LCIDUtildir%\InfoHostOSIni.ini,infohostos,OSArch,%SysTypeVar%
+IniRead,%LCIDUtildir%\InfoHostOSIni.ini,infohostos,oslang,%LangIDNumberHostOS%
+IniRead,%LCIDUtildir%\InfoHostOSIni.ini,infohostos,muilang,%LangIDNumberHostOSMui%
+//-
+Set,%SysType%,%SysTypeVar%
+IniWrite,%ProjectDir%\script.project,IniVariables,SysType,%SysType%
+//--
+Set,%LocalizeLocaleHostOSMui%,
+Set,%LocaleNameVar%,
+If,ExistRegKey,HKCU,"Control Panel\International",LocaleName,RegRead,HKCU,"Control Panel\International",LocaleName,%LocaleNameVar%
+Set,%DistLangHost%,%LocaleNameVar%
+IniWrite,%ProjectDir%\script.project,IniVariables,DistLangHost,%DistLangHost%
+//--
+Set,%MultiUILanguageIdVar%,--
+If,ExistRegKey,HKCU,"Control Panel\Desktop",MultiUILanguageId,RegRead,HKCU,"Control Panel\Desktop",MultiUILanguageId,%MultiUILanguageIdVar%
+If,Not,%MultiUILanguageIdVar%,Equal,--,StrFormat,LTRIM,%MultiUILanguageIdVar%,4,%LangIDNumberHostOSMui%
+//--
+//--
+// HostOSMoreInfo - oslang:
+Shellexecute,Hide,%LCIDUtildir%\LCIDutil.exe,"%LangIDNumberHostOS% #$q%LocalizeInfoMoreHostOS%#$q"
+Run,%ScriptFile%,checkini,%LocalizeInfoMoreHostOS%,%LangIDNumberHostOS%
+IniRead,%LocalizeInfoMoreHostOS%,Locale,Locale,%LocalizeLocaleHostOS%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeLocaleHostOS,%LocalizeLocaleHostOS%
+// HostOSMoreInfo - muilang:
+If,Not,%LangIDNumberHostOSMui%,Equal,0000,Begin
+Shellexecute,hide,%LCIDUtildir%\LCIDutil.exe,"%LangIDNumberHostOSMui%#$s#$q%LocalizeInfoMoreHostOSmui%#$q"
+Run,%ScriptFile%,checkini,%LocalizeInfoMoreHostOSmui%,%LangIDNumberHostOSMui%
+IniRead,%LocalizeInfoMoreHostOSmui%,Locale,Locale,%LocalizeLocaleHostOSMui%
+End
+
+[FindLangIDNumberPEX]
+// Copy system Boot and install hives to %ProjectTemp%\RWHive
+If,ExistDir,%ProjectTemp%\RWHive,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\RWHive#$q"
+If,ExistDir,%ProjectTemp%\RWHive,Echo,"ProjectTemp\RWHive Folder can not be deleted",Warn
+If,ExistDir,%ProjectTemp%\RWHive,Message,"ProjectTemp\RWHive Folder can not be deleted",Error
+If,ExistDir,%ProjectTemp%\RWHive,Halt,"ProjectTemp\RWHive Folder can not be deleted"
+DirMake,%ProjectTemp%\RWHive
+//--
+FileCopy,%InstallSRC%\Windows\System32\config\SYSTEM,%ProjectTemp%\RWHive\SYSTEM_ISRC
+Set,%w%,%LCIDUtildir%\InfoSourceOS_ISRC.au3
+Set,%InfoSourceOSIni%,InfoSourceOS_ISRCini.ini
+RegHiveLoad,Tmp_RWHive,%ProjectTemp%\RWHive\SYSTEM_ISRC
+Run,%ScriptFile%,FindLangIDNumberPEXau3
+// InstallLanguage in addition
+RegRead,HKLM,Tmp_RWHive\ControlSet001\Control\Nls\Language,InstallLanguage,%InstallLanguageLCID%
+IniWrite,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,InstallLanguageLCID,%InstallLanguageLCID%
+RegHiveUnLoad,Tmp_RWHive
+IniRead,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,LocaleLCID,%LangIDNumber%
+//--
+FileCopy,%BootSRC%\Windows\System32\config\SYSTEM,%ProjectTemp%\RWHive\SYSTEM_BSRC
+Set,%w%,%LCIDUtildir%\InfoSourceOS_BSRC.au3
+Set,%InfoSourceOSIni%,InfoSourceOS_BSRCini.ini
+RegHiveLoad,Tmp_RWHive,%ProjectTemp%\RWHive\SYSTEM_BSRC
+Run,%ScriptFile%,FindLangIDNumberPEXau3
+// InstallLanguage in addition
+RegRead,HKLM,Tmp_RWHive\ControlSet001\Control\Nls\Language,InstallLanguage,%InstallLanguageLCID%
+IniWrite,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,InstallLanguageLCID,%InstallLanguageLCID%
+RegHiveUnLoad,Tmp_RWHive
+IniRead,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,LocaleLCID,%LangIDNumberBootSRC%
+//--
+Shellexecute,hide,%LCIDUtildir%\LCIDutil.exe,"%LangIDNumberBootSRC%#$s#$q%LCIDUtildir%\LcidInfoBootSRC.ini#$q"
+If,%LangIDNumber%,Equal,0000,IniRead,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,Fileoslang,%LangIDNumber%
+//--
+// remove RWHive after all finished without checking
+If,ExistDir,%ProjectTemp%\RWHive,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\RWHive#$q"
+
+[FindLangIDNumberPEXau3_Example]
+//[infoSourceos]
+//LocaleName=en-US
+//LocaleLCID=0409
+//InstallLanguageLCID=0409
+
+[FindLangIDNumberPEXau3]
+FileCreateBlank,%w%
+TxtAddline,%w%,"#RequireAdmin",Append
+TxtAddline,%w%,"#NoTrayIcon",Append
+TxtAddline,%w%,"$HKLM='HKLM'",Append
+TxtAddline,%w%,"If @OSArch='x64' Then $HKLM = 'HKLM64'",Append
+TxtAddline,%w%,"If FileExists('%InfoSourceOSIni%') Then FileDelete('%InfoSourceOSIni%')",Append
+TxtAddline,%w%,"IniWrite('%InfoSourceOSIni%', 'infoSourceos', 'LocaleName', '')",Append
+TxtAddline,%w%,"For $i=1 to 10",Append
+TxtAddline,%w%,"	$UILanguages=RegEnumKey($HKLM & '\Tmp_RWHive\ControlSet001\Control\MUI\UILanguages', $i)",Append
+TxtAddline,%w%,"  If @error <> 0 then ExitLoop",Append
+TxtAddline,%w%,"	IniWrite('%InfoSourceOSIni%', 'infoSourceos', 'LocaleName', $UILanguages)",Append
+TxtAddline,%w%,"	$LCID=RegRead($HKLM & '\Tmp_RWHive\ControlSet001\Control\MUI\UILanguages\' & $UILanguages, 'LCID')",Append
+TxtAddline,%w%,"	If @error <> 0 then ContinueLoop",Append
+TxtAddline,%w%,"	IniWrite('%InfoSourceOSIni%', 'infoSourceos', 'LocaleLCID', StringTrimLeft(Hex(Int($LCID)),4))",Append
+TxtAddline,%w%,"	ExitLoop",Append
+TxtAddline,%w%,"Next",Append
+IniRead,%ProjectDir%\script.project,IniVariables,SysType,%SysType%
+ShellExecute,Hide,%Tools%\%SysType%\AU3381.exe,"#$q%w%#$q",%LCIDUtildir%
+
+[SourceMoreInfo]
+Shellexecute,hide,%LCIDUtildir%\LCIDutil.exe,"%LangIDNumber%#$s#$q%LocalizeInfoMore%#$q"
+Run,%ScriptFile%,checkini,%LocalizeInfoMore%,%LangIDNumber%
+//
+// LocalizeLID examples: 0409, 0419, 0407 - frequently required for files having that code on cd ex: spru0407.dl_
+//--If,%OSFamily%,Equal,NT5,IniRead,%ProjectInfo%,OS,XpRes,%LocalizeLID%
+//--Else,IniRead,%LocalizeInfoMore%,Locale,LID,%LocalizeLID%
+IniRead,%LocalizeInfoMore%,Locale,LID,%LocalizeLID%
+//--
+//Set,%tmpTest%,
+//Set,%PInfo%,%ProjectInfo%
+//IniRead,%PInfo%,TargetPaths,Target,%tmpTest%
+//If,%tmpTest%,Equal,"",Set,%PInfo%,%ProjectTemp%\ProjectInfo.ini
+//IniRead,%PInfo%,OS,XpRes,%LocalizeLID%
+//--
+// LocalizeLCID examples: 1033 , 1038 , 1055
+IniRead,%LocalizeInfoMore%,Locale,LCID,%LocalizeLCID%
+// ShortLanguage examples: ENU, TRK, DEU (update files have these extensions)
+IniRead,%LocalizeInfoMore%,Locale,ShortLanguage,%LocalizeExtUpdate%
+// LocalizeExtension examples: DE , TR (English source do NOT HAVE LocalizeExtension)
+IniRead,%LocalizeInfoMore%,Locale,ISO639Language,%LocalizeExtLocal%
+If,%LocalizeExtLocal%,Equal,en,Set,%LocalizeExtLocal%,
+//-------------
+IniRead,%LocalizeInfoMore%,Locale,ISO639Language,%LocalizeISO639Language%
+IniRead,%LocalizeInfoMore%,Locale,ISO3166Country,%LocalizeISO3166Country%
+IniRead,%LocalizeInfoMore%,Locale,Locale,%LocalizeLocale%
+IniRead,%LocalizeInfoMore%,Locale,CountryCode,%LocalizeCountryCode%
+IniRead,%LocalizeInfoMore%,Locale,ShortCountry,%LocalizeCountryShortCountry%
+
+[ResultsSetPermanent]
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeLID,%LocalizeLID%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeLCID,%LocalizeLCID%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeExtUpdate,%LocalizeExtUpdate%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeExtLocal,%LocalizeExtLocal%
+//--
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeISO639Language,%LocalizeISO639Language%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeISO3166Country,%LocalizeISO3166Country%
+//--
+If,%OSFamily%,Equal,NT5,Begin
+Set,%DistLang%,""
+IniWrite,%ProjectDir%\script.project,IniVariables,DistLang,""
+End
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeLocale,%LocalizeLocale%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeCountryCode,%LocalizeCountryCode%
+IniWrite,%ProjectDir%\script.project,IniVariables,LocalizeCountryShortCountry,%LocalizeCountryShortCountry%
+
+[ResultsEcho]
+Echo,"Position of ini files and ready Lcidutil.exe folder"
+Echo,"LocalizeInfoMore===========%LocalizeInfoMore%"
+Echo,"LocalizeInfoMoreHostOS=====%LocalizeInfoMoreHostOS%"
+Echo,"LocalizeInfoMoreHostOSmui==%LocalizeInfoMoreHostOSmui%"
+Echo,"LocalizeInfoTemp===========%LocalizeInfoTemp%"
+//--
+Echo,"HostOS Information"
+Echo,"SysType (HostOS)===========%SysType%"
+Echo,"DistLangHost===============%DistLangHost%"
+Echo,"LocalizeLocaleHostOS=======%LocalizeLocaleHostOS%"
+//--
+Echo,"SourceOS Information"
+Echo,"DistLang (SourceOS)================================%DistLang%"
+Echo,"LocalizeLocale=====================================%LocalizeLocale%"
+//--
+Echo,"LocalizeLID=================================%LocalizeLID%"
+Echo,"LocalizeLCID================================%LocalizeLCID%"
+Echo,"LocalizeExtUpdate (Shortlanguage)===========%LocalizeExtUpdate%"
+Echo,"LocalizeExtLocal (ISO639Language Reduced)===%LocalizeExtLocal%"
+//--
+Echo,"LocalizeISO639Language (ISO639Language)============%LocalizeISO639Language%"
+Echo,"LocalizeISO3166Country (ISO3166Country)============%LocalizeISO3166Country%"
+Echo,"LocalizeCountryCode================================%LocalizeCountryCode%"
+Echo,"LocalizeCountryShortCountry (CountryShortCountry)==%LocalizeCountryShortCountry%"
+
+[checkini]
+// by fxscrpt
+Set,%tmp%,"-"
+System,ErrorOff
+IniRead,#1,Locale,Locale,%tmp%
+If,%tmp%,Equal,"-",Exit,"WARNING WARNING LCID#$s#2#$snot#$ssupported."
+
+[HostOSTools]
+If,ExistDir,%ProjectTemp%\HostOSTools,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\HostOSTools#$q"
+If,ExistDir,%ProjectTemp%\HostOSTools,Message,"ProjectTemp\HostOSTools Folder can not be deleted",Error
+If,ExistDir,%ProjectTemp%\HostOSTools,Halt,"ProjectTemp\HostOSTools Folder can not be deleted"
+//-
+DirMake,%ProjectTemp%\HostOSTools\%DistLangHost%
+If,Not,%DistLangHost%,Equal,en-US,DirMake,%ProjectTemp%\HostOSTools\en-US
+//-
+Call,HostWindowsDir
+FileCreateBlank,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\cmd.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\cmd.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\%DistLangHost%\cmd.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\cmd.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\en-US\cmd.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\cmd.exe.mui#$q",Append
+//-
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\cmd.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\cmd.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\%DistLangHost%\cmd.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\cmd.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\en-US\cmd.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\cmd.exe.mui#$q",Append
+//-
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\bcdedit.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\bcdedit.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\%DistLangHost%\bcdedit.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\bcdedit.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\en-US\bcdedit.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\bcdedit.exe.mui#$q",Append
+//-
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\reg.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\reg.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\%DistLangHost%\reg.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\reg.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\en-US\reg.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\reg.exe.mui#$q",Append
+//-
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\reg.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\reg.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\%DistLangHost%\reg.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\reg.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\en-US\reg.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\reg.exe.mui#$q",Append
+//-
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\regedit.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\regedit.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\%DistLangHost%\regedit.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\regedit.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\en-US\regedit.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\regedit.exe.mui#$q",Append
+//-
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\regedit.exe#$q #$q%ProjectTemp%\HostOSTools#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\regedit.exe#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\%DistLangHost%\regedit.exe.mui#$q #$q%ProjectTemp%\HostOSTools\%DistLangHost%#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\%DistLangHost%\regedit.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"Copy /y #$q%HostWindowsDir%\System32\en-US\regedit.exe.mui#$q #$q%ProjectTemp%\HostOSTools\en-US#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R -S -H #$q%ProjectTemp%\HostOSTools\en-US\regedit.exe.mui#$q",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd,Exit,Append
+//-
+FileCreateBlank,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3,"#NoTrayIcon",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3,"#RequireAdmin",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3,"RunWait(@ComSpec & #$q /c #$q & '#$q%ProjectTemp%\HostOSTools\1HostOSCopy.cmd#$q', #$q#$q, @SW_HIDE)",Append
+//-
+IniWrite,%ProjectDir%\script.project,IniVariables,SysType,%SysType%
+ShellExecute,Hide,%Tools%\%SysType%\AU3381.exe,"#$q%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3#$q"
+//-
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Run,%ScriptFile%,HostOSTools_Halt,cmd.exe
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Run,%ScriptFile%,HostOSTools_Halt,regedit.exe
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Run,%ScriptFile%,HostOSTools_Halt,reg.exe
+
+[HostOSTools_Halt]
+Set,%var%,#1
+Message,"%var% can not be copied to %ProjectTemp%\HostOSTools",Error
+Halt,"%var% can not be copied to %ProjectTemp%\HostOSTools"
+
+[FindLangIDNumberPEX_OldSchool]
+Set,%searchfile%,winload.exe.mui
+//--
+Set,%w%,%LCIDUtildir%\InfoSourceOS_ISRC.au3
+Set,%InfoSourceOSIni%,InfoSourceOS_ISRCini.ini
+Set,%searchfold%,%InstallSRC%\Windows\System32\Boot
+Run,%ScriptFile%,FindLangIDNumberPEXau3_OldSchool
+IniRead,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,LocaleLCID,%LangIDNumber%
+//--
+Set,%w%,%LCIDUtildir%\InfoSourceOS_BSRC.au3
+Set,%InfoSourceOSIni%,InfoSourceOS_BSRCini.ini
+Set,%searchfold%,%BootSRC%\Windows\System32\Boot
+Run,%ScriptFile%,FindLangIDNumberPEXau3_OldSchool
+IniRead,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,LocaleLCID,%LangIDNumberBootSRC%
+//--
+Shellexecute,hide,%LCIDUtildir%\LCIDutil.exe,"%LangIDNumberBootSRC%#$s#$q%LCIDUtildir%\LcidInfoBootSRC.ini#$q"
+If,%LangIDNumber%,Equal,0000,IniRead,%LCIDUtildir%\%InfoSourceOSIni%,infoSourceos,Fileoslang,%LangIDNumber%
+
+[FindLangIDNumberPEXau3_OldSchool_Example]
+//[infoSourceos]
+//Fileoslang=0409
+//FullPath=D:\1\3\Program Files\Internet Explorer\en-US\iexplore.exe.mui
+//SubFolder=en-US
+
+[FindLangIDNumberPEXau3_OldSchool]
+FileCreateBlank,%w%
+TxtAddline,%w%,"#RequireAdmin",Append
+TxtAddline,%w%,"#NoTrayIcon",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"Global $MUI_FILE=_BL_FIND_FILE(#$q%searchfold%#$q)",Append
+TxtAddline,%w%,"Global $FileLang=StringStripWS(FileGetVersion($MUI_FILE, #$qDefaultLangCodepage#$q), 3)",Append
+TxtAddline,%w%,"$FileLang=StringLeft($FileLang, 4)",Append
+TxtAddline,%w%,"If $FileLang=#$q#$q Then $FileLang = #$q0000#$q",Append
+TxtAddline,%w%,"IniWrite(#$q%InfoSourceOSIni%#$q, #$qinfoSourceos#$q, #$qLocaleLCID#$q, $FileLang)",Append
+TxtAddline,%w%,"IniWrite(#$q%InfoSourceOSIni%#$q, #$qinfoSourceos#$q, #$qFullPath#$q, $MUI_FILE)",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"$MUI_FILE=StringLeft($MUI_FILE,StringInStr($MUI_FILE,#$q\#$q,0,-1)-1)",Append
+TxtAddline,%w%,"$MUI_FILE=StringTrimLeft($MUI_FILE,StringInStr($MUI_FILE,#$q\#$q,0,-1))",Append
+TxtAddline,%w%,"IniWrite(#$q%InfoSourceOSIni%#$q, #$qinfoSourceos#$q, #$qSubFolder#$q, $MUI_FILE)",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"Func _BL_FIND_FILE($BL_PATH, $BL_FILE=#$q%searchfile%#$q)",Append
+TxtAddline,%w%,"	Local $BL_Found_File",Append
+TxtAddline,%w%,"	If Not StringInStr(FileGetAttrib($BL_PATH), #$qD#$q) Then Return -1",Append
+TxtAddline,%w%,"	If StringRight($BL_PATH, 1) <> #$q\#$q Then $BL_PATH &=#$q\#$q",Append
+TxtAddline,%w%,"	Local $BL_SEARCH=FileFindFirstFile($BL_PATH & #$q*.*#$q), $BL_FND_FILE",Append
+TxtAddline,%w%,"	If $BL_SEARCH <> -1 Then",Append
+TxtAddline,%w%,"		While 1",Append
+TxtAddline,%w%,"			$BL_FND_FILE=FileFindNextFile($BL_SEARCH)",Append
+TxtAddline,%w%,"			If @error Then ExitLoop",Append
+TxtAddline,%w%,"			If StringInStr(FileGetAttrib($BL_PATH & $BL_FND_FILE), #$qD#$q) Then",Append
+TxtAddline,%w%,"				$BL_Found_File=_BL_FIND_FILE($BL_PATH & $BL_FND_FILE)",Append
+TxtAddline,%w%,"				If $BL_Found_File <> #$q#$q Then Return $BL_Found_File",Append
+TxtAddline,%w%,"			Else",Append
+TxtAddline,%w%,"				If $BL_FILE=$BL_FND_FILE Then",Append
+TxtAddline,%w%,"					Return $BL_PATH & $BL_FND_FILE",Append
+TxtAddline,%w%,"				EndIf",Append
+TxtAddline,%w%,"			EndIf",Append
+TxtAddline,%w%,"		WEnd",Append
+TxtAddline,%w%,"	EndIf",Append
+TxtAddline,%w%,"	Return SetError(1, 0, #$q#$q)",Append
+TxtAddline,%w%,"EndFunc   ;==>_BL_FIND_FILE",Append
+IniRead,%ProjectDir%\script.project,IniVariables,SysType,%SysType%
+ShellExecute,Hide,%Tools%\%SysType%\AU3381.exe,"#$q%w%#$q",%LCIDUtildir%
+
+[NOT_USED_BY_PLUGIN_INFO]
+//--------------------------------BELOW NOT USED BY PLUGIN-----KEPT FOR FUTURE REFERENCE--(DO NOT DELETE)----
+//--------------------------------BELOW NOT USED BY PLUGIN-----KEPT FOR FUTURE REFERENCE--(DO NOT DELETE)----
+//--------------------------------BELOW NOT USED BY PLUGIN-----KEPT FOR FUTURE REFERENCE--(DO NOT DELETE)----
+
+[Interface_Hidden]
+TestGeneral_Bevel=pBevel2,1,12,15,88,524,212
+TestBatch_Bevel=pBevel1,1,12,399,135,135,111
+TestLcid_Bevel=pBevel1,1,12,23,135,373,113
+Source_FileBox=H:\X13-13875.img_ChineseTra_CD1\,1,13,157,268,268,30,dir
+SourceText_TextLabel="Selected source to test",1,1,228,251,120,18,8,Normal
+BatchMethod_Button=BatchMethod_Test,1,8,403,139,112,25,process_BatchMethod_Test
+LcidMethod_Button="Lcid.exe Method",1,8,29,138,88,25,process_Lcidexemethod_Test
+pTextLabel2="Only For Testing Purposes",1,1,192,92,173,22,10,Bold
+pTextLabel6="(NO wb072, wb74, wb75)",1,1,372,94,133,18,7,Bold
+LcidInfo_TextBox="Enter your LCID info box (ex: 0000041F)",1,0,36,220,198,21,0000041F
+TestLcidTakeFromSource_CheckBox="Take LCID info from selected source (Else LCID info taken from box)",1,3,31,168,199,31,False
+Open_Lcidoutputfile_CheckBox="Open %LCIDoutputfile%",1,3,241,167,150,18,True
+Open_Scriptproject_CheckBox="Open script.project",1,3,241,183,119,18,False
+Test_SetPermenant_CheckBox="Set Permenant",1,3,276,200,95,18,False
+pTextLabel3="Lcid.exe used to get More Local info by LCID info",1,1,123,141,247,18,8,Normal
+pTextLabel4="Common batch commands used to get more local info (limited only 4 values and only for xp/2k3 source)",1,1,406,168,125,70,8,Normal
+pTextLabel5="Settings here have NO effect on script process, Check Info on the log to see Test results ",1,1,64,114,435,18,8,Normal
+Test_Lcid_PathToFile_Button="Open LCIDoutputfile",1,8,23,260,112,25,Test_Lcid_PathToFile
+
+[Test_Lcid_PathToFile]
+System,FILEREDIRECT,OFF
+//If,ExistFile,%ProjectTemplates%\ProjectInfo.ini,ShellExecuteex,Hide,cmd.exe,"/C #$q%LocalizeInfoMore%#$q"
+If,ExistFile,%LocalizeInfoMore%,ShellExecuteex,Hide,cmd.exe,"/C #$q%LocalizeInfoMore%#$q"
+System,FILEREDIRECT,ON
+
+[Test_script_project]
+System,FILEREDIRECT,OFF
+ShellExecuteex,Hide,cmd.exe,"/C #$q%basedir%\Projects\%ProjectName%\script.project#$q"
+System,FILEREDIRECT,ON
+
+[Locale_Example_englishsource]
+ISO3166Country=US
+ISO639Language=en
+Locale=en-us
+CountryCode=1
+ShortLanguage=ENU
+ShortCountry=USA
+LCID=1033
+
+[Locale_Example_turkishsource]
+ISO3166Country=TR
+ISO639Language=tr
+Locale=tr-tr
+CountryCode=90
+ShortLanguage=TRK
+ShortCountry=TUR
+LCID=1055
+
+[process_Lcidexemethod_Test]
+Set,%LocalizeInfoMore%,%LocalizeInfoMore%,PERMANENT
+Set,%LangIDNumber%,%LcidInfo_TextBox%
+If,%TestLcidTakeFromSource_CheckBox%,Equal,True,Begin
+Run,%ScriptFile%,GetFromSourceFileBox
+IniRead,%Source_Win%\txtsetup.sif,nls,DefaultLayout,%LangIDNumber%
+End
+Run,%ScriptFile%,processlcidexe
+Run,%ScriptFile%,ResultsEcho
+If,%Test_SetPermenant_CheckBox%,Equal,True,Run,%ScriptFile%,ResultsSetPermanent
+//--
+If,%Open_Lcidoutputfile_CheckBox%,Equal,True,Run,%ScriptFile%,Test_Lcid_PathToFile
+If,%Open_Scriptproject_CheckBox%,Equal,True,Run,%ScriptFile%,Test_script_project
+
+[process_BatchMethod_Test]
+Run,%ScriptFile%,process_BatchMethod
+
+[process_BatchMethod]
+Run,%ScriptFile%,GetFromSourceFileBox
+//-
+If,EXISTDIR,%ProjectTemp%\%LanguageTestF%,DirDelete,%ProjectTemp%\%LanguageTestF%
+DirMake,%ProjectTemp%\%LanguageTestF%
+FileCopy,%Source_Win%\HIVEDEF.INF,%ProjectTemp%\%LanguageTestF%
+ShellExecute,Hide,cmd.exe,"/c type #$q%ProjectTemp%\%LanguageTestF%\HIVEDEF.INF#$q > #$q%ProjectTemp%\%LanguageTestF%\HIVEDEF_Ansi.INF#$q"
+IniRead,%ProjectTemp%\%LanguageTestF%\HIVEDEF_Ansi.INF,Strings,INTL_SLANGUAGE,%INTL_SLANGUAGE_Ansi_Read%
+StrFormat,RTrim,%INTL_SLANGUAGE_Ansi_Read%,1,%INTL_SLANGUAGE_Ansi_ReadRTrim1%
+StrFormat,LTrim,%INTL_SLANGUAGE_Ansi_ReadRTrim1%,1,%INTL_SLANGUAGE_Ansi%
+If,%INTL_SLANGUAGE_Ansi%,Equal,ES,Set,%INTL_SLANGUAGE_Ansi%,ESN
+Set,%LocalizeExtUpdate%,%INTL_SLANGUAGE_Ansi%
+//-
+If,Not,%INTL_SLANGUAGE_Ansi%,Equal,ENU,Begin
+FileCreateBlank,%ProjectTemp%\%LanguageTestF%\DRW.ini
+TxtAddLine,%ProjectTemp%\%LanguageTestF%\DRW.ini,[LanguageTestlcid],Append
+DirCopy,%Source_Win%\DRW,%ProjectTemp%\%LanguageTestF%
+If,ExistDir,%ProjectTemp%\%LanguageTestF%\DRW\1033,DirDelete,%ProjectTemp%\%LanguageTestF%\DRW\1033
+ShellExecute,Hide,cmd,"/c for /f #$qdelims=#$q %i in ('dir #$q%ProjectTemp%\%LanguageTestF%\DRW#$q /AD /OG /B') do echo Lcid=%i >> #$q%ProjectTemp%\%LanguageTestF%\DRW.ini#$q"
+IniRead,%ProjectTemp%\%LanguageTestF%\DRW.ini,LanguageTestlcid,Lcid,%LcidInfo%
+End
+Else,Begin
+Set,%LcidInfo%,1033
+End
+Set,%LocalizeLCID%,%LcidInfo%
+//-
+If,Not,%INTL_SLANGUAGE_Ansi%,Equal,ENU,Begin
+DirMake,%ProjectTemp%\%LanguageTestF%\SCRRNTEST
+FileCopy,"%Source_Win%\SCRRN*.*",%ProjectTemp%%ProjectTemp%\%LanguageTestF%\SCRRNTEST
+FileCreateBlank,%ProjectTemp%\%LanguageTestF%\Scrrn.ini
+TxtAddLine,%ProjectTemp%\%LanguageTestF%\Scrrn.ini,[LanguageTestext],Append
+FileCopy,"%Source_Win%\SCRRN*.*",%ProjectTemp%\%LanguageTestF%\SCRRNTEST
+ShellExecute,Hide,cmd,"/c for /f #$qdelims=#$q %i in ('dir #$q%ProjectTemp%\%LanguageTestF%\SCRRNTEST#$q /B') do echo ext=%i >> #$q%ProjectTemp%\%LanguageTestF%\Scrrn.ini#$q"
+IniRead,%ProjectTemp%\%LanguageTestF%\Scrrn.ini,LanguageTestext,ext,%extInfo%
+StrFormat,RTrim,%extInfo%,4,%extInfoRTrim4%
+StrFormat,LTrim,%extInfoRTrim4%,5,%extInfoFinal%
+//Echo,%extInfoFinal%
+Set,%LocalizeISO639Language%,%extInfoFinal%
+End
+Else,Begin
+Set,%LocalizeISO639Language%,en
+Set,%extInfoFinal%,,
+End
+Set,%LocalizeExtLocal%,%extInfoFinal%
+//-
+Echo,"LocalizeExtUpdate Shortlanguage %LocalizeExtUpdate%"
+Echo,"LocalizeLCID LCID %LocalizeLCID%"
+Echo,"LocalizeExtLocal ISO639Language Reduced %LocalizeExtLocal%"
+Echo,"LocalizeISO639Language ISO639Language %LocalizeISO639Language%"
+//-
+//Message,"%LocalizeExtUpdate% %LocalizeLCID% %LocalizeExtLocal%",Information
+//Message,"%INTL_SLANGUAGE_Ansi% %LcidInfo% %extInfoFinal%",Information
+DirDelete,%ProjectTemp%\%LanguageTestF%
+
+[GetFromSourceFileBox]
+If,%Source_FileBox%,Equal,,Echo,"no source"
+If,Not,%Source_FileBox%,Equal,,Begin
+StrFormat,RIGHT,%Source_FileBox%,1,%LastLetter%
+If,%LastLetter%,EQUAL,\,StrFormat,RTRIM,%Source_FileBox%,1,%Source_FileBox_Selected%
+Set,%Source_Win%,%Source_FileBox_Selected%\i386
+End
+
+[EncodedFolders]
+LCIDUtil
+
+[LCIDUtil]
+LCIDUtil.exe=44847,59796
+
+[AuthorEncoded]
+localized.gif=1631,2175
+Logo=localized.gif
+
+[EncodedFile-AuthorEncoded-localized.gif]
+lines=0
+0=R0lGODdhUABQAKUAAP///+Pj49vb2/T09Ovr68TExKysrJubm4yMjIODg3R0dHt7e8vKyqOjo2RkZFZWVtTU1JOTk7y8vGxsbLOzs/rdzfvk1vjNtexqGexeAO10LO5/PuxjDf339fnf0f349u53MfCNUvvp3/GUXO1uIfKebPzx6/SzjPGKSvnRufa8nfnWw++ERfKhcO+DP/GaZfW5l/GTV/zv6OtnFvKmfPfFqVZWVgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAUABQAAAG/kCAcEgsGo9IQkAAYUAIyKh0Sq0SBxBDROF4eL8PRMBKLpsBkEgXzAZTzvC4kEBZtO/sBFTOnzISeIFsEwx9hkUDEYKLbAWHhxRrjJMOjo9yingIFG0OBmAIE22Fl2YQCncODQQEqKADDGAHAXZgDnulVAMNdwuWBJJeEUKxXwdCvGALA7lUCHcGRM9gCUPFXsdCgKDNUgdtCqRCEHnMxLJDBKJglt1X22DRV65eCrgA1w/ZQgP0Dw7mkHSocaFPpnhGvn25VSTfvnFs5CFhkSEDDTkF2DiQYERARCMOE4KZELCIhYoZZnSAA6zREYVeHBwJacTfQyIyUGpg6e8B/kcjLb9IJEKziAQ294hcYBFCBJxpX34agfqA5Ex0R/w1aJaR2xECLq8aQ8Lpy4RcQWOOOVK2XpSiRcCCERcFRowSK6gc/Lf2SC0vb5DALZLMrZQTKDMUjCL3y1YkA9j0BYn1q2QpLhK/kPLJ1oTPoEMPCk16XczSot1IoYiyhRTTk2LLvjMsiorEeQWziXCgt+/fwRL8Hn4A3gMFxH9TPXsYxYgUr8E8hhwsacPKSKr38QimpBFyXxT4we4XDIQ+hcNM6Yxt/FgpewNLETECA4kSJor8fdAOiXG6YrUnRVv6UAFCYiFcgdQU2kkxGGVfVCOFB4llwMEHQ3BnWBSR/i1ExYNFBACGeFJUUCEHKwlxlFBTiBjeh+QZ0WFMVGCQ2AZEpHeeFBo+IKGDMRoRjHdGXGBjBhpUIM1CRBbRlTAwvieFP5NFUYEFNZlFxZMFuiegFMYJIIdpC1BB4HRvBVnEXgCWIQkCZiLkZZfegCGVFAUgcICY/EhSG2dyAillFDDxRwV4xw0x4z+okRaMA42S5lmknwXTHxJ77bHobJx2+sWlRxi31gCSTBDBqaimeup+CqjqagTGtfpqqv6AasR+uLwZp2NRfhkFm1T4ExCZW6pJlLFDGLejFEMO8RdzeILxZ5qDIkHlFI1VRcReVX5HTa90RgFbk0Qg+kCZ/kOw90CbIY4I7k0y2kLFilAOweW0lnk4J7ztvjhFoUO56AW0UTRIra9HmPtjFP4AGAyfUey3rG7VGkHvA/gCteCSLALKq6AIi/SFfEikt7CK7kphLokHh1veF+wSYakRAnsxsYzNtsyvzGBYRwSXVhmxF8tI7GerNcj2SHCoata8rhTpoQlhyEQQCGcUTkNshHETJOD112D74wDYZCewX9dlfw0bySJveASXnsYdiNb9diwuGwuYrXfeeQczAd97m+1P14AD7jeH+zEkxcUPSE2EuugG6LKiwdxJGBsx64c5Ek7HDCIAF8vEORtXUxGA3+TGSjHVAOy38wD7PUB3/rTUNJnWA2yfUzEAcHcLAAGxZ45pHsNrOfXkrXu1NRs7TxF7BET26NPx8BKo+BVUVUUutm0kQOReAF1XrfSOA2CczXIwfm5S6ihT0mCJJzVA9pX0AUEwVV0Kd+n4VAY7G2yTAP4cIDwymOsL+Drfn4qyl3MVQV1RuUQB8HcucQgAf4+hCYGOgwsGxC5/aDlfPSTAjADApkAOSYRG+ESBnnghAb47RKFswZF8jFBaH6TAACRwwo+5Ax89jEkEPsiIBRwgiP+wnDsIIEK5LQIB2+uGB53ICAUo8YdFSAMFneiACNwMixwywBY5pYoogvEIsGjAAsaIBwcgp4Bn1EUAQApggAMgIAEKyKMCFqAnAxQgAGaMYxkGMIAAGHIJAjhkAAgQSEHKEZECiKQkJznJRTbSkUSAJCU3yUlJAvIQQQAAO3ic483JT07MyaxKTdFLz0xjGAUjDIix4ZcvCvr9mZEBAAMMB/imo+oIAQAAAAIAAAAlAAAAFgYAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-LCIDUtil-LCIDUtil.exe]
+lines=14
+0=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
+1=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
+2=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
+3=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
+4=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
+5=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
+6=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
+7=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
+8=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
+9=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
+10=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
+11=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
+12=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
+13=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
+14=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

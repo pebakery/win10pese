@@ -1,0 +1,213 @@
+[Main]
+Title=MSI Installer
+Type=Plugin
+Author=dera, Modified by Altorian
+Description=Add msi installer support to your PE (32/64bit)
+Credits=dera, JFX, Lancelot, vvurat, ChrisR
+Version=015
+Download_Level=1
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2016.11.19_13:00.50 (GMT0: -1 Hours)
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/msi.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History003=ChrisR - reg_add replaced by RegWrite,HKLM (faster)
+History005=Lancelot code Cleanup x 2
+History006=ChrisR - NoWarnROW implemented
+History007=ChrisR - SySWoW64 copy wbem files
+History008=SIW2 - Installer folder
+History009=ChrisR - Registry in reg file. Added Wow6432Node, TrustedInstaller service, install an msi file from a network share is now possible, Thanks Martt
+History010=ChrisR - Win 8.1 Compatibility
+History011=ChrisR - Empty %ProgramExe% For Debug Log enabled - Date:2014.01.20
+History012=Lancelot - Add DU Buttons - Date:2016.01.25
+History014=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History015=ChrisR - Multi Fallback Languages support - Date:2016.11.19
+
+[Interface]
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramExe%=
+%iw%=%InstallSRC%\Windows
+%i32%=%InstallSRC%\Windows\System32
+%iWow%=%InstallSRC%\Windows\SysWOW64
+%tw%=%TargetDir%\Windows
+%t32%=%TargetDir%\Windows\System32
+%tWow%=%TargetDir%\Windows\SysWOW64
+%RegeditexeFolder%=
+InstallCopySys32=Run,%ScriptFile%,PInstall_CopySys32
+InstallCopySys32Mui=Run,%ScriptFile%,PInstall_CopySys32Mui
+InstallCopySysWoW=Run,%ScriptFile%,PInstall_CopySysWoW
+InstallCopySysWoWMui=Run,%ScriptFile%,PInstall_CopySysWoWMui
+
+[PInstall_CopySys32]
+If,ExistFile,%i32%\#1,Begin
+If,Not,ExistFile,%t32%\#1,FileCopy,%i32%\#1,%t32%\#1
+End
+
+[PInstall_CopySys32Mui]
+InstallCopySys32,#1
+If,ExistFile,%t32%\#1,Loop,%ScriptFile%,PInstall_CopySys32Mui_Loop,1,%NbLang%,#1
+
+[PInstall_CopySys32Mui_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%i32%\#9\#1.mui,Begin
+If,Not,ExistFile,%t32%\#9\#1.mui,FileCopy,%i32%\#9\#1.mui,%t32%\#9
+Loop,BREAK
+End
+
+[PInstall_CopySysWoW]
+If,ExistFile,%iWow%\#1,Begin
+If,Not,ExistFile,%tWow%\#1,FileCopy,%iWow%\#1,%tWow%\#1
+End
+
+[PInstall_CopySysWoWMui]
+InstallCopySysWoW,#1
+If,ExistFile,%tWow%\#1,Loop,%ScriptFile%,PInstall_CopySysWoWMui_Loop,1,%NbLang%,#1
+
+[PInstall_CopySysWoWMui_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%iWow%\#9\#1.mui,Begin
+If,Not,ExistFile,%tWow%\#9\#1.mui,FileCopy,%iWow%\#9\#1.mui,%tWow%\#9
+Loop,BREAK
+End
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+AddVariables,%ProjectDir%\script.project,MuiLang
+StrFormat,Split,%MuiLangAll%,|,0,%NbLang%
+//-
+Echo,"Processing %ScriptTitle% ..."
+//RunFrom,Ram
+If,Not,ExistDir,%target_win%\Installer,DirMake,%target_win%\Installer
+Run,%ScriptFile%,CopyFiles_SyStem32
+If,ExistDir,%tWow%,Run,%ScriptFile%,CopyFiles_SySWoW64
+//-
+// Write Settings
+Run,%ScriptFile%,WriteSettings
+//-
+//seems still needed
+AddAutoRun,msi,#$pSystemRoot#$p\system32\regsvr32.exe,"/s #$pSystemRoot#$p\system32\msi.dll",3
+If,ExistFile,%tWow%\msi.dll,AddAutoRun,msi,#$pSystemRoot#$p\SysWow64\regsvr32.exe,"/s #$pSystemRoot#$p\SysWow64\msi.dll",3
+
+[CopyFiles_SyStem32]
+InstallCopySys32,msi.dll
+// Corrupted msi file recovery diagnostic module
+//InstallCopySys32Mui,MsiCofire.dll
+InstallCopySys32Mui,msiexec.exe
+InstallCopySys32,msihnd.dll
+InstallCopySys32Mui,msimsg.dll
+InstallCopySys32,msisip.dll
+InstallCopySys32,msiltcfg.dll
+//InstallCopySys32,mspatcha.dll
+// Msi windows error reporting
+//InstallCopySys32,msiwer.dll
+//-
+If,ExistFile,%i32%\wbem\msi.mof,FileCopy,%i32%\wbem\msi.mof,%t32%\wbem\msi.mof
+If,ExistFile,%i32%\wbem\msiprov.dll,FileCopy,%i32%\wbem\msiprov.dll,%t32%\wbem\msiprov.dll
+Loop,%ScriptFile%,PCopy_WbemMsimflLang_Loop,1,%NbLang%,#1
+
+[PCopy_WbemMsimflLang_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%i32%\wbem\#9\msi.mfl,Begin
+If,Not,ExistFile,%t32%\wbem\#9\msi.mfl,FileCopy,%i32%\wbem\#9\msi.mfl,%t32%\wbem\#9
+Loop,BREAK
+End
+
+[CopyFiles_SySWoW64]
+InstallCopySysWoW,msi.dll
+InstallCopySysWoWMui,msiexec.exe
+InstallCopySysWoW,msihnd.dll
+InstallCopySysWoWMui,msimsg.dll
+InstallCopySysWoW,msisip.dll
+InstallCopySysWoW,msiltcfg.dll
+//InstallCopySysWoW,mspatcha.dll
+// Msi windows error reporting
+//InstallCopySysWoW,msiwer.dll
+
+[WriteSettings]
+If,ExistDir,%ProjectTemp%\Msi,DirDelete,%ProjectTemp%\Msi
+If,ExistDir,%ProjectTemp%\Msi,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\Msi#$q"
+If,ExistDir,%ProjectTemp%\Msi,Echo,"ProjectTemp\Msi Folder can not be deleted",Warn
+If,ExistDir,%ProjectTemp%\Msi,Message,"ProjectTemp\Msi Folder can not be deleted",Error
+If,ExistDir,%ProjectTemp%\Msi,Halt,"ProjectTemp\Msi Folder can not be deleted"
+DirMake,%ProjectTemp%\Msi
+Echo,"Writing registry hive..."
+//-
+ExtractFile,%ScriptFile%,Msi,Msi.7z,%ProjectTemp%\Msi
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\Msi\Msi.7z#$q -y -o#$q%ProjectTemp%\Msi#$q"
+//-
+If,Not,%ProjectName%,Equal,Win8.1SE,Begin
+RegHiveLoad,Tmp_Software,%RegSoftware%
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Msi\Msi_Software_%SourceArch%.reg#$q"
+If,%OS%,Equal,Win7,RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{000C101D-0000-0000-C000-000000000046}\DllVersion,,5.0.7600
+If,%OS%,Equal,Win8,RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{000C101D-0000-0000-C000-000000000046}\DllVersion,,5.0.9200
+RegHiveUnLoad,Tmp_Software
+End
+//-
+RegHiveLoad,Tmp_System,%RegSystem%
+ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Msi\Msi_System.reg#$q"
+RegHiveUnLoad,Tmp_System
+//-
+DirDelete,%ProjectTemp%\Msi
+
+[EncodedFile-AuthorEncoded-index.jpg]
+lines=0
+0=eJxVjnlQ0nkYxr8/EAWVM7S8MK5NFDQViFw0jzYVXAuvEjNjxTZSSxyT0syy7FzLY22KtBJFq02mCzw6dZ3SSjMRbDVNx1Ers11bbdO2YXH7Y9vnnfed951n3s88puemYYATrAlfAyAIAMhcwDQADgKUpSXSEoFCWiGtUShrtD0GbWuLdnQl4uxdnclLXZ0ZJOoyPoNK96KTSB7eTI4v25PnTWb7B3G5/nw2jw2hrK3RNmgHDMaBQyPROF/E/XeyORwmw2fhcDdfjIVmcHwZbKa3efPkmmFMDsd0H+CRYAXgwCEKgOEhOB4ytQFHAGDwhaT/CQG3sLSCmT0uDkBwOBwGt7BCfbEg8w4QeEuyNyHIapGEIpLvJ1JpPsFV1+yiMktU1c96Rsx/DhAwI//HhCzgiAUkGQ9gZkGIrywzE08gexN9gyRyUz+whUPmeHA8WAXeEUUiwam2b2x6KkNYtjBtBaQESRc9n4qVh053ckdv0I50eLrN6AQxGpXVKkVR0/i1N9PhkKHK52xGVYqFyrD0pwMHGmO5hsWP0+rebj3JORzjWVRKuBr5KmNvDbaS1v2WO1gY5UyVeY3qJ+3mDLtmg7dF5jtSnnTs6o4SSi9Ph1zIjSwZyOWf/3BpaBq2WZ96Z3XMSrlS3F37RJEQ79ZC7Y978eex+Iuz9ijJgSnsaxO4WVJo9zFULqKVceMmhj1ypyWJfOMHSeF55plGbb3L9WNuGlkvoau347Aic+g0IWk3Wv2iuhqx7O7EEHJuvZ+xYaA3t2wxI53CS9++Ak2+GmbN31xWjiNg004Y7hp04xpNAmVV8cB1JH1ZfnMq/krWTQ+ECazVuFesr5hsCfqRT2WDAufHZc3v73+eF2Tk9Dq+ChNuJo7ynPVGlqJ93cZCxzEpc07D0jLGZjFqu9w7Mta7l5i96gb3MYdMiU5fKUsPxFWfUN7ds0LbhG9Ch26ldwuCb+hmp1JyYjs+brE3xP5+8FNfioJdPtIq0GRHnFtbcW86bnyg6OSvqAxpxHFK8ODu0ZmdpWDdEqe/GRvPBpTfuJmfGq8GRcc7mcQr85jQrvr4qRzP4TPY4AZhevvFSetdOOillfx1TMKZ9O4RL1id42V/bbUOXlLyXcptn+MU0v5DT3QukuGZcqJfARHKa8Vgb+NCq1Q1bkuSjE6NYmLQ0nB+PnQl/2ipsC+Pt9zSJX9a8d4EBMZtURa/xIW5yvgVexdtuIfv0+foZQ4e2cJ6Mo/U07uPUPmRVhyQBaEv01Zm923M78Reai0NRq0N+3bdDsKUeHuagaHuZ/UQ2gpUF97Yq/b5RRcg59sm5NHikRdTSZJbV49oeDGTZE94Lwbl4KIvxqb9EdYSsEMZaTNZlDdvLRUUDNNpaTXzJ2Zqe3s0ibXzn2mVO/UMqeLD91mZ/ePncvzmz2WHJKZGh2Yly+8lFzOMp54Zj/Zv0vskREkDZtZUKjqV08JjDIsxRB5tUfsDf+/Y9ZTB7EOPJLrnJaygg1wu9S+d88917g/VaVMZTlrxDy0pggR5vNAtao5MhQfcijY2b5kdcEp+hFUZiKKgqk07m106a7QBtN3p6kRZyBQ90GNJF3LCwgT86l0j41XC7RGpEZZSTulA/YNAsc/yjMD2dtoeN9U+ZlfD6ib2qfGH6TP0xHAbZ5LvnHJ1lp+tV7XN4CCrGGrtf/kpSyQMP1pjPN3ztG54w6ga9zwsKVAwxCAlN75TgY5atiiCEC5DEEWBT02//QNJZAlgeJzjzMxLSa3QyypIZxgFIxCosUJoVVbs8ivSLu1nYAIArzIGh0KaEjcBAAAAAgAAACUAAAAlBQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[AuthorEncoded]
+index.jpg=1390,1854
+Logo=index.jpg
+
+[EncodedFolders]
+Msi
+
+[Msi]
+Msi.7z=4392,5856
+
+[EncodedFile-Msi-Msi.7z]
+lines=1
+0=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
+1=/yQOChkvgJDPkQog+V01Ub6Z+VhyaPdJIyhQ9diCoo2ulWHWsLA46ZJt0NOcviyfDZXjAUTqysGHD7yLNSgMaxZ9P/WI5QKkfwNcF09Cmi5LB4drCU7mjrhYRyH3WvVyguAPlO4X7OKHFAoJZAxfTfLO3h/vLRV5Xwgj+oz9P+W+FQ+tsi0Jg432WXJM4oZoMaclI2T5N1fNmUIBBmutnUvPnxkjPSFS2Nu44yUrMLSwjMCOBCSFJ+NH3nWCYuHqQKwZzYOJu8/3xjkta+VKzgUSo54lwGUu4fdT8mJWa2ybGSBfy15EsKKH2ydSztzTq/mFVS53ZFCyq7co2f/HTnk/9bsH2Uqc2Omi8jVo+z2nGJUVZDwwE/Ha1P1EI5+5mK6gIVZnWoeT9NGQ4IYPx/9uDhX6SVgGVEHf8aOiViZ0szKumXlPZQ+QSI4aul1kF1DVn2xOxrvODzmpAF5NzDNQqAZmWJBNixNwOEY/YG1yI/7Mdt6rf+lzRfy6BCRuDuVGqRnqqRka2+ri+EkIzeWKGTZmH5czLarQ96LmnDBYvJBzTz3t6f8fI7subKUrG+r64C8nr6OYTwJ1fEsNPfiTQmkY+qXsRN0foVHD8/fsLd6jgSh56VIoL3ip7cQSQ6Y3XCFOeHJIRcL5dLSU3PGdVJ3uB8xJZGUPfNQPAkXStzL4uRWcN0W3vJ28eqNWjhHMIXCMfwFwUFAuU2n8r0W6FZ+qbtztMFhDjLFENVIHsXlwIw7rx0xvvxO+HbG4Ja5Zjzam0bCucbOXlVfG7bMk03KJvmOb1JI5NZaS/iS9mnFfWUSOo9qNnUjZ+P2j+FcyxoixgeONil9VF+XwMI37XTDs3CoBxWOglk0rpWVnLh6cOOA9utW0jvatwKayf4Ev6BzgYV1E/ddZ+fVd5pF5ZO8xWBMdalrqfk9J90UigJwmxlmraKUIpmrp8p189A7zF3OHHIk4pfjvV8yWP16AnbSbaEunegxZ8HqmYWW7NE5o3Em3kuhxpA7wjeg3YnmZLNA2fR31E5d3HWvG0uFuvaWKk3iRNmkWlUGCEDTWf4PX8RsOIDXkcRAw5t0A6vPN73wttfT4L4K8i9ic6ohsg0LBZMxfa0FBZvCCElLYhK1Nw7W2iRQRZ0cVhzJ04NJKBzFZFeMgbL6/COW2bbBYK0kNajfgb576ZAjbb/2Ym/M8fafYx5zTLoVAEg72+pVUxgnx4DbuZDK96tugYObA5Wsvfv6EtqdvPCtXFdQoKWc9JRAx/n1nxDRw4cK7qg3f8/hSPla3wCcujNO/3y3Dd493ybbE7BxoSY34woXlEE9R2ZzmaL7fy+t889RnX4+ezqB6RvkjDZb9hIohMjc5IhzdQDe/D6d82TjeE8jXBgTO9HpnM/iebNvZwz9igOdQ8Yr5vc9q24V5p3b6l0Nqp4uK7mPD8AAIEzB64P1d1KxjnGZtqOHGFTG/1yJxTk4BOLru9dsIbJPsWw3EHNaHX5SgXpAuGHqEgl3uJ4beSF6ZvfBbfUy1MW0OfmBZuv/T6BHbL00z92nvIjNzKvve6504vA7VOiv+CN8k6XVjZeRLh1VRAu+nentfkReStFbzrtxSZd5czCsOfzKhSlZwZME3vP+xcGkBQBCYCPAAcLAQABIwMBAQVdABAAAAyA3AoBQ2fOFwAAeJxj8y3O1DOvYhgFIxM8E8Avv8dz4yJGBgCUVgVeFoeyigEAAAACAAAAHgAAAOYQAAAAAAAAAQAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

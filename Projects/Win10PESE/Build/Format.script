@@ -1,0 +1,708 @@
+[Main]
+Title=Format
+Type=Plugin
+Author=ChrisR
+Description=International format for Win7PESE, Win8PESE, WIn8.1SE, you can not run this Plugin directly.
+Credits=http://TheOven.org
+Version=007
+Download_Level=0
+Level=0
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.02.18
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/Format.script
+CertifiedBy=
+Certification=
+HistoryNotes01=To add a choice, add the choice to config Plugin and change Format Plugin: New section eg: [fr-FR] and change section Run_Format_Choice.
+HistoryNotes02=To switch between visible/nonevisible change Level=1 Level=0
+HistoryNotes03=Variables are not used if the Plugin is called from another Plugin. Use Set,%variable%,""
+History005=ied206 - Fixed Hewbrew, Korean support: %LocaleScript% to %FormatScript% - Date:2014.01.29
+History006=Lancelot Added DU Buttons - Date:2016.01.28
+History007=Lancelot - Add Compare Button - Date:2017.02.18
+
+[Info]
+The Plugin is designed to be called from other Plugin (eg: 1 - Copy Files) or if Not Auto directly
+If,ExistFile,%ProjectDir%\Build\Format.script,Run,%ProjectDir%\Build\Format.script,Called_process,%ProjectDir%\Build\Format.script,Auto
+If,ExistFile,%ScriptDir%\Format.script,Run,%ScriptDir%\Format.script,Called_process,%ScriptDir%\Format.script,Auto
+If,ExistFile,%ScriptDir%\Format.script,Run,%ScriptDir%\Format.script,Called_process,%ScriptDir%\Format.script,fr-FR
+
+[Variables]
+
+[Interface]
+pTextLabel1="The Plugin is designed to be called from other Plugin",1,1,8,10,305,18,8,Bold
+pTextL_Format=Format,1,1,8,53,76,18,8,Normal
+pScroll_Format=Auto,1,4,102,50,350,21,Auto,"Belgian French",French,German,Greek,Hebrew,Hungarian,Italian,Korean,Portuguese,Russian,Spanish,Swedish,Turkish,"UK English"
+pWebLabel2="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Called_process]
+Set,%FormatScript%,#1
+If,-#1,Equal,-,Set,%FormatScript%,%ScriptFile%
+Set,%Format%,#2
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing Format %Format%..."
+If,%Format%,Equal,Auto,Run,%FormatScript%,Auto
+Else,If,Not,-%Format%,Equal,-,Run,%FormatScript%,Run_Format_Choice
+
+[Process]
+// Comment Exit for tests
+Exit,"The Plugin is designed to be called from other Plugin"
+Set,%FormatScript%,%ScriptFile%
+Set,%Format%,%pScroll_Format%
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing Format %Format%..."
+If,%Format%,Equal,Auto,Run,%FormatScript%,Auto
+Else,If,Not,-%Format%,Equal,-,Run,%FormatScript%,Run_Format_Choice
+
+[Run_Format_Choice]
+RegHiveLoad,Tmp_Default,%RegDefault%
+If,%Format%,Equal,"Belgian French",Run,%FormatScript%,fr-BE
+If,%Format%,Equal,French,Run,%FormatScript%,fr-FR
+If,%Format%,Equal,Hebrew,Run,%FormatScript%,he-IL
+If,%Format%,Equal,German,Run,%FormatScript%,de-DE
+If,%Format%,Equal,Greek,Run,%FormatScript%,el-GR
+If,%Format%,Equal,Hungarian,Run,%FormatScript%,hu-HU
+If,%Format%,Equal,Italian,Run,%FormatScript%,it-IT
+If,%Format%,Equal,Korean,Run,%FormatScript%,ko-KR
+If,%Format%,Equal,Portuguese,Run,%FormatScript%,pt-PT
+If,%Format%,Equal,Russian,Run,%FormatScript%,ru-RU
+If,%Format%,Equal,Spanish,Run,%FormatScript%,es-ES
+If,%Format%,Equal,Swedish,Run,%FormatScript%,sv-SE
+If,%Format%,Equal,Turkish,Run,%FormatScript%,tr-TR
+If,%Format%,Equal,"UK English",Run,%FormatScript%,en-GB
+// Auto: If exists in local archive (**temporary solution)
+If,%Format%,Equal,Auto,Begin
+If,ExistSection,%FormatScript%,%DistLang%,Run,%FormatScript%,%DistLang%
+Else,Run,%FormatScript%,Auto
+End
+RegHiveUnLoad,Tmp_Default
+
+[Auto]
+Echo,"Processing Auto Format..."
+//Perhaps retrieve information from Install.wim instead of Boot.wim
+
+[it-IT]
+// Italian by online
+Echo,"Processing Italian Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000410"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","it-IT"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Italia"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","€"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","/"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","ITA"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dddd d MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd/MM/yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","H.mm"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","39"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","118"
+
+[en-GB]
+// UK English by martinr
+Echo,"Processing UK Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000809"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","en-GB"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","44"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix",0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159","AM"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359","PM"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","United Kingdom"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","£"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","/"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","ENG"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dd MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd/MM/yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","HH:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","242"
+
+[tr-TR]
+// turkish by Max_Real Qnx
+Echo,"Processing turkish Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","0000041f"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","tr-TR"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Türkiye"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","TL"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","TRK"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dd MMMM yyyy dddd"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd.MM.yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","HH:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","90"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","8"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","235"
+
+[ru-RU]
+// Russian by NightMan
+Echo,"Processing Russian Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000419"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","ru-RU"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","7"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","5"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Ðîññèÿ"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","ð."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","RUS"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","d MMMM yyyy 'ã.'"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep"," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd.MM.yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand"," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","H:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","203"
+
+[el-GR]
+// greek by Larryg4
+Echo,"Processing greek Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","30"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","8"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000408"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","el-GR"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159","ðì"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359","ìì"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","ÅëëÜäá"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","€ˆ"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","/"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","ELL"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dddd, d. MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd.MM.yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","h:mm:ss tt"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","98"
+
+[de-DE]
+// german by NightMan
+Echo,"Processing german Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","49"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","8"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000407"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","de-DE"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Deutschland"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","€"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","DEU"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dddd, d. MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd.MM.yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","HH:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","94"
+
+[fr-FR]
+// french by cyberyeye
+Echo,"Configuration du Format en Francais..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCalendarType,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCountry,33
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCurrDigits,2
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCurrency,3
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iDate,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iDigits,2
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iFirstDayOfWeek,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iFirstWeekOfYear,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iLZero,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iMeasure,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iNegCurr,8
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iNegNumber,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iPaperSize,9
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iTime,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iTimePrefix,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iTLZero,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",Locale,0000040C
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",LocaleName,fr-FR
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",NumShape,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",s1159,""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",s2359,""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sCountry,France
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sCurrency,€
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sDate,/
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sDecimal,","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sGrouping,3;0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sLanguage,FRA
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sList,;
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sLongDate,"dddd d MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sMonDecimalSep,","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sMonGrouping,3;0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sMonThousandSep," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sNativeDigits,0123456789
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sNegativeSign,-
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sPositiveSign,""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sShortDate,dd/MM/yyyy
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sThousand," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sTime,:
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sTimeFormat,HH:mm:ss
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sShortTime,HH:mm
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sYearMonth,"MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo",Nation,84
+
+[es-ES]
+// Spanish by hectorma
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000c0a"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","es-ES"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Espana"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","€"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","/"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","ESN"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dddd d MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd/MM/yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","H.mm"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","34"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","217"
+
+[sv-SE]
+// Swedish by Virtual-R
+Echo,"Processing Swedish Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","46"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","8"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000409"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","sv-SE"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Sweden"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","kr"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","SVE"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","'den 'd MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","yyyy-MM-dd"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","HH:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","221"
+
+[pt-PT]
+// Portuguese by Rui Paz
+Echo,"Processing Portuguese Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","00000816"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","pt-PT"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Portugal"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","€"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","PTG"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dddd, d' de 'MMMM' de 'yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd-MM-yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand","."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","HH:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM' de 'yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","351"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","8"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","193"
+
+[fr-BE]
+// Belgian by ADB
+Echo,"Configuration du Format en Francais-Belge..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCalendarType","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCountry","32"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iCurrency","3"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDate","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iDigits","2"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstDayOfWeek","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iFirstWeekOfYear","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iMeasure","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegCurr","8"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iNegNumber","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iPaperSize","9"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTime","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTimePrefix","0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","iTLZero","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","Locale","0000080C"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","LocaleName","fr-BE"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","NumShape","1"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s1159",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","s2359",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCountry","Belgique"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sCurrency","€"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDate","/"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sDecimal",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLanguage","FRB"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sList",";"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sLongDate","dddd d MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonDecimalSep",","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonGrouping","3;0"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sMonThousandSep"," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNativeDigits","0123456789"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sNegativeSign","-"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sPositiveSign",""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sShortDate","dd/MM/yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sThousand"," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTime",":"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sTimeFormat","HH:mm:ss"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International","sYearMonth","MMMM yyyy"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo","Nation","21"
+
+[he-IL]
+// Hebrew Aviv - by agrafi
+Echo,"Processing Hebrew Format..."
+// Hebrew Control Panel\International Unicode Inside
+ExtractFile,%FormatScript%,Reg,Hebrew_International_Unicode.reg,%ProjectTemp%
+If,ExistFile,%ProjectTemp%\Hebrew_International_Unicode.reg,Begin
+ShellExecute,hide,regedit.exe,"/s #$q%ProjectTemp%\Hebrew_International_Unicode.reg#$q"
+Call,FileDelete,%ProjectTemp%\Hebrew_International_Unicode.reg
+End
+
+[hu-HU]
+// Hungarian by Dera
+Echo,"Processing Hungarian Format..."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCalendarType,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCountry,36
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCurrDigits,2
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iCurrency,3
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iDate,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iDigits,2
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iFirstDayOfWeek,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iFirstWeekOfYear,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iLZero,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iMeasure,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iNegCurr,8
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iNegNumber,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iPaperSize,9
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iTime,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iTimePrefix,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",iTLZero,0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",Locale,0000040e
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",LocaleName,hu-HU
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",NumShape,1
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",s1159,de.
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",s2359,du.
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sCountry,Hongrie
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sCurrency,Ft
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sDate,.
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sDecimal,","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sGrouping,3;0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sLanguage,HUN
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sList,;
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sLongDate,"yyyy. MMMM d."
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sMonDecimalSep,","
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sMonGrouping,3;0
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sMonThousandSep," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sNativeDigits,0123456789
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sNegativeSign,-
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sPositiveSign,""
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sShortDate,sShortDate
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sThousand," "
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sTime,:
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sTimeFormat,H:mm:ss
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sShortTime,H:mm
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International",sYearMonth,"yyyy. MMMM"
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\International\Geo",Nation,109
+
+[ko-KR]
+// Korean - by ied206
+// Korean_International_Unicode.reg - Korean_International_Unicode.reg
+Echo,"Processing Korean Format..."
+// Korean Control Panel\International Unicode Inside
+ExtractFile,%FormatScript%,Reg,Korean_International_Unicode.reg,%ProjectTemp%
+If,ExistFile,%ProjectTemp%\Korean_International_Unicode.reg,Begin
+ShellExecute,hide,regedit.exe,"/s #$q%ProjectTemp%\Korean_International_Unicode.reg#$q"
+Call,FileDelete,%ProjectTemp%\Korean_International_Unicode.reg
+End
+
+[AuthorEncoded]
+Format.jpg=4269,5692
+Logo=Format.jpg
+
+[EncodedFolders]
+Reg
+
+[Reg]
+Hebrew_International_Unicode.reg=718,958
+Korean_International_Unicode.reg=756,1008
+
+[EncodedFile-AuthorEncoded-Format.jpg]
+lines=1
+0=eJyll3dU08uXwL80gQDy6AJClKpAKAKiSFGRFgSEUAOCCAihCgKGljyRJkUeoSlVhRCKyKNL7/AAIwJSDEgJvZrgMwZIyOLb3d/+s3/s2d+dMzP3nHvPzHzuPXPPDGOGsQj8BjUyNQKYmJiAeycNYCwB3oZIxAMAMDcHFAAA4ABYmcQAthON6aTrMYn/SzdiugCw/KOfjExqAPOJzn/SLYB/JKMYAFg2/nu+44YICFG2MLQ5F6aurKmspgowZgGDX/v+W/JrkX93DSZGF8DHAWgAGixMUgAzHxMLHxOjDwCfQLH9pwPwX8LEzMLKdoqdgxPEdeLQ8BvAzMTCwszKwsbGynpijT6xA6x8bPzn1W6cErByY5cKErz0JP01h/TNmm4h6zGSjPr94BhOkLDIGVExWTn5CxcVNDQva125qm1wy9DI2MQUCrOxtbN3cIS7e3g+8PJG+DwKCQ17jAyPeBobF5+Q+CwJk5GZlZ3z4mXum+ISbCmurLyitq6+obHpfXNLT29f/8DgX0PD4xOfJ6emZ74QlojLK6tr6xubW+T973//oPykHhz+4jrJ17/Q/1cuvhMuZlZWFlb2X1xMzI9/OfCxsp1XO8V/w4rdLUhA6tITDsGb6a9rujml1a1JQveDx0DCMhpLsuRfaP+Q/d/AYv5fZP8C+x8uAsDNwnSSPBY+QB84pq0XKnp7vi80WYoXRMhm23GeDXqltLfXx2Z7x4z/OsBvcnZ6iQHsCjAANr+xHT0pZPKSSNeLv7M6SfFV5RsdCtQny0P3SQwg/tXn+gLthTttjePgOxg+JdX+SJ8FgsiIL89cwDhiJBR08IMyuJtK9I+E14/rCSEfEInXIMH35q9lmLe3TYR618uzdgsXlc3Mzc59MfG6Aek16HB85SrPrBWMLgQTcIsi/Z2ix9MMgFnfgwGw0zgzevTrVAainW5Pos5FhY3d87d3IYfStENa4psQj8saRsy92LKq4rBZH0RqTZpqhtaE1G4lohIS/kTqWEDeBqrU2fhMt8P/wEELtH+jZJUuXR1wSErKRY3wcEGDJ7/KTWe9JKoJlssntH+F2xQpeV0cDvUoPoMT8rFaywzfGibHdOTUaqI9RmfBlHJq6tFd5FMKgo4TI9MM3hlXbl9+HBbxdXW+SCe4aJeXt+OpbyBKw1TnqnJ6kLiTM4IygDiHLG1ROXcelUfv7Ljgja6bfqKso19CJeiqEFFVsrEUMeFn1XMEauPUp9E1NCI6x+z9XaOpmZJgweZ8Y66d8w759svru/3EBUL1MWfySWY4SDkDikcMgIfaOKQjK5vQyyQUS9Hjyevm4m6xIs1MoCY18VX4uFe1eXeQK/vgO+nzzG6g4n2YFb38GOILFmiDkWMsRX35kOsDWvAPhNI/fwaGB0MaSrPkJ15hjnZ5hPKFx6MxU4IgyO6yydJ+z+/6ry7x8j5sPvbHkF2ERUO5K5475ixLP+2Bou0G1z77mFpkmXzUlI17zQYKaCifDPCxKRZ8s4JyfRnkvP9Bzi1julCh9LLDnKGoXZ/s7sMZhT8SlJYfFNv5Qy1yvklliuX579cdCtOL0Iu1rhIowS1t/4REzaPqJD1wZCJkdUzHSv3uVpxsuvv+TmgCfiMfcwuNwCyqZ3Ffr94WWdQf2OVaznkSkiY84/CVioa11jQ0T7ZBKnVY7McClKX5w7W4WDHGSrdUvQOk7mMuiseYiIpQDejP9NiojRPEnB062cyW6hZNXu7tuMIAYrPXtnsjuLAMgCZFOM7iFnv+El2VbKr8W69k0WPPCuKm1LOAQnO968puM+jXDODLc8u0Ti6VUJVEF7XGoh7yQtQtcmG515IuXET7+PWS4m7YDZwTNcmm5XJ2t0bZ8lPLk5trFYgQysDUVq6vRt3rejjbN1aJcbtEE5bK9CC/SNFYMnWvGG5wvtY70W2FgSIjXvjUlicWSp4u8RnH5L/Zi8znTcbfvajk72cnFUtIFbN1v9imIw3N8rSzxYretUn1PDMe53hh3ywXL8MAXrUo8vZG0NOe/Q1RcZ3AOir9MLsSsHSvaxH6KtMPzX/ZqpNwKokmtd35g675s6ikKvQuunoSXNRya3BgQYDmWL51uil9zjciDtux6qrkAB+VzedTWKGVnnny8eHszHKhjitliI51ZwAxkUiu/gVxWmS597EcNVK5wH3pWyyYW79uJ8OploxBGBHGeUSs4jnevQ0ZGUSAHXKJZkNuSYSrkJUUk/PgmCK2zsVXnYI0riUw4SfFr2iQYBzLABCB8UV8UYGLDOApSpo8X+wvtlWqIrGlbfP85+EHdQQD8B7fyRzFcVE8QlQF534XOPA9ukdtouRTh96hezroZSg1H5QuuamnwBLeMqGieaFAA+JkSBb74urkssGPSO/H4XEm6UqH5viBAj+8b0iP+LNzHlxHruxUqxcPXuK1RbE+V6LYFOqx8BxIYJX7n/y4m/VBSEVY/cMfsi5xnERpvQjr/OXhA5nppaigZTnz3i+6t41cQS/a/JatBX2MsGxxPe7lk5VQ5G3fLAskEdGT6kPqHQa3pUgrEqAMQPV4nAE0uPalETIGJS+Q7ZNezGzAfz7b07HFUV3WQqcH479Vn3MK3633R9vHBP7muBmQqE+EnX6Ti4j6QBl9CA87KMu+rmd9KuIdckCXd4JGbNdTYTUFLcpfWW3enE1ti2AA+dM1KHwn0y7qEmoMfKpDYOv7HBwhqUeNW+rk2ZqYvaDFt5lzGGuK8t+H+eG9697oocM+yPT6E9C1xb0vLCSHtrQ1luO7VmfgWascNwgaZdbr5XtN4ZYYSJPcqtzb2fbRlbPgZOTzcx9J1AeTfi5uqcXxOLzVI4tSqfqL4+ZYIY5mPESpWOJthv6bUao8Cke2pBjRE2kqZGOKNdXppJhx9euf2eVN7oCYE1W4HDcKxahXS5F3f/je9dhAyTU31Xym3Q6NDG3MnYWajbRrzztx7qXf1+Jd9/PRJ9n6a1HKP9FUFtGsUTdJ+t36KXzbh1mFnZHL0cJr20ZkmIOrXh7iNTJ48n7+7BZ8qKWuhf+aSfaA+Av7D108dFuaFtVzseipPlebIqmuW9tGzD4mSmhpRIVnI+IBPCTZvKbRKdSxMHhXJ4MNoSyTWYeXbr16tYs2SK/sYI+SaCANtFZQtZaMe821BuDqvpIKpHfVgYuBPEPh7sSXHtqZhLjKy/ku1/BGeyp/Pyv2zHaU+c7FqTpJE00hRhVdwaufDbgml+Vspw6GN3JJKJBCiy2qoMm83NFimRVuvrDe8cN2TZDNpizIOnMVjutU+VuADbMm+oCF/WahHl9xQvc4LqlnIH+Z3U6tZGuEy9bG9t66tabHqnbqSIHMm3qXySOVKBj5dAapAyLSb2+3W7FxiJ9Mjs6dMm7kohdh796GlIQLFc7uTmvFf006v5+k/Mke0+FM5VncONZCgnglvyDT+rTV2tuFm1rCXr7Fl/b7lnVjETAXgyDPgqmfD0cerQw/F6IMiga1ymSRQ8vGU33Sy4U4KzCwBJkqUbnMN2+rPA4wjdnb2Okx6yplk2C4VVBySnMBISo74OP07HqgOknkmMv3SMCZJkWv0zEkexmPryZ3u0qUnJTflqn9M2GzN4glSRd0bnh2aHLUDmmYogTO542GnzaFuJ64kAwYQBwaRLMlfR88/NZvZskbZUAOXticF6wbozmWIFrw6wlRsrgvhhTZJOLxvG9pbWs24lyM/CNBPgLHJ6Z63oU0QhPFmYo+cohS/NxxFrn2Ue1CeqgKz3ZNr/gCNdL5yVknV0Irz8Dl0azHge9l+1svpbdJqyz+7Kn+skBE77iRCycs252+Klo2tx8JrdJj6rwL5cdF8N5yz++UynHfNK0Znrt+NBbzx43j/CFqE9ugHt8y1f7I4qrlmYcUkGbZsD+s0DfH08ohke5SS/+me1tXyIBPzHo9FW6zZR4JqgL3zll2N3+LdzVRyknFZprpk5aTvl+8t90DspXGPDhYP5I+nORELfU8v9Q5pZrRJ2+EBTWUT6z230nJ8Tp5GrCflGNVpBnRvIcGpWNoKm+osL5pmI9YWgpN7rCtseVyM6QrdamolyLwNl
+1=tbty8A87Kqyrwh/9jbjf8vLvBqqyOpKKWDO8rArNKumbSepieBLJCLR0rA/eX79CQ/szCniao1N7U1dgMvVm0VDM5fPZ47voiaFED6dmkXFOZmLPhGfMyLxs7Itnc921ltqcfoN0EXnwmdUxaF8qxSnjSVHbvoqdD42zHrsMkYfNDjx7r9Xz9nCGeb4goIjp7hzjmPw8/UCSuZeclkuOKiJR91yH2kBorEEYdrBjw+H6i+lI2KknUCJz8Nzb5UEGUOr8uKkuA40hbM8nlMLb9ZsgkzRUn83TyMNH5KXVAcQEYnlMcRQbWF15JIVz19Qi7NtUCvIDx/qL5XuOIT1LtMhnzuI+rGy+EvfM4Sgte9pOB2vp6EcJT+FiV9/AnM0SEaZV1D1cfSdMlsu9WxNINwHNLVpW6yOiDAzSwyGu4PRQu4DvIczVUIJo1/nOouKbwBaTUSVNnm3RUnl44aPt873BNPbuXydWrd3vS/89FfaTHJ3njfKrbO9JF2v1fg2Qt7P0XUeF6biR1b63stsBJmj8c7QQJ24ysd8eAzDn81+rZclWlJuknphzKvlBC1QOyjTQHh1btOFBQ9FzcdyqWSCBaoxx5JdH4L0T/to1qZVwttsydg6yvsh1KzJKcItkrOnA4KcTzUtDQapNdZuu9ADiw3XO4542cE0zGSiueMVNBcqQl14+yet6YM662UTCRZ4Yqhgz8sx8z6TsuTRZ58nwtA59vja5DOW2egQmRMaJCgQPed/M3PyalXKtQw1il271CzL0sndOsoMKrjGyRsMSeOe563iTRfTozNG8hdy4G85ftqXIlMMQxVX1AoYwDml7f9coA9D29abR9W6Mc9puu2gMLvvz7KqoDE72eZDNE6H0sqLGBtORr5b1cvauS1OI8HWIyYDX2dhR32aGS6n5mnmLoMuQz5BuQ00Op3K6a1iK6cyMD+RogbUVdy0L7ho921v/hh4pJafSuBqXRR0B/heEGbAevYzNcXb0IpmU4pWRMWeI3JCcR2nbciDGeX/9ouX+HG+yZQesrinAdWeFlmIghjbQ/XyJ0E53bWs+8MkqaN47/fHS/qs4Opdx7y+2R/39w4vZxIbJ3YU5a2SmF7vmpzWs2VcwNdxwCetKGJHPV3A6LDFM2S07lT3UJxhnofyg5c1qGt1x9ayqkbCtELuq7QIpa4xR3m4CF/qtnk9k1ZYFKkh8s7IruNd8q+KCcc5BHjHbNH+nam8kZIygV+w28rbyyp7gl5KlQN20pt7uOHGldW8vxb59e32Hd+HDGjRjo5vvm1+S59S8g+rE6RvqghKUu22X63FVbH9N7Ua62bB5sX323X2JD4Ts/ZfuHcr6/tqZOY815nB6wM0QrkMPcXDxwp2o3uaQNrQm7wkNf24knVSeWgINTuFYt26MnpxjnL3iUe00nr8sOXXASGSQd6ttmrGgqfcC5V3HUscV1WlS4P03R9Mkn15TdDvSgVUOXgbTmIoJXrpegxxpf/ANWmTmh4nONyyy/KTSzRyypIZxgFIw8ECkLoFAHs8jw6bcsZmABmDQYgSdnfkQEAAAACAAAAJQAAAGQQAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-Hebrew_International_Unicode.reg]
+lines=0
+0=eJzFVctu00AUPZtskPgHi3Xb1H1BiliUlpKKJEQkoiqkqgJx0ojGjuwGSD+pX8MWiQ+AnwDO3Bl7PHi8RiPHnTnnPs69d9w/v88xR4wJEnxBhgBvEGHGswy3SLHmyQuic+4S7gO8JZ4SnXMfc7+PLWxzPcQDed6jjVe0ucAVOniNYxzxfYUu38fEztAjOsIQCyx5PqG/KcZY4YYxRuQovyp2wpMAfWIxOTfEzgRR8WOe3pocxsQuJfYjRkrwUU4i7p7x2S7WHp8JT6rMHt+LwuKaf20yVqfgZgi59tEyjCOqsdgOdktY38GUmpXRszaM741fjZ+Nb40fjTJvRUbKyDGzypn3gWWciOI8xybKSESbORUoNRrfKuEvpZYrVlt1emYYu3jKelhWR+o8I2/M3zxOm7167rD0ZGh0w0ESsXfznJgVmN+uWQE16mU9dMWDq2bA3dKjSXPrlG04yjR3yL4qbiY6J7Wee2ayPhM/4Xsms58V0xRKv/fY8QM8xhPpu7VVd8faD8Q+NrabJWafuWTi2ce0vIFknZJXrWtTKtn0VPJfrdVuDaXCubdDD3IqcRcSNZ+FNpkLrkPyMm+Wrl9rYbkXRMfkds09vzbc+smY83boe6q0KNsh0WURJXSY1fvWYp92HI6+a9Xu+ljujSwz3I6EDlLvuUe/C6nYuEbDKZ9UbpmKsOY3dIpzMiN8MuwDLzvnKH5e5XxqLb+Dd/IFTTxYV6wyUR55cD3feWWqFdG4VvhBolTV9Y3uVGb+rojTKnHcKQo9SF8ynHL31ZPnsFbl//sPNeLXKuLuspgDi+c6Q06qzfMvWJ0eDnicU/BITSpKLY/3zCtJLcpLLMnMz0vMiQ/Ny0zOT0nVK0pNZxgFwxnMYYfQeUzY5XsrtksyMAEA02gPsfoIPMwBAAAAAgAAADwAAABuAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Reg-Korean_International_Unicode.reg]
+lines=0
+0=eJydVctu00AUPQtWSPxDVCF1Q6skLaUtYoESClXjECWBqpAqCsRJLWo7spNCED/EggViyRYVPgD4GgScuWN7PLERCI1sz8w59z13/OvnMTwEGCPES8SooAsXU+7FmCPCkjv3iHpchVxX8Jh4RNTjOuD6JjZR5biGq/I8xQMcUeYEQ7TwEA3c5XcIh98GsUO0iQ7Qh48Z98fUN8EIC5zTxoAcpVfZDrlTQYdYQM45sUNBlP2Au/PEhxGxU7G9RkshnsuOy9UdPtVsbKOGOneKzDa/fibxgsgGY+hm3JiSNUa6lzCuX175YrA6tizs03eDqWgWSTzLhIEPg28/Pvrv8qwF8YgeBPQp5b2tGEZT4k093EAecSnj0X8Vi8Y3c/h9yeSCuVZ1niaMLdxmRgyrJVmekjfiO7VzxPp1LZY+Fxq9YSGhyNt+LpOxjub7ddbS4ezrpZqNOXvzWc/0MLoc0WXH1eNqVhKd5v5bjJrbx5lwY4l4bGnOR9ROTtgF8Sa/U+mBODtVNan7Niu/g1vYlfobWdVDRr4n8kFJ9Tr0JRbNZUzD64nXEXnlGd5gdA7fdiZXYy1G2ZcMp9r2S5ADseuLVc2ac1SoeZ+7Pt+xZKXoqa3bljL8EzJG5DtJ35/95eykkh67Rnevikxp6JM9y+zVLGaxC3dzd4GXdWBZpYssu0/zDLs6dQtZ1WzQNvX6krnRHyI44BNJ7ykLS/blBMdkurytNHunlJ1yFD/NdNHrFp7IrRqWWHZEKpbI3RJZfdbTzBTlNa4jfCZWipxOEnck5/91Zmcvx7FPU7UE6YiHE65eldjoF6JMdaz+tRp4xFuvy1WbUkOuepx3//vfNOD95HJ1mlXb4Kmf6iZZw2+niCOmeJxT8M4vSk3Mi/fMK0ktykssyczPS8yJD83LTM5PSdUrSk1nGAXDGfSxQ+gpTNjlP/T9+cHABADi4hFpzG0VcAEAAAACAAAAPAAAAJQCAAAAAAAAAQAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

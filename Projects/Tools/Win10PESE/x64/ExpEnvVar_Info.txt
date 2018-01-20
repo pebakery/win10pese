@@ -1,0 +1,29 @@
+ExpEnvVar Information:
+Author: Galapo
+
+Winbuilder Project Administrators and Advanced Users:
+For a project build script, you can use following **IF** required:
+If,Not,ExistFile,%target_sys%\ExpEnvVar.exe,FileCopy,%Tools%\%SourceArch%\ExpEnvVar_%SourceArch%.exe,%target_sys%\ExpEnvVar.exe
+
+
+
+ExpEnvVar used for adding registry after PE boots.
+(after cd letter found, before shell started)
+
+On capi projects, it is used by RegAddBoot api if prefered.
+
+ExpEnvVar, as default uses its own configuration with ExpEnvVar.txt,
+Executing ExpEnvVar.exe results with ExpEnvVar.exe read info from ExpEnvVar.txt and write to registry.
+
+
+
+If desired, Nigtman's adjustments can also be used by NMcfg switch.
+ExpEnvVar.exe /sw:nmcfg "/target:path_to_config_file"
+or if config file in same folder
+ExpEnvVar.exe /sw:nmcfg /target:config_file
+ex:
+ExpEnvVar.exe /sw:nmcfg /target:Win7PE.cfg
+
+
+
+

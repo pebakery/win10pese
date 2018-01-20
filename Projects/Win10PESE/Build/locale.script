@@ -1,0 +1,988 @@
+[Main]
+Title=Locale
+Type=Plugin
+Author=WinPESE Community
+Description=Locale settings for Win SE,you can not run this plugin directly.
+Credits=http://TheOven.org
+Version=034
+Download_Level=0
+Level=0
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.04
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/locale.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Feel Free to give Support :>
+HistoryNotes02=To add a choice, add the choice to config plugin and change Locale plugin: New section eg: [fr-FR] and change section Run_Locale_Choice.
+HistoryNotes03=To switch between visible/nonevisible change Level=1 Level=0
+HistoryNotes04=Variables are not used if the plugin is called from another plugin. Use Set,%variable%,""
+History012=Lancelot - Virtual-R Swedish Locale added
+History014=Rui paz - Added support for Portuguese
+History015=ChrisR - Virtual-R, added support for Swedish
+History016=ChrisR - ADB, added support for Belgian
+History017=agrafi - added support for Hebrew
+History018=ChrisR - Require_File replaced by Require_FileQ (faster)
+History019=ChrisR - Dera added support for Hungarian
+History020=Lancelot - Tmp_Default names fixed
+History021=2aCD reduce build warnings for overwrite regkeys
+History022=ChrisR - NoWarnROW implemented (NoWarnROW value set in 1-files plugin)
+History024=ChrisR - Remove Dircopy %BootSRC%\Windows\Fonts for hebrew and spanish allready done in Copy Files.
+History024=ChrisR - Added support for locale Auto, copy NLS, Keyboard and fonts following registry key.
+History025=ChrisR - Additional control in CopyKeyboardDLL
+History026=ChrisR - keep MUI key from Win7 source (mui files used from the source language)
+History027=ChrisR - The key ActiveTimeBias is not written for TimeZoneInformation which allows to use the CMOS clock.
+History028=ChrisR - Name of country changed with LocalID (French -> fr-FR). TimeZone registry removed (new timezone plugin). Process Locale splited with format and keyboard plugin.
+History029=ChrisR - Add NLS files and fonts, if does not already exist, according to the Registry for specified language
+History031=ied206 - Addaed support for Korean - Date:2014.01.29
+History032=Lancelot - Added DU Buttons - Date:2016.01.28
+History033=Lancelot - Add Compare Button - Date:2017.02.18
+History034=Nikzzzz - For  Russian locale is not enough C_1252.NLS [minimum_NLS_ru-RU] - http://TheOven.org/index.php?topic=2273 - Date:2017.11.04
+
+[Info]
+The plugin is designed to be called from other plugin (eg: 1 - Copy Files) or if Not Auto directly
+Run,%LocaleScript%,Called_process,Auto
+Run,%LocaleScript%,Called_process,fr-FR
+
+[Variables]
+
+[Interface]
+pTextLabel1="The plugin is designed to be called from other plugin",1,1,8,10,303,18,8,Bold
+pTextL_Locale="System Locale",1,1,8,42,76,18,8,Normal
+pScrollB_Locale="Import HostOS",1,4,102,40,150,21,"Import HostOS",Auto,"Belgian French",French,German,Greek,Hebrew,Hungarian,Italian,Korean,Portuguese,Russian,Spanish,Swedish,Turkish,"UK English"
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Called_Process]
+Set,%Locale%,#1
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing Locale %Locale%..."
+If,%Locale%,Equal,Auto,Run,%LocaleScript%,Auto
+Else,If,Not,-%Locale%,Equal,-,Run,%LocaleScript%,Run_Locale_Choice
+
+[Process]
+// Comment Exit for tests
+Exit,"The plugin is designed to be called from other plugin"
+Set,%Locale%,%pScrollB_Locale%
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+Echo,"Processing Locale %Locale%..."
+If,%Locale%,Equal,Auto,Run,%LocaleScript%,Auto
+Else,If,Not,-%Locale%,Equal,-,Run,%LocaleScript%,Run_Locale_Choice
+
+[Run_Locale_Choice]
+If,%Locale%,Equal,"Belgian French",Run,%LocaleScript%,fr-BE
+If,%Locale%,Equal,French,Run,%LocaleScript%,fr-FR
+If,%Locale%,Equal,Hebrew,Run,%LocaleScript%,he-IL
+If,%Locale%,Equal,German,Run,%LocaleScript%,de-DE
+If,%Locale%,Equal,Greek,Run,%LocaleScript%,el-GR
+If,%Locale%,Equal,Hungarian,Run,%LocaleScript%,hu-HU
+If,%Locale%,Equal,Italian,Run,%LocaleScript%,it-IT
+If,%Locale%,Equal,Korean,Run,%LocaleScript%,ko-KR
+If,%Locale%,Equal,Portuguese,Run,%LocaleScript%,pt-PT
+If,%Locale%,Equal,Russian,Run,%LocaleScript%,ru-RU
+If,%Locale%,Equal,Spanish,Run,%LocaleScript%,es-ES
+If,%Locale%,Equal,Swedish,Run,%LocaleScript%,sv-SE
+If,%Locale%,Equal,Turkish,Run,%LocaleScript%,tr-TR
+If,%Locale%,Equal,"UK English",Run,%LocaleScript%,en-GB
+// Auto: If exists in local archive (**temporary solution)
+If,%Locale%,Equal,Auto,Begin
+If,ExistSection,%LocaleScript%,%DistLang%,Run,%LocaleScript%,%DistLang%
+End
+// Add NLS files and fonts, if does not already exist, according to the Registry for specified language
+Run,%LocaleScript%,Auto
+
+[minimum_NLS_tr-TR]
+//Minimum source tr-TR support to have bootable cd (Thanks to BlueLife). minimum C_1254.NLS and C_857.NLS are needed (else black screen at boot)
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_1254.NLS,FileCopy,%BootSRC%\Windows\System32\C_1254.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_857.NLS,FileCopy,%BootSRC%\Windows\System32\C_857.NLS,%TargetDir%\Windows\System32
+
+[minimum_NLS_ru-RU]
+//Thanks to GrAnd and Nikzzzz
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_437.NLS,FileCopy,%BootSRC%\Windows\System32\C_437.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_850.NLS,FileCopy,%BootSRC%\Windows\System32\C_850.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_866.NLS,FileCopy,%BootSRC%\Windows\System32\C_866.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_1251.NLS,FileCopy,%BootSRC%\Windows\System32\C_1251.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_1252.NLS,FileCopy,%BootSRC%\Windows\System32\C_1252.NLS,%TargetDir%\Windows\System32
+
+[Auto]
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_software,%RegSoftware%
+//- Nls files
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,%CodePage%
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,%CodePage%,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\System32\%Variable%,FileCopy,%BootSRC%\Windows\System32\%Variable%,%TargetDir%\Windows\System32
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,%CodePage%
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,%CodePage%,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\System32\%Variable%,FileCopy,%BootSRC%\Windows\System32\%Variable%,%TargetDir%\Windows\System32
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,%CodePage%
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,%CodePage%,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\System32\%Variable%,FileCopy,%BootSRC%\Windows\System32\%Variable%,%TargetDir%\Windows\System32
+//- Fonts
+RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegRead,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,%Variable%
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\%Variable%,FileCopy,%BootSRC%\Windows\Fonts\%Variable%,%TargetDir%\Windows\Fonts
+RegHiveUnLoad,Tmp_software
+RegHiveUnLoad,Tmp_System
+
+[it-IT]
+// Italian by online
+Echo,"Processing Italian Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1252"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","850"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0410"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"00000410"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000410"
+RegHiveUnLoad,Tmp_System
+
+[en-GB]
+// UK English by martinr
+Echo,"Processing UK Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1252"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","850"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0809"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"","00000409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000809"
+RegHiveUnLoad,Tmp_System
+
+[tr-TR]
+// turkish by Max_Real Qnx
+Echo,"Processing turkish Locale..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_1254.NLS,FileCopy,%BootSRC%\Windows\System32\C_1254.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_857.NLS,FileCopy,%BootSRC%\Windows\System32\C_857.NLS,%TargetDir%\Windows\System32
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\Nls","0000041f",""
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","woafont","app857.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA40WOA.FON","CGA40857.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA80WOA.FON","CGA80857.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA40WOA.FON","EGA40857.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA80WOA.FON","EGA80857.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont","0","Lucida Console"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial (TrueType)",arial.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Italic (TrueType)",ariali.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Bold (TrueType)",arialbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Bold Italic (TrueType)",arialbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New (TrueType)",cour.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New Italic (TrueType)",couri.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New Bold (TrueType)",courbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New Bold Italic (TrueType)",courbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DaunPenh (TrueType)",daunpenh.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DokChampa (TrueType)",dokchamp.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Estrangelo Edessa (TrueType)",estre.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Euphemia (TrueType)",euphemia.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gautami (TrueType)",gautami.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Impact (TrueType)",impact.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Iskoola Pota (TrueType)",iskpota.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kalinga (TrueType)",kalinga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kartika (TrueType)",kartika.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Latha (TrueType)",latha.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Lucida Console (TrueType)",lucon.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Malgun Gothic (TrueType)",malgun.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Malgun Gothic Bold (TrueType)",malgunbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mangal (TrueType)",mangal.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Himalaya (TrueType)",himalaya.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mongolian Baiti (TrueType)",monbaiti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MV Boli (TrueType)",mvboli.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Nyala (TrueType)",nyala.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Plantagenet Cherokee (TrueType)",plantc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Raavi (TrueType)",raavi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe Script (TrueType)",segoesc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe Script Bold (TrueType)",segoescb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe UI (TrueType)",segoeui.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe UI Bold (TrueType)",segoeuib.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe UI Italic (TrueType)",segoeuii.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe UI Bold Italic (TrueType)",segoeuiz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Shruti (TrueType)",shruti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Sylfaen (TrueType)",sylfaen.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Times New Roman (TrueType)",times.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Times New Roman Italic (TrueType)",timesi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Times New Roman Bold (TrueType)",timesbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Times New Roman Bold Italic (TrueType)",timesbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tunga (TrueType)",tunga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Vrinda (TrueType)",vrinda.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Yi Baiti (TrueType)",msyi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma (TrueType)",tahoma.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma Bold (TrueType)",tahomabd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Sans Serif (TrueType)",micross.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Angsana New (TrueType)",angsa.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Angsana New Italic (TrueType)",angsai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Angsana New Bold (TrueType)",angsab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Angsana New Bold Italic (TrueType)",angsaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cordia New (TrueType)",cordia.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cordia New Italic (TrueType)",cordiai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cordia New Bold (TrueType)",cordiab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cordia New Bold Italic (TrueType)",cordiaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gisha (TrueType)",gisha.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gisha Bold (TrueType)",gishabd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Leelawadee (TrueType)",leelawad.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Leelawadee Bold (TrueType)",leelawdb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Uighur (TrueType)",msuighur.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MoolBoran (TrueType)",moolbor.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Symbol (TrueType)",symbol.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Wingdings (TrueType)",wingding.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Modern (All res)",modern.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Roman (All res)",roman.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Script (All res)",script.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Andalus (TrueType)",andlso.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arabic Typesetting (TrueType)",arabtype.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Simplified Arabic (TrueType)",simpo.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Simplified Arabic Bold (TrueType)",simpbdo.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Simplified Arabic Fixed (TrueType)",simpfxo.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Traditional Arabic (TrueType)",trado.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Traditional Arabic Bold (TrueType)",tradbdo.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Aharoni Bold (TrueType)",ahronbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","David (TrueType)",david.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","David Bold (TrueType)",davidbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","FrankRuehl (TrueType)",frank.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Levenim MT (TrueType)",lvnm.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Levenim MT Bold (TrueType)",lvnmbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Miriam (TrueType)",mriam.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Miriam Fixed (TrueType)",mriamc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Narkisim (TrueType)",nrkis.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Rod (TrueType)",rod.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","AngsanaUPC (TrueType)",angsau.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","AngsanaUPC Italic (TrueType)",angsaui.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","AngsanaUPC Bold (TrueType)",angsaub.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","AngsanaUPC Bold Italic (TrueType)",angsauz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Browallia New (TrueType)",browa.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Browallia New Italic (TrueType)",browai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Browallia New Bold (TrueType)",browab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Browallia New Bold Italic (TrueType)",browaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","BrowalliaUPC (TrueType)",browau.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","BrowalliaUPC Italic (TrueType)",browaui.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","BrowalliaUPC Bold (TrueType)",browaub.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","BrowalliaUPC Bold Italic (TrueType)",browauz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","CordiaUPC (TrueType)",CORDIAU.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","CordiaUPC Bold (TrueType)",CORDIAUB.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","CordiaUPC Bold Italic (TrueType)",CORDIAUZ.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","CordiaUPC Italic (TrueType)",CORDIAUI.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DilleniaUPC (TrueType)",upcdl.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DilleniaUPC Italic (TrueType)",upcdi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DilleniaUPC Bold (TrueType)",upcdb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DilleniaUPC Bold Italic (TrueType)",upcdbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","EucrosiaUPC (TrueType)",upcel.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","EucrosiaUPC Italic (TrueType)",upcei.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","EucrosiaUPC Bold (TrueType)",upceb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","EucrosiaUPC Bold Italic (TrueType)",upcebi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","FreesiaUPC (TrueType)",upcfl.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","FreesiaUPC Italic (TrueType)",upcfi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","FreesiaUPC Bold (TrueType)",upcfb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","FreesiaUPC Bold Italic (TrueType)",upcfbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","IrisUPC (TrueType)",upcil.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","IrisUPC Italic (TrueType)",upcii.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","IrisUPC Bold (TrueType)",upcib.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","IrisUPC Bold Italic (TrueType)",upcibi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","JasmineUPC (TrueType)",upcjl.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","JasmineUPC Italic (TrueType)",upcji.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","JasmineUPC Bold (TrueType)",upcjb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","JasmineUPC Bold Italic (TrueType)",upcjbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","KodchiangUPC (TrueType)",upckl.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","KodchiangUPC Italic (TrueType)",upcki.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","KodchiangUPC Bold (TrueType)",upckb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","KodchiangUPC Bold Italic (TrueType)",upckbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","LilyUPC (TrueType)",upcll.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","LilyUPC Italic (TrueType)",upcli.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","LilyUPC Bold (TrueType)",upclb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","LilyUPC Bold Italic (TrueType)",upclbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Lucida Sans Unicode (TrueType)",l_10646.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Black (TrueType)",ariblk.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Calibri (TrueType)",calibri.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Calibri Italic (TrueType)",calibrii.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Calibri Bold (TrueType)",calibrib.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Calibri Bold Italic (TrueType)",calibriz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cambria & Cambria Math (TrueType)",cambria.ttc
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cambria Italic (TrueType)",cambriai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cambria Bold (TrueType)",cambriab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Cambria Bold Italic (TrueType)",cambriaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Candara (TrueType)",candara.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Candara Italic (TrueType)",candarai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Candara Bold (TrueType)",candarab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Candara Bold Italic (TrueType)",candaraz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Comic Sans MS (TrueType)",comic.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Comic Sans MS Bold (TrueType)",comicbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Consolas (TrueType)",consola.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Consolas Italic (TrueType)",consolai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Consolas Bold (TrueType)",consolab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Consolas Bold Italic (TrueType)",consolaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Constantia (TrueType)",constan.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Constantia Italic (TrueType)",constani.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Constantia Bold (TrueType)",constanb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Constantia Bold Italic (TrueType)",constanz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Corbel (TrueType)",corbel.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Corbel Italic (TrueType)",corbeli.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Corbel Bold (TrueType)",corbelb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Corbel Bold Italic (TrueType)",corbelz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Franklin Gothic Medium (TrueType)",framd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Franklin Gothic Medium Italic (TrueType)",framdit.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Georgia (TrueType)",georgia.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Georgia Italic (TrueType)",georgiai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Georgia Bold (TrueType)",georgiab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Georgia Bold Italic (TrueType)",georgiaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Palatino Linotype (TrueType)",pala.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Palatino Linotype Italic (TrueType)",palai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Palatino Linotype Bold (TrueType)",palab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Palatino Linotype Bold Italic (TrueType)",palabi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe Print (TrueType)",segoepr.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Segoe Print Bold (TrueType)",segoeprb.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Trebuchet MS (TrueType)",trebuc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Trebuchet MS Italic (TrueType)",trebucit.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Trebuchet MS Bold (TrueType)",trebucbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Trebuchet MS Bold Italic (TrueType)",trebucbi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Verdana (TrueType)",verdana.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Verdana Italic (TrueType)",verdanai.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Verdana Bold (TrueType)",verdanab.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Verdana Bold Italic (TrueType)",verdanaz.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Webdings (TrueType)",webdings.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier 10,12,15",COURET.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Serif 8,10,12,14,18,24",SERIFET.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Sans Serif 8,10,12,14,18,24",SSERIFET.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Small Fonts",SMALLET.FON
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize","DisableRemoteFontBootCache",0
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON",8514fixt.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON",8514syst.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON",8514oemt.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON",vgafixt.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON",vgasyst.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON",vga857.fon
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","ARIAL",0
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","COURIER NEW",32768
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","TIMES NEW ROMAN",16384
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","SYMBOL",16386
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","SYMBOL1",40962
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","WINGDINGS",2
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","COURIER",34816
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","FIXEDSYS",36864
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","MS SANS SERIF",4096
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","MS SERIF",20480
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","SMALL FONTS",2048
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT",162
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper\FamilyDefaults",,Arial
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper\FamilyDefaults",Swiss,Arial
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper\FamilyDefaults",Modern,"Courier New"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper\FamilyDefaults",Decorative,Impact
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper\FamilyDefaults",Script,"Segoe Script"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper\FamilyDefaults",Roman,"Times New Roman"
+RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Keyboard Layouts\0000041f","Layout File",KBDTUQ.DLL
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,1254
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,857
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,10081
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"936","AAA1-AFFE,F8A1-FEFE,A140-A7A0"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"949","C9A1-C9FE,FEA1-FEFE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"932","F040-F9FC"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"950","FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","041f"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"","0000041f"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","0000041f"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI","CacheConfig","1"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\CallbackDlls\Microsoft-Windows-BootEnvironment","Type","1"
+//RegWrite,HKLM,0x2,"Tmp_System\ControlSet001\Control\MUI\CallbackDlls\Microsoft-Windows-BootEnvironment","DllPath",""
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[ru-RU]
+// Russian by NightMan
+Echo,"Processing Russian KeyBoard..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_437.NLS,FileCopy,%BootSRC%\Windows\System32\C_437.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_850.NLS,FileCopy,%BootSRC%\Windows\System32\C_850.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_866.NLS,FileCopy,%BootSRC%\Windows\System32\C_866.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_1251.NLS,FileCopy,%BootSRC%\Windows\System32\C_1251.NLS,%TargetDir%\Windows\System32
+//GrAnd: Some ttf files
+//Lancelot: I do not think they are required only maybe arial.ttf arialbd.ttf +maybe cour.ttf --> but even these files should be copied elsewhere-NOT here..... --> better leave optimization hunt to Russian Locals for now ;) there will be much better plugin in some weeks.. :>.
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\arial.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arial.ttf,%TargetDir%\Windows\Fonts\arial.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\arialbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arialbd.ttf,%TargetDir%\Windows\Fonts\arialbd.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\arialbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arialbi.ttf,%TargetDir%\Windows\Fonts\arialbi.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\ariali.ttf,FileCopy,%InstallSRC%\Windows\Fonts\ariali.ttf,%TargetDir%\Windows\Fonts\ariali.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\cour.ttf,FileCopy,%InstallSRC%\Windows\Fonts\cour.ttf,%TargetDir%\Windows\Fonts\cour.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\courbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\courbd.ttf,%TargetDir%\Windows\Fonts\courbd.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\courbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\courbi.ttf,%TargetDir%\Windows\Fonts\courbi.ttf
+If,Not,ExistFile,%TargetDir%\Windows\Fonts\couri.ttf,FileCopy,%InstallSRC%\Windows\Fonts\couri.ttf,%TargetDir%\Windows\Fonts\couri.ttf
+//- by NightMan
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1251"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10007"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","866"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+//post 242 GrAnd - Russian windows needs Codepage 1252 value pointing 1251.nls to have clipboard work
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,1251,c_1251.nls
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,1252,c_1251.nls
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0419"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0419"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"","00000419"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000419"
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguageFallback","en-US"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\ru-RU","LCID","1049"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\ru-RU","Type","146"
+//RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\MUI\UILanguages\ru-RU","DefaultFallback","en-US"
+//RegWrite,HKLM,0x7,"Tmp_System\ControlSet001\Control\MUI\UILanguages\ru-RU","en-US",""
+RegHiveUnLoad,Tmp_System
+//-
+RegHiveLoad,"Tmp_Software",%RegSoftware%
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA40WOA.FON","CGA40866.FON"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA80WOA.FON","CGA80866.FON"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA40WOA.FON","EGA40866.FON"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA80WOA.FON","vga866.FON"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","woafont","app866.fon"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON","8514fixr.fon"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON","8514sysr.fon"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON","8514oemr.fon"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON","vgafixr.fon"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON","vgasysr.fon"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON","vga866.fon"
+RegWrite,"HKLM",0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT","204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Arial Cyr,0","Arial,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Courier New Cyr,0","Courier New,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Courier,0","Courier New,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Fixedsys,0","Fixedsys,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Helv,0","MS Sans Serif,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Sans Serif,0","MS Sans Serif,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Serif,0","MS Serif,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg 2","Tahoma"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg","Microsoft Sans Serif"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Small Fonts,0","Small Fonts,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","System,0","System,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Times New Roman Cyr,0","Times New Roman,204"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","Tms Rmn,0","MS Serif,204"
+// GrAnd: Please leave. Without these fonts are not properly displayed in text editors
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial (TrueType)",arial.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Italic (TrueType)",ariali.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Bold (TrueType)",arialbd.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Arial Bold Italic (TrueType)",arialbi.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New (TrueType)",cour.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New Italic (TrueType)",couri.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New Bold (TrueType)",courbd.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier New Bold Italic (TrueType)",courbi.ttf
+// GrAnd: end
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier 10,12,15","COURER.FON"
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DaunPenh (TrueType)",daunpenh.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DokChampa (TrueType)",dokchamp.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Estrangelo Edessa (TrueType)",estre.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Euphemia (TrueType)",euphemia.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gautami (TrueType)",gautami.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Iskoola Pota (TrueType)",iskpota.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kalinga (TrueType)",kalinga.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kartika (TrueType)",kartika.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Latha (TrueType)",latha.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Sans Serif 8,10,12,14,18,24",SSERIFER.FON
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Serif 8,10,12,14,18,24",SERIFER.FON
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MV Boli (TrueType)",mvboli.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mangal (TrueType)",mangal.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Himalaya (TrueType)",himalaya.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Sans Serif (TrueType)",micross.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Yi Baiti (TrueType)",msyi.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mongolian Baiti (TrueType)",monbaiti.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Nyala (TrueType)",nyala.TTF
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Plantagenet Cherokee (TrueType)",plantc.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Raavi (TrueType)",raavi.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Shruti (TrueType)",shruti.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Small Fonts",SMALLER.FON
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Sylfaen (TrueType)",sylfaen.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma (TrueType)",tahoma.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma Bold (TrueType)",tahomabd.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tunga (TrueType)",tunga.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Vrinda (TrueType)",vrinda.ttf
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON",8514fixr.fon
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON",8514sysr.fon
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON",8514oemr.fon
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON",vgafixr.fon
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON",vgasysr.fon
+RegWrite,"HKLM",0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON",vga866.fon
+RegWrite,"HKLM",0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT",204
+RegWrite,"HKLM",0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","FIXEDSYS",36864
+RegHiveUnLoad,Tmp_Software
+
+[el-GR]
+// greek by Larryg4
+Echo,"Processing greek Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA40WOA.FON",CGA40737.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA80WOA.FON",CGA80737.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA40WOA.FON",EGA40737.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA80WOA.FON",EGA80737.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","woafont",dos737.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier 10,12,15",COUREG.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DaunPenh (TrueType)",daunpenh.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DokChampa (TrueType)",dokchamp.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Estrangelo Edessa (TrueType)",estre.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Euphemia (TrueType)",euphemia.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gautami (TrueType)",gautami.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Iskoola Pota (TrueType)",iskpota.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kalinga (TrueType)",kalinga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kartika (TrueType)",kartika.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Latha (TrueType)",latha.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mangal (TrueType)",mangal.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Himalaya (TrueType)",himalaya.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Sans Serif (TrueType)",micross.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Yi Baiti (TrueType)",msyi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mongolian Baiti (TrueType)",monbaiti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Sans Serif 8,10,12,14,18,24",SSERIFEG.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Serif 8,10,12,14,18,24",SERIFEG.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MV Boli (TrueType)",mvboli.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Nyala (TrueType)",nyala.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Plantagenet Cherokee (TrueType)",plantc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Raavi (TrueType)",raavi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Shruti (TrueType)",shruti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Small Fonts",SMALLE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Sylfaen (TrueType)",sylfaen.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma (TrueType)",tahoma.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma Bold (TrueType)",tahomabd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tunga (TrueType)",tunga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Vrinda (TrueType)",vrinda.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg 2",Tahoma
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg","Microsoft Sans Serif"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON",8514fixg.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON",8514sysg.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON",8514oemg.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON",vgafixg.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON",vgasysg.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON",vga737.fon
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT",0
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","FIXEDSYS",36864
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP",1253
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP",10006
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP",737
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL",vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"932","F040-F9FC"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"936","AAA1-AFFE,F8A1-FEFE,A140-A7A0"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"949","C9A1-C9FE,FEA1-FEFE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"950","FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0408"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0408"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000408"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"00000408"
+//-
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\en-US","LCID","1033"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\en-US","Type","145"
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[de-DE]
+// german by NightMan
+Echo,"Processing german Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA40WOA.FON","CGA40850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA80WOA.FON","CGA80850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA40WOA.FON","EGA40850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA80WOA.FON","EGA80850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","woafont","app850.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier 10,12,15","COURE.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DaunPenh (TrueType)",daunpenh.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DokChampa (TrueType)",dokchamp.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Estrangelo Edessa (TrueType)",estre.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Euphemia (TrueType)",euphemia.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gautami (TrueType)",gautami.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Iskoola Pota (TrueType)",iskpota.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kalinga (TrueType)",kalinga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kartika (TrueType)",kartika.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Latha (TrueType)",latha.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mangal (TrueType)",mangal.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Himalaya (TrueType)",himalaya.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Sans Serif (TrueType)",micross.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Yi Baiti (TrueType)",msyi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mongolian Baiti (TrueType)",monbaiti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Sans Serif 8,10,12,14,18,24",SSERIFE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Serif 8,10,12,14,18,24",SERIFE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MV Boli (TrueType)",mvboli.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Nyala (TrueType)",nyala.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Plantagenet Cherokee (TrueType)",plantc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Raavi (TrueType)",raavi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Shruti (TrueType)",shruti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Small Fonts",SMALLE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Sylfaen (TrueType)",sylfaen.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma (TrueType)",tahoma.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma Bold (TrueType)",tahomabd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tunga (TrueType)",tunga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Vrinda (TrueType)",vrinda.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg 2",Tahoma
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg","Microsoft Sans Serif"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON",8514fix.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON",8514sys.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON",8514oem.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON",vgafix.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON",vgasys.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON",vga850.fon
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT",0
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","FIXEDSYS",36864
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP",1252
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP",10000
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP",850
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL",vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"932","F040-F9FC"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"936","AAA1-AFFE,F8A1-FEFE,A140-A7A0"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"949","C9A1-C9FE,FEA1-FEFE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"950","FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0407"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0407"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000407"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"00000407"
+//-
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\de-DE","LCID","1031"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\de-DE","Type","145"
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[fr-FR]
+// french by cyberyeye
+Echo,"Configuration des options regionales en Francais..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,CGA40850.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,CGA80850.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,EGA40850.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,EGA80850.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,app850.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier 10,12,15",COURE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DaunPenh (TrueType)",daunpenh.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DokChampa (TrueType)",dokchamp.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Estrangelo Edessa (TrueType)",estre.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Euphemia (TrueType)",euphemia.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gautami (TrueType)",gautami.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Iskoola Pota (TrueType)",iskpota.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kalinga (TrueType)",kalinga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kartika (TrueType)",kartika.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Latha (TrueType)",latha.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mangal (TrueType)",mangal.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Himalaya (TrueType)",himalaya.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Sans Serif (TrueType)",micross.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Yi Baiti (TrueType)",msyi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mongolian Baiti (TrueType)",monbaiti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Sans Serif 8,10,12,14,18,24",SSERIFE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Serif 8,10,12,14,18,24",SERIFE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MV Boli (TrueType)",mvboli.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Nyala (TrueType)",nyala.TTF
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Plantagenet Cherokee (TrueType)",plantc.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Raavi (TrueType)",raavi.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Shruti (TrueType)",shruti.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Small Fonts",SMALLE.FON
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Sylfaen (TrueType)",sylfaen.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma (TrueType)",tahoma.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma Bold (TrueType)",tahomabd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tunga (TrueType)",tunga.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Vrinda (TrueType)",vrinda.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg 2",Tahoma
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg","Microsoft Sans Serif"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,8514fix.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,8514sys.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,8514oem.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,vgafix.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,vgasys.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,vga850.fon
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",DEFAULT,0
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",FIXEDSYS,36864
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,1252
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,10000
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,850
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,932,F040-F9FC
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,936,"AAA1-AFFE,F8A1-FEFE,A140-A7A0"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,949,"C9A1-C9FE,FEA1-FEFE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,950,"FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,Default,040C
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage,040C
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,(Default),0000040c
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,0000040c
+//-
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\MUI\UILanguages\fr-FR,LCID,1036
+//RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\MUI\UILanguages\fr-FR,Type,145
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[es-ES]
+// Spanish by hectorma
+Echo,"Processing Spanish Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1252"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","850"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0c0a"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0C0A"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"00000c0a"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000c0a"
+RegHiveUnLoad,Tmp_System
+
+[sv-SE]
+// Swedish by Virtual-R
+Echo,"Processing Swedish Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA40WOA.FON","CGA40WOA.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA80WOA.FON","CGA80WOA.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA40WOA.FON","EGA40WOA.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA80WOA.FON","EGA80WOA.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","woafont","dosapp.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\Nls","00000409",""
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON","8514fix.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON","8514sys.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON","8514oem.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON","vgafix.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON","vgasys.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON","vgaoem.fon"
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT","0"
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","FIXEDSYS","36864"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1252"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","437"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"932","F040-F9FC"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"936","AAA1-AFFE,F8A1-FEFE,A140-A7A0"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"949","C9A1-C9FE,FEA1-FEFE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"950","FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"00000409"
+//-
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\en-US","LCID","1033"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\en-US","Type","145"
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[pt-PT]
+// Portuguese by Rui Paz
+Echo,"Processing Portuguese Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1252"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","850"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","0816"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","0409"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"00000816"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","00000816"
+RegHiveUnLoad,Tmp_System
+
+[fr-BE]
+// Belgian by ADB
+Echo,"Configuration des options regionales en Francais-Belge..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA40WOA.FON","CGA40850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","CGA80WOA.FON","CGA80850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA40WOA.FON","EGA40850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","EGA80WOA.FON","EGA80850.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts","woafont","app850.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Courier 10,12,15","COURE.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DaunPenh (TrueType)","daunpenh.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","DokChampa (TrueType)","dokchamp.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Estrangelo Edessa (TrueType)","estre.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Euphemia (TrueType)","euphemia.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gautami (TrueType)","gautami.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Iskoola Pota (TrueType)","iskpota.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kalinga (TrueType)","kalinga.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Kartika (TrueType)","kartika.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Latha (TrueType)","latha.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mangal (TrueType)","mangal.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Himalaya (TrueType)","himalaya.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Sans Serif (TrueType)","micross.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Microsoft Yi Baiti (TrueType)","msyi.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Mongolian Baiti (TrueType)","monbaiti.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Sans Serif 8,10,12,14,18,24","SSERIFE.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MS Serif 8,10,12,14,18,24","SERIFE.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","MV Boli (TrueType)","mvboli.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Nyala (TrueType)","nyala.TTF"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Plantagenet Cherokee (TrueType)","plantc.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Raavi (TrueType)","raavi.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Shruti (TrueType)","shruti.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Small Fonts","SMALLE.FON"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Sylfaen (TrueType)","sylfaen.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma (TrueType)","tahoma.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tahoma Bold (TrueType)","tahomabd.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Tunga (TrueType)","tunga.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Vrinda (TrueType)","vrinda.ttf"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg 2","Tahoma"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg","Microsoft Sans Serif"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FIXEDFON.FON","8514fix.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","FONTS.FON","8514sys.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont","OEMFONT.FON","8514oem.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FIXEDFON.FON","vgafix.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","FONTS.FON","vgasys.fon"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont","OEMFONT.FON","vga850.fon"
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","DEFAULT","0"
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper","FIXEDSYS","36864"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"ACP","1252"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"MACCP","10000"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMCP","850"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,"OEMHAL","vgaoem.fon"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"932","F040-F9FC"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"936","AAA1-AFFE,F8A1-FEFE,A140-A7A0"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"949","C9A1-C9FE,FEA1-FEFE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,"950","FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"Default","080C"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,"InstallLanguage","040C"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,"(Default)","0000080c"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,"0000080c"
+//-
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\fr-FR","LCID","1036"
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\fr-FR","Type","145"
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[he-IL]
+// Hebrew Aviv - by agrafi
+Echo,"Processing Hebrew Locale..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_1255.NLS,FileCopy,%BootSRC%\Windows\System32\C_1255.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_862.NLS,FileCopy,%BootSRC%\Windows\System32\C_862.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_10005.NLS,FileCopy,%BootSRC%\Windows\System32\C_10005.NLS,%TargetDir%\Windows\System32
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,1255
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,862
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,10005
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,Default,040d
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage,0409
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,0000040d
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,(Default),0000040d
+RegHiveUnLoad,Tmp_System
+
+[hu-HU]
+// Hungarian by Dera
+Echo,"Processing Hungarian Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,1250
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,852
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,10029
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,Default,040E
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage,040E
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,0000040E
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,(Default),0000040E
+RegHiveUnLoad,Tmp_System
+
+[ko-KR]
+// Korean by ied206
+Echo,"Processing Korean Locale..."
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_949.NLS,FileCopy,%BootSRC%\Windows\System32\C_949.NLS,%TargetDir%\Windows\System32
+If,Not,ExistFile,%TargetDir%\Windows\System32\C_10003.NLS,FileCopy,%BootSRC%\Windows\System32\C_10003.NLS,%TargetDir%\Windows\System32
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,app949.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont",0,"Lucida Console"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont",949,*GulimChe
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",FIXEDSYS,0x00009000
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",DEFAULT,0x00000081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",DotumChe,0x00009081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",@DotumChe,0x0000b081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",Gulim,0x00000081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",@GulimChe,0x0000a081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",@Dotum,0x00003081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",Dotum,0x00001081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",GulimChe,0x00008081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",@Gulim,0x00002081
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Gulim & GulimChe & Dotum & DotumChe (TrueType)",gulim.ttc
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Malgun Gothic (TrueType)",malgun.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Fonts","Malgun Gothic Bold (TrueType)",malgunbd.ttf
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg 2",Tahoma
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes","MS Shell Dlg","Microsoft Sans Serif"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize",GUIFont.Facename,Gulim
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize",GUIFont.Height,0x00000009
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize",GUIFont.CharSet,0x00000081
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize",DisableRemoteFontBootCache,0x00000000
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,h8514fix.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,h8514sys.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,h8514oem.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,hvgafix.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,hvgasys.fon
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,vga949.fon
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",DEFAULT,0
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\FontMapper",FIXEDSYS,36864
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,949
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,949
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,10003
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,vgaoem.fon
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,932,F040-F9FC
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,936,AAA1-AFFE,F8A1-FEFE,A140-A7A0
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,949,C9A1-C9FE,FEA1-FEFE
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage\EUDCCodeRange,950,FA40-FEFE,8E40-A0FE,8140-8DFE,C6A1-C8FE
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,Default,0412
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage,0412
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguageFallback,en-US
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,(Default),00000412
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,00000412
+//-
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\ko-KR",LCID,1042
+//RegWrite,HKLM,0x4,"Tmp_System\ControlSet001\Control\MUI\UILanguages\ko-KR",Type,146
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+
+[AuthorEncoded]
+Locale.jpg=5471,7295
+Logo=Locale.jpg
+
+[EncodedFile-AuthorEncoded-Locale.jpg]
+lines=1
+0=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
+1=CZzM05yYaSKOdKTNPbSac1nUdtmB7yfDvxFTa1T38/uUt6o1gE57G8dXBc2Kqr1S22Bjkqn/glB3V1Fp0579L6QYq6vXhz4ibPXey7wLLMluWls9SRs++2DAOlZXsmBi/W7Cr0Tgx0RIhqlvAR67wNjYXCgNY8H42nFrNpridlHTtWTQTTxfMrE0ssCmGdxtlS3KAN4Uxkn4jWdXJ/nZL7FYp0ggvzota7F0Gevim1tkFrEmf7qGAKtmb+XBg2VqvnNtadoGH/df2KsMofwVNIx35q9WTxcVa1RDKe1jOPMhdimq884M890iCdjHOoppsDbyZFl+a8vmCSZpyiz0/4NnVM0p8+0hFeXEI8pErkCnY9faddJbdJ/1G85wR+1W4NU+cDzxOCkJ4iMx1ez8nYOoFk5ukxaLf4RtYCSTLtLbDWQh0yeBrmouLoNL7zpSaT7NDQFaqdy3WtfreSyVvN+q8mp2EBXnGi0uLRfBteASBLpTFXphy0T6l82b3Sv8vxM9SrO75eBVPSip+EHpe+4aIe5uyXnLlJvjGtvZFJqVNxJIMM0GVFa24mASf9fD1iukiTlhAf9QLpKpYY3l5/xGMWW9ArOi3OndwhS1XnJq3E8ILqlrTKROrrdMXvBRls81ZG8XEte1/de9I0GZ97VfrOCCdTHzUpOw/wOVxv191zplv2+1bvYztUff8sazgV41N/rLWwT+D4hWofhcmqpPr3ph9jFMFdqjVsoIgLiJUo8Am5bu3f66Lj34vdoHzd/Gh9ttaGs/GLuVvaKG3nYnnejV9xogKK9Yy/V20Ech3jGhdULcJpp0ZHDMizuSsJj18gikSnDcWqSNTdk+4u81j/6/jp72i3A5+ji7VpHaJzRsQq6PC2gRvh9mPrP73HbmaFPGFAwbO0poFoEQCWEC2IitaZ7FCndh9F2IHRsOPILrmMPoC8OYf+NGZJeS933+QQYoPPcornrGcUR6pWKaNDkt5rqdjEkGDNNxlPmao4KE0snSnlsml8dmK1aUZFpeNu6fpc4S+dx0feYILlk+iK1aDWXB8RJmhqnKeiQ7Cb+oFKKux/jz5jt9P6s2WvXLS7xebRTL+xMGAeD4xSPtDkautcsMV9TPHmD+GHEDHz/ZCFhdFa/E6L1LMY6lBqVaBq6eTtVjz+wafHdc4vHKSkU5fUsalnCIKJJN9CiUdvNfKIQi5SynpAqQjJdmiD2vjU4W462wrKR+NUx31xgOi9NdHTpptHcSOYlCtNhHqVYP2XuR8U3qfwfVMKAyc4SKHAbtK3mkB/AvMSsMsLrx7QkxeiAvZarh3yiaxOAGPYovmuMttpiJJWJPcsYNCBNpZ+nstcmzxNFukyBrOIXUZdKeRe/dG4LOtx1bWZcIEzS2nKVz7UBMjwxNQhI5G1/piKB8mizju3L8kHRFARZWkSW9Kz8lSxHtifh5BG/wzWHgLxQdgCYrShWJEGq7/1RO43umAjPTqMFSe+275wvaPxdw7hcpajfUdLzteISb8JVXiI66LnKR/6HED+0/jCAlYJllikOW18EgcDRfwRGMp3wJ8EEzZbQccQc5jIRbnn6jWfW6fxRtaW8QL+KAralThq066ILt9ArP6N8R3rDtidTWVVrSX6QIYu9WqajqLy/Kj1nNJGwwiurI7MULkE20R0bSJfVpnAPlzah0/VoPHK7QadytdbYl0nd/62RPlimhtf0HkJV8HcdEpHtcyKf9JgayjBk5d0s0Op8ky7TGnObZdo8RwBtjOfNXtfpiYFnzGpogR96PP+7AYdCmquoirYjwR/pJtxCRCUgRh238JQp0dbwFIUVQomQQ20LcBmmWqVPP2UOfLqRLWT3nDjmWptArw60/dNoAGXEo205vx01aXJ4Q5V4fZPP/74uzbfW5ZfV1HJ87f2nrDUPQKLITLFck1p/snQDDH6DdpOAeXq53HtUoqkuts4NBkvGTJi0K1Zi2dcJCQoT3c0vglRG7zfNlXnoGbx+2bzUCam15DucWAIctszKg8hCF60E5xREa2J0Nxouz+aMtBDk38YLdI8tqkjrrr6iKrwHX2r3+kB1MrSKmWae6x5Paz2uCgbJjLQgmFwPCFdmTeuyNdCt8NBRZXv4oDPyyExJ2E+QxFdqv+2WANhVHSywSEIvGoSh5ypUkNO+Tt2ehbu9gfs1cEk+aWClhfSXV5HPl1duESYKJLgegIfaXJ3RDDyaZo3BtZQSgnnimzjiSubjvU/+I6IxuvBCWOlFsW7+BhDMgA/hIAyNr0Z8xdv0BKJh5A/s8DQ5dxtozpGLrxz+vN4XVYvU3tG+7N5qu0UmTDj6tlOqT/h5Va6MZeRFBaVWnDfsQ+BxteK3fC3bA9J2Q9yHrb2SkpX54HPOsXJW9mvxhXLWob2VhGvEd0b0G7XzLWsLDRR3wqGsgn5SKEnsgrEkEe3N7ruhCrgh5/vlrY1Iap1ir8aHTgxe6Tx3V8mfO9G0Ub3RMB3VG9KdWlld6qhwEqMBA4DnPllbmpVh733VdnDZ8VkfEfWIfvvye7Gne3BpNVrEck2D8FQqldqB/fzdaYoIEbIo47t5kS9V74ySbet/MgeqOPufmQCemfkedbdpldv/pyv+ettTWaZP1uKUvCpwlG97ACdS3rDq+ZPFHwUJ+JdpUagki523Q1ViVXmm0JP7DuLm6dadFblDiHmlJFz5YSnSOzCJX6AqRW+0aZW5G2j8+J5VeV7XarGbJew1CLySYlrmZLP5o14swAjpZO1VpFtAnRhOPOY7MFdnNmYGp3jQBms/CPVegK93dwtjc2fPiBIC2hvRW0Ri+6b4eBUFPrcEDxBY+cYNpAMj9Go+nYykPRjjHUask7EWKzxCebAkgzwmbQ7B/OYMDZgjosbyJVSqiWihIp5o0WRWDb177wS4PvdFJwTO5cgWOqUMEK2vjBQijhx7fTkzqDy+5xjsVWmc1UzOezPAqA8TgVVO1NZ2dfaMPuaLyYXtV9MlFucXMjWD852bazaDJZOKXRJG1T6hEV+NCxQGqny1rybIyZHsOFVsYg7r+CNpG5O9996Sck2E88+7yRsV3cuqKLBobov7RScmbX+PGUTdgF2OPsfCfnxUnic4/LJT07MSdXLKkhnGAUjD4iJQWlR7PJN3y4vZmACACgTBxF1bHnYAQAAAAIAAAAlAAAAFhUAAAAAAAABAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

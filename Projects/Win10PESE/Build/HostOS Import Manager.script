@@ -1,0 +1,532 @@
+[Main]
+Title=HostOS Import Manager
+Description=Import HostOS settings to PE. Locale - Format - Keyboard - TimeZone ...
+Type=Plugin
+Author=ChrisR
+Version=009
+Download_Level=0
+Level=0
+Selected=False
+Mandatory=False
+NoWarning=False
+Credits=http://TheOven.org
+Contact=http://TheOven.org
+Date=2017.11.09
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Build/HostOS%20Import%20Manager.script
+CertifiedBy=
+Certification=
+HistoryNotes01=To switch between visible/nonevisible change Level=1 Level=0
+HistoryNotes02=Variables are not used if the plugin is called from another plugin. Use Set,%variable%,""
+History002=ChrisR - Import Format from HostOS
+History003=ChrisR - Import KeyBoard from HostOS
+History004=ChrisR - Import Locale from HostOS
+History005=ChrisR - Plugin moved to the build folder and redesigned to be called from other plugin (eg: 1 - Copy Files)
+History006=ChrisR - Used Reg copy to copy the keys of the host machine
+History007a=Lancelot - Substitution is not taken into account. --> fallback to main keyboard when custom keyboard used
+History007b=Lancelot - Test section to test adding custom keyboard (for now not working - See: //Set,%CustomTest%,1 )
+History007=Lancelot - Added DU buttons - Date:2015.12.09
+History008=Lancelot - Add Compare Button - Date:2017.02.18
+History009=Lancelot - Fixed [1/1] Interface control [] does not have name ["National Language Support"] () - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.09
+
+[Info]
+The plugin is designed to be called from other plugin (eg: 1 - Copy Files)
+If,ExistFile,"%ProjectDir%\Build\HostOS Import Manager.script",Run,"%ProjectDir%\Build\HostOS Import Manager.script",Called_process,"%ProjectDir%\Build\HostOS Import Manager.script",Locale
+If,ExistFile,"%ScriptDir%\HostOS Import Manager.script",Run,"%ScriptDir%\HostOS Import Manager.script",Called_process,"%ScriptDir%\HostOS Import Manager.script",KeyBoard
+If,ExistFile,"%ScriptDir%\HostOS Import Manager.script",Run,"%ScriptDir%\HostOS Import Manager.script",Called_process,"%ScriptDir%\HostOS Import Manager.script",TimeZone
+
+[Variables]
+%CmdexeFolder%=
+%RegeditexeFolder%=
+%RegexeFolder%=
+
+[Interface]
+pTextLabel1="The plugin is designed to be called from other plugin",1,1,8,10,310,18,8,Bold
+pBevel1=pBevel1,1,12,8,53,220,107
+pTextLabel2=Locale,1,1,16,35,60,18,8,Bold
+CheckBox_Locale=Locale,1,3,16,60,200,18,True
+CheckBox_Format="Format (International)",1,3,16,85,200,18,True
+CheckBox_Keyboard=KeyBoard,1,3,16,110,200,18,True
+CheckBox_Time="Time zone information",1,3,16,135,200,18,True
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Called_process]
+Set,%HostOSScript%,#1
+If,-#1,Equal,-,Set,%HostOSScript%,%ScriptFile%
+If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Set,%RegexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%SysType%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
+If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
+//--
+// Locale NLS, Font
+If,#2,Equal,Locale,Run,%HostOSScript%,Locale
+// Retrieve Format (International)
+If,#2,Equal,Format,Run,%HostOSScript%,Format
+// Keyboard
+If,#2,Equal,KeyBoard,Run,%HostOSScript%,KeyBoard
+// Time Zone Information
+If,#2,Equal,TimeZone,Run,%HostOSScript%,TimeZone
+
+[Process]
+// Comment Exit for tests
+Exit,"The plugin is designed to be called from other plugin"
+Set,%HostOSScript%,%ScriptFile%
+If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Set,%RegexeFolder%,%ProjectTemp%\HostOSTools\
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%SysType%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
+If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
+//--
+// Locale NLS, Font
+If,%CheckBox_Locale%,Equal,True,Run,%HostOSScript%,Locale
+// Retrieve Format (International)
+If,%CheckBox_Format%,Equal,True,Run,%HostOSScript%,Format
+// Keyboard
+If,%CheckBox_KeyBoard%,Equal,True,Run,%HostOSScript%,KeyBoard
+// Time Zone Information
+If,%CheckBox_Time%,Equal,True,Run,%HostOSScript%,TimeZone
+
+[Process_CopyF]
+If,Not,ExistFile,%TargetDir%\#1,Begin
+If,ExistFile,%InstallSRC%\#1,FileCopy,%InstallSRC%\#1,%TargetDir%\#1
+End
+
+[Locale]
+Echo,"Processing HostOS Locale..."
+RegHiveLoad,Tmp_System,%RegSystem%
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,ACP,Begin
+Set,%ACP%,""
+Set,%ACPFile%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,ACP,%ACP%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,%ACP%
+If,Not,%ACP%,Equal,,RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,%ACP%,%ACPFile%
+If,Not,%ACPFile%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\System32\%ACPFile%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP,RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,ACP
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,MACCP,Begin
+Set,%MACCP%,""
+Set,%MACCPFile%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,MACCP,%MACCP%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,%MACCP%
+If,Not,%MACCP%,Equal,,RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,%MACCP%,%MACCPFile%
+If,Not,%MACCPFile%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\System32\%MACCPFile%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP,RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,MACCP
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,OEMCP,Begin
+Set,%OEMCP%,""
+Set,%OEMCPFile%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,OEMCP,%OEMCP%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,%OEMCP%
+If,Not,%OEMCP%,Equal,,RegRead,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,%OEMCP%,%OEMCPFile%
+If,Not,%OEMCPFile%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\System32\%OEMCPFile%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP,RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMCP
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,OEMHAL,Begin
+Set,%OEMHAL%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\CodePage,OEMHAL,%OEMHAL%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,%OEMHAL%
+If,Not,%OEMHAL%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%OEMHAL%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL,RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\CodePage,OEMHAL
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Language,Default,Begin
+Set,%LanguageDefault%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Language,Default,%LanguageDefault%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,Default,%LanguageDefault%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\Language,Default,RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\Language,Default
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Language,InstallLanguage,Begin
+Set,%InstallLanguage%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Language,InstallLanguage,%InstallLanguage%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage,%InstallLanguage%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage,RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\Language,InstallLanguage
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Locale,,Begin
+Set,%DftLocale%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Locale,,%DftLocale%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,,%DftLocale%
+End
+//-
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Locale,(Default),Begin
+Set,%LocaleDefault%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\Nls\Locale,(Default),%LocaleDefault%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\Nls\Locale,(Default),%LocaleDefault%
+End
+Else,Begin
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\Nls\Locale,(Default),RegDelete,HKLM,Tmp_System\ControlSet001\Control\Nls\Language,(Default)
+End
+//-
+RegHiveUnLoad,Tmp_System
+//--
+RegHiveLoad,Tmp_software,%RegSoftware%
+//- Console RasterFonts (writing keys, if keysexists in host and if file in Target)
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,Begin
+Set,%CGA40WOA%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,%CGA40WOA%
+If,Not,%CGA40WOA%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%CGA40WOA%
+If,ExistFile,%TargetDir%\Windows\Fonts\%CGA40WOA%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,%CGA40WOA%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA40WOA.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,Begin
+Set,%CGA80WOA%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,%CGA80WOA%
+If,Not,%CGA80WOA%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%CGA80WOA%
+If,ExistFile,%TargetDir%\Windows\Fonts\%CGA80WOA%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,%CGA80WOA%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",CGA80WOA.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,Begin
+Set,%EGA40WOA%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,%EGA40WOA%
+If,Not,%EGA40WOA%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%EGA40WOA%
+If,ExistFile,%TargetDir%\Windows\Fonts\%EGA40WOA%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,%EGA40WOA%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA40WOA.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,Begin
+Set,%EGA80WOA%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,%EGA80WOA%
+If,Not,%EGA80WOA%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%EGA80WOA%
+If,ExistFile,%TargetDir%\Windows\Fonts\%EGA80WOA%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,%EGA80WOA%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",EGA80WOA.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,Begin
+Set,%woafont%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,%woafont%
+If,Not,%woafont%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%woafont%
+If,ExistFile,%TargetDir%\Windows\Fonts\%woafont%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,%woafont%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\Console\RasterFonts",woafont
+End
+//- GRE_Initialize nt5x do not take keys HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize",FIXEDFON.FON ,FONTS.FON, OEMFONT.FON
+//- GRE_Initialize nt6x ((writing keys, if keysexists in host and if file in Target)
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,Begin
+Set,%LFIXEDFON%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,%LFIXEDFON%
+If,Not,%LFIXEDFON%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%LFIXEDFON%
+If,ExistFile,%TargetDir%\Windows\Fonts\%LFIXEDFON%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,%LFIXEDFON%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FIXEDFON.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,Begin
+Set,%LFONTS%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,%LFONTS%
+If,Not,%LFONTS%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%LFONTS%
+If,ExistFile,%TargetDir%\Windows\Fonts\%LFONTS%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,%LFONTS%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",FONTS.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,Begin
+Set,%LOEMFONT%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,%LOEMFONT%
+If,Not,%LOEMFONT%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%LOEMFONT%
+If,ExistFile,%TargetDir%\Windows\Fonts\%LOEMFONT%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,%LOEMFONT%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\LargeFont",OEMFONT.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,Begin
+Set,%SFIXEDFON%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,%SFIXEDFON%
+If,Not,%SFIXEDFON%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%SFIXEDFON%
+If,ExistFile,%TargetDir%\Windows\Fonts\%SFIXEDFON%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,%SFIXEDFON%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FIXEDFON.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,Begin
+Set,%SFONTS%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,%SFONTS%
+If,Not,%SFONTS%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%SFONTS%
+If,ExistFile,%TargetDir%\Windows\Fonts\%SFONTS%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,%SFONTS%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",FONTS.FON
+End
+//-
+If,ExistRegKey,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,Begin
+Set,%SOEMFONT%,""
+RegRead,HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,%SOEMFONT%
+If,Not,%SOEMFONT%,Equal,,Run,%HostOSScript%,Process_CopyF,Windows\Fonts\%SOEMFONT%
+If,ExistFile,%TargetDir%\Windows\Fonts\%SOEMFONT%,RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,%SOEMFONT%
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON
+End
+End
+Else,Begin
+If,ExistRegKey,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON,RegDelete,HKLM,"Tmp_software\Microsoft\Windows NT\CurrentVersion\GRE_Initialize\SmallFont",OEMFONT.FON
+End
+//--
+RegHiveUnLoad,Tmp_software
+
+[KeyBoard]
+Echo,"Processing HostOS KeyBoard..."
+Set,%CountPreload%,1
+Set,%EnUS409%,Noo
+//--
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Default,%RegDefault%
+// Copy up to Four default keyboard layout DLLs
+Loop,%HostOSScript%,CopyKeyboardDLL,1,4
+//-
+If,%CountPreload%,Equal,1,Begin
+// if no defined keyboard, Write en-US Keyboard, KBDUS.dll already copied
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload",1,00000409
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},Default,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},Profile,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},KeyboardLayout,67699721
+Set,%EnUS409%,Yes
+StrFormat,INC,%CountPreload%,1
+End
+//-
+If,Not,%EnUS409%,Equal,Yes,Begin
+// For safety reasons, if no en-US keyboard defined, Write en-US Keyboard, KBDUS.dll already copied
+RegWrite,HKLM,0x1,"Tmp_Default\Keyboard Layout\Preload",%CountPreload%,00000409
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},Default,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},Profile,{00000000-0000-0000-0000-000000000000}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\CTF\Assemblies\0x00000409\{34745C63-B2F0-4784-8B67-5E12C8701A31},KeyboardLayout,67699721
+Set,%EnUS409%,Yes
+StrFormat,INC,%CountPreload%,1
+End
+//-
+RegHiveUnLoad,Tmp_default
+RegHiveUnLoad,Tmp_System
+
+[CopyKeyboardDLL]
+// #c is the number of the keyboard layout, starting with 1.
+If,ExistRegKey,HKCU,"Keyboard Layout\Preload",#c,Begin
+RegRead,HKCU,"Keyboard Layout\Preload",#c,%LVAR%
+If,ExistRegKey,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVAR%","Layout File",Begin
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVAR%","Layout File",%LVARFile%
+//- Substitutes
+If,ExistRegKey,HKCU,"Keyboard Layout\Substitutes",%LVAR%,Begin
+RegRead,HKCU,"Keyboard Layout\Substitutes",%LVAR%,%LVARSub%
+If,ExistRegKey,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVARSub%","Layout File",Begin
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVARSub%","Layout File",%LVARSubFile%
+// KeyBoard and Substitutes OK
+If,%LVAR%,Equal,00000409,Set,%EnUS409%,Yes
+RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Preload",%CountPreload%,%LVAR%
+Run,%HostOSScript%,CTF_Assemblies,%LVAR%
+Run,%HostOSScript%,Process_CopyF,Windows\System32\%LVARFile%
+RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Substitutes",%LVAR%,%LVARSub%
+Run,%HostOSScript%,CTF_Assemblies,%LVARSub%
+Run,%HostOSScript%,Process_CopyF,Windows\System32\%LVARSubFile%
+//message,"KeyBoard %CountPreload% OK %LVAR% - %LVARFile%. KeyBoardSub %CountPreload% OK %LVARSub% - %LVARSubFile%"
+StrFormat,INC,%CountPreload%,1
+End
+Else,Begin
+// KeyBoard and Substitutes not OK -- Custom Keyboard is also a Substitute -- Fallback to: KeyBoard OK without Substitution
+//--
+// KeyBoard OK without Substitution
+If,%LVAR%,Equal,00000409,Set,%EnUS409%,Yes
+RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Preload",%CountPreload%,%LVAR%
+Run,%HostOSScript%,CTF_Assemblies,%LVAR%
+Run,%HostOSScript%,Process_CopyF,Windows\System32\%LVARFile%
+//message,"KeyBoard %CountPreload% OK %LVAR% - %LVARFile%."
+//StrFormat,INC,%CountPreload%,1
+//--
+//Echo,"Import HosOS keyboard. Your keyboard #c: %LVAR% and substitution: %LVARSub% does not appear to be a 'standard' win keyboard, it is not taken into account.",WARN
+Echo,"Import HosOS keyboard. Your keyboard #c: %LVAR% and substitution: %LVARSub% does not appear to be a 'standard' win keyboard. Substitution is not taken into account.",WARN
+//--
+//--------
+Set,%CustomTest%,0
+//Set,%CustomTest%,1
+If,%CustomTest%,Equal,1,Begin
+//------------------- Add Custom Keyboard
+//SourceArch - HostOSArch -> We can copy custom keyboards on some conditions (host x86 - source not x86 -> do not copy custom keyboard)
+// (ps: maybe keyboard dll compatible to all arch - not tested - for now following conditions)
+Call,HostOSArch
+If,%HostOSArch%,Equal,%SourceArch%,Begin
+//-
+Call,HostWindowsDir
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%LVARSub%#$q #$qHKLM\Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVARSub%#$q /s /f"
+//Adding Substitues here cause not working keyboard (fallback us) ! RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Substitutes",%LVAR%,%LVARSub%
+//Workaround this way did not help (fallback us) --------------->   RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Preload",%CountPreload%,%LVARSub%
+//-
+//x86x86 - x64x64 - IA64IA64
+RegRead,HKLM,"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%LVARSub%","Layout File",%t%
+FileCopy,%HostWindowsDir%\System32\%t%,%Target_Sys%
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,FileCopy,%HostWindowsDir%\SysWOW64\%t%,%Target_Win%\SysWOW64
+End
+End
+Else,Begin
+If,Not,%HostOSArch%,Equal,x86,Begin
+//-
+Call,HostWindowsDir
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%LVARSub%#$q #$qHKLM\Tmp_System\ControlSet001\Control\Keyboard Layouts\%LVARSub%#$q /s /f"
+//Adding Substitues here cause not working keyboard (fallback us) ! RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Substitutes",%LVAR%,%LVARSub%
+//Workaround this way did not help (fallback us) --------------->   RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Preload",%CountPreload%,%LVARSub%
+//-
+//x64x86 - IA64x86
+RegRead,HKLM,"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%LVARSub%","Layout File",%t%
+If,%SourceArch%,Equal,x86,FileCopy,%HostWindowsDir%\SysWOW64\%t%,%Target_Sys%
+End
+End
+//------------------- Add Custom Keyboard
+End
+//-
+StrFormat,INC,%CountPreload%,1
+//--------
+End
+End
+Else,Begin
+//--
+// KeyBoard OK without Substitution
+If,%LVAR%,Equal,00000409,Set,%EnUS409%,Yes
+RegWrite,HKLM,0x1,"Tmp_default\Keyboard Layout\Preload",%CountPreload%,%LVAR%
+Run,%HostOSScript%,CTF_Assemblies,%LVAR%
+Run,%HostOSScript%,Process_CopyF,Windows\System32\%LVARFile%
+//message,"KeyBoard %CountPreload% OK %LVAR% - %LVARFile%."
+StrFormat,INC,%CountPreload%,1
+//--
+End
+End
+Else,echo,"Import HosOS keyboard. Your keyboard #c: %LVAR% does not appear to be a 'standard' win keyboard, it is not taken into account.",WARN
+End
+
+[CTF_Assemblies]
+//If,ExistRegSection,HKCU,Software\Microsoft\CTF\Assemblies\0x#1,message,"Assemblies OK 0x#1"
+//Else,message,"Assemblies NOT OK 0x#1"
+If,ExistRegSection,HKCU,Software\Microsoft\CTF\Assemblies\0x#1,Begin
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKCU\Software\Microsoft\CTF\Assemblies\0x#1#$q #$qHKLM\Tmp_Default\Software\Microsoft\CTF\Assemblies\0x#1#$q /s /f"
+End
+
+[Format]
+Echo,"Processing HostOS Format (International)..."
+If,ExistRegSection,HKCU,"Control Panel\International",Begin
+RegHiveLoad,Tmp_Default,%RegDefault%
+ShellExecute,hide,%RegexeFolder%reg.exe,"delete #$qHKLM\Tmp_Default\Control Panel\International#$q /f"
+//System,ERROROFF
+//If,ExistRegSection,HKLM,"Tmp_Default\Control Panel\International",RegDelete,HKLM,"Tmp_Default\Control Panel\International"
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKCU\Control Panel\International#$q #$qHKLM\Tmp_Default\Control Panel\International#$q /s /f"
+RegHiveUnLoad,Tmp_Default
+End
+
+[TimeZone]
+Echo,"Processing HostOS time zone information..."
+RegHiveLoad,Tmp_System,%RegSystem%
+If,ExistRegSection,HKLM,SYSTEM\CurrentControlSet\Control\TimeZoneInformation,Begin
+If,ExistRegSection,HKLM,Tmp_System\ControlSet001\Control\TimeZoneInformation,RegDelete,HKLM,Tmp_System\ControlSet001\Control\TimeZoneInformation
+ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation#$q #$qHKLM\Tmp_System\ControlSet001\Control\TimeZoneInformation#$q /s /f"
+End
+//-
+// Do not write ActiveTimeBias to keep the CMOS time
+If,ExistRegKey,HKLM,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias,RegDelete,HKLM,Tmp_System\ControlSet001\Control\TimeZoneInformation,ActiveTimeBias
+//-
+// nt5x DisableAutoDaylightTimeSet==> nt6x DynamicDaylightTimeDisabled
+If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\Control\TimeZoneInformation,DisableAutoDaylightTimeSet,Begin
+Set,%DisableAutoDaylightTimeSet%,""
+RegRead,HKLM,SYSTEM\CurrentControlSet\Control\TimeZoneInformation,DisableAutoDaylightTimeSet,%DisableAutoDaylightTimeSet%
+RegDelete,HKLM,Tmp_System\ControlSet001\Control\TimeZoneInformation,DisableAutoDaylightTimeSet
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\TimeZoneInformation,DynamicDaylightTimeDisabled,%DisableAutoDaylightTimeSet%
+End
+RegHiveUnLoad,Tmp_System
+
+[AuthorEncoded]
+time.jpg=2666,3555
+Logo=time.jpg
+
+[EncodedFile-AuthorEncoded-time.jpg]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

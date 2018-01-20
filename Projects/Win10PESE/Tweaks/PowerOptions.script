@@ -1,0 +1,119 @@
+[Main]
+Title=Power Options
+Type=Plugin
+Author=ChrisR
+Description=Customize Power Options
+Credits=http://TheOven.org
+Version=005
+Download_Level=1
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2016.11.28
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Tweaks/PowerOptions.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History002=ChrisR - Disable USB Selective suspend added - 2014.09.28
+History003=Lancelot - Added DU Buttons
+History004=ChrisR - compatible with Win10pese - Date:2016.02.09
+History005=Lancelot - Fixed DL Button - Date:2016.11.28
+
+[InterFace]
+Battery_TextLabel="On battery",1,1,161,15,64,18,8,Bold
+Plugged_TextLabel="Plugged in",1,1,231,15,62,18,8,Bold
+Monitor_TextLabel="Turn off display (minutes):",1,1,10,36,150,18,8,Normal
+MonitorDC_NumberBox=MonitorDC_NumberBox,1,2,161,33,50,22,5,0,300,1
+MonitorAC_NumberBox=MonitorAC_NumberBox,1,2,231,33,50,22,0,0,300,1
+Disk_TextLabel="Turn off hard disk (minutes):",1,1,10,66,150,18,8,Normal
+DiskDC_NumberBox=DiskDC_NumberBox,1,2,161,63,50,22,20,0,300,1
+DiskAC_NumberBox=DiskAC_NumberBox,1,2,231,63,50,22,0,0,300,1
+USBsuspend_TextLabel="Disable USB Selective suspend:",1,1,10,96,150,18,8,Normal
+USBsuspendDC_CheckBox=,1,3,161,94,20,18,True
+USBsuspendAC_CheckBox=,1,3,231,94,20,18,True
+pBevel1=pBevel1,1,12,4,10,292,106
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramEXE%=
+%ProgramFolder%=
+%ProgramTitle%="Power Options"
+
+[Process]
+Echo,"Processing %ScriptTitle%..."
+Set,%MonitorDC%,%MonitorDC_NumberBox%
+Set,%MonitorAC%,%MonitorAC_NumberBox%
+Set,%DiskDC%,%DiskDC_NumberBox%
+Set,%DiskAC%,%DiskAC_NumberBox%
+//--
+//If,ExistFile,%target_sys%\autorun.cmd,Begi-n
+//TXTDelLine,%target_sys%\autorun.cmd,exit
+//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /monitor-timeout-ac %MonitorAC% >nul",Append
+//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /monitor-timeout-dc %MonitorDC% >nul",Append
+//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /disk-timeout-ac %DiskAC% >nul",Append
+//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /disk-timeout-dc %DiskDC% >nul",Append
+//TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//En-d
+//--
+StrFormat,MULT,%MonitorDC%,60
+StrFormat,MULT,%MonitorAC%,60
+StrFormat,MULT,%DiskDC%,60
+StrFormat,MULT,%DiskAC%,60
+//--
+RegHiveLoad,Tmp_System,%RegSystem%
+// Monitor Timeout
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\7516b95f-f776-4464-8c53-06167f40cc99\3c0bc021-c8a8-4e07-a973-6b14cbcb2b7e,ACSettingIndex,%MonitorAC%
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\7516b95f-f776-4464-8c53-06167f40cc99\3c0bc021-c8a8-4e07-a973-6b14cbcb2b7e,DCSettingIndex,%MonitorDC%
+// Disk Timeout
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\0012ee47-9041-4b5d-9b77-535fba8b1442\6738e2c4-e8a5-4a42-b16a-e040e769756e,ACSettingIndex,%DiskAC%
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\0012ee47-9041-4b5d-9b77-535fba8b1442\6738e2c4-e8a5-4a42-b16a-e040e769756e,DCSettingIndex,%DiskDC%
+// Disable USB Selective suspend on battery
+If,%USBsuspendDC_CheckBox%,Equal,True,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\2a737441-1930-4402-8d77-b2bebba308a3\48e6b7a6-50f5-4782-a5d4-53bb8f07e226,DCSettingIndex,0
+Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\2a737441-1930-4402-8d77-b2bebba308a3\48e6b7a6-50f5-4782-a5d4-53bb8f07e226,DCSettingIndex,1
+// Disable USB Selective suspend plugged in
+If,%USBsuspendAC_CheckBox%,Equal,True,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\2a737441-1930-4402-8d77-b2bebba308a3\48e6b7a6-50f5-4782-a5d4-53bb8f07e226,ACSettingIndex,0
+Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Power\User\PowerSchemes\381b4222-f694-41f0-9685-ff5bb260df2e\2a737441-1930-4402-8d77-b2bebba308a3\48e6b7a6-50f5-4782-a5d4-53bb8f07e226,ACSettingIndex,1
+RegHiveUnLoad,Tmp_System
+
+[AuthorEncoded]
+PowerOptions.jpg=3567,4756
+Logo=PowerOptions.jpg
+
+[EncodedFile-AuthorEncoded-PowerOptions.jpg]
+lines=1
+0=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
+1=YynPixb0+0ByNFS17s++Ty+RB4C9X9cEJ3l/8TYdrg7USEmlMWwYlxROfR762mIWl1OteBXjNsOg3LzlfFPgj3Z/5rs0gDo/tnvX2d1NI4Kc/GMd4+Tyax75q+JageJ5mlCXc7JHYfJOIbzO/GF4YU4wNX4yJjMDx90IHuwk1vW+7v3jW09/Ueu4EKbiagadGVWdLCORkZUlaq7+zSE965/qaTSWo9gqLcFt8TmgSxTLVKPFtuZY0U0RBVep7emWp4hvFCpNk4qC30qrtzoLhAI1wi8aJrpMeNKiJo9tRV9gGihcHZ32afZ5MbU9ewm2pkXRJaUTTBaqA9XMFiDBXz67NiZhzWa5fYUVtxM3MUMylnxRaL9ey/knmyzu0Wxns2CLaBWssXcRFP7JSrpg3Rza7DjWCRw5Xj3f5hdYupOR4oiTINrMjCwKCKJAO/fbvTA5D6VRrQTvjWN2YWuyR12BRuUnZQVzVcuU/FpEC51kSthcjrQHCVFdestIEn0sb7GHVmquF+vSalYoU5pHDjVWT9ni9HuYr4+j2SO/cfcw7mNHicEwjIL08t8i8oyczPK9bLKkhnGAUjCXTzQej5vNjlTT9lNTIwAQDmbwnSwz9MOQEAAAACAAAALAAAAJ8NAAAAAAAAAQAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

@@ -1,0 +1,364 @@
+[Main]
+Title=Mount
+Type=Plugin
+Author=yahooUK, ChrisR, Homes32, NightMan
+Description=Mount your Target and/or Source  - Ease repair your build without rebuilding your project
+Credits=http://TheOven.org
+Version=022
+Download_Level=0
+Level=10
+Selected=None
+Mandatory=True
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.01.11_13:09.36 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/54-Mount.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History015=ChrisR Rewrite the plugin with Repair Mount, edit or export Hive, Unmount
+History014=Lancelot syntax fixes and adjustments for a general usage
+History016=Homes32 extensive overhaul of interface and registry processes.
+History017=Lancelot plugin specialized to be used on Mount Tasks (using 00-RepairMount plugin) // Tips some macro tricks not used - to ease maintance and at some points speed.
+History018=ChrisR Mount/unmount with WimUtil in addition if configured
+History019=Lancelot IniVariables support added
+History020=ChrisR Win8CD SourceType - 2012.12.28
+History021=Lancelot Added DU Buttons
+History022=Nikzzzz Win8.1CD and Win10CD SourceType - Date:2016.12.07 // Lancelot - Add Compare Button - Date:2017.01.11
+
+[Interface]
+UnMount_Info_TextLabel="When your Mount tasks finished press 'UnMount' to save any changes you have made. ",1,1,3,27,240,30,8,Normal
+//--
+Target_Mount_Bevel=pBevel1,1,12,2,65,537,133
+Target_TextLabel="Mount PE (Target)",1,1,9,70,103,18,8,Normal
+Target_Mount_Button="Mount    ",1,8,7,102,115,40,TargetMount_BTN,mount.bmp,False,_TargetMount_BTN_,False
+Target_UnMount_Button=UnMount,1,8,7,149,115,40,TargetUnMount_BTN,unmount.bmp,False,False,_TargetUnMount_BTN_,False
+Target_OpenMountDir_Button="Open Mount Folder",1,8,135,102,115,40,TargetOpenMountDir,0,False,False,_TargetOpenMountDir_,False
+//--
+SB_Bevel=pBevel2,1,12,200,153,333,32
+SB_TextLabel="Mount Point:",1,1,206,160,65,18,8,Normal
+SB_MountHere=%BaseDir%\Mount\%ProjectName%\Target,1,4,273,158,253,21,%BaseDir%\Mount\%ProjectName%\Target,%TargetDir%
+//--
+Source_Mount_Bevel=pBevel1,1,12,3,204,536,113
+Source_TextLabel="Mount Source",1,1,11,208,76,18,8,Normal
+Source_Mount_Button="Mount    ",1,8,7,230,115,40,SourceMount_BTN,mount.bmp,False,_SourceMount_BTN_,False
+Source_UnMount_Button=UnMount,1,8,7,274,115,40,SourceUnMount_BTN,unmount.bmp,False,False,_SourceUnMount_BTN_,False
+Source_OpenMountDir_Button="Open Mount Folder",1,8,135,230,115,40,SourceOpenMountDir,0,False,False,_SourceOpenMountDir_,False
+Source_Cont_bwim_TextLabel="boot.wim container",1,1,310,231,96,18,8,Normal
+Source_Cont_iwim_TextLabel="install.wim container",1,1,305,258,101,18,8,Normal
+Source_Cont_bwim_ScrollBox=2,1,4,412,231,55,21,1,2,3,4,5,6,7,8,9,10
+Source_Cont_iwim_ScrollBox=1,1,4,412,257,56,21,1,2,3,4,5,6,7,8,9,10
+//--
+Target_UnMountAll_Button="UnMount All",1,8,241,21,115,40,TargetUnMountAll_BTN,unmount.bmp,False,False,_TargetUnMountAll_BTN_,False
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%BootA%=%TargetDir%\sources
+%BootAFN%=boot.wim
+%BootAF%=%BootA%\%BootAFN%
+//--
+%BootV%=%TargetDir%
+%BootVFN%=vistape.wim
+%BootVF%=%BootV%\%BootVFN%
+//--
+%BootL%=%TargetDir%\Leopard
+%BootLFN%=Leopard.wim
+%BootLF%=%BootL%\%BootLFN%
+//--
+%Mount%=%SB_MountHere%
+%TSuccess%=1
+%TUnSuccess%=1
+%MountF%=
+%ImageXShow%=Hide
+//%ImageXShow%=Open
+//Set,%ImageXShow%,Open
+
+[Process]
+Echo,"You can't run this plugin directly!"
+
+[TargetMount_BTN]
+If,Not,ExistVar,%RegSoftware%,If,ExistFile,%target_sys%\config\software,Set,%RegSoftware%,%target_sys%\config\software
+If,Not,ExistFile,%RegSoftware%,If,ExistFile,%Mount%\Windows\System32\config\software,Set,%RegSoftware%,%Mount%\Windows\System32\config\software
+If,ExistFile,%RegSoftware%,Message,"No need to mount :>",Information,1
+If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
+If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
+If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
+If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
+Else,Run,%scriptfile%,TargetMount
+
+[TargetMount]
+Echo,"Starting Mount process..."
+ReadEnv
+If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+//--
+If,ExistFile,%BootAF%,Set,%MountF%,%BootAF%
+If,ExistFile,%BootVF%,Set,%MountF%,%BootVF%
+If,ExistFile,%BootLF%,Set,%MountF%,%BootLF%
+If,Not,ExistFile,%MountF%,Echo,"Wim File not found"
+If,Not,ExistFile,%MountF%,Message,"Wim File not found",Error
+If,Not,ExistFile,%MountF%,Halt,"Wim File not found"
+//--
+If,Not,ExistDir,%Mount%,DirMake,%Mount%
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/mountrw #$q%MountF%#$q 1 #$q%Mount%#$q",%IMAGEXPath%
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/mount #$q%MountF%#$q 1 #$q%Mount%#$q /RW",%WIMUTILPath%
+End
+//--
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount successful :)"
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount successful :)",Information,%TSuccess%
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Set,%mountmade%,YES
+If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount NOT successful return : %ExitCode% :(",Warn
+If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount NOT successful return : %ExitCode% :(",ERROR
+
+[ImageXNotFound]
+Echo,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount/unmount !!!",Warn
+Message,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount/unmount !!!#$x#$xExiting...",Error
+Halt,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount/unmount. Exiting..."
+
+[WimUtilNotFound]
+Echo,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount/unmount !!!",Warn
+Message,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount/unmount !!!#$x#$xExiting...",Error
+Halt,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount/unmount. Exiting..."
+
+[TargetUnMount_BTN]
+Run,%scriptfile%,TargetUnMount
+
+[TargetUnMount]
+Echo,"Starting Unmount process..."
+ReadEnv
+If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+//--
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%Mount%#$q",%IMAGEXPath%
+//To Avoid end user mistakes unmount other mount option
+If,%Mount%,Equal,%TargetDir%,ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%BaseDir%\Mount\%ProjectName%\Target#$q",%IMAGEXPath%
+If,%Mount%,Equal,%BaseDir%\Mount\%ProjectName%\Target,ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%TargetDir%#$q",%IMAGEXPath%
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%Mount%#$q /Commit /nowarn",%WIMUTILPath%
+//To Avoid end user mistakes unmount other mount option
+If,%Mount%,Equal,%TargetDir%,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BaseDir%\Mount\%ProjectName%\Target#$q /Commit /nowarn",%WIMUTILPath%
+If,%Mount%,Equal,%BaseDir%\Mount\%ProjectName%\Target,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%TargetDir%#$q /Commit /nowarn",%WIMUTILPath%
+End
+//--
+//If,Not,ExistDir,%Mount%,DirMake,%Mount%
+If,ExistFile,%Mount%\Windows\System32\config\system,Echo,"Unmount NOT successful :(",Warn
+If,ExistFile,%Mount%\Windows\System32\config\system,Message,"Unmount NOT successful :(",ERROR
+If,Not,ExistFile,%Mount%\Windows\System32\config\system,Echo,"Unmount Successful :)"
+If,Not,ExistFile,%Mount%\Windows\System32\config\system,Message,"Unmount Successful :)",Information,%TUnSuccess%
+//If,Not,%Mount%,EQUAL,%TargetDir%,Begin
+//If,Not,ExistFile,%Mount%\bootmgr,Echo,"Unmount Successful :)"
+//If,Not,ExistFile,%Mount%\bootmgr,Message,"Unmount Successful :)",Information,1
+//If,ExistFile,%Mount%\bootmgr,Echo,"Unmount NOT successful :(",Warn
+//If,ExistFile,%Mount%\bootmgr,Message,"Unmount NOT successful :(",ERROR
+//End
+
+[TargetOpenMountDir]
+If,Not,ExistDir,%Mount%,Message,"No Mounted folder around",Error
+If,Not,ExistDir,%Mount%,Exit,"No Mounted folder around"
+System,FILEREDIRECT,OFF
+ShellExecuteEx,Open,explorer.exe,/e#$c#$q%Mount%#$q,%Mount%
+System,FILEREDIRECT,ON
+
+[SourceMount_BTN]
+ReadEnv
+Set,%t%,""
+IniRead,%projectdir%\script.project,IniVariables,ExtractWimFolder,%t%
+If,Not,%t%,Equal,"",Set,%ExtractWimFolder%,%t%
+// If not extracted wim folder - Mount and check that mounted successfully
+If,Not,%ExtractWimFolder%,Equal,Yes,Begin
+If,Not,ExistDir,%BootSRC%,DirMake,%BootSRC%
+If,Not,ExistDir,%InstallSRC%,DirMake,%InstallSRC%
+If,%SourceType%,Equal,"",Run,%ScriptFile%,SourceNotConfigured
+If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+If,%SourceType%,Equal,VistaCD,Run,%ScriptFile%,SourceMountCD
+If,%SourceType%,Equal,Win7CD,Run,%ScriptFile%,SourceMountCD
+If,%SourceType%,Equal,Win8CD,Run,%ScriptFile%,SourceMountCD
+If,%SourceType%,Equal,Win8.1CD,Run,%ScriptFile%,SourceMountCD
+If,%SourceType%,Equal,Win10CD,Run,%ScriptFile%,SourceMountCD
+If,%SourceType%,Equal,WAIK,Run,%ScriptFile%,SourceMountWAIK
+End
+
+[SourceMountCD]
+Echo,"Mounting Windows Source CD files with imagex.exe..."
+// Variable %WIMIndex%
+Set,%t%,""
+IniRead,%projectdir%\script.project,IniVariables,WIMIndex,%t%
+If,Not,%t%,Equal,"",Set,%WIMIndex%,%t%
+Set,%WIMIndxB%,2
+Set,%WIMIndex%,1
+Set,%WIMIndxB%,%Source_Cont_bwim_ScrollBox%
+Set,%WIMIndex%,%Source_Cont_iwim_ScrollBox%
+//--
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/mount #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q%InstallSRC%#$q",%IMAGEXPath%
+Run,%ScriptFile%,CheckMountInstallWim
+ShellExecute,Hide,%IMAGEX%,"/mount #$q%SourceDir%\sources\boot.wim#$q %WIMIndxB% #$q%BootSRC%#$q",%IMAGEXPath%
+Run,%ScriptFile%,CheckMountBootWim
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/mount #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q%InstallSRC%#$q",%WIMUTILPath%
+Run,%ScriptFile%,CheckMountInstallWim
+ShellExecute,Hide,%WIMUTIL%,"/mount #$q%SourceDir%\sources\boot.wim#$q %WIMIndxB% #$q%BootSRC%#$q",%WIMUTILPath%
+Run,%ScriptFile%,CheckMountBootWim
+End
+//--
+If,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows\explorer.exe,Echo,"Mount successful :)"
+If,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows\explorer.exe,Message,"Mount successful :)",Information,%TSuccess%
+
+[CheckMountBootWim]
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Error with mounting source! (Boot.wim) return : %ExitCode% :(",Warn
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Message,"Error with mounting source! (Boot.wim) return : %ExitCode% :(",ERROR
+
+[CheckMountInstallWim]
+If,Not,ExistFile,%InstallSRC%\Windows\explorer.exe,Echo,"Error with mounting source! (Install.wim) return : %ExitCode% :(",Warn
+If,Not,ExistFile,%InstallSRC%\Windows\explorer.exe,Message,"Error with mounting source! (Install.wim) return : %ExitCode% :(",ERROR
+
+[SourceMountWAIK]
+Echo,"Mounting WAIK files with imagex.exe..."
+If,Not,ExistVar,%SourceArch%,Set,%SourceArch%,x86
+Set,%WAIKArch%,%SourceArch%
+If,%SourceArch%,Equal,x64,Set,%WAIKArch%,amd64
+Set,%waikwimfile%,%Sourcedir%\Tools\PETools\%WAIKArch%\winpe.wim
+//--
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/mount #$q%waikwimfile%#$q 1 #$q%BootSRC%#$q"
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/mount #$q%waikwimfile%#$q 1 #$q%BootSRC%#$q",%WIMUTILPath%
+End
+//--
+If,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Mount successful :)"
+If,ExistFile,%BootSRC%\Windows\regedit.exe,Message,"Mount successful :)",Information,%TSuccess%
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Error with mounting source! (winpe.wim) return : %ExitCode% :(",Warn
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Message,"Error with mounting source! (winpe.wim) return : %ExitCode% :(",ERROR
+
+[SourceUnMount_BTN]
+ReadEnv
+Set,%t%,""
+IniRead,%projectdir%\script.project,IniVariables,ExtractWimFolder,%t%
+If,Not,%t%,Equal,"",Set,%ExtractWimFolder%,%t%
+// If not extracted wim folder - UnMount and check that UnMounted successfully
+If,Not,%ExtractWimFolder%,Equal,Yes,Begin
+If,%SourceType%,Equal,"",Run,%ScriptFile%,SourceNotConfigured
+If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+If,%SourceType%,Equal,VistaCD,Run,%ScriptFile%,SourceUnMountCD
+If,%SourceType%,Equal,Win7CD,Run,%ScriptFile%,SourceUnMountCD
+If,%SourceType%,Equal,Win8CD,Run,%ScriptFile%,SourceUnMountCD
+If,%SourceType%,Equal,Win8.1CD,Run,%ScriptFile%,SourceUnMountCD
+If,%SourceType%,Equal,Win10CD,Run,%ScriptFile%,SourceUnMountCD
+If,%SourceType%,Equal,WAIK,Run,%ScriptFile%,SourceUnMountWAIK
+End
+
+[SourceUnMountCD]
+Echo,"UnMounting Windows Source CD files with imagex.exe..."
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/unmount #$q%InstallSRC%#$q",%IMAGEXPath%
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q /nowarn",%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%InstallSRC%#$q /nowarn",%WIMUTILPath%
+End
+If,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows\explorer.exe,Echo,"Unmount NOT successful :(",Warn
+If,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows\explorer.exe,Message,"Unmount NOT successful :(",ERROR
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows\explorer.exe,Echo,"Mount successful :)"
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows\explorer.exe,Message,"Mount successful :)",Information,%TUnSuccess%
+
+[SourceUnMountWAIK]
+Echo,"UnMounting WAIK files with imagex.exe..."
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%IMAGEXPath%
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q /nowarn",%WIMUTILPath%
+End
+If,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Unmount NOT successful :(",Warn
+If,ExistFile,%BootSRC%\Windows\regedit.exe,Message,"Unmount NOT successful :(",ERROR
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Mount successful :)"
+If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Message,"Mount successful :)",Information,%TUnSuccess%
+
+[SourceNotConfigured]
+Message,"Source Not Configured. Exiting..."
+Exit,Exiting..
+
+[SourceOpenMountDir]
+If,Not,ExistDir,%BootSRC%,DirMake,%BootSRC%
+System,FILEREDIRECT,OFF
+ShellExecuteEx,Open,explorer.exe,/e#$c#$q%BootSRC%#$q
+System,FILEREDIRECT,ON
+
+[TargetUnMountAll_BTN]
+Run,%scriptfile%,SourceUnMount_BTN
+Run,%scriptfile%,TargetUnMount_BTN
+
+[InterfaceEncoded]
+unmount.bmp=2536,3382
+mount.bmp=2561,3415
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-unmount.bmp]
+lines=0
+0=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
+
+[EncodedFile-InterfaceEncoded-mount.bmp]
+lines=0
+0=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
+
+[AuthorEncoded]
+postEdit.jpg=10235,13647
+Logo=postEdit.jpg
+
+[EncodedFile-AuthorEncoded-postEdit.jpg]
+lines=3
+0=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
+1=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
+2=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
+3=6J98bJSDEHu32GL/XuX+jmRQLXHj58qEUFFOOE182QjbV1R5os9Lt8z0S887Q+dW9xyNvq3Ui4f5JH+1xI4wRDonlb4m39hclIQScVh0h5g8spkT7d8hl5SrOtVmdFr6V5jotUnLfjrm9YclYTid3U+mwLLE1iS5BrYvWQ1TG5S8fyWPIli2THlZsKIm5Z8R/NELg8enaozY4H9r2Ip92KpPC9efLNqWq14IKCV90Hamc8x4tF1X25NQAdr+uTJcORHCobHnCLK92ZtEJ7YYq8v58yT7pUnt1gYBbAmXOVYLpEkI03n56ot7fUFYv2k3BFKyIvRHp/f7zQkH3rlOkmHe0x1ImmdVd3Rja45NgtXovsxAVNBB5XzX+Yvjv31ManN5dnWYc6b+Vp4eU/O2TMF1RckN8sHt+09GjBU8TChju85OhRG5msR5l8t6+LRdu/YhFtnjkgeyTV6HkcOWZcSZ7va/iuV6WTCdZzr692XTna+eomj/1tjl2drRqT9QLWXhcvqj+zOlT/RPqZPdb4vGETeWa3Sve9Bxe0GqA3Ve/vH5637iKfmZo+bFswXmG+Nzyp5UDudzaseELEcFJMnjfXkR0cV1wmP6erZFgnc08fTmsP0MBsvjIToKxd84ThUCtDvGz3Nn5g89izII83w0KpwXiifSolIBObZ3dIROSg4oTrCY5wgeEFmyVcrgpz8/UsgmHrYfmFgncSBraTcVVxQaI2H0+fCQZ08kKHcx87djfY3HTY08Y0hRZNmIo6O068dUchIODhjtu7nGxFvMgTVkUip6nAQ19BiU2ZJxq+2ZBI73kPSuw6W7jPp/mb0mx7abvPa7aKB+xck+VTUos5emd1WVhVDNE+OLUiaO0Ub12zk9H4RfjDlit370Yf4V2vdew8l5X3SPU4RjRCJ9ZBjPGudhQ3RzmXA8adfw/zF4Nhl+Ot1qIRcWy7Abjij+nuUPV5UfKIV/tcz6smrfgc4pOxRzk13ib3UKE5YQVWAuFRlaXWPT18J3Za88gsnv1yt7ihkzkcHWZiPH2qEVk9JXROhTHj7K3vfiHducEbRF/e3+pPSY9L2fG8VaKqoFz9gasR5oOkx0J8XPbx+aZQq7l+SbMm7Tjb8c/p2mnmSVytOvvSt95VIeaNzUQYb2mbHg0uuxmtPGBqaQFw1WqKW6zMZNwT8xEnWCQ2JpavzcpX5uK5lsGK/Ro3Ml0qZAScy0tvle3S/pJt358oNONz7fcz+d2/zkp/O8/v+FeJzn+V6P5fPpu7fnic4ynILy5xTcks0csqSGcYBSMNzHeH0OvVscs/017BzMAEAGvpCEKi5QK4AQAAAAIAAAAoAAAArycAAAAAAAABAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

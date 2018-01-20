@@ -1,0 +1,578 @@
+[Main]
+Title=Retrieve Tools
+Type=Plugin
+Author=ChrisR
+Description=(Win10PESE) Retrieve hostOS Tools and Download ONCE Wim Tools...
+Credits=http://TheOven.org
+Version=032
+Download_Level=0
+Level=1
+Selected=True
+Mandatory=True
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.08
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Build/00-retrieve.script
+CertifiedBy=
+Certification=
+HistoryNotes=It uses the great JFX's Getwaiktools :)
+HistoryNotes=RetrieveWimTools (From install ADK, Win8 HostOS, install.wim) not written For windows8 and no longer supported for Win7
+History019=ChrisR - Win8pese. The old Win7pese history is stored in the section [History]
+History020=ChrisR - Win7pese Code For RetrieveWimTools (Tools From install ADK, Win8 HostOS, install.wim) removed and not rewritten For windows8.
+History021=ChrisR-JFX - Win8 dism used for Win8 driver integration
+History022=ChrisR - Added check bcdboot.exe, WimMountInstall.exe and also intlcfg.exe, wdsmcast.exe downloaded with GetWaikTools
+History022=ChrisR - Same version number for Win7pese/Win8pese
+History023=ChrisR - Copying Waik/ADK tools (GetWaikTools) is made here now. We now use Win 8 ADK tools For Win7PE, faster than Win7 ADK
+History024=ChrisR - Win8.1 compatibility
+History025=ChrisR - GetWaikTools 1.5.2.0 Adding Win 8.1 devcon tools
+History026=ChrisR - Renamed folder in GetWaikTool 2.x
+History027=ChrisR - Renamed variable - 2015.09.09
+History028=ChrisR - Download wofadk.sys driver, to use in all WinPE to access the host compressed files of Windows 10 Compact. Thanks JFX
+History029=ChrisR - Implemented HostOSVersion - Date:2016.09.02
+History030=ChrisR - Multi Fallback Languages support - Date:2016.11.23
+History031=Lancelot - Add DUC buttons - Date:2017.01.10
+History032=Lancelot Fixed syntax - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
+
+[Variables]
+%cmdexeFolder%=
+%Dollar%=$
+%GWTWaik2%=False
+%GWTWaik2Switch%=-Vista
+%GWTWaik2Folder%=%GlobalTemplates%\GetWaikTools\Waik_2
+%GWTAdk%=True
+%GWTAdkSwitch%=-Win10
+%GWTAdkFolder%=%GlobalTemplates%\GetWaikTools\ADK_6
+%GWTwofadkSwitch%=-Win10
+%GWTwofadkFolder%=%GlobalTemplates%\GetWaikTools\ADK_6
+%GWTDevcon%=True
+%GWTDevconSwitch%=-devcon
+%GWTDevconFolder%=%GlobalTemplates%\GetWaikTools\devcon
+%GWTDism%=True
+%GWTDismSwitch%=-Win10Dism
+%GWTDismFolder%=%GlobalTemplates%\GetWaikTools\ADK_6
+
+[Interface]
+ScrollBox_WaikTools=GetWaikTools,1,4,4,10,130,21,GetWaikTools
+pTextLabel_Get="WAIK Tools dowload by JFX (Uses GetWaikTools Plugin):",1,1,4,50,335,18,8,Bold
+pBevel1=pBevel1,1,12,4,86,184,112
+DownloadWTTools_TextLabel="Download Win10 ADK files#$x and copy them to the Tools folder#$x  (~4 MB)     (Win10PE_SE)",1,1,9,91,175,42,8,Normal
+DownloadWTTools_Button="Download Tools",1,8,34,140,125,52,Launch_DownloadWTTools,GetWaik3232.bmp,False,_Launch_DownloadWTTools_,False
+pTextFile_ADK=ADKToolsInfo.txt,1,6,374,72,150,176
+pTextLabel_Tools="Tools Gathered:",1,1,374,52,114,18,8,Bold
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Process]
+Echo,"%ScriptTitle% For %ProjectName%"
+IniRead,%projectdir%\script.project,IniVariables,WIMImageCount,%WIMImageCount%
+//run HostOSInfoMini if not done in main configuration
+If,%OSArch%,Equal,"",Run,%scriptfile%,HostOSInfoMini
+If,%SysType%,Equal,"",Run,%scriptfile%,HostOSInfoMini
+//-- preparing HostOS tools
+Run,%scriptfile%,HostOSTools
+If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
+//-- Get - Retrieve wim tools
+If,%ScrollBox_WaikTools%,Equal,GetWaikTools,Run,%scriptfile%,GetWaikTools
+Else,Exit,"RetrieveWimTools (From install Waik/ADK, Win10/8/7 HostOS, install.wim) not written for %ProjectName% !!!"
+//-- check Inf files
+Run,%scriptfile%,CheckInfFiles
+
+[Launch_DownloadWTTools]
+If,Not,ExistFile,%ProjectDir%\Utils\GetWaikTools.script,Message,"GetWaikTools Plugin required to dowload Waik/ADK Tools !!!",Error
+Else,Begin
+// fix error on CopyAdk section for x86\wofadk.sys (only Win10PESE)
+If,%ProjectName%,Equal,Win10PESE,Begin
+If,ExistFile,%Tools%\x86\wofadk.sys,Retrieve,FILESIZE,%Tools%\x86\wofadk.sys,%wofadkSize%
+If,%wofadkSize%,Smaller,190000,Begin
+FileDelete,%Tools%\x86\wofadk.sys
+If,ExistFile,%Tools%\x86\wofadk.sys,Call,FileDelete,%Tools%\x86\wofadk.sys
+End
+End
+If,%GWTWaik2%,Equal,True,Set,%Waik2Tools%,%GWTWaik2Switch%
+Else,Set,%Waik2Tools%,
+If,%GWTAdk%,Equal,True,Set,%AdkTools%,%GWTAdkSwitch%
+Else,Set,%AdkTools%,
+If,%GWTDism%,Equal,True,Set,%WaikDism%,%GWTDismSwitch%
+Else,Set,%WaikDism%,
+If,Not,%GWTwofadkSwitch%,Equal,%GWTAdkSwitch%,Set,%ADKDism10%,%GWTwofadkSwitch%
+Else,Set,%ADKDism10%,
+If,%GWTDevcon%,Equal,True,Set,%WDKdevcon%,%GWTDevconSwitch%
+Else,Set,%WDKdevcon%,
+Echo,"Download %Waik2Tools% %AdkTools% %WaikDism% %WDKdevcon% Waik/ADK tools ..."
+Run,%ProjectDir%\Utils\GetWaikTools.script,Launch_Program,%ProjectDir%\Utils\GetWaikTools.script,"%Waik2Tools% %AdkTools% %WaikDism% %ADKDism10% %WDKdevcon% -Silent"
+// Recover from %GlobalTemplates%\GetWaikTools if exist
+If,%GWTWaik2%,Equal,True,If,Not,-%Waik2Tools%,Equal,-,Run,%scriptfile%,CopyWaik2
+If,%GWTAdk%,Equal,True,If,Not,-%AdkTools%,Equal,-,Run,%scriptfile%,CopyAdk
+If,Not,%GWTwofadkSwitch%,Equal,%GWTAdkSwitch%,Run,%scriptfile%,CopyWofadk
+If,%GWTDism%,Equal,True,If,Not,-%WaikDism%,Equal,-,Run,%scriptfile%,CopyDism
+If,%GWTDevcon%,Equal,True,If,Not,-%WDKdevcon%,Equal,-,Run,%scriptfile%,CopyDevcon
+End
+
+[GetWaikTools]
+// fix error on CopyAdk section for x86\wofadk.sys (only Win10PESE)
+If,%ProjectName%,Equal,Win10PESE,Begin
+If,ExistFile,%Tools%\x86\wofadk.sys,Retrieve,FILESIZE,%Tools%\x86\wofadk.sys,%wofadkSize%
+If,%wofadkSize%,Smaller,190000,Begin
+FileDelete,%Tools%\x86\wofadk.sys
+If,ExistFile,%Tools%\x86\wofadk.sys,Call,FileDelete,%Tools%\x86\wofadk.sys
+End
+End
+Run,%scriptfile%,CheckWaikTools
+// Recover from %GlobalTemplates%\GetWaikTools if exist first
+If,%GWTWaik2%,Equal,True,If,Not,-%Waik2Tools%,Equal,-,Run,%scriptfile%,CopyWaik2
+If,%GWTAdk%,Equal,True,If,Not,-%AdkTools%,Equal,-,Run,%scriptfile%,CopyAdk
+If,Not,%GWTwofadkSwitch%,Equal,%GWTAdkSwitch%,Run,%scriptfile%,CopyWofadk
+If,%GWTDism%,Equal,True,If,Not,-%WaikDism%,Equal,-,Run,%scriptfile%,CopyDism
+If,%GWTDevcon%,Equal,True,If,Not,-%WDKdevcon%,Equal,-,Run,%scriptfile%,CopyDevcon
+Run,%scriptfile%,CheckWaikTools
+//- Download with GetWaikTools
+If,Not,-%Waik2Tools%%AdkTools%%WaikDism%%ADKDism10%%WDKdevcon%,Equal,-,Begin
+If,Not,ExistFile,%ProjectDir%\Utils\GetWaikTools.script,Begin
+Message,"GetWaikTools Plugin required to download Waik/ADK Tools !!!#$x#$xExiting...",Error
+Halt,"GetWaikTools Plugin required to download Waik/ADK Tools. Exiting..."
+End
+Echo,"Download %Waik2Tools% %AdkTools% %WaikDism% %ADKDism10% %WDKdevcon% Waik/ADK tools ..."
+Run,%ProjectDir%\Utils\GetWaikTools.script,Launch_Program,%ProjectDir%\Utils\GetWaikTools.script,"%Waik2Tools% %AdkTools% %WaikDism% %ADKDism10% %WDKdevcon% -Silent"
+// Recover from %GlobalTemplates%\GetWaikTools if exist
+If,%GWTWaik2%,Equal,True,If,Not,-%Waik2Tools%,Equal,-,Run,%scriptfile%,CopyWaik2
+If,%GWTAdk%,Equal,True,If,Not,-%AdkTools%,Equal,-,Run,%scriptfile%,CopyAdk
+If,Not,%GWTwofadkSwitch%,Equal,%GWTAdkSwitch%,Run,%scriptfile%,CopyWofadk
+If,%GWTDism%,Equal,True,If,Not,-%WaikDism%,Equal,-,Run,%scriptfile%,CopyDism
+If,%GWTDevcon%,Equal,True,If,Not,-%WDKdevcon%,Equal,-,Run,%scriptfile%,CopyDevcon
+End
+
+[CheckWaikTools]
+// Waik_2
+Set,%Waik2Tools%,
+If,%GWTWaik2%,Equal,True,Begin
+If,Not,ExistFile,%Tools%\peimg.exe,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\ssshim.dll,Set,%Waik2Tools%,%GWTWaik2Switch%
+// Waik_2 x86
+If,Not,ExistFile,%Tools%\x86\imagex6.0.exe,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\x86\wimfltr.inf,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\x86\wimfltr.sys,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\x86\wimgapi6.0.dll,Set,%Waik2Tools%,%GWTWaik2Switch%
+// Waik_2 x64
+If,Not,ExistFile,%Tools%\x64\imagex6.0.exe,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\x64\wimfltr.inf,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\x64\wimfltr.sys,Set,%Waik2Tools%,%GWTWaik2Switch%
+If,Not,ExistFile,%Tools%\x64\wimgapi6.0.dll,Set,%Waik2Tools%,%GWTWaik2Switch%
+End
+// ADK_4(_1) x86
+Set,%AdkTools%,
+Set,%ADKDism10%,
+If,%GWTAdk%,Equal,True,Begin
+If,Not,ExistFile,%Tools%\x86\bcdboot.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\bcdedit.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\bootsect.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\imagex.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\oscdimg.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\wimgapi.dll,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\wimmount.sys,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\WimMountInstall.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\wimserv.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x86\wofadk.sys,Begin
+If,%GWTwofadkSwitch%,Equal,%GWTAdkSwitch%,Set,%AdkTools%,%GWTAdkSwitch%
+Else,Set,%ADKDism10%,%GWTwofadkSwitch%
+End
+// ADK_4(_1) x64
+If,Not,ExistFile,%Tools%\x64\bcdboot.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\bcdedit.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\bootsect.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\imagex.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\oscdimg.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\wimgapi.dll,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\wimmount.sys,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\WimMountInstall.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\wimserv.exe,Set,%AdkTools%,%GWTAdkSwitch%
+If,Not,ExistFile,%Tools%\x64\wofadk.sys,Begin
+If,%GWTwofadkSwitch%,Equal,%GWTAdkSwitch%,Set,%AdkTools%,%GWTAdkSwitch%
+Else,Set,%ADKDism10%,%GWTwofadkSwitch%
+End
+End
+// Dism x86/x64
+Set,%WaikDism%,
+If,%GWTDism%,Equal,True,Begin
+If,Not,ExistFile,%Tools%\x86\Dism\dism.exe,Set,%WaikDism%,%GWTDismSwitch%
+If,Not,ExistFile,%Tools%\x64\Dism\dism.exe,Set,%WaikDism%,%GWTDismSwitch%
+End
+// Devcon x86/x64
+Set,%WDKdevcon%,
+If,%GWTDevcon%,Equal,True,Begin
+If,Not,ExistFile,%Tools%\x86\devcon.exe,Set,%WDKdevcon%,%GWTDevconSwitch%
+If,Not,ExistFile,%Tools%\x64\devcon.exe,Set,%WDKdevcon%,%GWTDevconSwitch%
+End
+
+[CopyWaik2]
+// Waik_2
+If,Not,ExistFile,%Tools%\peimg.exe,If,ExistFile,%GWTWaik2Folder%\x86\peimg.exe,FileCopy,%GWTWaik2Folder%\x86\peimg.exe,%Tools%\peimg.exe
+If,Not,ExistFile,%Tools%\ssshim.dll,If,ExistFile,%GWTWaik2Folder%\x86\ssshim.dll,FileCopy,%GWTWaik2Folder%\x86\ssshim.dll,%Tools%\ssshim.dll
+// Waik_2 x86
+If,Not,ExistFile,%Tools%\x86\imagex6.0.exe,If,ExistFile,%GWTWaik2Folder%\x86\imagex.exe,FileCopy,%GWTWaik2Folder%\x86\imagex.exe,%Tools%\x86\imagex6.0.exe
+If,Not,ExistFile,%Tools%\x86\wimfltr.inf,If,ExistFile,%GWTWaik2Folder%\x86\wimfltr.inf,FileCopy,%GWTWaik2Folder%\x86\wimfltr.inf,%Tools%\x86\wimfltr.inf
+If,Not,ExistFile,%Tools%\x86\wimfltr.sys,If,ExistFile,%GWTWaik2Folder%\x86\wimfltr.sys,FileCopy,%GWTWaik2Folder%\x86\wimfltr.sys,%Tools%\x86\wimfltr.sys
+If,Not,ExistFile,%Tools%\x86\wimgapi6.0.dll,If,ExistFile,%GWTWaik2Folder%\x86\wimgapi.dll,FileCopy,%GWTWaik2Folder%\x86\wimgapi.dll,%Tools%\x86\wimgapi6.0.dll
+// Waik_2 x64
+If,Not,ExistFile,%Tools%\x64\imagex6.0.exe,If,ExistFile,%GWTWaik2Folder%\amd64\imagex.exe,FileCopy,%GWTWaik2Folder%\amd64\imagex.exe,%Tools%\x64\imagex6.0.exe
+If,Not,ExistFile,%Tools%\x64\wimfltr.inf,If,ExistFile,%GWTWaik2Folder%\amd64\wimfltr.inf,FileCopy,%GWTWaik2Folder%\amd64\wimfltr.inf,%Tools%\x64\wimfltr.inf
+If,Not,ExistFile,%Tools%\x64\wimfltr.sys,If,ExistFile,%GWTWaik2Folder%\amd64\wimfltr.sys,FileCopy,%GWTWaik2Folder%\amd64\wimfltr.sys,%Tools%\x64\wimfltr.sys
+If,Not,ExistFile,%Tools%\x64\wimgapi6.0.dll,If,ExistFile,%GWTWaik2Folder%\amd64\wimgapi.dll,FileCopy,%GWTWaik2Folder%\amd64\wimgapi.dll,%Tools%\x64\wimgapi6.0.dll
+
+[CopyAdk]
+// ADK_4(_1) x86
+If,Not,ExistFile,%Tools%\x86\bcdboot.exe,If,ExistFile,%GWTAdkFolder%\x86\BCDBoot\bcdboot.exe,FileCopy,%GWTAdkFolder%\x86\BCDBoot\bcdboot.exe,%Tools%\x86\bcdboot.exe
+If,Not,ExistFile,%Tools%\x86\bcdedit.exe,If,ExistFile,%GWTAdkFolder%\x86\BCDBoot\bcdedit.exe,FileCopy,%GWTAdkFolder%\x86\BCDBoot\bcdedit.exe,%Tools%\x86\bcdedit.exe
+If,Not,ExistFile,%Tools%\x86\bootsect.exe,If,ExistFile,%GWTAdkFolder%\x86\BCDBoot\bootsect.exe,FileCopy,%GWTAdkFolder%\x86\BCDBoot\bootsect.exe,%Tools%\x86\bootsect.exe
+If,Not,ExistFile,%Tools%\x86\imagex.exe,If,ExistFile,%GWTAdkFolder%\x86\dism\imagex.exe,FileCopy,%GWTAdkFolder%\x86\dism\imagex.exe,%Tools%\x86\imagex.exe
+If,Not,ExistFile,%Tools%\x86\wimgapi.dll,If,ExistFile,%GWTAdkFolder%\x86\dism\wimgapi.dll,FileCopy,%GWTAdkFolder%\x86\dism\wimgapi.dll,%Tools%\x86\wimgapi.dll
+If,Not,ExistFile,%Tools%\x86\wimmount.sys,If,ExistFile,%GWTAdkFolder%\x86\dism\wimmount.sys,FileCopy,%GWTAdkFolder%\x86\dism\wimmount.sys,%Tools%\x86\wimmount.sys
+If,Not,ExistFile,%Tools%\x86\WimMountInstall.exe,If,ExistFile,%GWTAdkFolder%\x86\dism\WimMountInstall.exe,FileCopy,%GWTAdkFolder%\x86\dism\WimMountInstall.exe,%Tools%\x86\WimMountInstall.exe
+If,Not,ExistFile,%Tools%\x86\wimserv.exe,If,ExistFile,%GWTAdkFolder%\x86\dism\wimserv.exe,FileCopy,%GWTAdkFolder%\x86\dism\wimserv.exe,%Tools%\x86\wimserv.exe
+If,Not,ExistFile,%Tools%\x86\wofadk.sys,If,ExistFile,%GWTAdkFolder%\x86\dism\wofadk.sys,FileCopy,%GWTAdkFolder%\x86\dism\wofadk.sys,%Tools%\x86\wofadk.sys
+If,Not,ExistFile,%Tools%\x86\oscdimg.exe,If,ExistFile,%GWTAdkFolder%\x86\Oscdimg\oscdimg.exe,FileCopy,%GWTAdkFolder%\x86\Oscdimg\oscdimg.exe,%Tools%\x86\oscdimg.exe
+// ADK_4(_1) x64
+If,Not,ExistFile,%Tools%\x64\bcdboot.exe,If,ExistFile,%GWTAdkFolder%\amd64\BCDBoot\bcdboot.exe,FileCopy,%GWTAdkFolder%\amd64\BCDBoot\bcdboot.exe,%Tools%\x64\bcdboot.exe
+If,Not,ExistFile,%Tools%\x64\bcdedit.exe,If,ExistFile,%GWTAdkFolder%\amd64\BCDBoot\bcdedit.exe,FileCopy,%GWTAdkFolder%\amd64\BCDBoot\bcdedit.exe,%Tools%\x64\bcdedit.exe
+If,Not,ExistFile,%Tools%\x64\bootsect.exe,If,ExistFile,%GWTAdkFolder%\amd64\BCDBoot\bootsect.exe,FileCopy,%GWTAdkFolder%\amd64\BCDBoot\bootsect.exe,%Tools%\x64\bootsect.exe
+If,Not,ExistFile,%Tools%\x64\imagex.exe,If,ExistFile,%GWTAdkFolder%\amd64\dism\imagex.exe,FileCopy,%GWTAdkFolder%\amd64\dism\imagex.exe,%Tools%\x64\imagex.exe
+If,Not,ExistFile,%Tools%\x64\wimgapi.dll,If,ExistFile,%GWTAdkFolder%\amd64\dism\wimgapi.dll,FileCopy,%GWTAdkFolder%\amd64\dism\wimgapi.dll,%Tools%\x64\wimgapi.dll
+If,Not,ExistFile,%Tools%\x64\wimmount.sys,If,ExistFile,%GWTAdkFolder%\amd64\dism\wimmount.sys,FileCopy,%GWTAdkFolder%\amd64\dism\wimmount.sys,%Tools%\x64\wimmount.sys
+If,Not,ExistFile,%Tools%\x64\WimMountInstall.exe,If,ExistFile,%GWTAdkFolder%\amd64\dism\WimMountInstall.exe,FileCopy,%GWTAdkFolder%\amd64\dism\WimMountInstall.exe,%Tools%\x64\WimMountInstall.exe
+If,Not,ExistFile,%Tools%\x64\wimserv.exe,If,ExistFile,%GWTAdkFolder%\amd64\dism\wimserv.exe,FileCopy,%GWTAdkFolder%\amd64\dism\wimserv.exe,%Tools%\x64\wimserv.exe
+If,Not,ExistFile,%Tools%\x64\wofadk.sys,If,ExistFile,%GWTAdkFolder%\amd64\dism\wofadk.sys,FileCopy,%GWTAdkFolder%\amd64\dism\wofadk.sys,%Tools%\x64\wofadk.sys
+If,Not,ExistFile,%Tools%\x64\oscdimg.exe,If,ExistFile,%GWTAdkFolder%\amd64\Oscdimg\oscdimg.exe,FileCopy,%GWTAdkFolder%\amd64\Oscdimg\oscdimg.exe,%Tools%\x64\oscdimg.exe
+
+[CopyWofadk]
+// ADK_6 x86
+If,Not,ExistFile,%Tools%\x86\wofadk.sys,If,ExistFile,%GWTwofadkFolder%\x86\dism\wofadk.sys,FileCopy,%GWTwofadkFolder%\x86\dism\wofadk.sys,%Tools%\x86\wofadk.sys
+// ADK_6 x64
+If,Not,ExistFile,%Tools%\x64\wofadk.sys,If,ExistFile,%GWTwofadkFolder%\amd64\dism\wofadk.sys,FileCopy,%GWTwofadkFolder%\amd64\dism\wofadk.sys,%Tools%\x64\wofadk.sys
+
+[CopyDism]
+If,Not,ExistFile,%Tools%\x86\Dism\dism.exe,If,ExistFile,%GWTAdkFolder%\x86\dism\dism.exe,Begin
+If,Not,ExistDir,%Tools%\x86\Dism,DirMake,%Tools%\x86\Dism
+FileCopy,%GWTAdkFolder%\x86\dism\*,%Tools%\x86\Dism
+End
+If,Not,ExistFile,%Tools%\x64\Dism\dism.exe,If,ExistFile,%GWTAdkFolder%\amd64\dism\dism.exe,Begin
+If,Not,ExistDir,%Tools%\x64\Dism,DirMake,%Tools%\x64\Dism
+FileCopy,%GWTAdkFolder%\amd64\dism\*,%Tools%\x64\Dism
+End
+
+[CopyDevcon]
+If,Not,ExistFile,%Tools%\x86\devcon.exe,If,ExistFile,%GWTDevconFolder%\x86\devcon.exe,FileCopy,%GWTDevconFolder%\x86\devcon.exe,%Tools%\x86\devcon.exe
+If,Not,ExistFile,%Tools%\x64\devcon.exe,If,ExistFile,%GWTDevconFolder%\amd64\devcon.exe,FileCopy,%GWTDevconFolder%\amd64\devcon.exe,%Tools%\x64\devcon.exe
+
+[CheckInfFiles]
+Echo,"Prepare setup information drivers files..."
+If,%GWTWaik2%,Equal,True,If,Not,ExistFile,%Tools%\x86\wimfltr.inf,Begin
+Set,%w%,%Tools%\x86\wimfltr.inf
+Run,%scriptfile%,WimFltrInfFile
+End
+If,%GWTWaik2%,Equal,True,If,Not,ExistFile,%Tools%\x64\wimfltr.inf,Begin
+Set,%w%,%Tools%\x64\wimfltr.inf
+Run,%scriptfile%,WimFltrInfFile
+End
+If,Not,ExistFile,%Tools%\x86\wimmount.inf,Begin
+Set,%w%,%Tools%\x86\wimmount.inf
+Run,%scriptfile%,WimMountInfFile
+End
+If,Not,ExistFile,%Tools%\x64\wimmount.inf,Begin
+Set,%w%,%Tools%\x64\wimmount.inf
+Run,%scriptfile%,WimMountInfFile
+End
+
+[HostOSInfoMini]
+Echo,"Detect HostOS Info..."
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.ini#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Echo,"FILE Not deleted",Warn
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.au3,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.au3#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.au3,Echo,"FILE Not deleted",Warn
+Set,%w%,%ProjectTemp%\InfoHostOSMini.au3
+FileCreateBlank,%w%
+TxtAddline,%w%,"#NoTrayIcon",Append
+TxtAddline,%w%,"#RequireAdmin",Append
+TxtAddline,%w%,"IniWrite(#$qInfoHostOSMiniIni.ini#$q,#$qinfohostos#$q,#$qosarch#$q,@OSArch)",Append
+//Following MUST me x86 NOT %systype% or %OsArch% ..... ;).
+ShellExecute,Hide,%Tools%\x86\AU3381.exe,"#$q%w%#$q",%ProjectTemp%
+IniRead,%ProjectTemp%\InfoHostOSMiniIni.ini,infohostos,OSArch,%SysTypeVar%
+Set,%SysType%,%SysTypeVar%,Permanent
+Set,%OSArch%,%SysTypeVar%,Permanent
+FileDelete,%ProjectTemp%\InfoHostOSMiniIni.au3
+FileDelete,%ProjectTemp%\InfoHostOSMiniIni.ini
+Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMini.au3#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMini.au3,Echo,"FILE Not deleted",WARN
+Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.ini#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Echo,"FILE Not deleted",WARN
+
+[MakeDirsMui_Loop]
+StrFormat,Split,%HostMuiLangAll%,|,#c,#9
+If,Not,ExistDir,#1\#9,DirMake,#1\#9
+
+[PHostOSCopyTools]
+//#1=<FromDir>\<File>, #2=<ToDir> > #9=<File>
+StrFormat,FileName,#1,#9
+StrFormat,Path,#1,#1
+StrFormat,CTRIM,#1,\,#1
+StrFormat,CTRIM,#2,\,#2
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"Copy /y #$q#1\#9#$q #$q#2#$q",Append
+TxtAddline,%w%,"attrib.exe -R -S -H #$q#2\#9#$q",Append
+Loop,%ScriptFile%,PHostOSCopyMUITools_Loop,1,%NbLang%,#1,#2,#3,#4,#5,#6,#7,#8,#9
+
+[PHostOSCopyMUITools_Loop]
+//#1=<FromDir>, #2=<ToDir> #9=<File> > #7=<MuiLang>
+StrFormat,Split,%HostMuiLangAll%,|,#c,#7
+//Echo,"Lang#c: #7, <FromDir>=#1, <ToDir>=#2, <File>=#9",Warn
+TxtAddline,%w%,"Copy /y #$q#1\#7\#9.mui#$q #$q#2\#7#$q",Append
+TxtAddline,%w%,"attrib.exe -R -S -H #$q#2\#7\#9.mui#$q",Append
+
+[HostOSTools]
+Echo,"Preparing HostOS tools..."
+If,ExistDir,%ProjectTemp%\HostOSTools,DirDelete,%ProjectTemp%\HostOSTools
+If,ExistDir,%ProjectTemp%\HostOSTools,Call,DirDelete,%ProjectTemp%\HostOSTools
+If,ExistDir,%ProjectTemp%\HostOSTools,Call,Echo,"ProjectTemp\HostOSTools Folder can not be deleted!",Warn,,MessageError,,Halt
+DirMake,%ProjectTemp%\HostOSTools
+//- Process DirMake and 1HostOSCopy.cmd with %HostMuiLangAll% (eg: es-MX|es-ES|en-US)
+Set,%w%,%ProjectTemp%\HostOSTools\1HostOSCopy.cmd
+Call,HostMuiLang
+StrFormat,RTrim,%HostMuiLangAll%,1,%HostMuiLangAll%
+StrFormat,Split,%HostMuiLangAll%,|,0,%NbLang%
+//Echo,"HostOSTools Lang: %NbLang% %HostMuiLangAll%"
+Loop,%ScriptFile%,MakeDirsMui_Loop,1,%NbLang%,%ProjectTemp%\HostOSTools
+//-
+Call,HostWindowsDir
+FileCreateBlank,%w%
+//Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\cmd.exe,%ProjectTemp%\HostOSTools
+Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\System32\cmd.exe,%ProjectTemp%\HostOSTools
+Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\System32\bcdedit.exe,%ProjectTemp%\HostOSTools
+//Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\reg.exe,%ProjectTemp%\HostOSTools
+Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\System32\reg.exe,%ProjectTemp%\HostOSTools
+Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\regedit.exe,%ProjectTemp%\HostOSTools
+//Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\System32\regedit.exe,%ProjectTemp%\HostOSTools
+Run,%ScriptFile%,PHostOSCopyTools,%HostWindowsDir%\System32\attrib.exe,%ProjectTemp%\HostOSTools
+//-
+TxtAddline,%w%,Exit,Append
+//-
+FileCreateBlank,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3,"#NoTrayIcon",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3,"#RequireAdmin",Append
+TxtAddline,%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3,"RunWait(@ComSpec & #$q /c #$q & '#$q%w%#$q', #$q#$q, @SW_HIDE)",Append
+//-
+ShellExecute,Hide,%Tools%\%SysType%\AU3381.exe,"#$q%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3#$q"
+//-
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Run,%scriptfile%,HostOSTools_Halt,cmd.exe
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Run,%scriptfile%,HostOSTools_Halt,regedit.exe
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Run,%scriptfile%,HostOSTools_Halt,reg.exe
+
+[HostOSTools_Halt]
+Set,%var%,#1
+Message,"%var% can not be copied to %ProjectTemp%\HostOSTools",Error
+Halt,"%var% can not be copied to %ProjectTemp%\HostOSTools"
+
+[WimFltrInfFile]
+FileCreateBlank,%w%
+TxtAddline,%w%,"[Version]",Append
+TxtAddline,%w%,"Signature=#$q%Dollar%Windows NT%Dollar%#$q",Append
+TxtAddline,%w%,"Class=#$qActivityMonitor#$q                 ;Determined by the work this filter driver does",Append
+TxtAddline,%w%,"Provider=#$qChrisR#$q",Append
+TxtAddline,%w%,"DriverVer=06/21/2006,6.0.6001.18000",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DestinationDirs]",Append
+TxtAddline,%w%,"DefaultDestDir=12                        ;#$pwindir#$p\system32\drivers",Append
+TxtAddline,%w%,"WimFltr.DriverFiles=12                        ;#$pwindir#$p\system32\drivers",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultInstall]",Append
+TxtAddline,%w%,"OptionDesc=#$qWimFltr Driver#$q",Append
+TxtAddline,%w%,"CopyFiles=WimFltr.DriverFiles",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultInstall.Services]",Append
+TxtAddline,%w%,"AddService=#$qWimFltr#$q,,WimFltr.Service",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultUninstall]",Append
+TxtAddline,%w%,"DelFiles=WimFltr.DriverFiles",Append
+TxtAddline,%w%,"DelReg=WimFltr.DelRegistry",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultUninstall.Services]",Append
+TxtAddline,%w%,"DelService=WimFltr,0x200                      ;Flags not to stop service first",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[WimFltr.Service]",Append
+TxtAddline,%w%,"DisplayName=#$qWimFltr#$q",Append
+TxtAddline,%w%,"Description=#$qWindows Image Mini-Filter Driver#$q",Append
+TxtAddline,%w%,"ServiceBinary=#$p12#$p\wimfltr.sys             ;#$pwindir#$p\system32\drivers\wimfltr.sys",Append
+TxtAddline,%w%,"Dependencies=#$qFltMgr#$q                     ;FltMgr",Append
+TxtAddline,%w%,"ServiceType=2                            ;SERVICE_FILE_SYSTEM_DRIVER",Append
+TxtAddline,%w%,"StartType=3                            ;SERVICE_DEMAND_START",Append
+TxtAddline,%w%,"ErrorControl=1                            ;SERVICE_ERROR_NORMAL",Append
+TxtAddline,%w%,"LoadOrderGroup=#$qFSFilter Compression#$q",Append
+TxtAddline,%w%,"AddReg=WimFltr.AddRegistry",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[WimFltr.AddRegistry]",Append
+TxtAddline,%w%,"HKLM,#$qsystem\currentcontrolset\services\WimFltr#$q,#$qDebugFlags#$q,0x00010001,0x00000001",Append
+TxtAddline,%w%,"HKR,#$qInstances#$q,#$qDefaultInstance#$q,0x00000000,#$qWimFltr Instance#$q",Append
+TxtAddline,%w%,"HKR,#$qInstances\WimFltr Instance#$q,#$qAltitude#$q,0x00000000,#$q170500#$q",Append
+TxtAddline,%w%,"HKR,#$qInstances\WimFltr Instance#$q,#$qFlags#$q,0x00010001,0x0",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[WimFltr.DelRegistry]",Append
+TxtAddline,%w%,"HKLM,#$qsystem\currentcontrolset\services\WimFltr#$q,#$qDebugFlags#$q",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[WimFltr.DriverFiles]",Append
+TxtAddline,%w%,"WimFltr.sys",Append
+
+[WimMountInfFile]
+FileCreateBlank,%w%
+TxtAddline,%w%,"[Version]",Append
+TxtAddline,%w%,"Signature=#$q%Dollar%Windows NT%Dollar%#$q",Append
+TxtAddline,%w%,"Class=#$qActivityMonitor#$q                         ;This is determined by the work this filter driver does",Append
+TxtAddline,%w%,"ClassGuid={b86dff51-a31e-4bac-b3cf-e8cfe75c9fc2}    ;This value is determined by the Class",Append
+TxtAddline,%w%,"Provider=#$qChrisR#$q",Append
+TxtAddline,%w%,"DriverVer=08/22/2001,1.0.0.1",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DestinationDirs]",Append
+TxtAddline,%w%,"wimmount.SystemFiles=11            ;#$pwindir#$p\system32",Append
+TxtAddline,%w%,"wimmount.DriverFiles=12            ;#$pwindir#$p\system32\drivers",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultInstall]",Append
+TxtAddline,%w%,"OptionDesc=#$qWimMount Driver#$q",Append
+TxtAddline,%w%,"CopyFiles=wimmount.DriverFiles, wimmount.SystemFiles",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultInstall.Services]",Append
+TxtAddline,%w%,"AddService=#$qwimmount#$q,,wimmount.Service",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultUninstall]",Append
+TxtAddline,%w%,"DelFiles=wimmount.DriverFiles, wimmount.SystemFiles",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[DefaultUninstall.Services]",Append
+TxtAddline,%w%,"DelService=wimmount,0x200                      ;Ensure service is stopped before deleting",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[wimmount.Service]",Append
+TxtAddline,%w%,"Description=#$qWimMount Driver#$q",Append
+TxtAddline,%w%,"ServiceBinary=#$p12#$p\wimmount.sys            ;#$pwindir#$p\system32\drivers\",Append
+TxtAddline,%w%,"Dependencies=#$qFltMgr#$q",Append
+TxtAddline,%w%,"ServiceType=2                            ;SERVICE_FILE_SYSTEM_DRIVER",Append
+TxtAddline,%w%,"StartType=3                            ;SERVICE_DEMAND_START",Append
+TxtAddline,%w%,"ErrorControl=1                            ;SERVICE_ERROR_NORMAL",Append
+TxtAddline,%w%,"LoadOrderGroup=#$qFSFilter Activity Monitor#$q",Append
+TxtAddline,%w%,"AddReg=wimmount.AddRegistry",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[wimmount.AddRegistry]",Append
+TxtAddline,%w%,"HKR,,#$qDebugFlags#$q,0x00010001 ,0x0",Append
+// Win7 wimmount.inf
+//TxtAddline,%w%,"HKR,#$qInstances#$q,#$qDefaultInstance#$q,0x00000000,#$qWimmount Instance#$q",Append
+//TxtAddline,%w%,"HKR,#$qInstances\Wimmount Instance#$q,#$qAltitude#$q,0x00000000,#$q180700#$q",Append
+//TxtAddline,%w%,"HKR,#$qInstances\Wimmount Instance#$q,#$qFlags#$q,0x00010001,0x0",Append
+TxtAddline,%w%,"HKR,#$qInstances#$q,#$qDefaultInstance#$q,0x00000000,#$qWIMMount#$q",Append
+TxtAddline,%w%,"HKR,#$qInstances\WIMMount#$q,#$qAltitude#$q,0x00000000,#$q180700#$q",Append
+TxtAddline,%w%,"HKR,#$qInstances\WIMMount#$q,#$qFlags#$q,0x00010001,0x0",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[wimmount.DriverFiles]",Append
+TxtAddline,%w%,"wimmount.sys",Append
+TxtAddline,%w%,"",Append
+TxtAddline,%w%,"[wimmount.SystemFiles]",Append
+TxtAddline,%w%,"wimserv.exe",Append
+
+[Win7DismNotUsedAnymore]
+// NOT USED ANYMORE kept for example
+//-- [Process] Get - Win7 Dism for XP, 2003 Host OS. Used for Win8 driver integration.
+Call,HostOSVersion,,4x
+Set,%Win7Dism%,""
+If,%HostOSVersion1%,Equal,5,Set,%Win7Dism%,-Win7Dism
+If,%Win7Dism%,Equal,-Win7Dism,Run,%scriptfile%,GetWin7Dism
+// [Launch_DownloadWTTools] Download Win7Dism for XP, 2003 Host OS. Used for Win8 driver integration.
+Call,HostOSVersion,,4x
+Set,%Win7Dism%,""
+If,%HostOSVersion1%,Equal,5,Set,%Win7Dism%,-Win7Dism
+If,%Win7Dism%,Equal,-Win7Dism,Run,%ProjectDir%\Utils\GetWaikTools.script,Launch_Program,%ProjectDir%\Utils\GetWaikTools.script,"-Win7Dism -Silent",CopyWin7Dism
+// [GetWin7Dism]
+Run,%scriptfile%,CheckWin7Dism
+If,Not,-%Win7Dism%,Equal,-,Begin
+If,Not,ExistFile,%ProjectDir%\Utils\GetWaikTools.script,Begin
+Message,"GetWaikTools Plugin required to dowload Win7 Dism !!!#$x#$xExiting...",Error
+Halt,"GetWaikTools Plugin required to dowload Win7 Dism. Exiting..."
+End
+Else,Begin
+// Recover from %GlobalTemplates%\GetWaikTools if tools exist
+Run,%ProjectDir%\Utils\GetWaikTools.script,CopyWin7Dism
+Run,%scriptfile%,CheckWin7Dism
+//- Download with GetWaikTools
+If,Not,-%Win7Dism%,Equal,-,Begin
+Echo,"Download Win7 Dism tools ..."
+Run,%ProjectDir%\Utils\GetWaikTools.script,Launch_Program,%ProjectDir%\Utils\GetWaikTools.script,"%Win7Dism% -Silent",CopyWin7Dism
+End
+End
+End
+
+[CheckWin7Dism]
+// NOT USED ANYMORE
+// Waik_3 x86 Dism
+Set,%Win7Dism%,
+If,Not,ExistFile,%Tools%\x86\Win7Dism\dism.exe,Set,%Win7Dism%,-Win7Dism
+// Waik_3 x64 Dism
+If,Not,ExistFile,%Tools%\x64\Win7Dism\dism.exe,Set,%Win7Dism%,-Win7Dism
+
+[History-Old]
+History003=Homes32 - Interface tweaks.
+History004=ChrisR - Extract and Run FindWimTools only if Retrieve WAIK or System enabled
+History005=ChrisR - Disable Retreive Checkbox if wim tools already here
+History006=Lancelot - Additional check variable %SysType% to work in standalone (=Brad findings fixed - post 50-51 http://theoven.org/index.php?topic=147.msg2827#msg2827 )
+History007=Lancelot - IniVariables added
+History008=ChrisR - FindWimTools.exe unupxed to avoid idiot AV false positive ;)
+History009=Lancelot no need Read Env here
+History010=ChrisR - NoWarn Filedelete FindWimTools.exe
+History012=ChrisR - GetWaikTools: WAIK Tools dowload by JFX (Uses GetWaikTools Plugin)
+History013=Lancelot - instead of ChangeInterface setpermanent for checkbox
+History014=ChrisR - improvement if extracted from your source and ExtractWimFolder selected
+History016=ChrisR - Retrieve, copy oscdimg.exe in tools folder
+History017=ChrisR - Recover WAIK tools in globaltemplate if exists before downloading
+History018=ChrisR - Following AU3381 updated
+
+[AuthorEncoded]
+Retrieve.bmp=8314,11086
+Logo=Retrieve.bmp
+
+[InterfaceEncoded]
+GetWaik3232.bmp=2242,2990
+ADKToolsInfo.txt=197,263
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-AuthorEncoded-Retrieve.bmp]
+lines=2
+0=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
+1=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
+2=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
+
+[EncodedFile-InterfaceEncoded-GetWaik3232.bmp]
+lines=0
+0=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
+
+[EncodedFile-InterfaceEncoded-ADKToolsInfo.txt]
+lines=0
+0=eJxTUAjPzDM0UHB08Vaw4uXSxQWAUgpJySlJ+fkleqkVqVBuakomgguUKk5NhvMzcxPTUytgvPzi5JTM3HQYtxzITizI1EvJyYFyc/NL80r0iiuLQfzwzFxfEN8zr7gkMScHSVdxalEZnJuflpiSDdIDALW8OpB4nBNwdPEOyc/PKfbMS8vXK6koYRgFIwkcg9LlOOSrGL9uZmACAPzuCW4ICMkXAQAAAAIAAAAqAAAAdwAAAAAAAAABAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXQ
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

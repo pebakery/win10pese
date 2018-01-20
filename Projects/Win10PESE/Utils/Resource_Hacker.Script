@@ -1,0 +1,152 @@
+[Main]
+Title=Resource Hacker
+Type=Plugin
+Author=Lancelot
+Description=Macro Plugin to use Resource Hacker inside plugins :> (To Download once and .... )
+Credits=ChrisR, JFX, Galapo, http://TheOven.org
+Version=006
+Download_Level=0
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.15
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Resource_Hacker.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History001='Plugin Creator' http://TheOven.org/index.php?topic=178
+History002=Prz42 - http://www.angusj.com/resourcehacker/reshacker_setup.exe and exe name: ResourceHacker.exe
+History003=Lancelot fixed removing old version with old exe name // added CompareVersions
+History004=Lancelot Added DU Buttons - Date:2015.10.29
+History005=Lancelot - Add Compare button - Date:2017.02.16
+History006=ied206 - fixed If - Reply 15 http://TheOven.org/index.php?topic=2271.msg24648#msg24648 - Date:2017.11.15
+
+[Interface]
+pTextLabel1="Macro Plugin",1,1,11,11,60,18,8,Normal
+Button_Launch_Program=Launch,1,8,13,207,80,25,Launch_Program
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://www.angusj.com/resourcehacker/
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Opendir_reshack_setup_Button="Open Folder for reshack_setup.exe",1,8,12,143,210,24,Opendir_reshack_setup,opendir.bmp,False,False,"__Open Folder for reshack_setup.exe"
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+
+[Process]
+Echo,"There is no spoon"
+
+[Info]
+//Example usage:
+Run,%ProjectDir%\Utils\Resource_Hacker.Script,ResourceHacker,%ProjectDir%\Utils\Resource_Hacker.Script
+//
+This will provide %ResHackerExe% and %ResHackerDir% Variables to the plugin... :>
+//
+Run,%ProjectDir%\Utils\Resource_Hacker.Script,ResourceHacker,%ProjectDir%\Utils\Resource_Hacker.Script
+Echo,%ResHackerExe%
+Echo,%ResHackerDir%
+
+[ResourceHacker]
+If,#1,Equal,"",Set,#1,%ScriptFile%
+Set,#9,Resource_Hacker
+Set,#8,reshack_setup.exe
+Set,%ResHackerDir%,%GlobalTemplates%\#9\{app}
+Set,%ResHackerExe%,%ResHackerDir%\ResourceHacker.exe
+If,ExistFile,%ResHackerDir%\ResHacker.exe,Run,#1,ResourceHacker_RemoveOld,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,ExistFile,%ResHackerExe%,Retrieve,FileVersion,%ResHackerExe%,%ResHackerExeVer%
+Call,CompareVersions,%ResHackerExeVer%,4.2.4.145,ResHackerCompareVersions
+If,%ResHackerCompareVersions%,Equal,Smaller,Run,#1,ResourceHacker_RemoveOld,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,Not,ExistFile,%ResHackerExe%,Run,#1,ResourceHacker_Extract,#1,#2,#3,#4,#5,#6,#7,#8,#9
+
+[ResourceHacker_RemoveOld]
+StrFormat,DATE,%myDate%,yyyymmddhhnn
+If,ExistFile,%GlobalTemplates%\#9\install_script.iss,FileRename,%GlobalTemplates%\#9\install_script.iss,%GlobalTemplates%\#9\install_script.iss_%myDate%
+If,ExistFile,%GlobalTemplates%\#9\reshack_setup.exe,FileRename,%GlobalTemplates%\#9\reshack_setup.exe,%GlobalTemplates%\#9\reshack_setup.exe_%myDate%
+If,ExistDir,%GlobalTemplates%\#9\{app},FileRename,%GlobalTemplates%\#9\{app},%GlobalTemplates%\#9\{app}_%myDate%
+
+[ResourceHacker_Extract]
+If,Not,ExistFile,%GlobalTemplates%\#9\#8,Run,#1,ResourceHacker_Download,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,ExistFile,%GlobalTemplates%\#9\#8,Run,#1,ResourceHacker_Extract_Now,#1,#2,#3,#4,#5,#6,#7,#8,#9
+
+[ResourceHacker_Extract_Now]
+//Extracting-innounp-Copy Start - ResourceHacker Special
+Run,%ProjectDir%\Utils\InnounpM01.Script,ExtractInnounp,%ProjectDir%\Utils\InnounpM01.Script,%GlobalTemplates%\#9
+ShellExecute,Hide,cmd.exe,"/c innounp.exe -x -b -d#$q%GlobalTemplates%\#9#$q #$q%GlobalTemplates%\#9\#8#$q",%GlobalTemplates%\#9
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%GlobalTemplates%\#9\innounp.exe#$q&del /q /f /A:R /A:H /A:S /A:A #$q%GlobalTemplates%\#9\innounp.exe#$q"
+If,ExistFile,%GlobalTemplates%\#9\innounp.exe,Call,FileDelete,%GlobalTemplates%\#9\innounp.exe
+//Extracting-innounp-Copy Finish - ResourceHacker Special
+
+[ResourceHacker_Download]
+Call,DirMake,%GlobalTemplates%\#9
+Set,#7,%GlobalTemplates%\#9\#8
+//--Old Link--Set,#6,http://www.angusj.com/resourcehacker/reshack_setup.exe
+Set,#6,http://www.angusj.com/resourcehacker/reshacker_setup.exe
+//-
+Echo,"Downloading #8 ~ 730 KB"
+ShellExecute,Open,%Tools%\wget.exe,"-t 6 -O #$q#7#$q #$q#6#$q"
+Set,#5,%ExitCode%
+If,Not,#5,Equal,0,Call,FileDelete,#7
+If,Not,#5,Equal,0,Call,Echo,"Resource Hacker - Wget Failure - #8 - ErrorLevel #5",Warn
+//
+If,ExistFile,#7,Retrieve,FileSize,#7,#4
+If,ExistFile,#7,If,#4,Smaller,100,FileDelete,#5
+If,Not,ExistFile,#7,Call,Echo,"Resource Hacker - Wget Failure - #8 - File Size Not Match",Warn
+
+[Launch_Program]
+Run,%ProjectDir%\Utils\Resource_Hacker.Script,ResourceHacker,%ProjectDir%\Utils\Resource_Hacker.Script
+If,ExistFile,%ResHackerExe%,Call,Start,,%ResHackerExe%,,%ResHackerDir%
+
+[Opendir_reshack_setup]
+Call,OpenDir,%GlobalTemplates%\Resource_Hacker
+
+[AuthorEncoded]
+Logo=ResHacker4848.ico
+ResHacker4848.ico=2713,3618
+
+[EncodedFile-AuthorEncoded-ResHacker4848.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+opendir.bmp=571,762
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-opendir.bmp]
+lines=0
+0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

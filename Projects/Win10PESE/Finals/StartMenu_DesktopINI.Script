@@ -1,0 +1,207 @@
+[Main]
+Title=StartMenu Local Win
+Type=Plugin
+Author=Lancelot
+Description=(BETA) Modifications of Windows MultiLanguage on Start Menu (desktop.ini)
+Credits=http://TheOven.org
+Version=003
+Download_Level=2
+Level=8
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.11.08
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Finals/StartMenu_DesktopINI.Script
+Web2=http://gena.cwcodes.net/Projects/Gena/Finals/1%20Optimizations/StartMenu_DesktopINI.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=See "Gena\Basic\Profile Create Folders" for full Gena list which also helps SE
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2017.02.04 Plugin created
+History002=Lancelot Add to Servers - Date:2017.02.09
+History003=Lancelot Fixed wrong variable - Thanks to ied206 PEBakery - Date:2017.11.08
+
+[Interface]
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Add_TextLabel=Add,1,1,9,61,29,18,8,Normal
+Remove_TextLabel=Remove,1,1,46,61,58,18,8,Normal
+Delete_TextLabel=Delete,1,1,104,61,45,18,8,Normal
+SM_SMenu_TextLabel="Start Menu\",1,1,160,76,74,18,8,Normal
+SM_SMenu_Add_CheckBox=,1,3,11,77,14,14,True
+SM_Progs_TextLabel="Start Menu\Programs\",1,1,161,90,230,18,8,Normal
+SM_Progs_Add_CheckBox=,1,3,11,92,14,14,True
+SM_Accso_Add_CheckBox=,1,3,11,107,14,14,True
+SM_Accso_TextLabel="Start Menu\Programs\Accessories\",1,1,159,105,230,18,8,Normal
+SM_Accso_Accsi_TextLabel="Start Menu\Programs\Accessories\Accessibility",1,1,159,120,230,18,8,Normal
+SM_Accso_Accsi_Add_CheckBox=,1,3,11,123,14,14,True
+SM_Accsi_TextLabel="Start Menu\Programs\Accessibility\",1,1,159,135,230,18,8,Normal
+SM_Accsi_Add_CheckBox=,1,3,11,138,14,14,True
+SM_SysTl_TextLabel="Start Menu\Programs\System Tools",1,1,160,150,230,18,8,Normal
+SM_SysTl_Add_CheckBox=,1,3,11,153,14,14,True
+SM_AdmTl_TextLabel="Start Menu\Programs\Administrative Tools",1,1,161,167,230,18,8,Normal
+SM_AdmTl_Add_CheckBox=,1,3,11,167,14,14,True
+
+[Variables]
+
+[Process]
+If,%SM_SMenu_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_SMenu_Add
+If,%SM_Progs_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_Progs_Add
+If,%SM_Accso_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_Accso_Add
+If,%SM_Accso_Accsi_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_Accso_Accsi_Add
+If,%SM_Accsi_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_Accsi_Add
+If,%SM_SysTl_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_SysTl_Add
+If,%SM_AdmTl_Add_CheckBox%,Equal,True,Run,%ScriptFile%,SM_AdmTl_Add
+
+[SM_SMenu_Add]
+//Set,%Startmenu_Folder_Name%,"Start Menu"
+//If,%OSFamily%,Equal,NT5,IniRead,%ProjectInfo%,String,StartMenu,%Startmenu_Folder_Name%
+Add,DesktopIni,StartMenu,,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21786
+
+[SM_Progs_Add]
+Set,%Startmenu_Folder_Name%,Programs
+If,%OSFamily%,Equal,NT5,IniRead,%ProjectInfo%,String,Programs,%Startmenu_Folder_Name%
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21782
+
+[SM_Accso_Add]
+Set,%Startmenu_Folder_Name%,Accessories
+If,%OSFamily%,Equal,NT5,IniRead,%ProjectInfo%,String,Accessories,%Startmenu_Folder_Name%
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21761
+
+[SM_Accso_Accsi_Add]
+Set,%Startmenu_Folder_Name%,Accessories\Accessibility
+If,%OSFamily%,Equal,NT5,Begin
+IniRead,%ProjectInfo%,String,Accessories,%AccsoName%
+IniRead,%ProjectInfo%,String,Accessibility,%AccsiName%
+Set,%Startmenu_Folder_Name%,%AccsoName%\%AccsiName%
+End
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21760
+
+[SM_Accsi_Add]
+//Win10: Accessibility -- English Name: "Windows Ease of Access"
+Set,%Startmenu_Folder_Name%,Accessibility
+If,%OSFamily%,Equal,NT5,IniRead,%ProjectInfo%,String,Accessibility,%AccsiName%
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21760
+
+[SM_SysTl_Add]
+//Win10: "System Tools" -- English Name: "Windows System"
+Set,%Startmenu_Folder_Name%,"System Tools"
+If,%OSFamily%,Equal,NT5,IniRead,%ProjectInfo%,String,SystemTools,%Startmenu_Folder_Name%
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21788
+
+[SM_AdmTl_Add]
+Set,%Startmenu_Folder_Name%,"Administrative Tools"
+IniRead,%ProjectInfo%,String,AdministrativeTools,%Startmenu_Folder_Name%
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@shell32.dll#$c-21762
+
+[CANCEL_]
+//Run,%ScriptFile%,ProfileDesktopIni
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,Process_NT5
+If,%OSFamily%,Equal,NT6,Run,%ScriptFile%,Process_NT6
+Run,%ScriptFile%,Process_All
+
+[CANCEL_Process_NT5]
+
+[CANCEL_Process_NT6]
+
+[CANCEL_Process_All]
+
+[CANCEL_ProfileDesktopIni]
+//See Gena\Basic\'Profile Create Folders' plugin
+//On None En build -> To Avoid Double Folder with English and None-English on StartMenu -> You have to have proper desktop.ini
+//---- Method A: Here are some known ones (Method B: Copy all desktop.ini etc.)
+//-
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+If,ExistDir,"%f%",ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+//-
+//To have Explorer.lnk with multilanguage create desktop.ini here
+If,Not,ExistFile,%f%\desktop.ini,FileCreateBlank,%f%\desktop.ini
+//-
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21782
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21782
+//-
+IniWrite,"%f%\desktop.ini",LocalizedFileNames,Explorer.lnk,@#$pSystemRoot#$p\system32\shell32.dll#$c-22067
+IniWrite,"%f%\desktop.ini",LocalizedFileNames,"Command Prompt.lnk",@#$pSystemRoot#$p\system32\shell32.dll#$c-22022
+//-
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//-
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Accessories"
+If,ExistDir,%f%,ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21761
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21761
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//-
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools"
+If,ExistDir,%f%,ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21788
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21788
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//-
+Set,%f%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+If,ExistDir,%f%,ShellExecute,Hide,attrib.exe,"+S +R #$q%f%#$q"
+If,ExistFile,"%f%\desktop.ini",Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%f%\desktop.ini#$q"
+//[.ShellClassInfo]
+//LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21787
+IniWrite,"%f%\desktop.ini",.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21787
+ShellExecute,Hide,attrib.exe,"-R +S +H #$q%f%\desktop.ini#$q"
+End
+//-
+
+[AuthorEncoded]
+worldtravel_4848.ico=5944,7926
+Logo=worldtravel_4848.ico
+
+[EncodedFile-AuthorEncoded-worldtravel_4848.ico]
+lines=1
+0=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
+1=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[Folder]
+
+[EncodedFolders]
+Folder
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

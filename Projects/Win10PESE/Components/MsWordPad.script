@@ -1,0 +1,291 @@
+[Main]
+Title=WordPad
+Type=Plugin
+Author=JFX, John Adamopoulos
+Description=Adds Word pad to the PE compilation.
+Credits=ChrisR, PEBuilder plugin HWPnP.inf
+Version=027
+Download_Level=1
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.12.18
+Depend=
+Disable=
+CertifiedBy=
+Certification=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/MsWordPad.script
+Web2=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/Accessories/MsWordPad.script
+HistoryNotes01=
+History014=Lancelot source - Accessories naming
+History015=JFX wordpad codes added to support pex ;). ( Lancelot)
+History017=Lancelot IniVariables OS
+History018=Lancelot Syncronised with Win10PESE WordPad v5 plugin
+History020=Lancelot Added Associations from KYHI mod plugin + with .docx reply 18: http://TheOven.org/index.php?topic=1413.msg16402#msg16402
+History024=ChrisR to open .docx OpcServices.dll Reply 39: http://TheOven.org/index.php?topic=1413.msg16449#msg16449 - Date:2015.10.11
+History025=Lancelot Added Components_PluginCache_Extract - Date:2016.11.09
+History026=Lancelot Added MultiLanguage Desktop.ini Support - http://TheOven.org/index.php?topic=2024 - http://TheOven.org/index.php?topic=2025 - Date:2017.02.07
+History027=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+
+[Interface]
+pBevel1=pBevel1,1,12,8,49,154,234
+pBevel2=pBevel2,1,12,195,49,204,105
+pCheckBox1=Desktop,1,3,20,74,87,18,False
+pCheckBox2=StartMenu,1,3,20,128,87,18,True
+pCheckBox3="Quick Launch/ Recent",1,3,20,93,129,18,False
+pCheckBox8="Send To",1,3,20,112,87,15,True
+pTextLabel1="Create shortcuts in :",1,1,14,55,117,18,8,Normal
+pTextBox2="Custom Shortcut Name",1,0,24,243,114,21,
+pTextLabel2="File types to associate with Wordpad:",1,1,204,55,186,18,8,Normal
+pCheckBox4=.doc,1,3,222,76,50,18,True
+pCheckBox5=.rtf,1,3,222,97,50,18,True
+pCheckBox6=.wri,1,3,222,118,50,18,True
+pRadioGroup1="Start Menu:",1,14,23,149,115,56,Accessories,"Folder Name",0
+pTextBox1=,1,0,23,202,115,21,Accessories
+pCheckBox9=.v4w,1,3,276,75,47,14,True
+pCheckBox10=.wpc,1,3,276,87,47,14,True
+pCheckBox11=.docx,1,3,276,103,46,14,True
+pCheckBox12=.odt,1,3,276,117,39,14,True
+pCheckBox13=.jw,1,3,276,131,39,14,True
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,https://en.wikipedia.org/wiki/WordPad
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=WordPad
+%ProgramEXE%=WordPad.exe
+%shname%=WordPad
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,Not,%pTextBox2%,Equal,"",Set,%shname%,%pTextBox2%
+Run,%ScriptFile%,%OSFamily%_Process
+
+[NT6_Process]
+Set,%ProgramFolder%,"#$pProgramFiles#$p\Windows NT\Accessories"
+//-
+If,Not,ExistDir,"%TargetDir%\Program Files\Windows NT\Accessories",DirMake,"%TargetDir%\Program Files\Windows NT\Accessories\"
+FileCopy,"%InstallSRC%\Program Files\Windows NT\Accessories\wordpad*.*","%TargetDir%\Program Files\Windows NT\Accessories\"
+Require_FileQ,IconCodecService.dll
+Require_FileQ,MFC42u.dll
+If,ExistFile,%Source_Sys%\UIRibbon.dll,Require_FileQ,UIRibbon.dll
+If,ExistFile,%Source_Sys%\UIRibbonRes.dll,Require_FileQ,UIRibbonRes.dll
+Require_FileQ,WindowsCodecs.dll
+Require_FileQ,WindowsCodecsExt.dll
+//-
+//To open docx file OpcServices.dll required
+Require_FileQ,OpcServices.dll
+//-
+RegHiveLoad,Tmp_Software,%RegSoftware%
+If,%pCheckBox4%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.doc,,TextFile
+If,%pCheckBox5%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.rtf,,TextFile
+If,%pCheckBox6%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.wri,,TextFile
+If,%pCheckBox9%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.v4w,,TextFile
+If,%pCheckBox10%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.wpc,,TextFile
+If,%pCheckBox11%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.docx,,TextFile
+If,%pCheckBox12%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.odt,,TextFile
+If,%pCheckBox13%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.jw,,TextFile
+RegHiveUnLoad,Tmp_Software
+//-
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,%ProgramFolder%\%ProgramEXE%,%shname%
+If,%pCheckBox2%,Equal,True,Begin
+If,%pRadioGroup1%,Equal,0,Set,%Startmenu_Folder_Name%,Accessories
+If,%pRadioGroup1%,Equal,1,Set,%Startmenu_Folder_Name%,%pTextBox1%
+If,%Startmenu_Folder_Name%-,Equal,-,Set,%Startmenu_Folder_Name%,Accessories
+Add_Shortcut,StartMenu,%Startmenu_Folder_Name%,%ProgramFolder%\%ProgramEXE%,%shname%
+End
+If,%pCheckBox3%,Equal,True,Begin
+If,%pCheckBox2%,Equal,True,Add_Pin,RecentPrograms,,$Start_Menu\Programs\%Startmenu_Folder_Name%\%shname%.lnk
+Else,If,%pCheckBox1%,Equal,True,Add_Pin,RecentPrograms,,$Desktop\%shname%.lnk
+End
+Run,%ScriptFile%,NT6_Process_DesktopINI
+
+[NT6_Process_DesktopINI]
+//Win10: Wordpad.lnk=@%SystemRoot%\system32\shell32.dll,-22069
+Set,%DINI%,@#$pSystemRoot#$p\system32\shell32.dll#$c-22069
+If,%pCheckBox1%%pTextBox2%,Equal,True,Add,DesktopIni,Desktop,,,%shname%.lnk,%DINI%
+If,%pCheckBox3%%pTextBox2%,Equal,True,Add,DesktopIni,QuickLaunch,,,%shname%.lnk,%DINI%
+If,%pCheckBox8%%pTextBox2%,Equal,True,Add,DesktopIni,SendTo,,,%shname%.lnk,%DINI%
+If,%pRadioGroup1%,Equal,0,Begin
+If,%pCheckBox2%%pTextBox2%,Equal,True,Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,,%shname%.lnk,%DINI%
+End
+//-
+//------------------------- Default Accessories Folder Localized - Start
+//Win10: Accessories folder: [.ShellClassInfo] LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21761
+If,%pRadioGroup1%,Equal,0,Begin
+If,%pCheckBox2%%pTextBox2%,Equal,True,Begin
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,.ShellClassInfo,LocalizedResourceName,@#$pSystemRoot#$p\system32\shell32.dll#$c-21761
+End
+End
+//------------------------- Default Accessories Folder Localized - Finish
+
+[NT6_Process_DesktopINI_CANCEL]
+//Working but not used for now - Kept for future reference
+//----------------
+//Desktop.ini Adjustments - Start
+If,%pTextBox2%-,Equal,-,Begin
+Set,%s%,"%InstallSRC%\ProgramData\Microsoft\Windows\Start Menu\Programs\Accessories\desktop.ini"
+Set,%DINI%,""
+If,ExistFile,%s%,Begin
+//desktop.ini by Windows is Unicode BOM -- current builder can not read write these files....
+//-
+Call,DirDeleteMake,%ProjectTemp%\DesktopINI_Convert
+//-
+FileCopy,%s%,%ProjectTemp%\DesktopINI_Convert
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%ProjectTemp%\DesktopINI_Convert\desktop.ini#$q"
+FileRename,%ProjectTemp%\DesktopINI_Convert\desktop.ini,%ProjectTemp%\DesktopINI_Convert\desktop_Accessories.ini
+Set,%s%,%ProjectTemp%\DesktopINI_Convert\desktop_Accessories.ini
+Call,ConvertToAnsi,%s%
+//-
+IniRead,%s%,LocalizedFileNames,Wordpad.lnk,%DINI%
+End
+//----
+//Win10: Wordpad.lnk=@%SystemRoot%\system32\shell32.dll,-22069
+If,%DINI%-,Equal,-,Set,%DINI%,@#$pSystemRoot#$p\system32\shell32.dll#$c-22069
+//----
+If,%pCheckBox1%,Equal,True,Add,DesktopIni,Desktop,,,%shname%.lnk,@#$pSystemRoot#$p\system32\shell32.dll#$c-22069
+//----
+If,%pCheckBox2%,Equal,True,Begin
+Set,%ta%,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu"
+Set,%taF%,-
+If,%Startmenu_Folder_Name%-,Equal,-,Set,%taF%,%ta%\Programs
+If,%Startmenu_Folder_Name%,Equal,.,Set,%taF%,%ta%\Programs
+If,%Startmenu_Folder_Name%,Equal,..,Set,%taF%,%ta%
+If,%taF%,Equal,-,Set,%taF%,%ta%\Programs\%Startmenu_Folder_Name%
+//-
+Set,%taDINI%,%taF%\desktop.ini
+//-
+If,ExistFile,%taDINI%,Begin
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%taDINI%#$q"
+//In case it is the windows Unicode BOM file
+Call,ConvertToAnsi,%taDINI%
+End
+//-
+Set,%t%,0
+If,%Startmenu_Folder_Name%,Equal,.,Begin
+Set,%t%,1
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,,%shname%.lnk,%DINI%
+End
+If,%Startmenu_Folder_Name%,Equal,..,Begin
+Set,%t%,1
+Add,DesktopIni,StartMenuRoot,%Startmenu_Folder_Name%,,%shname%.lnk,%DINI%
+End
+If,%Startmenu_Folder_Name%-,Equal,-,Begin
+Set,%t%,1
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,,%shname%.lnk,%DINI%
+End
+If,%t%,Equal,0,Begin
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,,%shname%.lnk,%DINI%
+End
+//-
+End
+//--
+If,%pCheckBox3%,Equal,True,Add,DesktopIni,QuickLaunch,,,%shname%.lnk,%DINI%
+//--
+ShellExecute,Hide,attrib.exe,"+A -R +S -H #$q%taF%#$q"
+//--
+//------------------------- Default Accessories Folder Localized - Start
+If,%pRadioGroup1%,Equal,0,Begin
+IniRead,%s%,.ShellClassInfo,LocalizedResourceName,%DINI%
+//Win10: Accessories folder: [.ShellClassInfo] LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21761
+If,%DINI%-,Equal,-,Set,%DINI%,@#$pSystemRoot#$p\system32\shell32.dll#$c-21761
+//-
+ShellExecute,Hide,attrib.exe,"-R -S -H #$q%taDINI%#$q"
+IniWrite,%taDINI%,.ShellClassInfo,LocalizedResourceName,%DINI%
+ShellExecute,Hide,attrib.exe,"+A +R +S +H #$q%taDINI%#$q"
+End
+//------------------------- Default Accessories Folder Localized - Finish
+//--
+End
+//Desktop.ini Adjustments - Finish
+//----------------
+
+[NT5_Process]
+Set,%ProgramFolder%,#$pSystemRoot#$p\system32
+//-
+RegHiveLoad,Tmp_Software,%RegSoftware%
+If,%pCheckBox4%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.doc,,WordPad.Document.1
+If,%pCheckBox4%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\WordPad.Document.1,,"WordPad Document"
+If,%pCheckBox4%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\WordPad.Document.1,FriendlyTypeName,"@#$q#$pSystemRoot#$p\System32\WORDPAD.EXE#$q#$c-209"
+If,%pCheckBox4%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\WordPad.Document.1\DefaultIcon,,"#$q#$pSystemRoot#$p\System32\WORDPAD.EXE#$q#$c1"
+If,%pCheckBox4%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\WordPad.Document.1\shell\open\command,,"#$qWORDPAD.EXE#$q#$s#$q#$p1#$q"
+If,%pCheckBox5%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.rtf,,rtffile
+If,%pCheckBox5%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\rtffile,,"Rich Text Document"
+If,%pCheckBox5%,Equal,True,RegWrite,HKLM,0x2,Tmp_Software\Classes\rtffile,FriendlyTypeName,"@#$q#$pSystemRoot#$p\System32\WORDPAD.EXE#$q#$c-190"
+If,%pCheckBox5%,Equal,True,RegWrite,HKLM,0x2,Tmp_Software\Classes\rtffile\DefaultIcon,,"#$q#$pSystemRoot#$p\System32\WORDPAD.EXE#$q#$c1"
+If,%pCheckBox5%,Equal,True,RegWrite,HKLM,0x2,Tmp_Software\Classes\rtffile\shell\open\command,,"#$qWORDPAD.EXE#$q#$s#$q#$p1#$q"
+If,%pCheckBox6%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.wri,,wrifile
+If,%pCheckBox6%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\wrifile,,"Write Document"
+If,%pCheckBox6%,Equal,True,RegWrite,HKLM,0x2,Tmp_Software\Classes\wrifile,FriendlyTypeName,"@#$q#$pSystemRoot#$p\System32\WORDPAD.EXE#$q#$c-208"
+If,%pCheckBox6%,Equal,True,RegWrite,HKLM,0x2,Tmp_Software\Classes\wrifile\DefaultIcon,,"#$q#$pSystemRoot#$p\System32\WORDPAD.EXE#$q#$c1"
+If,%pCheckBox6%,Equal,True,RegWrite,HKLM,0x2,Tmp_Software\Classes\wrifile\shell\open\command,,"#$qWORDPAD.EXE#$q#$s#$q#$p1#$q"
+If,%pCheckBox9%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.v4w,,WordPad.Document.1
+If,%pCheckBox10%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.wpc,,WordPad.Document.1
+If,%pCheckBox11%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.docx,,WordPad.Document.1
+If,%pCheckBox12%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.odt,,WordPad.Document.1
+If,%pCheckBox13%,Equal,True,RegWrite,HKLM,0x1,Tmp_Software\Classes\.jw,,WordPad.Document.1
+RegHiveUnLoad,Tmp_Software
+//-
+If,Not,ExistFile,%Target_Sys%\wordpad.exe,CopyOrExpand,%Source_Win%\wordpad.exe,%Target_Sys%
+If,Not,ExistFile,%Target_Sys%\mfc42u.dll,CopyOrExpand,%Source_Win%\mfc42u.dll,%Target_Sys%
+If,Not,ExistFile,%Target_Sys%\msftedit.dll,CopyOrExpand,%Source_Win%\msftedit.dll,%Target_Sys%
+//-
+If,ExistFile,%ProjectInfo%,IniWrite,%ProjectInfo%,UPX-Switches,WORDPAD.exe,"-9 --compress-resources=0"
+//---
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,%ProgramFolder%\%ProgramEXE%,%shname%
+If,%pCheckBox1%%pTextBox2%,Equal,True,Add,DesktopIni,Desktop,,,%shname%.lnk,@shell32.dll#$c-22069
+//-
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch,,%ProgramFolder%\%ProgramEXE%,%shname%
+If,%pCheckBox3%%pTextBox2%,Equal,True,Add,DesktopIni,QuickLaunch,,,%shname%.lnk,@shell32.dll#$c-22069
+//-
+If,%pCheckBox8%,Equal,True,Add_Shortcut,SendTo,,%ProgramFolder%\%ProgramEXE%,%shname%
+If,%pCheckBox8%%pTextBox2%,Equal,True,Add,DesktopIni,SendTo,,,%shname%.lnk,@shell32.dll#$c-22069
+//-
+If,%pCheckBox2%,Equal,True,Begin
+If,%pRadioGroup1%,Equal,0,IniRead,%ProjectInfo%,String,Accessories,%Startmenu_Folder_Name%
+If,%pRadioGroup1%,Equal,1,Set,%Startmenu_Folder_Name%,%pTextBox1%
+Add_Shortcut,StartMenu,%Startmenu_Folder_Name%,%ProgramFolder%\%ProgramEXE%,%shname%
+If,%pTextBox2%,Equal,"",Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,,%shname%.lnk,@shell32.dll#$c-22069
+End
+
+[AuthorEncoded]
+wordpad.ico=2228,2971
+Logo=wordpad.ico
+
+[EncodedFile-AuthorEncoded-wordpad.ico]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

@@ -1,0 +1,595 @@
+[Main]
+Title=RegEdit
+Type=Plugin
+Author=yahooUK, ChrisR, Homes32
+Description=Edit Registry hives without rebuilding your project.
+Credits=http://TheOven.org
+Version=024
+Download_Level=0
+Level=10
+Selected=None
+NoWarning=False
+Mandatory=True
+Contact=http://TheOven.org
+Date=2017.01.11_13:15.04 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/55-RegEdit.script
+CertifiedBy=
+Certification=
+History015=ChrisR Rewrite the script with Repair Mount, edit or export Hive, Unmount
+History014=Lancelot syntax fixes and adjustments for a general usage
+History016=Homes32 extensive overhaul of interface and registry processes.
+History017=Lancelot script specialized to use RegEdit (using 00-RepairMount.script) // Tips some macro tricks not used - to ease maintance and at some points speed.
+History018=Lancelot backup etc. buttons progress window enabled (to be sure things working with visual ..) // Live98 support added
+History019=ChrisR Mount/unmount with WimUtil in addition if configured
+History020=ChrisR User use NTUSER.DAT if exist for %Api_Type% 2. Hive Name 8PE-X added
+History021=ChrisR Added DU Buttons
+History022=ChrisR Add choice for Drivers hive
+History023=Lancelot Add ReadSourceHives_Button to easly check source hives (SE For now only support Extracted Folders) - Date:2016.02.01
+History024=ChrisR Tmp_Drivers typo - Date:2016.02.27 // Lancelot - Add Compare Button - Date:2017.01.11
+
+[Interface]
+BTN_LoadHive="Edit Hives    ",1,8,12,40,115,58,EditHive,Registry.bmp,False,_EditHive_,False
+Hives_TextLabel="Project Hives:",1,1,143,26,87,18,8,Bold
+CB_SystemHive=System,1,3,154,46,82,15,True
+CB_DefaultHive=Default,1,3,154,62,82,15,True
+CB_SoftwareHive=Software,1,3,154,78,82,15,True
+CB_ComponentsHive=Components,1,3,154,94,82,15,False
+CB_Drivers=Drivers,1,3,154,110,82,15,False
+CB_User=User,1,3,154,126,82,15,False
+CB_Sam=Sam,1,3,154,142,82,15,False
+CB_Security=Security,1,3,154,158,82,15,False
+//--
+CB_BackupHives="Backup Hive Files",0,3,154,173,115,15,False
+//--
+BTN_ExportHive="Export Hives",0,8,13,107,115,41,ExportHive,export.bmp,False,_ExportHive_,False
+BTN_ExportHiveF="Open Export Folder",0,8,29,150,99,25,OpenExportDir,0,False,False,_OpenExportDir_,False
+//--
+SB_TextLabel="Mount Point:",0,1,21,256,66,18,8,Normal
+SB_MountHere=%TargetDir%,0,4,19,276,251,21,%BaseDir%\Mount\%ProjectName%\Target,%TargetDir%
+//--
+HiveName_TextLabel="Hive Name:",0,1,26,215,61,18,8,Normal
+HiveName_ScrollBox=Tmp_X,0,4,90,213,59,21,WB-X,PE3-X,Tmp_X,8PE-X
+//--
+Custom_LoadHive_Bevel=pBevel3,0,12,295,36,254,141
+Custom_LoadHive="Custom Edit Hive",0,8,304,43,138,42,Custom_EditHive,Registry.bmp,False,_Custom_EditHive_,False
+TB_CustomHiveName="HKEY_LOCAL_MACHINE :",0,0,307,146,200,21,TMP
+FB_CustomHive=%Target_Sys%\config\software,0,13,303,90,236,30,file
+//--
+pButton_Show_Second_Gui="Advanced Options",1,8,435,6,100,18,Second_Gui,True,True,False,_Second_Gui_,True
+pButton_Show_First_Gui="Basic Options",0,8,435,6,100,18,First_Gui,True,True,False,_First_Gui_,True
+//--
+Backup_Bevel=pBevel1,0,12,297,200,94,95
+BTN_Backup="Backup Hives",0,8,304,207,80,25,Backup_Hives,True,False,False,_Backup_Hives_,False
+BTN_Restore="Restore Hives",0,8,304,235,80,25,Restore_Hives,True,False,False,_Restore_Hives_,False
+BTN_Backup_Delete="Delete Backup",0,8,304,263,80,25,Delete_Backup_Hives,True,False,False,_Delete_Backup_Hives_,False
+ReadSourceHives_Bevel=Bevel,0,12,401,217,148,49
+ReadSourceHives_Button="Read Source Hives",0,8,407,223,135,37,Source_Hives,Registry.bmp,False,False,_Source_Hives_,False
+WebLabel_Plugin="Plugin Page",1,10,301,4,55,18,http://TheOven.org/index.php?board=9
+Button_Upload=,1,8,383,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_Download=,1,8,360,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_CompareEdit=,1,8,405,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Second_Gui]
+System,CURSOR,Wait
+Run,%ScriptFile%,Show-Hide-First_Gui,False
+Run,%ScriptFile%,Show-Hide-Second_Gui,True
+System,RefreshInterface
+System,CURSOR,Normal
+
+[First_Gui]
+System,CURSOR,Wait
+Run,%ScriptFile%,Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Show-Hide-First_Gui,True
+System,RefreshInterface
+System,CURSOR,Normal
+
+[Show-Hide-Second_Gui]
+Visible,%CB_BackupHives%,#1,PERMANENT
+//--
+Visible,%BTN_ExportHive%,#1,PERMANENT
+Visible,%BTN_ExportHiveF%,#1,PERMANENT
+//--
+Visible,%SB_TextLabel%,#1,PERMANENT
+Visible,%SB_MountHere%,#1,PERMANENT
+//--
+Visible,%HiveName_TextLabel%,#1,PERMANENT
+Visible,%HiveName_ScrollBox%,#1,PERMANENT
+//--
+Visible,%Custom_LoadHive_Bevel%,#1,PERMANENT
+Visible,%Custom_LoadHive%,#1,PERMANENT
+Visible,%TB_CustomHiveName%,#1,PERMANENT
+Visible,%FB_CustomHive%,#1,PERMANENT
+//--
+Visible,%Backup_Bevel%,#1,PERMANENT
+Visible,%BTN_Backup%,#1,PERMANENT
+Visible,%BTN_Restore%,#1,PERMANENT
+Visible,%BTN_Backup_Delete%,#1,PERMANENT
+//--
+Visible,%ReadSourceHives_Bevel%,#1,PERMANENT
+Visible,%ReadSourceHives_Button%,#1,PERMANENT
+//--
+Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+
+[Show-Hide-First_Gui]
+//--
+Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+
+[Variables]
+%HSys%=WB-System
+%HDef%=WB-Default
+%HSof%=WB-Software
+%HCom%=WB-Components
+%HDrv%=WB-Drivers
+%HUse%=WB-User
+%HSam%=WB-Sam
+%HSec%=WB-Security
+%ExpHivesF%=%GlobalTemplates%\%ProjectName%\Debug_Hive
+%ExpHivesF%=%GlobalTemplates%\%ProjectName%\Backup_Hives
+//--
+%BootA%=%TargetDir%\sources
+%BootAFN%=boot.wim
+%BootAF%=%BootA%\%BootAFN%
+//--
+%BootV%=%TargetDir%
+%BootVFN%=vistape.wim
+%BootVF%=%BootV%\%BootVFN%
+//--
+%BootL%=%TargetDir%\Leopard
+%BootLFN%=Leopard.wim
+%BootLF%=%BootL%\%BootLFN%
+//--
+%Mount%=%SB_MountHere%
+%mountmade%=No
+%TSuccess%=1
+%TUnSuccess%=1
+%MountF%=
+
+[Process]
+Echo,"You can't run this script directly!"
+
+[EditHive]
+Run,%ScriptFile%,LoadHive%Api_Type%
+Echo,"Regedit is running. Please close Regedit to continue."
+System,FILEREDIRECT,OFF
+ShellExecute,Open,regedit.exe,""
+System,FILEREDIRECT,ON
+Run,%ScriptFile%,UnloadHive
+If,%mountmade%,Equal,YES,Run,%ScriptFile%,TargetUnMount
+
+[LoadHive%Api_Type%]
+If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,LoadHive1
+Else,Run,%ScriptFile%,LoadHive2
+
+[LoadHive98]
+//Windows 95, 98, and Me
+//The registry files are named USER.DAT and SYSTEM.DAT are
+//stored in the %WINDIR% directory.
+//In Windows Me, Classes.dat was added.
+//Also, each user profile (if profiles are enabled) has its own USER.DAT in profile's directory.
+//--
+If,Not,%HiveName_ScrollBox%,Equal,WB-X,Run,%ScriptFile%,HiveName_%HiveName_ScrollBox%
+//
+//-After Build
+//%APP_TMP%=%ProjectTemp%\APP_TMP
+//--%target_win%=%target_root%\LiveW98
+//--SYSTEM.DAT
+//--USER.DAT
+//--%target_sys%=%target_root%\LiveW98\System
+//--\Config
+//--default
+//--software
+//-During Build:
+//--%app_tmp%\setupreg.hiv (not in project but in capi by BeatZero)
+//--%app_tmp%\Config\default
+//--%app_tmp%\Config\software
+//--%app_tmp%\Config\COMPONENTS (not in project but in capi by BeatZero)
+//
+If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%app_tmp%\setupreg.hiv
+If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%app_tmp%\Config\default
+If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%app_tmp%\Config\software
+If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%app_tmp%\Config\COMPONENTS
+If,Not,ExistVar,%RegDrivers%,Set,%RegComponents%,%app_tmp%\Config\DRIVERS
+If,Not,ExistVar,%RegUser%,Set,%RegUser%,%app_tmp%\Config\default
+If,Not,ExistVar,%RegSam%,Set,%RegSam%,%app_tmp%\Config\sam
+//
+If,%CB_BackupHives%,EQUAL,True,Run,%ScriptFile%,BackupHives
+//
+If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,RegHiveLoad,%HSys%,%RegSystem%
+If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,RegHiveLoad,%HDef%,%RegDefault%
+If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,RegHiveLoad,%HSof%,%RegSoftware%
+If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,RegHiveLoad,%HCom%,%RegComponents%
+If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,RegHiveLoad,%HDrv%,%RegDrivers%
+If,%CB_User%,Equal,True,If,ExistFile,%RegUser%,Begin
+If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,RegHiveLoad,%HUse%,%RegUser%
+If,Not,%RegDefault%,Equal,%RegUser%,RegHiveLoad,%HUse%,%RegUser%
+End
+If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSam%,%RegSam%
+If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSec%,%RegSecurity%
+
+[LoadHive1]
+If,Not,%HiveName_ScrollBox%,Equal,WB-X,Run,%ScriptFile%,HiveName_%HiveName_ScrollBox%
+//
+If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%target_sys%\SETUPREG.HIV
+If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%target_sys%\config\default
+If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%target_sys%\config\software
+If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%target_sys%\config\COMPONENTS
+If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%target_sys%\config\DRIVERS
+If,Not,ExistVar,%RegUser%,Set,%RegUser%,%target_sys%\config\default
+If,Not,ExistVar,%RegSam%,Set,%RegSam%,%target_sys%\config\sam
+If,Not,ExistVar,%RegSecurity%,Set,%RegSecurity%,%target_sys%\config\security
+//
+If,%CB_BackupHives%,EQUAL,True,Run,%ScriptFile%,BackupHives
+//
+If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,RegHiveLoad,%HSys%,%RegSystem%
+If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,RegHiveLoad,%HDef%,%RegDefault%
+If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,RegHiveLoad,%HSof%,%RegSoftware%
+If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,RegHiveLoad,%HCom%,%RegComponents%
+If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,RegHiveLoad,%HDrv%,%RegDrivers%
+If,%CB_User%,Equal,True,If,ExistFile,%RegUser%,Begin
+If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,RegHiveLoad,%HUse%,%RegUser%
+If,Not,%RegDefault%,Equal,%RegUser%,RegHiveLoad,%HUse%,%RegUser%
+End
+If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSam%,%RegSam%
+If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSec%,%RegSecurity%
+
+[LoadHive2]
+If,Not,%HiveName_ScrollBox%,Equal,WB-X,Run,%ScriptFile%,HiveName_%HiveName_ScrollBox%
+//
+If,Not,ExistVar,%RegSoftware%,If,ExistFile,%target_sys%\config\software,Set,%RegSoftware%,%target_sys%\config\software
+If,Not,ExistFile,%RegSoftware%,If,ExistFile,%Mount%\Windows\System32\config\software,Set,%RegSoftware%,%Mount%\Windows\System32\config\software
+If,ExistFile,%RegSoftware%,Run,%ScriptFile%,LoadHive2_Reg
+Else,Run,%ScriptFile%,LoadHive2PreMount
+
+[LoadHive2PreMount]
+Run,%ScriptFile%,TargetMount
+Run,%ScriptFile%,LoadHive2_Reg
+
+[LoadHive2_Reg]
+Run,%ScriptFile%,Where_Are_Hives
+//
+If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,RegHiveLoad,%HSys%,%RegSystem%
+If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,RegHiveLoad,%HDef%,%RegDefault%
+If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,RegHiveLoad,%HSof%,%RegSoftware%
+If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,RegHiveLoad,%HCom%,%RegComponents%
+If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,RegHiveLoad,%HDrv%,%RegDrivers%
+If,%CB_User%,Equal,True,If,ExistFile,%RegUser%,Begin
+If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,RegHiveLoad,%HUse%,%RegUser%
+If,Not,%RegDefault%,Equal,%RegUser%,RegHiveLoad,%HUse%,%RegUser%
+End
+If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSam%,%RegSam%
+If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSec%,%RegSecurity%
+
+[UnloadHive]
+Echo,"Unloading registry hives..."
+If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,RegHiveUnLoad,%HSys%
+If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,RegHiveUnLoad,%HDef%
+If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,RegHiveUnLoad,%HSof%
+If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,RegHiveUnLoad,%HCom%
+If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,RegHiveUnLoad,%HDrv%
+If,%CB_User%,Equal,True,If,ExistFile,%RegUser%,Begin
+If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,RegHiveUnLoad,%HUse%
+If,Not,%RegDefault%,Equal,%RegUser%,RegHiveUnLoad,%HUse%
+End
+If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,RegHiveUnLoad,%HSam%
+If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveUnLoad,%HSec%
+
+[Backup_Hives]
+System,CURSOR,Wait
+Run,%ScriptFile%,Where_Are_Hives
+//
+Echo,"Backing up registry hives..."
+If,Not,ExistFile,%RegSoftware%,Message,"Target hive Folder Not Exists",WARNING
+//If,Not,ExistFile,%RegSoftware%,Halt,"Target hive Folder Not Exists"
+If,ExistFile,%RegSystem%,FileCopy,%RegSystem%,%RegSystem%.bak
+If,ExistFile,%RegDefault%,FileCopy,%RegDefault%,%RegDefault%.bak
+If,ExistFile,%RegSoftware%,FileCopy,%RegSoftware%,%RegSoftware%.bak
+If,ExistFile,%RegComponents%,FileCopy,%RegComponents%,%RegComponents%.bak
+If,ExistFile,%RegDrivers%,FileCopy,%RegDrivers%,%RegDrivers%.bak
+If,ExistFile,%RegUser%,FileCopy,%RegUser%,%RegUser%.bak
+If,ExistFile,%RegSam%,FileCopy,%RegSam%,%RegSam%.bak
+If,ExistFile,%RegSecurity%,FileCopy,%RegSecurity%,%RegSecurity%.bak
+System,CURSOR,Normal
+
+[Restore_Hives]
+System,CURSOR,Wait
+Run,%ScriptFile%,Where_Are_Hives
+//
+Echo,"Restoring up registry hives..."
+If,Not,ExistFile,%RegSoftware%,Message,"Target hive Folder Not Exists",WARNING
+//If,Not,ExistFile,%RegSoftware%,Halt,"Target hive Folder Not Exists"
+If,EXISTFILE,%RegSoftware%,If,Not,ExistFile,%RegSoftware%.bak,Message,"You must backup first",WARNING
+//If,Not,ExistFile,%RegSoftware%.bak,Halt,"You must backup first"
+If,ExistFile,%RegSystem%,FileCopy,%RegSystem%.bak,%RegSystem%
+If,ExistFile,%RegDefault%,FileCopy,%RegDefault%.bak,%RegDefault%
+If,ExistFile,%RegSoftware%,FileCopy,%RegSoftware%.bak,%RegSoftware%
+If,ExistFile,%RegComponents%,FileCopy,%RegComponents%.bak,%RegComponents%
+If,ExistFile,%RegDrivers%,FileCopy,%RegDrivers%.bak,%RegDrivers%
+If,ExistFile,%RegUser%,FileCopy,%RegUser%.bak,%RegUser%
+If,ExistFile,%RegSam%,FileCopy,%RegSam%.bak,%RegSam%
+If,ExistFile,%RegSecurity%,FileCopy,%RegSecurity%.bak,%RegSecurity%
+System,CURSOR,Normal
+
+[Delete_Backup_Hives]
+System,CURSOR,Wait
+Run,%ScriptFile%,Where_Are_Hives
+//
+If,ExistFile,%RegSystem%.bak,FileDelete,%RegSystem%.bak
+If,ExistFile,%RegDefault%.bak,FileDelete,%RegDefault%.bak
+If,ExistFile,%RegSoftware%.bak,FileDelete,%RegSoftware%.bak
+If,ExistFile,%RegComponents%.bak,FileDelete,%RegComponents%.bak
+If,ExistFile,%RegDrivers%.bak,FileDelete,%RegDrivers%.bak
+If,ExistFile,%RegUser%.bak,FileDelete,%RegUser%.bak
+If,ExistFile,%RegSam%.bak,FileDelete,%RegSam%.bak
+If,ExistFile,%RegSecurity%.bak,FileDelete,%RegSecurity%.bak
+System,CURSOR,Normal
+
+[Where_Are_Hives]
+If,Not,ExistFile,%RegSystem%,If,%Mount%,Equal,%BaseDir%\Mount\%ProjectName%\Target,Begin
+If,ExistFile,%Mount%\Windows\System32\config\system,Set,%RegSystem%,%Mount%\Windows\System32\config\system
+If,ExistFile,%Mount%\Windows\System32\config\default,Set,%RegDefault%,%Mount%\Windows\System32\config\default
+If,ExistFile,%Mount%\Windows\System32\config\software,Set,%RegSoftware%,%Mount%\Windows\System32\config\software
+If,ExistFile,%Mount%\Windows\System32\config\COMPONENTS,Set,%RegComponents%,%Mount%\Windows\System32\config\COMPONENTS
+If,ExistFile,%Mount%\Windows\System32\config\DRIVERS,Set,%RegDrivers%,%Mount%\Windows\System32\config\DRIVERS
+If,ExistFile,%Mount%\Users\Default\NTUSER.DAT,Set,%RegUser%,%Mount%\Users\Default\NTUSER.DAT
+Else,If,ExistFile,%Mount%\Windows\System32\config\default,Set,%RegUser%,%Mount%\Windows\System32\config\default
+If,ExistFile,%Mount%\Windows\System32\config\sam,Set,%RegSam%,%Mount%\Windows\System32\config\sam
+If,ExistFile,%Mount%\Windows\System32\config\security,Set,%RegSecurity%,%Mount%\Windows\System32\config\security
+End
+If,%API_TYPE%,Equal,98,Begin
+If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%app_tmp%\setupreg.hiv
+If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%app_tmp%\Config\default
+If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%app_tmp%\Config\software
+If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%app_tmp%\Config\COMPONENTS
+If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%app_tmp%\Config\DRIVERS
+If,Not,ExistVar,%RegUser%,Set,%RegUser%,%app_tmp%\Config\default
+If,Not,ExistVar,%RegSam%,Set,%RegSam%,%app_tmp%\Config\sam
+End
+If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%target_sys%\config\system
+If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%target_sys%\config\default
+If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%target_sys%\config\software
+If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%target_sys%\config\COMPONENTS
+If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%target_sys%\Config\DRIVERS
+If,Not,ExistVar,%RegUser%,Begin
+If,ExistFile,%TargetDir%\Users\Default\NTUSER.DAT,Set,%RegUser%,%TargetDir%\Users\Default\NTUSER.DAT
+Else,Set,%RegUser%,%target_sys%\config\default
+End
+If,Not,ExistVar,%RegSam%,Set,%RegSam%,%target_sys%\config\sam
+If,Not,ExistVar,%RegSecurity%,Set,%RegSecurity%,%target_sys%\config\security
+
+[BackupHives]
+Echo,"Backing up registry hives..."
+If,ExistFile,%RegSystem%,FileCopy,%RegSystem%,%RegSystem%.bak
+If,ExistFile,%RegDefault%,FileCopy,%RegDefault%,%RegDefault%.bak
+If,ExistFile,%RegSoftware%,FileCopy,%RegSoftware%,%RegSoftware%.bak
+If,ExistFile,%RegComponents%,FileCopy,%RegComponents%,%RegComponents%.bak
+If,ExistFile,%RegDrivers%,FileCopy,%RegDrivers%,%RegDrivers%.bak
+If,ExistFile,%RegUser%,FileCopy,%RegUser%,%RegUser%.bak
+If,ExistFile,%RegSam%,FileCopy,%RegSam%,%RegSam%.bak
+If,ExistFile,%RegSecurity%,FileCopy,%RegSecurity%,%RegSecurity%.bak
+
+[TargetMount]
+Echo,"Starting Mount process..."
+ReadEnv
+If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+//--
+If,ExistFile,%BootAF%,Set,%MountF%,%BootAF%
+If,ExistFile,%BootVF%,Set,%MountF%,%BootVF%
+If,ExistFile,%BootLF%,Set,%MountF%,%BootLF%
+If,Not,ExistFile,%MountF%,Message,"Wim File not found",Error
+If,Not,ExistFile,%MountF%,Halt,"Wim File not found"
+//--
+If,Not,ExistDir,%Mount%,DirMake,%Mount%
+If,%WimTools%,Equal,ImageX,Begin
+StrFormat,path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,Hide,%IMAGEX%,"/mountrw #$q%MountF%#$q 1 #$q%Mount%#$q",%IMAGEXPath%
+End
+If,%WimTools%,Equal,WimUtil,Begin
+StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,Hide,%WIMUTIL%,"/mount #$q%MountF%#$q 1 #$q%Mount%#$q /RW",%WIMUTILPath%
+End
+//--
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount successful :)"
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount successful :)"
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount successful :)",Information,%TSuccess%
+If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Set,%mountmade%,YES
+If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount NOT successful :(",ERROR
+If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount NOT successful :(",Warn
+If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Halt,"Mount NOT successful :("
+
+[ImageXNotFound]
+Message,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount !!!#$x#$xExiting...",Error
+Echo,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount !!!",Warn
+Halt,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount. Exiting..."
+
+[WimUtilNotFound]
+Message,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount !!!#$x#$xExiting...",Error
+Echo,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount !!!",Warn
+Halt,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount. Exiting..."
+
+[TargetUnMount]
+Echo,"Starting Unmount process..."
+If,%WimTools%,Equal,ImageX,Begin
+ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%Mount%#$q",%IMAGEXPath%
+End
+If,%WimTools%,Equal,WimUtil,Begin
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%Mount%#$q /Commit /nowarn",%WIMUTILPath%
+End
+//--
+IF,ExistFile,%Mount%\Windows\System32\config\system,Run,%ScriptFile%,TargetUnMount_Error
+Else,Begin
+Message,"Unmount Successful :)",Information,%TUnSuccess%
+Echo,"Unmount Successful :)"
+End
+//If,Not,%Mount%,EQUAL,%TargetDir%,Begi-n
+//If,Not,ExistFile,%Mount%\bootmgr,Message,"Unmount Successful :)",Information,1
+//If,Not,ExistFile,%Mount%\bootmgr,Echo,"Unmount Successful :)"
+//If,ExistFile,%Mount%\bootmgr,Message,"Unmount NOT successful :(",ERROR
+//If,ExistFile,%Mount%\bootmgr,Echo,"Unmount NOT successful :(",Warn
+//En-d
+
+[TargetUnMount_Error]
+Message,"Unmount NOT successful :(",ERROR
+Echo,"Unmount NOT successful :(",Warn
+
+[Custom_EditHive]
+If,Not,ExistFile,%FB_CustomHive%,Message,"The custom hive does not exist : %FB_CustomHive%",WARNING
+If,Not,ExistFile,%FB_CustomHive%,Halt,"The custom hive does not exist : %FB_CustomHive%"
+If,%CB_BackupHives%,EQUAL,True,FileCopy,%FB_CustomHive%,%FB_CustomHive%.bak
+RegHiveLoad,%TB_CustomHiveName%,%FB_CustomHive%
+Echo,"Regedit is running. Please close Regedit to continue."
+System,FILEREDIRECT,OFF
+ShellExecute,Open,regedit.exe,""
+System,FILEREDIRECT,ON
+RegHiveUnLoad,%TB_CustomHiveName%
+
+[ExportHive]
+Run,%ScriptFile%,LoadHive%Api_Type%
+Echo,"Exporting selected registry hives..."
+If,Not,ExistDir,%ExpHivesF%,DirMake,%ExpHivesF%
+System,FILEREDIRECT,OFF
+If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSys%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSys%#$q"
+If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HDef%.reg#$q #$qHKEY_LOCAL_MACHINE\%HDef%#$q"
+If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSof%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSof%#$q"
+If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HCom%.reg#$q #$qHKEY_LOCAL_MACHINE\%HCom%#$q"
+If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HDrv%.reg#$q #$qHKEY_LOCAL_MACHINE\%HDrv%#$q"
+If,%CB_User%,Equal,True,If,ExistFile,%RegUser%,Begin
+If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HUse%.reg#$q #$qHKEY_LOCAL_MACHINE\%HUse%#$q"
+If,Not,%RegDefault%,Equal,%RegUser%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HUse%.reg#$q #$qHKEY_LOCAL_MACHINE\%HUse%#$q"
+End
+If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSam%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSam%#$q"
+If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSec%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSec%#$q"
+System,FILEREDIRECT,ON
+Run,%ScriptFile%,UnloadHive
+
+[HiveName_PE3-X]
+Set,%HSys%,PE3-System
+Set,%HDef%,PE3-Default
+Set,%HSof%,PE3-Software
+Set,%HCom%,PE3-Components
+Set,%HDrv%,PE3-Drivers
+Set,%HUse%,PE3-User
+Set,%HSam%,PE3-Sam
+Set,%HSec%,PE3-Security
+
+[HiveName_Tmp_X]
+//Set,%HSys%,Tmp_setupreg_hiv
+Set,%HSys%,Tmp_System
+Set,%HDef%,Tmp_Default
+Set,%HSof%,Tmp_Software
+Set,%HCom%,Tmp_Components
+Set,%HDrv%,Tmp_Drivers
+Set,%HUse%,Tmp_User
+Set,%HSam%,Tmp_Sam
+Set,%HSec%,Tmp_Security
+
+[HiveName_8PE-X]
+Set,%HSys%,8PE-System
+Set,%HDef%,8PE-Default
+Set,%HSof%,8PE-Software
+Set,%HCom%,8PE-Components
+Set,%HDrv%,8PE-Drivers
+Set,%HUse%,8PE-User
+Set,%HSam%,8PE-Sam
+Set,%HSec%,8PE-Security
+
+[OpenExportDir]
+If,%ExpHivesF%,Equal,"",Halt,"You must define folder"
+If,Not,ExistDir,%ExpHivesF%,DirMake,%ExpHivesF%
+System,FILEREDIRECT,OFF
+ShellExecuteEx,Open,explorer.exe,/e#$c#$q%ExpHivesF%#$q,%ExpHivesF%
+System,FILEREDIRECT,ON
+
+[Source_Hives]
+//Call,DirDeleteMake,%ProjectTemp%\SourceHives
+//-
+If,Not,ExistDir,%ProjectTemp%\SourceHives,DirMake,%ProjectTemp%\SourceHives
+Call,DirDeleteE,%ProjectTemp%\SourceHives
+//--
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\COMPONENTS,TMP_COMPONENTS
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\DEFAULT,TMP_DEFAULT
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\DRIVERS,TMP_DRIVERS
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\SAM,TMP_SAM
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\SECURITY,TMP_SECURITY
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\SOFTWARE,TMP_SOFTWARE
+Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\SYSTEM,TMP_SYSTEM
+If,ExistDir,%SourceDir%\i386,Begin
+If,ExistFile,%SourceDir%\i386\SETUPREG.HIV,Run,%ScriptFile%,Source_Hives_Load,%SourceDir%\i386\SETUPREG.HIV,TMP_SYSTEM
+If,ExistFile,%SourceDir%\AMD64\SETUPREG.HIV,Run,%ScriptFile%,Source_Hives_Load,%SourceDir%\AMD64\SETUPREG.HIV,TMP_SYSTEM
+If,ExistFile,%SourceDir%\IA64\SETUPREG.HIV,Run,%ScriptFile%,Source_Hives_Load,%SourceDir%\IA64\SETUPREG.HIV,TMP_SYSTEM
+End
+//-
+Echo,"Regedit is running. Please close Regedit to continue."
+System,FILEREDIRECT,OFF
+ShellExecute,Open,regedit.exe,""
+System,FILEREDIRECT,ON
+//-
+If,ExistFile,%ProjectTemp%\SourceHives\COMPONENTS,RegHiveUnLoad,TMP_COMPONENTS
+If,ExistFile,%ProjectTemp%\SourceHives\DEFAULT,RegHiveUnLoad,TMP_DEFAULT
+If,ExistFile,%ProjectTemp%\SourceHives\DRIVERS,RegHiveUnLoad,TMP_DRIVERS
+If,ExistFile,%ProjectTemp%\SourceHives\SAM,RegHiveUnLoad,TMP_SAM
+If,ExistFile,%ProjectTemp%\SourceHives\SECURITY,RegHiveUnLoad,TMP_SECURITY
+If,ExistFile,%ProjectTemp%\SourceHives\SOFTWARE,RegHiveUnLoad,TMP_SOFTWARE
+If,ExistFile,%ProjectTemp%\SourceHives\SYSTEM,RegHiveUnLoad,TMP_SYSTEM
+If,ExistFile,%ProjectTemp%\SourceHives\SETUPREG.HIV,RegHiveUnLoad,TMP_SYSTEM
+
+[Source_Hives_Load]
+If,ExistFile,#1,Begin
+FileCopy,#1,%ProjectTemp%\SourceHives
+//System,FILEREDIRECT,OFF
+//Shellexecute,Hide,cmd.exe,"/C Copy /Y #$q#1#$q #$q%ProjectTemp%\SourceHives#$q"
+//System,FILEREDIRECT,ON
+StrFormat,FileName,#1,#9
+If,ExistFile,%ProjectTemp%\SourceHives\#9,RegHiveLoad,#2,#1
+End
+
+[AuthorEncoded]
+4848.ico=3970,5294
+Logo=4848.ico
+
+[EncodedFile-AuthorEncoded-4848.ico]
+lines=1
+0=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
+1=cRcjCRUEjjr66uJjnVHhoauvpD4t9mvs3mvMd5jD32shj/oBuBPcePOzG3mm3VIL+3+tVKzc3dTcv3uq9pVETUpfS0dAGHw3manp6O3D0P++0yGj85c0tKSnDdoi9Q7+j7hb5k0tRJCr9a/epH71mMewgzpAf7Jaa5hbnGi+5XGaDCcHd3n8pkMgWkFpH9fKf4Dp65FVCLfIfsY8wxzsXzF175XcfbiO5iXRWrHVYpGFtgBjN7zp07y9yze88LsT8jDKfjTpfI85K9UFRURM5X7GMboK66jvRSQn9f/7EfAv/CRQtVnZycOIgdPDw8mHa2dn1hp2X79u2myNW6yX5GLkbnD8HfgDUIa2tNWFjYe/y27Xnx8vT6AbF429rZvjIXNzIy+vzc2XNN8fHxwOfzMf7I2eobad6G/XlpbGzs376jfJfi4+0j7+bmNuB15izWW6x28uTJtKSEJDr+pMeSNMjwFxWnYO1VeV9435UgN3In+UPeh5DaT3rEJuSeRXyBy8fG1pds2rRJA+MfzWKxaG5P3uHcv3sfqirFDzMzM5d/bHx/J5s2btI4dPAQE3lnD6mf5P0fyZ2G+nrCh4KT4uJe613rhxSL7RYa9nb2TH8//x5ORgad+3TtxLqDZ5cYz7QFHxvjy+TAoQMap06dYgYHBfeQs5fwZvrswtqDPVYjN5Nr/LExvkzsHew1PM55MMPDw+m459D8rZC8wyFrUI7839DTx/O99yhvIo6OjoqeXp7ehB+R76XyMO7In3uwD2jC8/dyQkLCbJ+zPh+E77yJ6OvrM/z8/H5ALp2JvUwK9gL+CQnxNhERkdq+vr59vgf9fxC7Q3ZydvZ2qvv3HVAx22b+f4MZIB+6GED+3AXYeCWlGD1ktIVi4I/EKnb1XqtJqZ30NejRVh4cGL2W3NdF5snLrCJtpZQa7a+LGkvbFmoJbasoe9qSjwO8mbhBa0amQQ9OVyNwjkvJNCCeltC2hUyjLW2gitFr2fK0YTiQ6ei3d3oL1Tu9iuqdVkX1TmNTvdMcKPnnrUPvOKOl18r3BgUUpb3WTWavyCz09M4Dqcx2yWyLogyemgyezDqMldnep4C0XvNfM7Mrf3ic4zCxMLHQy0zOZxgFIxHsU4XQVvzY5Y+e4nvNwAQAFTUGAARGACMBAAAAAgAAACQAAAA6DwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Registry.bmp=2012,2683
+export.bmp=2297,3063
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-Registry.bmp]
+lines=0
+0=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
+
+[EncodedFile-InterfaceEncoded-export.bmp]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[Settings_Default]
+Run,%ScriptFile%,First_Gui
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

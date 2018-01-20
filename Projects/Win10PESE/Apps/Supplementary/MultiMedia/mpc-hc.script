@@ -1,0 +1,1082 @@
+[Main]
+Title=Media Player Classic-HC
+Type=Plugin
+Author=ChrisR, Oscar
+Description=(x86/x64 v1.7.13) Media Player Classic-HC is an extremely light-weight, open source media player for Windows. --- It supports all common video and audio file formats available for playback.
+Credits=http://TheOven.org
+Version=021
+Download_Level=2
+Level=5
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2017.08.24
+Depend=
+Disable=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Supplementary/MultiMedia/mpc-hc.script
+Web1C=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Supplementary/MultiMedia/mpc-hc_file.script
+Web2=http://yomi.cwcodes.net/Yomi/AppsGS/Supplementary/MultiMedia/mpc-hc.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History003=ChrisR - Remove Audio and Video Context Menu "Play with Windows Media Player" if MPlayer Associations is selected
+History004=ChrisR - wmdrmsdk.dll windows media DRM SDK, required for win8.1SE logon
+History005=Oscar - Fixed WMP association for .flv, .mkv, .ogg, added .webm, .rm, .swf, .3gp
+History006=ChrisR - %ProgramFolder%_x64 for x64 build
+History007=Kyhi - update to version 1.7.8
+History008=Kyhi - update to version 1.7.9
+History009=Prz42 - Removed unnessary files & folders
+History010=Lancelot - Adjustments to get Plugin work on Gena
+History012=Oscar - play midi files with the bundled MS GS Wavetable Synth
+History014=Lancelot - fixid Language scrollbox - Chinese Simplified - Chinese Traditional (ps: not all languages in list ;) ) http://TheOven.org/index.php?topic=1412
+History016=kyhi - fixed Marks Confusion so remove actually decreases size (Reverse CheckBox_LAV logic from Add Lav files to Remove Lav Files)
+History017=Lancelot - Improved DU buttons x2
+History018=Lancelot - Added GdiPlus.dll for Gena
+History019=ChrisR - test if msmpeg2a(v)dec exist before copying - Date:2016.05.23
+History020=ChrisR - updated v1.7.10 - Date:2016.10.06 // Lancelot - Add Compare Button - Date:2017.01.12
+History021=ChrisR - updated v1.7.13 - Date:2017.08.24
+
+[Interface]
+pTextLabel1="***  The Audio Drivers Plugin is Required  ***",1,1,4,6,289,18,8,Bold
+ScrollBox_RunFromWhere="Run from Normal",1,4,4,30,133,21,"Run from Normal","Run from RAM","Run from CD"
+pBevel1=pBevel1,1,12,4,60,133,142
+CheckBoxDS="Desktop shortcut",1,3,8,64,122,18,False
+CheckBoxQL="Quicklaunch shortcut",1,3,8,83,122,18,False
+CheckBoxSM="Start Menu shortcut",1,3,8,102,122,18,True
+TextBoxSMF="Start Menu folder:",1,0,11,139,119,21,Accessories
+TextBoxSCN="Shortcut Name:",1,0,11,176,119,21,"Media Player"
+ScrollBox_Lang="English                                  |0|en",1,4,5,218,133,25,"All Languages                            |0|al","Armenian                                 |1067|hy","Basque                                   |1069|eu","Belarusian                               |1059|by","Catalan                                  |1027|ca","Chinese Simplified                       |2052|zh_CN","Chinese Traditional                      |3076|zh_TW","Czech                                    |1029|cz","Dutch                                    |1043|nl","English                                  |0|en","French                                   |1036|fr","German                                   |1031|de","Greek                                    |1032|el","Hebrew                                   |1037|he","Hungarian                                |1038|hu","Italian                                  |1040|it","Japanese                                 |1041|ja","Korean                                   |1042|kr","Polish                                   |1045|pl","Portuguese (Brazil)                      |1046|br","Romanian                                 |1048|ro","Russian                                  |1049|ru","Slovak                                   |1051|sk","Spanish                                  |1034|es","Swedish                                  |1053|sv","Turkish                                  |1055|tr","Ukrainian                                |1058|ua"
+Button_Launch_Program=" Launch Player",1,8,5,258,133,25,Launch_Program,mpc1616.bmp,False,_Launch_Program_,False
+Image_Software=MediaPlayerClassic.jpg,1,5,293,30,260,270
+pWebLabel1=HomePage,1,10,372,7,61,18,http://mpc-hc.org/
+pWebLabel2="Plugin Page",1,10,302,7,66,18,http://theoven.org/index.php?topic=683.0
+ScrollBox_Asso="WMP Associations",1,4,153,30,130,21,"WMP Associations","MPlayer Associations"
+TextLabel_Association=Association,1,1,152,54,121,18,8,Normal
+pBevel2=pBevel2,1,12,148,68,140,42
+CheckBox_AudioAsso="Audio Association",1,3,153,71,130,18,True
+CheckBox_VideoAsso="Video Association",1,3,153,90,130,18,True
+TextLabel_ContextMenu="Playlist Context Menu",1,1,152,113,130,18,8,Normal
+pBevel3=pBevel3,1,12,148,127,140,62
+CheckBox_Playlist="Add Playlist CMenu",1,3,153,130,130,18,True
+TextBox_Playlist="Context Menu Name",1,0,153,163,130,21,"Add to Playlist"
+TextLabel_AllFilesAsso="All Files Association",1,1,152,192,123,18,8,Normal
+pBevel4=pBevel4,1,12,148,206,140,62
+CheckBox_AllFilesAsso="associate to all files",1,3,153,209,130,18,True
+TextBox_Play="Context Menu Name",1,0,153,242,130,21,"Play with MPlayer"
+pBevel5=pBevel5,1,12,148,273,140,25
+CheckBox_LAV="Remove LAV Filters",1,3,153,276,130,18,True
+Button_Download=,1,8,436,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,492,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_Download_Container=,1,8,459,-1,24,24,DownloadXXX_Container,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_,False,"__Download Container Plugin"
+Button_CompareEdit=,1,8,515,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[InterfaceSave]
+CheckBox_DirAsso="Directory Association",1,3,153,112,130,18,False
+
+[Variables]
+%ProgramTitle%=MPlayer
+%ProgramEXE%=mpc-hc.exe
+%ProgramEXEx64%=mpc-hc64.exe
+%ProgramFolder%=Mpc-hc
+%LAVFilters%=LAVFilters
+%ContainerFileFolder%=%scriptdir%
+%ContainerFileName%=mpc-hc_file.script
+%ContainerFile%=%ContainerFileFolder%\%ContainerFileName%
+%SetupFile%=MPC-HC.1.7.13.x86.7z
+%SetupFilex64%=MPC-HC.1.7.13.x64.7z
+
+[Process]
+If,Not,ExistFile,%ContainerFile%,Exit,"'%ScriptTitle%' Container File Missing %ContainerFile%"
+//--
+Echo,"Processing %ScriptTitle%..."
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//-
+StrFormat,REPLACE,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+If,%SourceArch%,Equal,x64,Begin
+Set,%ProgramFolder%,%ProgramFolder%_x64
+Set,%SetupFile%,%SetupFilex64%
+Set,%ProgramEXE%,%ProgramEXEx64%
+Set,%LAVFilters%,%LAVFilters%64
+End
+StrFormat,RTRIM,%SetupFile%,3,%SetupFolder%
+Run,%ScriptFile%,Extract
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+If,Not,ExistDir,%Target_Prog%\%ProgramFolder%\Lang,DirMake,%Target_Prog%\%ProgramFolder%\Lang
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\*,%Target_Prog%\%ProgramFolder%,NoRec
+//--
+// Language for resource language - LangID is used for Interface Language in registry
+StrFormat,SPLIT,%ScrollBox_Lang%,|,2,%LangID%
+StrFormat,SPLIT,%ScrollBox_Lang%,|,3,%Lang%
+If,%Lang%,Equal,al,Begin
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Lang\*,%Target_Prog%\%ProgramFolder%\Lang
+End
+Else,Begin
+// for English (default), mpc-hc needs at least 1 language resource (french language copied)
+If,%Lang%,Equal,en,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Lang\mpcresources.fr.dll,%Target_Prog%\%ProgramFolder%\Lang
+Else,Begin
+If,ExistFile,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Lang\mpcresources.%Lang%.dll,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Lang\mpcresources.%Lang%.dll,%Target_Prog%\%ProgramFolder%\Lang
+Else,Begin
+// for English (default), mpc-hc needs at least 1 language resource (french language copied)
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Lang\mpcresources.fr.dll,%Target_Prog%\%ProgramFolder%\Lang
+Call,Echo,"%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Lang\mpcresources.%Lang%.dll NOT FOUND",Warn
+End
+End
+End
+//--
+// Dependencies
+If,Not,%OSFamily%,Equal,NT5,Run,%ScriptFile%,Dependencies_mpchc
+Else,Run,%ScriptFile%,Dependencies_mpchc_NT5
+// ShortCuts
+Run,%ScriptFile%,ShortCuts
+//--
+If,%TextBox_Playlist%-,Equal,-,Set,%TextBox_Playlist%,"Add to %ProgramTitle% Playlist"
+If,%TextBox_Play%-,Equal,-,Set,%TextBox_Play%,"Play with %ProgramTitle%"
+//--
+// Registry
+RegHiveLoad,Tmp_Default,%RegDefault%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+Run,%ScriptFile%,AddRegMPC
+Echo,"Processing %ScriptTitle% Associations..."
+If,%CheckBox_AllFilesAsso%,Equal,True,Run,%ScriptFile%,AddRegAllFiles
+//If,%CheckBox_DirAsso%,Equal,True,Run,%ScriptFile%,AddRegDir
+If,%ScrollBox_Asso%,Equal,"WMP Associations",Begin
+If,%CheckBox_AudioAsso%,Equal,True,Run,%ScriptFile%,AddRegAudioWMP
+If,%CheckBox_VideoAsso%,Equal,True,Run,%ScriptFile%,AddRegVideoWMP
+End
+Else,Begin
+If,%CheckBox_AudioAsso%,Equal,True,Run,%ScriptFile%,AddRegAudioMPC
+If,%CheckBox_VideoAsso%,Equal,True,Run,%ScriptFile%,AddRegVideoMPC
+End
+Run,%ScriptFile%,AddRegMidi
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%ContainerFile%,Folder,%SetupFile%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+//Extracting-7z-Finish
+If,%CheckBox_LAV%,Equal,True,If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\%LAVFilters%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\%LAVFilters%
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Shaders,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\Shaders
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\CrashReporter,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%\CrashReporter
+
+[Launch_Program]
+Call,HostOSArch
+Run,%ScriptFile%,Extract
+If,%HostOSArch%,Equal,x64,Begin
+Set,%SetupFile%,%SetupFilex64%
+Set,%ProgramEXE%,%ProgramEXEx64%
+Set,%LAVFilters%,%LAVFilters%64
+End
+StrFormat,RTRIM,%SetupFile%,3,%SetupFolder%
+Run,%ScriptFile%,Extract
+//-
+Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFolder%
+
+[Dependencies_mpchc_NT5]
+Require,File,GdiPlus.dll
+Require_FileQ,dsound.dll
+Require_FileQ,msimg32.dll
+Require_FileQ,oleacc.dll
+Require_FileQ,oleaccrc.dll
+//--
+If,ExistDir,%ProjectTemp%\TempExtractFolder\SourceACM,Call,DirDelete,%ProjectTemp%\TempExtractFolder\SourceACM
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%source_sys%\*.ac_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\SourceACM#$q"
+Shellexecute,Hide,cmd.exe,"/C Copy /Y #$q%source_sys%\*.acm#$q #$q%ProjectTemp%\TempExtractFolder\SourceACM#$q"
+FileCopy,%ProjectTemp%\TempExtractFolder\SourceACM\*.acm,%target_sys%
+//--
+//Require_FileQ,COURTNEY.ACM
+//Require_FileQ,EARL.ACM
+//Require_FileQ,IMAADP32.ACM
+//Require_FileQ,MERLIN.ACM
+//Require_FileQ,MSADP32.ACM
+//Require_FileQ,MSG711.ACM
+//Require_FileQ,MSGSM32.ACM
+//Require_FileQ,ROVER.ACM
+//Require_FileQ,TSSOFT32.ACM
+//If,%SourceArch%,Equal,x86,Begi-n
+//Require_FileQ,L3CODECA.ACM
+//Require_FileQ,MSAUD32.ACM
+//Require_FileQ,MSG723.ACM
+//Require_FileQ,MSGSM32.ACM
+//Require_FileQ,QMARK.ACM
+//Require_FileQ,SL_ANET.ACM
+//Require_FileQ,TSSOFT32.ACM
+//En-d
+//-
+If,Not,ExistFile,%target_sys%\mpg2splt.ax,Begin
+If,ExistFile,%source_sys%\mpg2splt.ax,CopyOrExpand,%source_sys%\mpg2splt.ax,%target_sys%
+If,Not,ExistFile,%target_sys%\mpg2splt.ax,Expand,%source_sys%\mpg2splt.ax_,%target_sys%
+End
+//-
+If,Not,ExistFile,%target_sys%\mpeg2data.ax,Begin
+If,ExistFile,%source_sys%\mpg2data.ax,CopyOrExpand,%source_sys%\mpeg2data.ax,%target_sys%
+Else,Begin
+If,ExistFile,%source_sys%\mpg2data.ax,CopyOrExpand,%source_sys%\mpg2data.ax,%target_sys%\mpeg2data.ax
+Else,Begin
+If,ExistFile,%source_sys%\mpg2data.ax_,Begin
+Expand,%source_sys%\mpg2data.ax_,%target_sys%
+FileRename,%target_sys%\mpg2data.ax,%target_sys%\mpeg2data.ax
+End
+End
+End
+End
+If,Not,ExistFile,%target_sys%\mpeg2data.ax,Echo,"mpeg2data.ax NOT found"
+//-
+Require_FileQ,msrle32.dll
+Require_FileQ,msvidc32.dll
+//-
+// Some few DirectX files in order to use without the DirectX plugin
+//If,Not,ExistFile,%target_sys%\dxva2.dll,Require_FileQ,dxva2.dll
+If,Not,ExistFile,%target_sys%\msdmo.dll,Require_FileQ,msdmo.dll
+//If,Not,ExistFile,%target_sys%\mpg2splt.ax,Require_FileQ,mpg2splt.ax
+If,Not,ExistFile,%target_sys%\qasf.dll,Require_FileQ,qasf.dll
+If,%SourceArch%,Equal,x86,Begin
+If,Not,ExistFile,%target_sys%\d3dim700.dll,Require_FileQ,d3dim700.dll
+//If,Not,ExistFile,%target_sys%\iac25_32.ax,Require_FileQ,iac25_32.ax
+If,Not,ExistFile,%target_sys%\ir32_32.dll,Require_FileQ,ir32_32.dll
+//If,Not,ExistFile,%target_sys%\ir41_32.ax,Require_FileQ,ir41_32.ax
+End
+
+[Dependencies_mpchc]
+Require_FileQ,dsound.dll
+Require_FileQ,msimg32.dll
+Require_FileQ,oleacc.dll
+Require_FileQ,oleaccrc.dll
+//-
+Require_FileQ,evr.dll
+Require_FileQ,mfplat.dll
+// for WMP associations. wmploc.dll could be reduced
+If,%ScrollBox_Asso%,Equal,"WMP Associations",Require_FileQ,wmploc.dll
+Require_FileQ,unregmp2.exe
+//--
+// Codecs
+FileCopy,%Source_Sys%\*.acm,%target_sys%
+If,%SourceArch%,Equal,x86,Require_FileQ,iccvid.dll
+Require_FileQ,iyuv_32.dll
+Require_FileQ,MP3DMOD.DLL
+Require_FileQ,MP4SDECD.DLL
+Require_FileQ,MP43DECD.DLL
+Require_FileQ,Mpeg2Data.ax
+Require_FileQ,mpg2splt.ax
+Require_FileQ,MPG4DECD.DLL
+Require_FileQ,msmpeg2adec.dll
+Require_FileQ,msmpeg2vdec.dll
+If,Not,ExistDir,%target_sys%\spp\tokens\ppdlic,Dirmake,%target_sys%\spp\tokens\ppdlic
+If,ExistFile,%Source_Sys%\spp\tokens\ppdlic\msmpeg2adec-ppdlic.xrm-ms,FileCopy,%Source_Sys%\spp\tokens\ppdlic\msmpeg2adec-ppdlic.xrm-ms,%target_sys%\spp\tokens\ppdlic
+If,ExistFile,%Source_Sys%\spp\tokens\ppdlic\msmpeg2vdec-ppdlic.xrm-ms,FileCopy,%Source_Sys%\spp\tokens\ppdlic\msmpeg2vdec-ppdlic.xrm-ms,%target_sys%\spp\tokens\ppdlic
+Require_FileQ,msrle32.dll
+Require_FileQ,msvidc32.dll
+Require_FileQ,msyuv.dll
+Require_FileQ,tsbyuv.dll
+// required for win8.1SE logon
+// In OS build we can use also, "NTUSER\Software\Microsoft\Active Setup\Installed Components" to make windows to think first run customizations done
+// and removing wmdrmsdk.dll and unregmp2.exe. Thanks Kullenen for information. It is not done here to simplify and for compatibility.
+Require_FileQ,wmdrmsdk.dll
+//--
+Require_FileQ,WMADMOD.DLL
+Require_FileQ,WMADMOE.DLL
+Require_FileQ,WMASF.DLL
+Require_FileQ,WMSPDMOD.DLL
+//Require_FileQ,WMSPDMOE.DLL
+Require_FileQ,WMVCORE.DLL
+Require_FileQ,WMVDECOD.DLL
+Require_FileQ,wmvdspa.dll
+//Require_FileQ,WMVENCOD.DLL
+Require_FileQ,WMVSDECD.DLL
+//Require_FileQ,WMVSENCD.DLL
+//Require_FileQ,WMVXENCD.DLL
+//--
+// Add Codec files
+//Require_FileQ,codecfile.dll
+//--
+// Some few DirectX files in order to use without the DirectX plugin
+If,Not,ExistFile,%target_sys%\dxva2.dll,Require_FileQ,dxva2.dll
+If,Not,ExistFile,%target_sys%\msdmo.dll,Require_FileQ,msdmo.dll
+If,Not,ExistFile,%target_sys%\mpg2splt.ax,Require_FileQ,mpg2splt.ax
+If,Not,ExistFile,%target_sys%\qasf.dll,Require_FileQ,qasf.dll
+If,%SourceArch%,Equal,x86,Begin
+If,Not,ExistFile,%target_sys%\d3dim700.dll,Require_FileQ,d3dim700.dll
+If,Not,ExistFile,%target_sys%\iac25_32.ax,Require_FileQ,iac25_32.ax
+If,Not,ExistFile,%target_sys%\ir32_32.dll,Require_FileQ,ir32_32.dll
+If,Not,ExistFile,%target_sys%\ir41_32.ax,Require_FileQ,ir41_32.ax
+End
+// Optional for Audio Plugin Audio Generic USB Audio   wdma_usb.inf_x86_81a9f5b34377ee1b
+// Optional for Audio Plugin Bluetooth   wdma_bt.inf_x86_f29ca54c4ade4e86
+
+[ShortCuts]
+If,Not,%TextBoxSCN%-,Equal,-,Set,%ProgramTitle%,%TextBoxSCN%
+If,%CheckBoxDS%,Equal,True,Add_Shortcut,Desktop
+If,%CheckBoxSM%,Equal,True,Add_Shortcut,StartMenu,%TextBoxSMF%
+If,%CheckBoxQL%,Equal,True,Add_Shortcut,QuickLaunch
+
+[AddRegMidi]
+// play midi files with the bundled MS GS Wavetable Synth
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux1,wdmaud.drv
+
+[AddRegMPC]
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",UpdaterAutoCheck,0
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",UpdaterDelay,7
+// Set playback video output DirectShow Video to "Enchanced Video Renderer (custom presenter)" by default (For system default DSVidRen,0)
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",DSVidRen,11
+// Set Interface Language with Lang ID except for All Languages
+If,Not,%Lang%,Equal,al,RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",InterfaceLanguage,%LangID%
+//--
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Gabest\Media Player Classic",ExePath,%PE_Programs%\%ProgramFolder%\%ProgramEXE%
+RegWrite,HKLM,0x3,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",LastWindowRect,E3,01,00,00,18,01,00,00,1E,03,00,00,9B,01,00,00
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",ExitAfterPlayBack,1
+//--
+RegWrite,HKLM,0x1,Tmp_Software\RegisteredApplications,"Media Player Classic","Software\Clients\Media\Media Player Classic\Capabilities"
+// Remove Add to mpc-hc list...
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue
+
+[AddRegAllFiles]
+// AllFileSystemObjects
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\AllFileSystemObjects\shell\Media Player",,%TextBox_Play%
+RegWrite,HKLM,0x2,"Tmp_Software\Classes\AllFileSystemObjects\shell\Media Player\Command",,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+
+[AddRegDir]
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Directory\shell\Media Player.enqueue,,%TextBox_Playlist%
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.enqueue,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Directory\shell\Media Player.play,,%TextBox_Play%
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Directory\shell\Media Player.play",,&Play
+RegWrite,HKLM,0x2,"Tmp_Software\Classes\Directory\shell\Media Player.play",MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9991"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.play,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+
+[AddRegAudioWMP]
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MIDI,,"MIDI Sequence"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MIDI,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9907"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MIDI\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-730"
+Run,%ScriptFile%,AddRegAssoWMP,.MIDI,Audio
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WAV,,"Wave Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WAV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9908"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WAV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-734"
+Run,%ScriptFile%,AddRegAssoWMP,.WAV,Audio
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MP3,,"MP3 Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP3,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9925"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP3\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-732"
+Run,%ScriptFile%,AddRegAssoWMP,.MP3,Audio
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WMA,,"WMA Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMA,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9912"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMA\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-735"
+Run,%ScriptFile%,AddRegAssoWMP,.WMA,Audio
+//-- ogg association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.OGG,,"OGG Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.OGG,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9908"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.OGG\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-734"
+Run,%ScriptFile%,AddRegAssoWMP,.OGG,Audio
+// User Choice
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ogg,,WMP11.AssocFile.ogg
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ogg,PerceivedType,audio
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ogg,"Content Type",audio/mpeg
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ogg\UserChoice,Hash,H9lIgQY3R8w=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ogg\UserChoice,ProgId,WMP11.AssocFile.ogg
+//--
+
+[AddRegVideoWMP]
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.AVI,,"AVI Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.AVI,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.AVI\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.AVI,Video
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MP4,,"MP4 Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP4,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9932"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP4\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-730"
+Run,%ScriptFile%,AddRegAssoWMP,.MP4,Video
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MOV,,"QuickTime Movie"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MOV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9936"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MOV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-730"
+Run,%ScriptFile%,AddRegAssoWMP,.MOV,Video
+If,ExistRegSection,HKLM,Tmp_Software\Classes\WMP11.AssocFile.MOV\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f},RegDelete,HKLM,Tmp_Software\Classes\WMP11.AssocFile.MOV\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f}
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MPEG,,"Movie Clip"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MPEG,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9902"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MPEG\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-733"
+Run,%ScriptFile%,AddRegAssoWMP,.MPEG,Video
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WMV,,"WMV Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9914"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-736"
+Run,%ScriptFile%,AddRegAssoWMP,.WMV,Video
+//-- flv association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.FLV,,"FLV Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.FLV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.FLV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.FLV,Video
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.flv,WMP11.AssocFile.FLV
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\UserChoice,Hash,QcWkJCk+r2g=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\UserChoice,Hash,T0OjNjD8K0g=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\UserChoice,ProgId,WMP11.AssocFile.FLV
+//-- mkv association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MKV,,"MKV Video"
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MKV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MKV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.MKV,Video
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.mkv,WMP11.AssocFile.MKV
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\UserChoice,Hash,RLOTwgmp1Ck=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\UserChoice,Hash,uyRKtLGaraw=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\UserChoice,ProgId,WMP11.AssocFile.MKV
+//-- webm association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WEBM,,"WEBM Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WEBM,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WEBM\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.WEBM,Video
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.webm,WMP11.AssocFile.WEBM
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\UserChoice,Hash,emGZueashIk=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\UserChoice,Hash,vlUCFX38/rQ=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\UserChoice,ProgId,WMP11.AssocFile.WEBM
+//-- rm association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.RM,,"RM Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.RM,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.RM\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.RM,Media
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.rm,WMP11.AssocFile.RM
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\UserChoice,Hash,klFXx35zM3g=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\UserChoice,Hash,74YOt0PUPno=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\UserChoice,ProgId,WMP11.AssocFile.RM
+//-- swf association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.SWF,,"SWF Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.SWF,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.SWF\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.SWF,Media
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.swf,WMP11.AssocFile.SWF
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\UserChoice,Hash,3rAAjZbD5xs=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\UserChoice,Hash,Eo4fs4TXfYo=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\UserChoice,ProgId,WMP11.AssocFile.SWF
+//-- 3gp association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.3GP,,"SWF Media"
+If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.3GP,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.3GP\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.3GP,Media
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.3gp,WMP11.AssocFile.3GP
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\OpenWithList,MRUList,a
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\UserChoice,Hash,klFXx35zM3g=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\UserChoice,ProgId,WMP11.AssocFile.3GP
+//--
+
+[AddRegAssoWMP]
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x3,Tmp_Software\Classes\WMP11.AssocFile#1,EditFlags,00,00,31,00
+RegWrite,HKLM,0x4,Tmp_Software\Classes\WMP11.AssocFile#1,PreferExecuteOnMismatch,1
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell,,Play
+If,ExistRegSection,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue
+// It seems that there are permissions issues with Add to Mplayer Playlist (Oscar feedback). There is Set,%CheckBox_Playlist%,False above. We Keep it here for history.
+If,%CheckBox_Playlist%,Equal,True,Begin
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue,,%TextBox_Playlist%
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+//RegAddBoot,HKLM,0x1,Software\Classes\WMP11.AssocFile#1\shell\Enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+End
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell\open,LegacyDisable,
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play,,&Play
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9991"
+If,ExistRegSection,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,RegDelete,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command
+// minimized // If,#2,Equal,Audio,RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q /minimized"
+If,#2,Equal,Audio,RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q "
+Else,RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f},,{031EE060-67BC-460d-8847-E4A7C5E45A27}
+
+[AddRegAudioMPC]
+// Remove Audio Context Menu "Play with Windows Media Player"
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aac,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aac\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.aac
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ac3,,AC-3/DTS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ac3\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,2"
+Run,%ScriptFile%,AddRegAssoMPC,.ac3
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aif,,AIFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aif\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,3"
+Run,%ScriptFile%,AddRegAssoMPC,.aif
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aifc,,AIFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aifc\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,3"
+Run,%ScriptFile%,AddRegAssoMPC,.aifc
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aiff,,AIFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aiff\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,3"
+Run,%ScriptFile%,AddRegAssoMPC,.aiff
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.alac,,"Apple Lossless"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.alac\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,4"
+Run,%ScriptFile%,AddRegAssoMPC,.alac
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.amr,,AMR
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.amr\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,5"
+Run,%ScriptFile%,AddRegAssoMPC,.amr
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aob,,"Other Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aob\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.aob
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ape,,"Monkey's Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ape\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,6"
+Run,%ScriptFile%,AddRegAssoMPC,.ape
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.apl,,"Monkey's Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.apl\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,6"
+Run,%ScriptFile%,AddRegAssoMPC,.apl
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.au,,AU/SND
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.au\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,7"
+Run,%ScriptFile%,AddRegAssoMPC,.au
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.cda,,"Audio CD track"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.cda\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,10"
+Run,%ScriptFile%,AddRegAssoMPC,.cda
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dts,,AC-3/DTS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,13"
+Run,%ScriptFile%,AddRegAssoMPC,.dts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flac,,FLAC
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flac\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,14"
+Run,%ScriptFile%,AddRegAssoMPC,.flac
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m1a,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m1a\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.m1a
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2a,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2a\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.m2a
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4a,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4a\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.m4a
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4b,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4b\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.m4b
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4r,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4r\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.m4r
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mid,,MIDI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mid\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,19"
+Run,%ScriptFile%,AddRegAssoMPC,.mid
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.midi,,MIDI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.midi\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,19"
+Run,%ScriptFile%,AddRegAssoMPC,.midi
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mka,,"Matroska audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mka\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,20"
+Run,%ScriptFile%,AddRegAssoMPC,.mka
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mlp,,"Other Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mlp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.mlp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp2,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.mp2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp3,,MP3
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp3\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,23"
+Run,%ScriptFile%,AddRegAssoMPC,.mp3
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpa,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpa\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.mpa
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpc,,Musepack
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpc\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,26"
+Run,%ScriptFile%,AddRegAssoMPC,.mpc
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ofr,,OptimFROG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ofr\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,28"
+Run,%ScriptFile%,AddRegAssoMPC,.ofr
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ofs,,OptimFROG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ofs\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,28"
+Run,%ScriptFile%,AddRegAssoMPC,.ofs
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.oga,,"Ogg Vorbis"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.oga\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,29"
+Run,%ScriptFile%,AddRegAssoMPC,.oga
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ogg,,"Ogg Vorbis"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ogg\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,29"
+Run,%ScriptFile%,AddRegAssoMPC,.ogg
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.opus,,"Opus Audio Codec"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.opus\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.opus
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ra,,"Real Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ra\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,32"
+Run,%ScriptFile%,AddRegAssoMPC,.ra
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rmi,,MIDI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rmi\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,19"
+Run,%ScriptFile%,AddRegAssoMPC,.rmi
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.snd,,AU/SND
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.snd\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,7"
+Run,%ScriptFile%,AddRegAssoMPC,.snd
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.tak,,TAK
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.tak\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.tak
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.tta,,"True Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.tta\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,38"
+Run,%ScriptFile%,AddRegAssoMPC,.tta
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wav,,WAV
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wav\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,40"
+Run,%ScriptFile%,AddRegAssoMPC,.wav
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wma,,"Windows Media Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wma\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,42"
+Run,%ScriptFile%,AddRegAssoMPC,.wma
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wv,,WavPack
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,44"
+Run,%ScriptFile%,AddRegAssoMPC,.wv
+//-
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationDescription,"One of the most powerful, configurable multimedia players for Windows operating system. Originaly made by a Hungarian developer known as Gabest, this version has additional features such as Direct 3D fullscreen mode and better support for Windows Vista/7."
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationName,"Media Player Classic Home Cinema"
+//-
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayCDAudio\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1 /cd"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayMusicFiles\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayCDAudioOnArrival,MPCPlayCDAudioOnArrival,
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayMusicFilesOnArrival,MPCPlayMusicFilesOnArrival,
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,Action,"Play Audio CD"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,InvokeVerb,PlayCDAudio
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,Action,"Play Music"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,InvokeVerb,PlayMusicFiles
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+
+[AddRegVideoMPC]
+// Remove Video Context Menu "Play with Windows Media Player"
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\video,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\video
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3g2,,3G2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3g2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,22"
+Run,%ScriptFile%,AddRegAssoMPC,.3g2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3ga,,3GP
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3ga\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.3ga
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3gp,,3GP
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3gp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.3gp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3gp2,,3G2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3gp2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,22"
+Run,%ScriptFile%,AddRegAssoMPC,.3gp2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3gpp,,3GP
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3gpp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.3gpp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.amv,,mplayerc.amv
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.amv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.amv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.asf,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.asf\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.asf
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.avi,,AVI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.avi\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,8"
+Run,%ScriptFile%,AddRegAssoMPC,.avi
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.bdmv,,"Blu-ray playlist"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.bdmv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,31"
+Run,%ScriptFile%,AddRegAssoMPC,.bdmv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.bik,,"Smacker/Bink Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.bik\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,9"
+Run,%ScriptFile%,AddRegAssoMPC,.bik
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.d2v,,"DVD2AVI File"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.d2v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,11"
+Run,%ScriptFile%,AddRegAssoMPC,.d2v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.divx,,Other
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.divx\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.divx
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dsa,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dsa\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dsa
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dsm,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dsm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dsm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dss,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dss\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dss
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dsv,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dsv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dsv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.evo,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.evo\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.evo
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.f4v,,"Flash Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.f4v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,16"
+Run,%ScriptFile%,AddRegAssoMPC,.f4v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flc,,"FLIC Animation"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flc\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,15"
+Run,%ScriptFile%,AddRegAssoMPC,.flc
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.fli,,"FLIC Animation"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.fli\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,15"
+Run,%ScriptFile%,AddRegAssoMPC,.fli
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flic,,"FLIC Animation"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flic\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,15"
+Run,%ScriptFile%,AddRegAssoMPC,.flic
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flv,,"Flash Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,16"
+Run,%ScriptFile%,AddRegAssoMPC,.flv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.hdmov,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.hdmov\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.hdmov
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ifo,,DVD-Video
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ifo\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,17"
+Run,%ScriptFile%,AddRegAssoMPC,.ifo
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ivf,,"Indeo Video Format"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ivf\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,18"
+Run,%ScriptFile%,AddRegAssoMPC,.ivf
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m1v,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m1v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.m1v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2p,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2p\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.m2p
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2t,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2t\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.m2t
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2ts,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2ts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.m2ts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2v,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.m2v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4v,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.m4v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mkv,,Matroska
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mkv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,21"
+Run,%ScriptFile%,AddRegAssoMPC,.mkv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mov,,"QuickTime Movie"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mov\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,22"
+Run,%ScriptFile%,AddRegAssoMPC,.mov
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp2v,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp2v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mp2v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp4,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp4\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.mp4
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp4v,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp4v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.mp4v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpe,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpe\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpe
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpeg,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpeg\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpeg
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpg,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpg\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpg
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpls,,"Blu-ray playlist"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpls\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,31"
+Run,%ScriptFile%,AddRegAssoMPC,.mpls
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpv2,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpv2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpv2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpv4,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpv4\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.mpv4
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mts,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.mts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ogm,,"Ogg Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ogm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,30"
+Run,%ScriptFile%,AddRegAssoMPC,.ogm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ogv,,"Ogg Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ogv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,30"
+Run,%ScriptFile%,AddRegAssoMPC,.ogv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.pva,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.pva\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.pva
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ram,,"Real Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ram\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,33"
+Run,%ScriptFile%,AddRegAssoMPC,.ram
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rec,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rec\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.rec
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rm,,"Real Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,33"
+Run,%ScriptFile%,AddRegAssoMPC,.rm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rmm,,"Real Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rmm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,33"
+Run,%ScriptFile%,AddRegAssoMPC,.rmm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rmvb,,Other
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rmvb\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.rmvb
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rp,,"Real Script"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,34"
+Run,%ScriptFile%,AddRegAssoMPC,.rp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rt,,"Real Script"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rt\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,34"
+Run,%ScriptFile%,AddRegAssoMPC,.rt
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.smil,,"Real Script"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.smil\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,34"
+Run,%ScriptFile%,AddRegAssoMPC,.smil
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.smk,,"Smacker/Bink Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.smk\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,35"
+Run,%ScriptFile%,AddRegAssoMPC,.smk
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.swf,,"Shockwave Flash"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.swf\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,36"
+Run,%ScriptFile%,AddRegAssoMPC,.swf
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.tp,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.tp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.tp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.trp,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.trp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.trp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ts,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.ts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.vob,,DVD-Video
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.vob\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,39"
+Run,%ScriptFile%,AddRegAssoMPC,.vob
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.webm,,WebM
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.webm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,41"
+Run,%ScriptFile%,AddRegAssoMPC,.webm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wm,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.wm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wmp,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wmp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.wmp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wmv,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wmv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.wmv
+//-
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationDescription,"One of the most powerful, configurable multimedia players for Windows operating system. Originaly made by a Hungarian developer known as Gabest, this version has additional features such as Direct 3D fullscreen mode and better support for Windows Vista/7."
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationName,"Media Player Classic Home Cinema"
+//-
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayDVDMovie\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1 /dvd"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayVideoFiles\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayDVDMovieOnArrival,MPCPlayDVDMovieOnArrival,
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayVideoFilesOnArrival,MPCPlayVideoFilesOnArrival,
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,Action,"Play DVD Movie"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,InvokeVerb,PlayDVDMovie
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,Action,"Play Video"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,InvokeVerb,PlayVideoFiles
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+
+[AddRegAssoMPC]
+If,%NoWarnROW%,Equal,True,System,ERROROFF
+RegWrite,HKLM,0x1,Tmp_Software\Classes\#1,,mplayerc#1
+If,ExistRegSection,HKLM,Tmp_Software\Classes\mplayerc#1\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\mplayerc#1\shell\Enqueue
+If,%CheckBox_Playlist%,Equal,True,Begin
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc#1\shell\enqueue,,%TextBox_Playlist%
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\enqueue,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+//RegAddBoot,HKLM,0x1,Software\Classes\mplayerc#1\shell\enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+End
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc#1\shell\open,,%TextBox_Play%
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc#1\shell\open,,&Play
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\open,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9991"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\open,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//RegAddBoot,HKLM,0x1,Software\Classes\mplayerc#1\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",#1,mplayerc#1
+
+[AuthorEncoded]
+mpc.jpg=2197,2930
+Logo=mpc.jpg
+
+[EncodedFile-AuthorEncoded-mpc.jpg]
+lines=0
+0=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
+
+[InterfaceEncoded]
+mpc1616.bmp=842,1123
+mpc2424.bmp=1437,1916
+MediaPlayerClassic.jpg=23450,31267
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFolders]
+Folder
+
+[EncodedFile-InterfaceEncoded-mpc1616.bmp]
+lines=0
+0=eJyNU2tIk2EU1ryFpk6dmYSXH1GzKQXGEEKyoUSJYWRZWWk0AkvIRGSKoE5B8IaZM0SpIMgUljKEispSqs22cOp0seG81ijDzE0n6nw679eMEKEeePg+3nOe857bK04RubtwEBEFRJ6Tri6Rvw1O+xbYQSwnNhBziWnEOGK0M1QYkU/cvpXY3d19V2xsLFpaWlBcXIysrCwkJiauC4XC2aCgoCFPT8+nHh4ereRaRrxGTCbGcKkR3NzcDhUVFcFk/oyOZ8OYmPqC1dVV2O12rKysYG5uDgaDAX19fWhvb0djYyOSk5NB0svOFE7K5XLk3RnE8cIR8NMGMDnzFW/lN6CSHYOq9gJGezu5WD1DbzA2MwalUsn0F536611dXZxdP2pEQJoeat0Epkf6oSuLx2h/D2ZnzFxOcY8S0fHxCZqbm5n+KBN7eXlVaDQaTn9AosGRmxrOd21tDaMPcqFXyrl/xrBWId4ZVCgpKWH6vUzv6+t732KxoPHxACpatRBeHYB9eRnGgfcY177EYO1pTlvTXQ/Ppp3UnwlIJBKm92H60NDQF0tLS6hrM+J8hQGK15OY+2aBXn4Jg3VnMPxQyuVzRZkNn7u7sUyxqX8/NuYXEhLyyWQywWq1YnFxkfN1OByw2ayYGTf9qYXpal/d5mwikUjPtN7e3vsiIyNBPUBERASSkpJQXV2N0tJSsJmyuXR2dkKtVmNqagoLCwuYn59HcHDwc2ftSWx3aE+QkJDgiI6OdthsNkxPT7P6UF9fD6PRiNTUVPB4PDQ1NaGwsJDZ7jF9eHh4NgH+/v4IDAz8QEfx1I896enph8Vi8Vmy3aLZ1uTn57eRby9hTK/X26OiosqdtcdkZGRUFBQUqPh8/kpmZiZ0Ot1PuqebzHmU30H6btu08q4Ej83vgHrhm5OTc0KhUFSnpKRo6b41s9kMrVb7nd6CgmLlUK37N/b+X6AeBUil0lNVVVUNfn5+w/RdZzOqrKy0sNb9T4y/QfmEyGSycwKBQLZx9gu9fcTGeJzjzi1INjQzNNNLyi1gGAUjDpixQBnM2OVzbwh1MDABAJEuBaUSOXvpAQAAAAIAAAAmAAAAAAMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-mpc2424.bmp]
+lines=0
+0=eJytVgtMU1cYLqWCgDxmHA8ZgojExbg5FYIibBoRpoA8NrWQOIsIAlHCArpFFx+IE3Rs2kWIk7ExgY2hs4xorNYiyFbAIfgAG90GAituCAWnoEC//edAayGameiffLm3597z/f/9/sfp0hBvCwE3b8IsguMoTARuIw9Gnz/FTAhOhPcJKYRYwlpCBCGcEEwIICwh+BMWEF4nTCc4ECY+k/mJTTQxMWmytrYenjRpklYoFN6kNSWhiPAZIZUQTVg6Gr4NQfgcvNwmTJjwpr29PVQqFdRqNZRKJY4fP47MzExs2bIFERERWLhwIVxdXWFpaQlzc3OdmZlZD4uJtp8jfEPIIGwa/V7ncfxBfn5+6O3tRX9/P3p6evDw4UMMDg4aMDQ0xDEwMIDW1lbU1tbizJkzyM/PR0ZGBo8jKioK8+fPB1FqCa8YuZBERkais7MT7ySdh+3KC5ixRo6DeUo8evQImvYWKIulqCgrwkWFHNeuX0dXVxceP37MfbOrHozDycmJ+ZhmxL8jMTGRx7wq7QJSpQ3wSrwC0apbqFRdxz+dGtzYH4CO/T7oOOCHGzsX4PSnHxi+TaYqx74TWdBqtXjw4AHs7OwGx+U9Z+/evYZ4GPJPNcI07A4KZI38d0NZDjqyfCGTfoymqjI0/3rW8K64JAbmhxzQ19cHjUYDkUikMdaf6qWM6ajnX7u1DA7v1eDVNdfQckfD17SUk8bMlbiYHspzpM8Hw9vfvgvnw7P4/oaGBpiamv5mzG9hYVEvl8tHtCS9w1IVmCxuxUdfKMbwNJ79Du2ZvqiVl45Z98h5C17HlnB+lnOiLDPmp7rvbGpq4nEpqur51T7iEhYlVPP9bB+rqb6++7iy2w+/SOP5ek1zHdS/q2H5uRPCisQ8vry8PMafY0Q/0dbWdpDtzy25jClrmuESeRZm4X8iLrOO8yhzt+L8/ihUnStH/W5/qLKj+XrGuSw4Sj0h/GoKEn/6kPPv2bOH8e/Qk1tZWbm6u7vz2mG5PyG/gfSvr+Jw8VVoe/swPDwMdY0ct3LX4e+jq3HrwHI0V8n4evvdDmz6ORnWRdOwT36Q+4yPj2f8Ej2/o6PjopkzZ/J6ZnuMYazxXarR5noV/mpvG/P8/r/3EfW9BEWXfuC/Q0JCGP9yPT/V0k66YMWKFdi+fTuOHDkCmUyGuro6tLW14d69e+ju7jb0NuMY719fd2xttH9nG+lTHRAQAJoRvO9otoDqFcnJyUhISMD69evh4+OD4OBgfp+Wlobs7GwUFxejsrISt2/fNsTAap9yqSNaO6PabGGzg/Hv2rULnp6ezD9KS0uh0+k4AgMD+VpKSgrnY7zR0dGsj0D6IiYmhmPevHmgmdcreDJbRQ4ODv1ubm58PwPd1yxevPiTpKSko4WFhadPnjzZuHnz5i4PD4+h8PBwrhHToaKigr9P389nHouD5ZB6S23Ut7ODgoIglUq5Ns7OzkwfuWDkjHEXjDUrmuEzyLe/RCIRb9u2LZV0y547d25Jbm5udXl5eUt1dfWAr6/vBaM9M7y9vb+MjY1tIh86lgd9TAqFgmnUkpWVlT9nzpx1tO4i+H8Tkj5WT3swderU1yj30VSrxzZs2PAH1Y6O6cD0trGxYX51YrH4Js3BnNDQ0NU0I+2fw9+zzIT8Td+4caPE39+/gHRpY+cX057pzPRetmzZML13lfJ3iDQLo/Ns8gv4E5APz7i4uESaLz+mp6ffpZnF65h0571P/TJEdXCZSfEifkZN6OLi8oaXl1dyQUHBKaqlbtaLpC07F0UvgX+8iaivvAQj/2kM9h82dOqgeJzjzi1INjIxMtFLyi1gGAUjDphxQuggVuzyL6eudmBgAgCapAaGcQVqegEAAAACAAAAJwAAAFIFAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-MediaPlayerClassic.jpg]
+lines=7
+0=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
+1=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
+2=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
+3=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
+4=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
+5=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
+6=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
+7=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[DownloadXXX_Container]
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+Call,DownloadXQ,%ContainerFile%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
