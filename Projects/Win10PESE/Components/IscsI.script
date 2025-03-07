@@ -4,14 +4,14 @@ Type=Plugin
 Author=Ludovici, ChrisR
 Description=(NT6x) Microsoft iSCSI Initiator
 Credits=http://www.gregorystrike.com/?p=8 - Max_Real_Qnx
-Version=015
+Version=017
 Download_Level=1
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.02.16_14:19.49 (GMT0: -3 Hours)
+Date=2019.01.14
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/IscsI.script
@@ -31,6 +31,8 @@ History011=Lancelot - Syntax update - Date:2016.10.21
 History012=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
 History014=ChrisR - NoWarnROW implemented - Date:2016.11.24
 History015=Lancelot Added forgotten Web2 - Date:2017.02.16
+History016=Lancelot - Add BuildClass 3 support - Date:2018.10.09
+History017=Lancelot - Add BuildClass - Date:2019.01.14
 
 [Variables]
 
@@ -58,13 +60,36 @@ IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 Call,TargetVersion,,4x
 Call,CompareVersions,%TargetVersion%,6.2.9200.00000,TC_Win80
 //--
+//If,Not,ExistDir,%Target_Sys%\DriverStore\FileRepository,DirMake,%Target_Sys%\DriverStore\FileRepository
+If,%BuildClass%,Equal,3,Require,FileList
+Else,Begin
 Run,%ScriptFile%,CopyFiles
 Run,%ScriptFile%,Drivers
+End
 Run,%ScriptFile%,Registry
 //--
 Echo,"Processing Shortcut..."
 If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,#$pSystemRoot#$p\System32\iscsicpl.exe,%pTextBox2%,#$pSystemRoot#$p\System32,""
 If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%,#$pSystemRoot#$p\System32\iscsicpl.exe,%pTextBox2%,#$pSystemRoot#$p\System32,""
+
+[Require_FileList]
+\Windows\System32\iscsicli.exe
+\Windows\System32\??-??\iscsicli.exe.mui
+\Windows\System32\iscsicpl.exe
+\Windows\System32\??-??\iscsicpl.exe.mui
+\Windows\System32\iscsicpl.dll
+\Windows\System32\??-??\iscsicpl.dll.mui
+\Windows\System32\iscsidsc.dll
+\Windows\System32\??-??\iscsidsc.dll.mui
+\Windows\System32\iscsied.dll
+\Windows\System32\iscsiexe.dll
+\Windows\System32\??-??\iscsiexe.dll.mui
+\Windows\System32\iscsilog.dll
+\Windows\System32\??-??\iscsilog.dll.mui
+\Windows\System32\iscsium.dll
+\Windows\System32\iscsiwmi.dll
+\Windows\System32\iscsiwmiv2.dll
+\Windows\System32\Drivers\msiscsi.sys
 
 [CopyFiles]
 Echo,"Copy Files..."

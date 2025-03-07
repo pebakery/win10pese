@@ -4,17 +4,19 @@ Type=Plugin
 Author=Lancelot
 Description=Plugin Creator Innounp . Easy start preparation of Innounp plugins :>
 Credits=BlueLife
-Version=072
+Version=104
 Download_Level=1
 Level=10
 Selected=None
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=178
-Date=2017.12.18
+Date=2020.03.15
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Plugin_Creator_Innounp.script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/Plugin_Creator_Innounp.script
+WebHardLink=True
 CertifiedBy=
 Certification=
 HistoryNotes01=Add_Shortcut Info here http://TheOven.org/index.php?topic=50.0
@@ -56,7 +58,7 @@ History029=Lancelot MultiArch more developed to detect -- some setups have files
 History030=Lancelot pCheckBox1 Desktop shortcut better text space // Added Plugin Created
 History031=Lancelot improved Author name
 History032=Lancelot added WinToUSB_Setup_2.1_Beta.exe multiarch option (under \bin .. ,2.exe )
-History033=Prz42 added RunAsSystem Option, More ProvideFiles options - [Purge_Cache], [Example_Information], [Download] and opendir.bmp, trash.bmp, Web.bmp, Exclamation.bmp - http://TheOven.org/index.php?topic=1326
+History033=Prz42    added RunAsSystem Option, More ProvideFiles options - [Purge_Cache], [Example_Information], [Download] and opendir.bmp, trash.bmp, Web.bmp, Exclamation.bmp - http://TheOven.org/index.php?topic=1326
 History034=Lancelot fixed typos // added innounp compare version, if smaller exit (idea from Galapo)
 History035=Lancelot Added InnounpM01 parameter 3
 History036=Lancelot File Container do not need Description version info
@@ -88,11 +90,41 @@ History069=Lancelot Improved Download Button x6 - Date:2017.10.23
 History070=Lancelot updated v070 - Date:2017.10.24
 History071=Lancelot Update for PEBakery compatibility - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.09
 History072=Lancelot Update empty Home Page WebLabel to https://Write_Homepage_Here - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+History073=Lancelot Add To Yomi Server - Date:2018.10.22
+History074=Lancelot no need https://Write_Homepage_Here anymore for a PEBakery workaround - PEBakery should behave same as with Image with WebLink = Do nothing if WebLabel is empty - Date:2018.11.28
+History075=Lancelot minor fix - Date:2018.12.02
+History078=Lancelot small improvments (Call,ReStart etc.) x3 - Date:2019.01.09
+History079=Lancelot cosmetic update - Date:2019.01.25
+History080=Lancelot update OpenDir Launch Trash Information buttons - Date:2019.02.06
+History081=Lancelot Fix Button_Launch_Program size - Date:2019.02.17
+History082=Lancelot RunAsSystem_CheckBox hidden - not required anymore (better way available now eg. right click NSudo) - Date:2019.03.11
+History083=Lancelot New Syntax Startup - Date:2019.12.27
+History084=Lancelot Auto FileContainer Setting changed from 10 MB to 20 KB to avoid winbuilder big sized plugin bug (loading winbuilder slow bug) // Add Hidden FileContainer_File_Packed_CheckBox default enabled to avoid winbuilder big sized plugin bug with accepting Disadvantages: 1) No Version Control - 2) No Download_Level control - 3) Extra Log lines when extracting (winbuilder memory bug with log) - 4)For  now opening container file cause md5 change which cause new download from server REMINDING download button revert back to default plugin without download ;) // Advantages: 1) Faster load time workarounding winbuilder bug  2) Smaller Size ;) -------->  Reason: Loose hope for a replacement after 9 years ;) - Date:2020.01.07
+History085=Lancelot Update Button_Open_Container Position - Date:2020.01.14
+History086=Lancelot Add example with Innounp_SelectFiles - Extract only selected files - Date:2020.01.14
+History088=Lancelot update variable and section names x2 - Date:2020.01.15
+History089=Lancelot update check FileContainer - Date:2020.01.16
+History090=Lancelot update Dependency info - Date:2020.01.16
+History092=Lancelot update variable and macro x3 - Date:2020.01.16
+History093=Lancelot Add Image_Software_SeePic_Button - Date:2020.01.17
+History094=Lancelot update Variable Names - Date:2020.01.17
+History095=Lancelot ProvideFile_Info and related adjustments - Date:2020.01.17
+History096=Lancelot Update Section names - Date:2020.01.18
+History097=Lancelot Update ReStart button balloon - Date:2020.01.24
+History098=Lancelot Change Example Plugin locations to %HostDesktopDir%\PluginCreator - Date:2020.02.09
+History099=Lancelot Improve button position - Date:2020.02.10
+History100=Lancelot Update Button_Open_Container Position - Date:2020.02.25
+History101=Lancelot Fix: No empty Title with "cmd.exe Start" - even HDM6 with Start QuoteQuote can crash see Malok Reply-8 Topic: http://TheOven.org/index.php?topic=3088.0 Malok Reply 8: http://TheOven.org/index.php?topic=3088.msg36827#msg36827 - Date:2020.03.09
+History103=Lancelot UI cosmetics - Date:2020.03.11
+History104=Lancelot Add InterfaceList Web1 - Date:2020.03.15
+
+[Download_From_Yomi]
+Call,DownloadX,"%BaseDir%\Projects\Yomi\UtilsY\Plugin_Creator_Innounp.script"
 
 [HistoryNotes]
 //Dependencies
-If,%sourcearch%,Equal,x86,Set,%targetdirvalue%,%Target_Sys%
-If,Not,%sourcearch%,Equal,x86,Set,%targetdirvalue%,%Target_Win%\SysWOW64
+If,%SourceArch%,Equal,x86,Set,%targetdirvalue%,%Target_Sys%
+If,Not,%SourceArch%,Equal,x86,Set,%targetdirvalue%,%Target_Win%\SysWOW64
 Set,%PluginArch%,x86
 If,Not,ExistFile,%targetdirvalue%\oleaccrc.dll,Require_FileQ,oleaccrc.dll
 If,Not,ExistFile,%targetdirvalue%\oleacc.dll,Require_FileQ,oleacc.dll
@@ -109,7 +141,7 @@ Bevel_Big=pBevel2,0,12,338,115,217,235
 Main_Bevel=Bevel,0,12,343,119,208,202
 File_TextLabel=1),1,1,12,67,26,35,16,Bold
 File_TextLabel_Info="Point Innounp Setup File (.exe)",1,1,42,57,156,18,8,Normal
-File_FileBox=D:\Users\Cemal\Desktop\vnc-4_1_3-x86_win32.exe,1,13,40,76,404,30,file
+File_FileBox=C:\Users\Cemal\Desktop\PluginCreator\vnc-4_1_3-x86_win32.exe,1,13,40,76,404,30,file
 Exe_TextLabel=2),1,1,12,136,26,34,16,Bold
 Exe_TextBox=ProgramExe,1,0,43,150,118,21,vncviewer.exe
 Exe_BuilderBugWarning_TextLabel="Paste Tip: USE CTRL+V or#$x'Right Click+Paste' + Enter",1,1,168,144,140,27,8,Normal
@@ -126,11 +158,11 @@ M_Author_TextBox=Author=,0,0,354,189,100,21,
 Startup_CheckBox="Add Startup Option",0,3,355,213,116,16,False
 WebLabel_Plugin="Plugin Creator",1,10,209,218,68,18,http://TheOven.org/index.php?topic=178
 DoNOTReScanPlugins_CheckBox="Do NOT ReScan Plugins",0,3,107,300,132,18,False
-ReScan_Button=,0,8,238,295,27,27,ReScan_P_B,Double-J-Design-Ravenna-3d-Reload024024.bmp,False,_ReScan_P_B_,False,"__ReScan (RefResh) Plugins"
+ReStart_Button=,0,8,238,295,27,27,ReStart_P_B,Double-J-Design-Ravenna-3d-Reload024024.bmp,False,_ReStart_P_B_,False,"__ReStart (RefResh) Plugins"
 Example_Button=Example,1,8,404,323,80,25,Example_Process,,False,_Example_Process_,False,"__1) Hit 'Example' button 2) Hit 'Goooo' button"
-Example_Button_Info=,1,8,486,323,26,25,Example_Information,Exclamation.bmp,False,False,_Example_Information_,False,__Information
+Example_Button_Info=,1,8,486,323,26,25,Example_Information,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Example_Information_,False,__Information
 FileContainer_ScrollBox=Auto,0,4,376,10,106,21,Auto,FileContainer,SingleFile,Provide_File
-RunAsSystem_CheckBox="Add 'Run As System' Option",0,3,355,232,161,18,False
+RunAsSystem_CheckBox="Add 'Run As System' Option",0,3,585,230,161,18,False
 Button_Download=,1,8,503,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__Download (Update) Plugin"
 Button_Upload=,0,8,503,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__Upload Plugin (Admins Only)"
 Button_CompareEdit=,0,8,526,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
@@ -138,13 +170,14 @@ pButton_Show_Second_Gui="Options -->",1,8,455,112,80,25,Second_Gui,True,True,Fal
 pButton_Show_First_Gui="<-- Basic",0,8,455,91,80,25,First_Gui,True,True,False,_First_Gui_,True
 ProvideFile_CheckBox="Add 'Provide File' Option",0,3,354,280,139,18,False
 AppsMy_1Prepare_Button=AppsMy\1Prepare,0,8,444,349,101,25,AppsMy_1Prepare_Button_P,0,False,False,_AppsMy_1Prepare_Button_P_,False
-AppsMy_2Prepare_Button=AppsMy\2Prepare,0,8,445,365,97,25,AppsMy_2Prepare_Button_P,0,False,False
+AppsMy_2Prepare_Button=AppsMy\2Prepare,0,8,445,374,97,25,AppsMy_2Prepare_Button_P,0,False,False,_AppsMy_2Prepare_Button_P_,False
 CheckBox_2Prepare=AppsMy\2Prepare,0,3,435,397,107,18,True
 Info_TextLabel_B="You will find your plugin at \AppsMy\2Prepare :>",1,1,27,259,230,18,8,Normal
 AddCache_CheckBox="Add Cache (BETA)",0,3,470,252,75,27,False
 ProvideFileP_Bevel=ProvideFileP_Bevel,0,12,351,279,145,37
 Add_DownloadB_CheckBox="Add Download Button",0,3,354,297,132,18,False
 FC_Visible_CheckBox="FC - 5",0,3,498,298,50,18,False,"__File Container Visible (Plugin Developers ONLY)"
+FileContainer_File_Packed_CheckBox=_File.Packed,0,3,396,32,85,18,True
 
 [Variables]
 %WScript%=%ProjectTemp%\Template.script
@@ -175,8 +208,11 @@ If,Not,ExistFile,%File_FileBox%,Exit,"%File_FileBox% File Not Found"
 //-
 Set,%File_Container%,0
 If,%FileContainer_ScrollBox%,Equal,Auto,Begin
-Retrieve,FILESIZE,%File_FileBox%,%File_Size%
-If,%File_Size%,Bigger,10485760,Set,%File_Container%,1
+Retrieve,FileSize,%File_FileBox%,%File_Size%
+//10 MB : 10485760 Bytes
+//If,%File_Size%,Bigger,10485760,Set,%File_Container%,1
+//20 KB : 20480 Bytes
+If,%File_Size%,Bigger,20480,Set,%File_Container%,1
 End
 If,%FileContainer_ScrollBox%,Equal,FileContainer,Set,%File_Container%,1
 If,%FileContainer_ScrollBox%,Equal,SingleFile,Set,%File_Container%,0
@@ -248,7 +284,7 @@ If,%CheckBox_2Prepare%,Equal,True,Message,"**** You (MAY) need to EDIT new plugi
 End
 //--
 If,%DoNOTReScanPlugins_CheckBox%,Equal,True,Set,%Refr%,Noo
-If,%Refr%,Equal,Yes,System,ReScanScripts
+If,%Refr%,Equal,Yes,Call,ReStart
 
 [Process_Goo_True]
 If,Not,ExistDir,%TarMy%,DirMake,%TarMy%
@@ -307,7 +343,7 @@ If,ExistFile,%Tar%\%NewPluginNameLink%,Exit,"%Tar%\%NewPluginNameLink% not delet
 CopyOrExpand,%WScript%,%Tar%\%NewPluginName%
 
 [Template_Goo]
-StrFormat,filename,%File_FileBox%,%File_FileBox_FileName%
+StrFormat,FileName,%File_FileBox%,%File_FileBox_FileName%
 //--
 StrFormat,Split,%File_FileBox_FileName%,.,1,%File_FileBox_FileName_NoExtension%
 //--
@@ -321,11 +357,22 @@ Set,%MySetupFilex64%,""
 Set,%NewPluginName%,%File_FileBox_FileName_NoExtension%_PC.Script
 Set,%NewPluginNameLink%,%File_FileBox_FileName_NoExtension%_PC.Link
 //--
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Begin
+Set,%FCNewPluginName%,%File_FileBox_FileName_NoExtension%_PC_File.Packed
+Set,%FCw%,%TarMy%\%FCNewPluginName%
+End
+If,%FileContainer_File_Packed_CheckBox%,Equal,False,Begin
 Set,%FCNewPluginName%,%File_FileBox_FileName_NoExtension%_PC_File.Script
 Set,%FCNewPluginNameLink%,%File_FileBox_FileName_NoExtension%_PC_File.Link
 Set,%FCw%,%TarMy%\%FCNewPluginName%
+End
 //-
+System,FileRedirect,OFF
+If,ExistFile,%TarMy%\%File_FileBox_FileName_NoExtension%_PC_File.Script,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%TarMy%\%File_FileBox_FileName_NoExtension%_PC_File.Script#$q&del /q /f /A:R /A:H /A:S /A:A #$q%TarMy%\%File_FileBox_FileName_NoExtension%_PC_File.Script#$q"
+If,ExistFile,%TarMy%\%File_FileBox_FileName_NoExtension%_PC_File.Packed,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%TarMy%\%File_FileBox_FileName_NoExtension%_PC_File.Packed#$q&del /q /f /A:R /A:H /A:S /A:A #$q%TarMy%\%File_FileBox_FileName_NoExtension%_PC_File.Packed#$q"
 If,ExistFile,%FCw%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%FCw%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%FCw%#$q"
+System,FileRedirect,ON
+//-
 If,ExistFile,%FCw%,Message,"%FCw% not deleted",Error
 If,ExistFile,%FCw%,Exit,"%FCw% not deleted"
 //--
@@ -345,9 +392,9 @@ Run,%ScriptFile%,Template
 IniWrite,%WScript%,DummySection,DummyValue,DummyData
 IniDeleteSection,%WScript%,DummySection
 //--
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteex,Hide,cmd.exe,"/C #$q%WScript%#$q",%ProjectTemp%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [Template_Empty_TM]
 Run,%ScriptFile%,Ico_Common_Variables
@@ -363,7 +410,7 @@ Set,%MySetupFilex86%,BlaaaSetup.exe
 Set,%MySetupFilex64%,""
 
 [Template]
-StrFormat,DATE,%myDate%,yyyy.mm.dd
+StrFormat,Date,%myDate%,yyyy.mm.dd
 If,%M_Author_TextBox%,Equal,"",Begin
 Set,%MyAuthor%,"Plugin Creator"
 Set,%_ML_t%,""
@@ -399,7 +446,8 @@ IniWrite,%w%,Main,Contact,http://TheOven.org
 IniWrite,%w%,Main,Date,%MyDate%
 IniWrite,%w%,Main,Depend,""
 IniWrite,%w%,Main,Disable,""
-//IniWrite,%w%,Main,Web1,""
+IniWrite,%w%,Main,InterfaceList,""
+IniWrite,%w%,Main,Web1,""
 //IniWrite,%w%,Main,Web1C,""
 IniWrite,%w%,Main,CertifiedBy,""
 IniWrite,%w%,Main,Certification,""
@@ -427,59 +475,76 @@ End
 IniWrite,%w%,Interface,pTextBox1,",1,0,1,43,75,21,,#$q__'Start Menu' Folder#$q"
 //IniWrite,%w%,Interface,Image_Software,",1,5,142,44,301,223"
 IniWrite,%w%,Interface,Image_Software,",1,5,142,47,301,223"
+IniWrite,%w%,Interface,Image_Software_SeePic_Button,",1,8,141,47,16,16,Image_Software_SeePic_P_B,Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,False,False,_Image_Software_SeePic_P_B_,False,#$q__See Picture#$q"
 If,Not,%FileContainer_ScrollBox%,Equal,Provide_File,Begin
 IniWrite,%w%,Interface,Image_Software,",1,5,85,47,358,223"
+IniWrite,%w%,Interface,Image_Software_SeePic_Button,",1,8,84,47,16,16,Image_Software_SeePic_P_B,Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,False,False,_Image_Software_SeePic_P_B_,False,#$q__See Picture#$q"
+End
+If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
+IniWrite,%w%,Interface,Image_Software,",1,5,142,47,301,223"
+IniWrite,%w%,Interface,Image_Software_SeePic_Button,",1,8,141,47,16,16,Image_Software_SeePic_P_B,Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,False,False,_Image_Software_SeePic_P_B_,False,#$q__See Picture#$q"
 End
 IniWrite,%w%,Interface,ScrollBox_RunFromWhere,"#$qRun from Normal#$q,1,4,84,1,121,21,#$qRun from Normal#$q,#$qRun from RAM#$q,#$qRun from CD#$q"
-//IniWrite,%w%,Interface,Button_Launch_Program,"Launch,%t%,8,13,207,80,25,Launch_Program"
+//IniWrite,%w%,Interface,Button_Launch_Program,"Launch,%t%,8,13,207,80,22,Launch_Program"
 If,%ProvideFile%,Equal,0,Begin
-IniWrite,%w%,Interface,Button_Launch_Program,"Launch,1,8,2,206,60,25,Launch_Program,Launch.bmp,False,_Launch_Program_,False"
+IniWrite,%w%,Interface,Button_Launch_Program,"Launch,1,8,2,206,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False"
 End
 If,%ProvideFile%,Equal,1,Begin
-//IniWrite,%w%,Interface,Button_Launch_Program,"#$qLaunch#$q,1,8,2,206,60,25,Launch_Program,Launch.bmp,False,_Launch_Program_,False"
-IniWrite,%w%,Interface,Button_Launch_Program,"#$qLaunch#$q,1,8,2,132,60,25,Launch_Program,Launch.bmp,False,_Launch_Program_,False"
-IniWrite,%w%,Interface,Button_ProvideFiles,"#$qProvide Files#$q,1,8,9,158,100,25,ProvideFiles_Process,opendir.bmp,False,False,_ProvideFiles_Process_,False,#$q__Open folder#$q"
-IniWrite,%w%,Interface,Button_Example_Info,",1,8,104,158,26,25,Example_Information,Exclamation.bmp,False,_Example_Information_,False"
-IniWrite,%w%,Interface,Button_Purge,"#$qPurge Cache#$q,1,8,18,186,100,25,Purge_Cache,trash.bmp,True,_Purge_Cache_,True,#$q__Click here to clear your cached download.#$q"
+//IniWrite,%w%,Interface,Button_Launch_Program,"#$qLaunch#$q,1,8,2,206,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False"
+IniWrite,%w%,Interface,Button_Launch_Program,"#$qLaunch#$q,1,8,2,132,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False"
+IniWrite,%w%,Interface,Button_ProvideFiles,"#$qProvide Files#$q,1,8,9,158,100,25,ProvideFiles_Process,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_Process_,False,#$q__Open folder#$q"
+IniWrite,%w%,Interface,Button_Example_Info,",1,8,104,158,26,25,Example_Information,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,_Example_Information_,False"
+IniWrite,%w%,Interface,Button_Purge,"#$qPurge Cache#$q,1,8,18,186,100,25,Purge_Cache,Icons8-Windows-8-Industry-Trash_0_016016.bmp,True,_Purge_Cache_,True,#$q__Click here to clear your cached download.#$q"
 IniWrite,%w%,Interface,Button_Download,"#$qDownload#$q,1,8,18,213,100,25,Download,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Download_,False"
 End
-IniWrite,%w%,Interface,WebLabel_Homepg,"HomePage,1,10,343,20,55,18,https://Write_Homepage_Here"
-IniWrite,%w%,Interface,WebLabel_Plugin,"#$qPlugin Page#$q,1,10,338,4,55,18,http://TheOven.org/index.php?board=9"
-//IniWrite,%w%,Interface,WebLabel_Homepg,"HomePage,1,10,358,11,51,18,https://Write_Homepage_Here"
+//--
+If,%File_Container%,Equal,1,Begin
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Begin
+IniWrite,%w%,Interface,Button_Open_Container_x86,",1,8,523,67,24,24,Open_Container_x86_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_x86_P_B_,False,#$q__Open 'File Container'#$q"
+End
+End
+//--
+IniWrite,%w%,Interface,WebLabel_Homepg,"HomePage,1,10,326,20,51,18,"
+IniWrite,%w%,Interface,WebLabel_Plugin,"#$qPlugin Page#$q,1,10,321,4,55,18,http://TheOven.org/index.php?board=9"
+//IniWrite,%w%,Interface,WebLabel_Homepg,"HomePage,1,10,358,11,51,18,"
 //IniWrite,%w%,Interface,WebLabel_Plugin,"#$qPlugin Page#$q,1,10,299,11,55,18,http://TheOven.org/index.php?board=9"
-//IniWrite,%w%,Interface,WebLabel_Homepg,"HomePage,1,10,20,283,200,18,https://Write_Homepage_Here"
+//IniWrite,%w%,Interface,WebLabel_Homepg,"HomePage,1,10,20,283,200,18,"
 //IniWrite,%w%,Interface,WebLabel_Plugin,"#$qPlugin Page#$q,1,10,20,267,200,18,http://TheOven.org/index.php?board=9"
 //--
 If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
-IniWrite,%w%,Interface,ProvideFile_Bevel,"ProvideFile_Bevel,1,12,-2,130,83,43"
-IniWrite,%w%,Interface,ProvideFile_TextBox,"#$qProvide File#$q,1,0,1,150,78,21,%File_FileBox_FileName%"
-IniWrite,%w%,Interface,ProvideFile_Opendir_Button,",1,8,61,132,18,18,ProvideFiles_OpenDir_P_B,opendir.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,#$q__Open Folder#$q"
+IniWrite,%w%,Interface,ProvideFile_Bevel,"ProvideFile_Bevel,1,12,-2,128,127,67"
+IniWrite,%w%,Interface,ProvideFile_x86_TextBox,",1,0,45,172,78,21,%File_FileBox_FileName%"
+IniWrite,%w%,Interface,ProvideFile_Opendir_Button,",1,8,-1,130,22,22,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,#$q__Open Folder#$q"
+IniWrite,%w%,Interface,ProvideFile_Info_Button,",1,8,23,130,22,22,ProvideFile_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_ProvideFile_Info_P_B_,False"
+//-
 If,%Add_DownloadB_CheckBox%,Equal,True,Begin
-IniWrite,%w%,Interface,Button_Download_Web,"Download,1,8,0,104,80,25,Button_Download_Web_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_P_B_,False,#$q__Download File#$q"
+IniWrite,%w%,Interface,Button_Download_Web_x86,"x86,1,8,-1,172,46,22,Button_Download_Web_x86_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_x86_P_B_,False,#$q__Download or Update#$q"
 End
 End
 //--
 If,%AddCache_CheckBox%,Equal,True,Begin
 IniWrite,%w%,Interface,PluginCache_Bevel,"PluginCache_Bevel,1,12,-4,176,85,23"
 IniWrite,%w%,Interface,PluginCache_CheckBox,"Cache,1,3,0,180,51,16,True"
-IniWrite,%w%,Interface,PluginCache_Delete_Button,",1,8,57,177,20,20,Delete_Cache_P_B,trash.bmp,True,_Delete_Cache_P_B_,True,#$q__Delete Plugin Cache.#$q"
+IniWrite,%w%,Interface,PluginCache_Delete_Button,",1,8,57,177,20,20,Delete_Cache_P_B,Icons8-Windows-8-Industry-Trash_0_016016.bmp,True,_Delete_Cache_P_B_,True,#$q__Delete Plugin Cache.#$q"
 End
 //--
 IniWrite,%w%,Variables,#$pProgramTitle#$p,%MyProgramTitle%
 IniWrite,%w%,Variables,#$pProgramEXE#$p,%MyExe%
 IniWrite,%w%,Variables,#$pProgramFolder#$p,%MyProgramFolder%
 If,%ProvideFile%,Equal,1,Begin
-IniWrite,%w%,Variables,#$pProgramFolderx64#$p,%MyProgramFolder%_x64
+IniWrite,%w%,Variables,#$pProgramFolder_x64#$p,%MyProgramFolder%_x64
 End
-IniWrite,%w%,Variables,#$pSetupFile#$p,#$pSetupFilex86#$p
-IniWrite,%w%,Variables,#$pSetupFilex86#$p,%MySetupFilex86%
-IniWrite,%w%,Variables,#$pSetupFilex64#$p,%MySetupFilex64%
+IniWrite,%w%,Variables,#$pSetupFile#$p,#$pSetupFile_x86#$p
+IniWrite,%w%,Variables,#$pSetupFile_x86#$p,%MySetupFilex86%
+IniWrite,%w%,Variables,#$pSetupFile_x64#$p,%MySetupFilex64%
 If,%File_Container%,Equal,1,Begin
-IniWrite,%w%,Variables,#$pFileContainer#$p,#$pScriptDir#$p\%FCNewPluginName%
+IniWrite,%w%,Variables,#$pFileContainer#$p,#$pFileContainer_x86#$p
+IniWrite,%w%,Variables,#$pFileContainer_x86#$p,#$pScriptDir#$p\%FCNewPluginName%
 End
 If,%ProvideFile%,Equal,1,Begin
 IniWrite,%w%,Variables,#$pProgramSourceFiles#$p,%MyProgramFolder%_ProvideFile
 IniWrite,%w%,Variables,#$pProvideFiles#$p,#$pGlobalTemplates#$p\#$pProgramSourceFiles#$p
+IniWrite,%w%,Variables,#$pProvideFile_TextBoxV#$p,#$pProvideFile_x86_TextBox#$p
 IniWrite,%w%,Variables,#$pSetupURL#$p,""
 End
 //--
@@ -488,6 +553,7 @@ IniWrite,%w%,Variables,#$pProgramSourceFiles#$p,%MyProgramFolder%_ProvideFile
 IniWrite,%w%,Variables,#$pProvideFiles#$p,#$pGlobalTemplates#$p\#$pProgramSourceFiles#$p
 If,%Add_DownloadB_CheckBox%,Equal,True,Begin
 IniWrite,%w%,Variables,#$pProvideFiles#$p,#$pGlobalTemplates#$p\#$pProgramSourceFiles#$p
+IniWrite,%w%,Variables,#$pDownloadMessage#$p,No
 IniWrite,%w%,Variables,#$pFileWeb#$p,#$pFileWeb_x86#$p
 IniWrite,%w%,Variables,#$pFileWeb_x86#$p,http://gena.cwcodes.net/Projects/Tools/Languages/English.txt
 If,%MArch%,Equal,1,Begin
@@ -501,7 +567,7 @@ IniWriteTextLine,%w%,Process,""
 If,%RunAsSystem_CheckBox%,Equal,True,Begin
 //IniWriteTextLine,%w%,Process,"End"
 If,%Startup_CheckBox%,Equal,True,Begin
-IniWriteTextLine,%w%,Process,"If,#$ppCheckBox4#$p,Equal,True,Add_Shortcut,AutoRun"
+IniWriteTextLine,%w%,Process,"If,#$ppCheckBox4#$p,Equal,True,Add_Shortcut,Startup"
 End
 IniWriteTextLine,%w%,Process,"If,#$ppCheckBox3#$p,Equal,True,Add_Shortcut,QuickLaunch"
 IniWriteTextLine,%w%,Process,"If,#$ppCheckBox2#$p,Equal,True,Add_Shortcut,StartMenu,#$ppTextBox1#$p"
@@ -512,7 +578,7 @@ IniWriteTextLine,%w%,Process,"End"
 IniWriteTextLine,%w%,Process,"End"
 IniWriteTextLine,%w%,Process,"Set,#$pRunAsSystem#$p,1"
 If,%Startup_CheckBox%,Equal,True,Begin
-IniWriteTextLine,%w%,Process,"If,#$pRunAsSystemSH_SU_CheckBox#$p,Equal,True,Add_Shortcut,AutoRun,,##$pSystemRoot##$p\system32\nircmd.exe,#$q#$pProgramTitle#$p Run As System#$q,##$q#$pPE_Programs#$p\#$pProgramFolder#$p##$q,#$qelevatecmd runassystem ##$q#$pPE_Programs#$p\#$pProgramFolder#$p\#$pProgramEXE#$p##$q#$q,#$pPE_Programs#$p\#$pProgramFolder#$p\#$pProgramEXE#$p"
+IniWriteTextLine,%w%,Process,"If,#$pRunAsSystemSH_SU_CheckBox#$p,Equal,True,Add_Shortcut,Startup,,##$pSystemRoot##$p\system32\nircmd.exe,#$q#$pProgramTitle#$p Run As System#$q,##$q#$pPE_Programs#$p\#$pProgramFolder#$p##$q,#$qelevatecmd runassystem ##$q#$pPE_Programs#$p\#$pProgramFolder#$p\#$pProgramEXE#$p##$q#$q,#$pPE_Programs#$p\#$pProgramFolder#$p\#$pProgramEXE#$p"
 IniWriteTextLine,%w%,Process,"Set,#$pRunAsSystemSH_SU_CheckBox#$p,#$ppCheckBox4#$p"
 End
 IniWriteTextLine,%w%,Process,"If,#$pRunAsSystemSH_QL_CheckBox#$p,Equal,True,Add_Shortcut,QuickLaunch,,##$pSystemRoot##$p\system32\nircmd.exe,#$q#$pProgramTitle#$p Run As System#$q,##$q#$pPE_Programs#$p\#$pProgramFolder#$p##$q,#$qelevatecmd runassystem ##$q#$pPE_Programs#$p\#$pProgramFolder#$p\#$pProgramEXE#$p##$q#$q,#$pPE_Programs#$p\#$pProgramFolder#$p\#$pProgramEXE#$p"
@@ -531,7 +597,7 @@ End
 //--
 If,%RunAsSystem_CheckBox%,Equal,False,Begin
 If,%Startup_CheckBox%,Equal,True,Begin
-IniWriteTextLine,%w%,Process,"If,#$ppCheckBox4#$p,Equal,True,Add_Shortcut,AutoRun"
+IniWriteTextLine,%w%,Process,"If,#$ppCheckBox4#$p,Equal,True,Add_Shortcut,Startup"
 End
 IniWriteTextLine,%w%,Process,"If,#$ppCheckBox3#$p,Equal,True,Add_Shortcut,QuickLaunch"
 IniWriteTextLine,%w%,Process,"If,#$ppCheckBox2#$p,Equal,True,Add_Shortcut,StartMenu,#$ppTextBox1#$p"
@@ -542,7 +608,7 @@ IniWriteTextLine,%w%,Process,"//Registry - Use Utils\RegCPE Plugin - Copy/Paste 
 IniWriteTextLine,%w%,Process,"//--"
 IniWriteTextLine,%w%,Process,"//Require_FileQ,xxx.dll"
 IniWriteTextLine,%w%,Process,"//Set,#$pPluginArch#$p,x86"
-IniWriteTextLine,%w%,Process,"//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0"
+IniWriteTextLine,%w%,Process,"//Dependencies - Require,FileList [Require_FileList] http://TheOven.org/index.php?topic=1466.0 - Require_FileQ - : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0"
 IniWriteTextLine,%w%,Process,"//--"
 //-
 If,%ProvideFile%,Equal,1,Begin
@@ -551,17 +617,17 @@ Set,%MArch%,1
 End
 If,%MArch%,Equal,1,Begin
 If,%t%,Equal,1,Begin
-IniWriteTextLine,%w%,Process,"If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,Filesx64"
+IniWriteTextLine,%w%,Process,"If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,Innounp_Files_x64"
 End
 Else,Begin
-IniWriteTextLine,%w%,Process,"//If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,Filesx64"
+IniWriteTextLine,%w%,Process,"//If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,Innounp_Files_x64"
 End
 IniWriteTextLine,%w%,Process,"//--"
 If,%t%,Equal,1,Begin
-IniWriteTextLine,%w%,Process,"If,#$pSourceArch#$p,Equal,x86,Run,#$pScriptFile#$p,Filesx86"
+IniWriteTextLine,%w%,Process,"If,#$pSourceArch#$p,Equal,x86,Run,#$pScriptFile#$p,Innounp_Files_x86"
 End
 Else,Begin
-IniWriteTextLine,%w%,Process,"//If,#$pSourceArch#$p,Equal,x86,Run,#$pScriptFile#$p,Filesx86"
+IniWriteTextLine,%w%,Process,"//If,#$pSourceArch#$p,Equal,x86,Run,#$pScriptFile#$p,Innounp_Files_x86"
 End
 IniWriteTextLine,%w%,Process,"//--"
 IniWriteTextLine,%w%,Process,"//Set,#$pTdrv#$p,#$pTarget_Sys#$p\Drivers"
@@ -572,8 +638,8 @@ IniWriteTextLine,%w%,Process,"//Set,#$pSwin#$p,#$pProjectTemp#$p\TempExtractFold
 IniWriteTextLine,%w%,Process,"Set,#$pTapp#$p,#$pTarget_Prog#$p\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Process,"Set,#$pSapp#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Process,"//--"
-IniWriteTextLine,%w%,Process,"//Call,TargetVersion,,4x"
 IniWriteTextLine,%w%,Process,"//Set,#$pTargetVersionXX#$p,#$pTargetVersion1#$p.#$pTargetVersion2#$p"
+IniWriteTextLine,%w%,Process,"//Call,TargetVersion,,4x"
 IniWriteTextLine,%w%,Process,"//--"
 IniWriteTextLine,%w%,Process,"//#$pOSFamily#$p NT5 NT6"
 IniWriteTextLine,%w%,Process,"//If,Not,ExistVar,#$pOS#$p,IniRead,#$pprojectdir#$p\script.project,IniVariables,OS,#$pOS#$p"
@@ -609,33 +675,33 @@ IniWriteTextLine,%w%,Process,"//--"
 End
 End
 IniWriteTextLine,%w%,Process,"If,Not,#$pHere#$p,Equal,Normal,RunFrom,#$pHere#$p"
-IniWriteTextLine,%w%,Process,"StrFormat,REPLACE,#$pScrollBox_RunFromWhere#$p,#$qRun from #$q,#$q#$q,#$pHere#$p"
+IniWriteTextLine,%w%,Process,"StrFormat,Replace,#$pScrollBox_RunFromWhere#$p,#$qRun from #$q,#$q#$q,#$pHere#$p"
 If,%File_Container%,Equal,1,Begin
 IniWriteTextLine,%w%,Process,"//--"
 If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
-IniWriteTextLine,%w%,Process,"If,#$pt1#$p#$pt2#$p,Equal,00,Exit,#$q#$pFileContainer#$p OR #$pProvideFiles#$p\#$pProvideFile_TextBox#$p Not Found#$q"
+IniWriteTextLine,%w%,Process,"If,#$pt1#$p#$pt2#$p,Equal,00,Exit,#$q#$pProgramTitle#$p - #$pFileContainer#$p OR #$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p Not Found - Plugin Exit#$q"
 If,%Add_DownloadB_CheckBox%,Equal,True,Begin
 IniWriteTextLine,%w%,Process,"//--"
-IniWriteTextLine,%w%,Process,"If,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Set,#$pt2#$p,1"
-IniWriteTextLine,%w%,Process,"If,#$pt1#$p#$pt2#$p,Equal,00,Run,#$pScriptFile#$p,Button_Download_Web_P"
+IniWriteTextLine,%w%,Process,"If,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Set,#$pt2#$p,1"
+IniWriteTextLine,%w%,Process,"If,#$pt1#$p#$pt2#$p,Equal,00,Run,#$pScriptFile#$p,Download_Web_x86_P"
 IniWriteTextLine,%w%,Process,"//--"
 End
-IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Set,#$pt2#$p,0"
+IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Set,#$pt2#$p,0"
 IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pFileContainer#$p,Set,#$pt1#$p,0"
 IniWriteTextLine,%w%,Process,"Set,#$pt2#$p,1"
 IniWriteTextLine,%w%,Process,"Set,#$pt1#$p,1"
 IniWriteTextLine,%w%,Process,"//--"
 End
 Else,Begin
-IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pFileContainer#$p,Exit,#$q#$pFileContainer#$p Not Found#$q"
+IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pFileContainer#$p,Exit,#$q#$pProgramTitle#$p - #$pFileContainer#$p Not Found - Plugin Exit#$q"
 End
 End
 If,%File_Container%,Equal,0,Begin
 If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
 IniWriteTextLine,%w%,Process,"//--"
-IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Exit,#$q#$pProvideFiles#$p\#$pProvideFile_TextBox#$p Not Found - Plugin Exit#$q"
+IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Exit,#$q#$pProgramTitle#$p - #$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p Not Found - Plugin Exit#$q"
 If,%Add_DownloadB_CheckBox%,Equal,True,Begin
-IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Run,#$pScriptFile#$p,Button_Download_Web_P"
+IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Run,#$pScriptFile#$p,Download_Web_x86_P"
 End
 IniWriteTextLine,%w%,Process,"//--"
 End
@@ -643,19 +709,19 @@ End
 If,%ProvideFile%,Equal,1,Begin
 IniWriteTextLine,%w%,Process,"//--"
 IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Exit,#$q-#$q"
-IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Call,Echo,#$q#$pScriptTitle#$p - File(s) not found - Exit#$q,Warn"
+IniWriteTextLine,%w%,Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Call,Echo,#$q#$pProgramTitle#$p - File(s) Not Found - Plugin Exit#$q,Warn"
 IniWriteTextLine,%w%,Process,"//--"
 If,%MArch%,Equal,0,Begin
-IniWriteTextLine,%w%,Process,"//If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,PluginSetx64"
+IniWriteTextLine,%w%,Process,"//If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,PluginSet_x64"
 End
 If,%MArch%,Equal,1,Begin
-IniWriteTextLine,%w%,Process,"If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,PluginSetx64"
+IniWriteTextLine,%w%,Process,"If,#$pSourceArch#$p,Equal,x64,Run,#$pScriptFile#$p,PluginSet_x64"
 End
 IniWriteTextLine,%w%,Process,"//--"
 End
 //-
 //IniWriteTextLine,%w%,Process,"//--"
-IniWriteTextLine,%w%,Process,"Echo,#$qProcessing #$pScriptTitle#$p...#$q"
+IniWriteTextLine,%w%,Process,"Echo,#$qProcessing #$pProgramTitle#$p...#$q"
 If,%MArch%,Equal,0,Begin
 If,%ProvideFile%,Equal,1,Begin
 IniWriteTextLine,%w%,Process,"//Arch,x86|x64"
@@ -671,37 +737,37 @@ Set,%t%,%MArch%
 Set,%MArch%,1
 End
 If,%MArch%,Equal,1,Begin
-IniWriteTextLine,%w%,Filesx86,"Run,#$pScriptFile#$p,CopyR,#$pSapp#$p,#$pTapp#$p,%Exe_NameWOextenstion%,1.exe"
+IniWriteTextLine,%w%,Innounp_Files_x86,"Run,#$pScriptFile#$p,Innounp_CopyR,#$pSapp#$p,#$pTapp#$p,%Exe_NameWOextenstion%,1.exe"
 //-
-IniWriteTextLine,%w%,Filesx64,"Run,#$pScriptFile#$p,CopyR,#$pSapp#$p,#$pTapp#$p,%Exe_NameWOextenstion%,2.exe"
+IniWriteTextLine,%w%,Innounp_Files_x64,"Run,#$pScriptFile#$p,Innounp_CopyR,#$pSapp#$p,#$pTapp#$p,%Exe_NameWOextenstion%,2.exe"
 //-
 If,%version%,Bigger,81,Begin
-IniWriteTextLine,%w%,CopyR,"End"
-IniWriteTextLine,%w%,CopyR,"CopyOrExpand,#$q##1\##3#$q,#$q##2\##5#$q"
-IniWriteTextLine,%w%,CopyR,"If,##5-,Equal,-,Set,##5,##3"
-IniWriteTextLine,%w%,CopyR,"Else,Begin"
-IniWriteTextLine,%w%,CopyR,"End"
-IniWriteTextLine,%w%,CopyR,"CopyOrExpand,#$q##1\##3##$c##8.##9#$q,#$q##2\##5#$q"
-IniWriteTextLine,%w%,CopyR,"If,##5-,Equal,-,Set,##5,##3.##9"
-IniWriteTextLine,%w%,CopyR,"StrFormat,LTrim,##9,1,##9"
-IniWriteTextLine,%w%,CopyR,"StrFormat,REPLACE,##4,##9,#$q#$q,##8"
-IniWriteTextLine,%w%,CopyR,"If,Not,##4-,Equal,-,Begin"
-IniWriteTextLine,%w%,CopyR,"StrFormat,EXT,##4,##9"
-IniWriteTextLine,%w%,CopyR,"//1) Source 2) Target 3-4) SourceFileName with comma (if no comma (no4) direct copy) 5) TargetFilename"
+IniWriteTextLine,%w%,Innounp_CopyR,"End"
+IniWriteTextLine,%w%,Innounp_CopyR,"CopyOrExpand,#$q##1\##3#$q,#$q##2\##5#$q"
+IniWriteTextLine,%w%,Innounp_CopyR,"If,##5-,Equal,-,Set,##5,##3"
+IniWriteTextLine,%w%,Innounp_CopyR,"Else,Begin"
+IniWriteTextLine,%w%,Innounp_CopyR,"End"
+IniWriteTextLine,%w%,Innounp_CopyR,"CopyOrExpand,#$q##1\##3##$c##8.##9#$q,#$q##2\##5#$q"
+IniWriteTextLine,%w%,Innounp_CopyR,"If,##5-,Equal,-,Set,##5,##3.##9"
+IniWriteTextLine,%w%,Innounp_CopyR,"StrFormat,LTrim,##9,1,##9"
+IniWriteTextLine,%w%,Innounp_CopyR,"StrFormat,Replace,##4,##9,#$q#$q,##8"
+IniWriteTextLine,%w%,Innounp_CopyR,"If,Not,##4-,Equal,-,Begin"
+IniWriteTextLine,%w%,Innounp_CopyR,"StrFormat,Ext,##4,##9"
+IniWriteTextLine,%w%,Innounp_CopyR,"//1) Source 2) Target 3-4) SourceFileName with comma (if no comma (no4) direct copy) 5) TargetFilename"
 End
 Else,Begin
-IniWriteTextLine,%w%,CopyR,"End"
-IniWriteTextLine,%w%,CopyR,"CopyOrExpand,#$q%hash%1\%hash%3#$q,#$q%hash%2\%hash%5#$q"
-IniWriteTextLine,%w%,CopyR,"If,%hash%5-,Equal,-,Set,%hash%5,%hash%3"
-IniWriteTextLine,%w%,CopyR,"Else,Begin"
-IniWriteTextLine,%w%,CopyR,"End"
-IniWriteTextLine,%w%,CopyR,"CopyOrExpand,#$q%hash%1\%hash%3##$c%hash%8.%hash%9#$q,#$q%hash%2\%hash%5#$q"
-IniWriteTextLine,%w%,CopyR,"If,%hash%5-,Equal,-,Set,%hash%5,%hash%3.%hash%9"
-IniWriteTextLine,%w%,CopyR,"StrFormat,LTrim,%hash%9,1,%hash%9"
-IniWriteTextLine,%w%,CopyR,"StrFormat,REPLACE,%hash%4,%hash%9,#$q#$q,%hash%8"
-IniWriteTextLine,%w%,CopyR,"If,Not,%hash%4-,Equal,-,Begin"
-IniWriteTextLine,%w%,CopyR,"StrFormat,EXT,%hash%4,%hash%9"
-IniWriteTextLine,%w%,CopyR,"//1) Source 2) Target 3-4) SourceFileName with comma (if no comma (no4) direct copy) 5) TargetFilename"
+IniWriteTextLine,%w%,Innounp_CopyR,"End"
+IniWriteTextLine,%w%,Innounp_CopyR,"CopyOrExpand,#$q%hash%1\%hash%3#$q,#$q%hash%2\%hash%5#$q"
+IniWriteTextLine,%w%,Innounp_CopyR,"If,%hash%5-,Equal,-,Set,%hash%5,%hash%3"
+IniWriteTextLine,%w%,Innounp_CopyR,"Else,Begin"
+IniWriteTextLine,%w%,Innounp_CopyR,"End"
+IniWriteTextLine,%w%,Innounp_CopyR,"CopyOrExpand,#$q%hash%1\%hash%3##$c%hash%8.%hash%9#$q,#$q%hash%2\%hash%5#$q"
+IniWriteTextLine,%w%,Innounp_CopyR,"If,%hash%5-,Equal,-,Set,%hash%5,%hash%3.%hash%9"
+IniWriteTextLine,%w%,Innounp_CopyR,"StrFormat,LTrim,%hash%9,1,%hash%9"
+IniWriteTextLine,%w%,Innounp_CopyR,"StrFormat,Replace,%hash%4,%hash%9,#$q#$q,%hash%8"
+IniWriteTextLine,%w%,Innounp_CopyR,"If,Not,%hash%4-,Equal,-,Begin"
+IniWriteTextLine,%w%,Innounp_CopyR,"StrFormat,Ext,%hash%4,%hash%9"
+IniWriteTextLine,%w%,Innounp_CopyR,"//1) Source 2) Target 3-4) SourceFileName with comma (if no comma (no4) direct copy) 5) TargetFilename"
 End
 //--
 End
@@ -727,6 +793,7 @@ End
 If,%ProvideFile%,Equal,1,Begin
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Innounp - Finish#$q"
 IniWriteTextLine,%w%,Extract,"ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pSetupFile#$p##$q#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
+IniWriteTextLine,%w%,Extract,"//Call,IniExtractSectionN,,Innounp_SelectFiles,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\Innounp_SelectFiles.txt // [Innounp_SelectFiles] {app}\blabla.exe // ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pSetupFile#$p##$q @Innounp_SelectFiles.txt#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Innounp - Start (Wait Patiently)#$q"
 End
 If,%ProvideFile%,Equal,0,Begin
@@ -734,6 +801,7 @@ If,%File_Container%,Equal,1,Begin
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Innounp - Finish#$q"
 End
 IniWriteTextLine,%w%,Extract,"ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pSetupFile#$p##$q#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
+IniWriteTextLine,%w%,Extract,"//Call,IniExtractSectionN,,Innounp_SelectFiles,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\Innounp_SelectFiles.txt // [Innounp_SelectFiles] {app}\blabla.exe // ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pSetupFile#$p##$q @Innounp_SelectFiles.txt#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 If,%File_Container%,Equal,1,Begin
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Innounp - Start (Wait Patiently)#$q"
 End
@@ -742,24 +810,31 @@ IniWriteTextLine,%w%,Extract,"ExtractFile,#$pScriptFile#$p,Folder,#$pSetupFile#$
 End
 If,%File_Container%,Equal,1,Begin
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Plugin - Finish#$q"
+If,%FileContainer_File_Packed_CheckBox%,Equal,False,Begin
 IniWriteTextLine,%w%,Extract,"ExtractFile,#$pFileContainer#$p,Folder,#$pSetupFile#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Extract,"//ExtractFile,#$pScriptFile#$p,Folder,#$pSetupFile#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
+End
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Begin
+IniWriteTextLine,%w%,Extract,"If,Not,ExistFile,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pSetupFile#$p,Call,Echo,#$q#$pProgramTitle#$p - File Not Found: #$pSetupFile#$p missing at #$pFileContainer#$p - Plugin Exit#$q,Warn,,MessageError,5,Exit"
+IniWriteTextLine,%w%,Extract,"Call,PackedExtractFile,#$pFileContainer#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p,#$pSetupFile#$p"
+End
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Plugin - Start (Wait Patiently)#$q"
 End
 If,%ProvideFile_CheckBox%,Equal,True,Begin
 IniWriteTextLine,%w%,Extract,"Else,Begin"
 IniWriteTextLine,%w%,Extract,"End"
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Innounp - Finish#$q"
-IniWriteTextLine,%w%,Extract,"ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pProvideFile_TextBox#$p##$q#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
+IniWriteTextLine,%w%,Extract,"ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p##$q#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
+IniWriteTextLine,%w%,Extract,"//Call,IniExtractSectionN,,Innounp_SelectFiles,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\Innounp_SelectFiles.txt // [Innounp_SelectFiles] {app}\blabla.exe // ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p##$q @Innounp_SelectFiles.txt#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Extract,"Echo,#$qExtract Innounp - Start (Wait Patiently)#$q"
-IniWriteTextLine,%w%,Extract,"If,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Begin"
+IniWriteTextLine,%w%,Extract,"If,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Begin"
 End
 End
 //IniWriteTextLine,%w%,Extract,"ShellExecute,Hide,#$pTools#$p\7z.exe,#$qx ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\innounp.7z##$q -y -o##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q#$q"
 //IniWriteTextLine,%w%,Extract,"ExtractFile,#$pScriptFile#$p,Folder,innounp.7z,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 //IniWriteTextLine,%w%,Extract,"DirMake,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 //--
-//IniWriteTextLine,%w%,Extract,"If,#$pCompareVersionsInnounpVer#$p,Equal,Smaller,Exit,#$q#$pScriptTitle#$p Plugin requires Innounp version: #$pInnounpVerMain#$p > #$pInnounpVer#$p#$q"
+//IniWriteTextLine,%w%,Extract,"If,#$pCompareVersionsInnounpVer#$p,Equal,Smaller,Exit,#$q#$pProgramTitle#$p Plugin requires Innounp version: #$pInnounpVerMain#$p > #$pInnounpVer#$p#$q"
 //IniWriteTextLine,%w%,Extract,"Call,CompareVersions,#$pInnounpVer#$p,#$pInnounpVerMain#$p,CompareVersionsInnounpVer"
 //IniWriteTextLine,%w%,Extract,"Retrieve,FileVersion,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\innounp.exe,#$pInnounpVer#$p"
 //IniWriteTextLine,%w%,Extract,"Set,#$pInnounpVerMain#$p,%InnounpVerMain%"
@@ -796,8 +871,8 @@ If,%ProvideFile_CheckBox%,Equal,False,Begin
 IniWriteTextLine,%w%,Extract_Cache,"Run,#$pScriptFile#$p,Extract_Cache_FileContainer"
 End
 If,%ProvideFile_CheckBox%,Equal,True,Begin
-IniWriteTextLine,%w%,Extract_Cache,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Run,#$pScriptFile#$p,Extract_Cache_FileContainer"
-IniWriteTextLine,%w%,Extract_Cache,"If,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,Run,#$pScriptFile#$p,Extract_Cache_ProvideFile"
+IniWriteTextLine,%w%,Extract_Cache,"If,Not,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Run,#$pScriptFile#$p,Extract_Cache_FileContainer"
+IniWriteTextLine,%w%,Extract_Cache,"If,ExistFile,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,Run,#$pScriptFile#$p,Extract_Cache_ProvideFile"
 End
 IniWriteTextLine,%w%,Extract_Cache,"//-"
 IniWriteTextLine,%w%,Extract_Cache,"//---------------------- SevenZip_920 - Finish"
@@ -817,8 +892,8 @@ IniWriteTextLine,%w%,Extract_Cache,"Set,#$pSZexe#$p,#$pProjectTemp#$p\7z920M\#$p
 IniWriteTextLine,%w%,Extract_Cache,"Set,#$pSZexe#$p,#$pProjectTemp#$p\7z920M\#$pSZArch#$p\7z.exe"
 IniWriteTextLine,%w%,Extract_Cache,"//-"
 IniWriteTextLine,%w%,Extract_Cache,"If,Not,#$pSZArchTest#$p,Equal,-,Set,#$pSZArch#$p,x86"
-IniWriteTextLine,%w%,Extract_Cache,"StrFormat,REPLACE,#$pSZArch#$p,x64,-,#$pSZArchTest#$p"
-IniWriteTextLine,%w%,Extract_Cache,"StrFormat,REPLACE,#$pSZArch#$p,x86,-,#$pSZArchTest#$p"
+IniWriteTextLine,%w%,Extract_Cache,"StrFormat,Replace,#$pSZArch#$p,x64,-,#$pSZArchTest#$p"
+IniWriteTextLine,%w%,Extract_Cache,"StrFormat,Replace,#$pSZArch#$p,x86,-,#$pSZArchTest#$p"
 IniWriteTextLine,%w%,Extract_Cache,"//-"
 IniWriteTextLine,%w%,Extract_Cache,"Call,HostOSArch,SZArch"
 IniWriteTextLine,%w%,Extract_Cache,"//-"
@@ -827,7 +902,7 @@ IniWriteTextLine,%w%,Extract_Cache,"//---------------------- SevenZip_920 - Star
 IniWriteTextLine,%w%,Extract_Cache,"//-"
 IniWriteTextLine,%w%,Extract_Cache,"Set,#$pPluginCacheFolder#$p,#$pBaseDir#$p\Workbench\PluginCache\Plugins\#$pPluginFNNoExt#$p"
 IniWriteTextLine,%w%,Extract_Cache,"Call,FileNameNoExt,#$pPluginFN#$p,PluginFNNoExt"
-IniWriteTextLine,%w%,Extract_Cache,"StrFormat,FILENAME,#$pScriptFile#$p,#$pPluginFN#$p"
+IniWriteTextLine,%w%,Extract_Cache,"StrFormat,FileName,#$pScriptFile#$p,#$pPluginFN#$p"
 IniWriteTextLine,%w%,Extract_Cache,"//-"
 IniWriteTextLine,%w%,Extract_Cache,"DirMake,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Extract_Cache,"If,ExistDir,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p,Call,DirDelete,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
@@ -846,11 +921,11 @@ IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,ErrorLevel=#$pErrorLevel#
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"IniRead,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,Info,ErrorLevel,#$pErrorLevel#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,#$q #$q,#$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,##$q,#$q#$q"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FILEREDIRECT,ON"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FileRedirect,ON"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"ShellExecute,Hide,cmd.exe,#$q/C ##$q#$pProjectTemp#$p\StartMin.cmd##$q#$q,#$pProjectTemp#$p"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FILEREDIRECT,OFF"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FileRedirect,OFF"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qEcho ##$qErrorLevel=#$pErrorLevel#$p##$q>>StartMin_ErrorLevel.ini#$q,APPEND"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$q##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q x ##$q#$pPluginCacheFile#$p##$q -y -o##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q#$q,APPEND"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$qStartTitle##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q x ##$q#$pPluginCacheFile#$p##$q -y -o##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qcd /d ##$q#$p~dp0##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,[Info],APPEND"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Call,FileCreateBlank,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,OverWrite"
@@ -875,11 +950,11 @@ IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,ErrorLevel=#$pErrorLevel#
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"IniRead,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,Info,ErrorLevel,#$pErrorLevel#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,#$q #$q,#$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,##$q,#$q#$q"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FILEREDIRECT,ON"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FileRedirect,ON"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"ShellExecute,Hide,cmd.exe,#$q/C ##$q#$pProjectTemp#$p\StartMin.cmd##$q#$q,#$pProjectTemp#$p"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FILEREDIRECT,OFF"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FileRedirect,OFF"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qEcho ##$qErrorLevel=#$pErrorLevel#$p##$q>>StartMin_ErrorLevel.ini#$q,APPEND"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$q##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q a  -mx5 -t#$pSZ_Type#$p #$pSZsfx#$p##$q#$pPluginCacheFile#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\*##$q#$q,APPEND"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$qStartTitle##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q a  -mx5 -t#$pSZ_Type#$p #$pSZsfx#$p##$q#$pPluginCacheFile#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\*##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qcd /d ##$q#$p~dp0##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"TXTAddLine,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,[Info],APPEND"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Call,FileCreateBlank,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,OverWrite"
@@ -906,17 +981,17 @@ IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qExtract Innounp - Star
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Run,#$pProjectDir#$p\Utils\InnounpM01.Script,ExtractInnounp,#$pProjectDir#$p\Utils\InnounpM01.Script,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p,%InnounpVerMain%"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//-"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qGet SetupFile MD5 - Finish#$q"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Retrieve,MD5,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pSetupFile#$p,#$pSetupFile_MD5#$p"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Retrieve,Md5,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pSetupFile#$p,#$pSetupFile_MD5#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qGet SetupFile MD5 - Start#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//-"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qExtract Plugin - Finish#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"ExtractFile,#$pFileContainer#$p,Folder,#$pSetupFile#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qExtract Plugin - Start (Wait Patiently)#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//-"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FILEREDIRECT,ON"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FileRedirect,ON"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"ShellExecute,Hide,cmd.exe,#$q/C del /q /f ##$q#$pPluginCacheFolder#$p\#$pSetupFile#$p_MD5_*.*##$q&del /q /f /A:R /A:H /A:S /A:A ##$q#$pPluginCacheFolder#$p\#$pSetupFile#$p_MD5_*.*##$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"ShellExecute,Hide,cmd.exe,#$q/C del /q /f ##$q#$pPluginCacheFolder#$p\#$pFileContainerFNNoExt#$p*.*##$q&del /q /f /A:R /A:H /A:S /A:A ##$q#$pPluginCacheFolder#$p\#$pFileContainerFNNoExt#$p*.*##$q#$q"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FILEREDIRECT,OFF"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"System,FileRedirect,OFF"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"If,Not,ExistDir,#$pPluginCacheFolder#$p,DirMake,#$pPluginCacheFolder#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//Call,DirDeleteMake,#$pPluginCacheFolder#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//-"
@@ -930,11 +1005,11 @@ IniWriteTextLine,%w%,Extract_Cache_FileContainer,"IniRead,#$pPluginCacheFolder#$
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"If,ExistFile,#$pPluginCacheFolder#$p\#$pFileContainerINI#$p,Begin"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Set,#$pFileContainerINI#$p,#$pFileContainerFNNoExt#$p_#$pt#$p.ini"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qGet FileContainer MD5 - Finish#$q"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Retrieve,MD5,#$pFileContainer#$p,#$pt#$p"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Retrieve,Md5,#$pFileContainer#$p,#$pt#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Echo,#$qGet FileContainer MD5 - Start#$q"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//Echo,#$pFileContainerFNNoExt#$p,Warn"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Call,FileNameNoExt,#$pFileContainerFN#$p,FileContainerFNNoExt"
-IniWriteTextLine,%w%,Extract_Cache_FileContainer,"StrFormat,FILENAME,#$pFileContainer#$p,#$pFileContainerFN#$p"
+IniWriteTextLine,%w%,Extract_Cache_FileContainer,"StrFormat,FileName,#$pFileContainer#$p,#$pFileContainerFN#$p"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"//-"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Set,#$pFC_CacheCreate#$p,0"
 IniWriteTextLine,%w%,Extract_Cache_FileContainer,"Set,#$pFC_CacheReady#$p,0"
@@ -951,11 +1026,11 @@ IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,ErrorLevel=#$pErrorLevel#$p
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"IniRead,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,Info,ErrorLevel,#$pErrorLevel#$p"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,#$q #$q,#$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,##$q,#$q#$q"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FILEREDIRECT,ON"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FileRedirect,ON"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/C ##$q#$pProjectTemp#$p\StartMin.cmd##$q#$q,#$pProjectTemp#$p"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FILEREDIRECT,OFF"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FileRedirect,OFF"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qEcho ##$qErrorLevel=#$pErrorLevel#$p##$q>>StartMin_ErrorLevel.ini#$q,APPEND"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$q##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q a  -mx5 -t#$pSZ_Type#$p #$pSZsfx#$p##$q#$pPluginCacheFile#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\*##$q#$q,APPEND"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$qStartTitle##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q a  -mx5 -t#$pSZ_Type#$p #$pSZsfx#$p##$q#$pPluginCacheFile#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\*##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qcd /d ##$q#$p~dp0##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,[Info],APPEND"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Call,FileCreateBlank,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,OverWrite"
@@ -966,16 +1041,16 @@ IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"//ShellExecute,#$pSZexeSH#$p,#$p
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"//ShellExecute,Hide,#$pTools#$p\7z.exe,#$qa -mx=5 ##$q#$pPluginCacheFile#$p##$q ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\*##$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$qCreate Cache - Start (Wait Patiently)#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"//-"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FILEREDIRECT,ON"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/C del /q /f ##$q#$pPluginCacheFolder#$p\#$pProvideFile_TextBox#$p_MD5_*.*##$q&del /q /f /A:R /A:H /A:S /A:A ##$q#$pPluginCacheFolder#$p\#$pProvideFile_TextBox#$p_MD5_*.*##$q#$q"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FILEREDIRECT,OFF"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FileRedirect,ON"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/C del /q /f ##$q#$pPluginCacheFolder#$p\#$pProvideFile_TextBoxV#$p_MD5_*.*##$q&del /q /f /A:R /A:H /A:S /A:A ##$q#$pPluginCacheFolder#$p\#$pProvideFile_TextBoxV#$p_MD5_*.*##$q#$q"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FileRedirect,OFF"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"//-"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"If,ExistFile,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\innounp.exe,Call,FileDelete,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\innounp.exe"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/C del /q /f ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\innounp.exe##$q&del /q /f /A:R /A:H /A:S /A:A ##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\innounp.exe##$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"//-"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$qExtract Innounp - Finish#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$pExitCode#$p"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pProvideFile_TextBox#$p##$q#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/c innounp.exe -x -b -a -d##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q ##$q#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p##$q#$q,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$qExtract Innounp - Start (Wait Patiently)#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Run,#$pProjectDir#$p\Utils\InnounpM01.Script,ExtractInnounp,#$pProjectDir#$p\Utils\InnounpM01.Script,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p,%InnounpVerMain%"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"If,Not,ExistFile,#$pPluginCacheFile#$p,Begin"
@@ -986,11 +1061,11 @@ IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,ErrorLevel=#$pErrorLevel#$p
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"IniRead,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,Info,ErrorLevel,#$pErrorLevel#$p"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,#$q #$q,#$q#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TxtReplace,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,##$q,#$q#$q"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FILEREDIRECT,ON"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FileRedirect,ON"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"ShellExecute,Hide,cmd.exe,#$q/C ##$q#$pProjectTemp#$p\StartMin.cmd##$q#$q,#$pProjectTemp#$p"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FILEREDIRECT,OFF"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"System,FileRedirect,OFF"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qEcho ##$qErrorLevel=#$pErrorLevel#$p##$q>>StartMin_ErrorLevel.ini#$q,APPEND"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$q##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q x ##$q#$pPluginCacheFile#$p##$q -y -o##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q#$q,APPEND"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qStart ##$qStartTitle##$q /Wait /Min /BelowNormal /D ##$q#$pSZWorkFolder#$p##$q ##$q#$pSZexe#$p##$q x ##$q#$pPluginCacheFile#$p##$q -y -o##$q#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin.cmd,#$qcd /d ##$q#$p~dp0##$q#$q,APPEND"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"TXTAddLine,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,[Info],APPEND"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Call,FileCreateBlank,#$pProjectTemp#$p\StartMin_ErrorLevel.ini,OverWrite"
@@ -1002,9 +1077,9 @@ IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"//ShellExecute,Hide,#$pTools#$p\
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$qExtract Cache - Start (Wait Patiently)#$q"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"If,ExistFile,#$pPluginCacheFile#$p,Begin"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Set,#$pPluginCacheFile#$p,#$pPluginCacheFolder#$p\#$pPluginCacheFileName#$p"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Set,#$pPluginCacheFileName#$p,#$pProvideFile_TextBox#$p_MD5_#$pt#$p.7z"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Set,#$pPluginCacheFileName#$p,#$pProvideFile_TextBoxV#$p_MD5_#$pt#$p.7z"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$qGet ProvideFile MD5 - Finish#$q"
-IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Retrieve,MD5,#$pProvideFiles#$p\#$pProvideFile_TextBox#$p,#$pt#$p"
+IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Retrieve,Md5,#$pProvideFiles#$p\#$pProvideFile_TextBoxV#$p,#$pt#$p"
 IniWriteTextLine,%w%,Extract_Cache_ProvideFile,"Echo,#$qGet ProvideFile MD5 - Start#$q"
 End
 //-
@@ -1014,10 +1089,10 @@ If,%ProvideFile%,Equal,1,Begin
 IniWriteTextLine,%w%,ProvideFiles_Process,""
 IniWriteTextLine,%w%,ProvideFiles_Process,"Call,OpenDir,#$pProvideFiles#$p"
 IniWriteTextLine,%w%,ProvideFiles_Process,"If,Not,ExistDir,#$pProvideFiles#$p,DirMake,#$pProvideFiles#$p"
-IniWriteTextLine,%w%,PluginSetx64,""
-IniWriteTextLine,%w%,PluginSetx64,"//Set,#$pProgramTitle#$p,#$pProgramTitlex64#$p"
-IniWriteTextLine,%w%,PluginSetx64,"Set,#$pProgramFolder#$p,#$pProgramFolderx64#$p"
-IniWriteTextLine,%w%,PluginSetx64,"//Set,#$pProgramEXE%,#$pProgramEXEx64#$p"
+IniWriteTextLine,%w%,PluginSet_x64,""
+IniWriteTextLine,%w%,PluginSet_x64,"//Set,#$pProgramTitle#$p,#$pProgramTitle_x64#$p"
+IniWriteTextLine,%w%,PluginSet_x64,"Set,#$pProgramFolder#$p,#$pProgramFolder_x64#$p"
+IniWriteTextLine,%w%,PluginSet_x64,"//Set,#$pProgramEXE%,#$pProgramEXE_x64#$p"
 End
 //++++++++++++++ Launch ++++++++++
 If,%ProvideFile%,Equal,0,Begin
@@ -1043,7 +1118,7 @@ IniWriteTextLine,%w%,%LP%,"//--"
 IniWriteTextLine,%w%,%LP%,"//Call,OpenDir,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,%LP%,"Run,#$pScriptFile#$p,Extract"
 If,%ProvideFile%,Equal,1,Begin
-IniWriteTextLine,%w%,%LP%,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Exit,#$q#$pProvideFiles#$p\#$pSetupFile#$p NOT FOund#$q"
+IniWriteTextLine,%w%,%LP%,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Exit,#$q#$pProgramTitle#$p - #$pProvideFiles#$p\#$pSetupFile#$p Not Found - Plugin Exit#$q"
 End
 End
 If,%ProvideFile%,Equal,1,Begin
@@ -1056,11 +1131,11 @@ IniWriteTextLine,%w%,%LPM%,"//--"
 IniWriteTextLine,%w%,%LPM%,"Set,#$pTapp#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pHostOSArch#$p"
 IniWriteTextLine,%w%,%LPM%,"//-"
 //IniWriteTextLine,%w%,%LPM%,"Run,#$pScriptFile#$p,Files#$pHostOSArch#$p"
-IniWriteTextLine,%w%,%LPM%,"Run,#$pScriptFile#$p,Filesx64"
+IniWriteTextLine,%w%,%LPM%,"Run,#$pScriptFile#$p,Innounp_Files_x64"
 IniWriteTextLine,%w%,%LPM%,"DirMake,#$pTapp#$p"
 IniWriteTextLine,%w%,%LPM%,"Set,#$pTapp#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\x64"
 IniWriteTextLine,%w%,%LPM%,"//-"
-IniWriteTextLine,%w%,%LPM%,"Run,#$pScriptFile#$p,Filesx86"
+IniWriteTextLine,%w%,%LPM%,"Run,#$pScriptFile#$p,Innounp_Files_x86"
 IniWriteTextLine,%w%,%LPM%,"DirMake,#$pTapp#$p"
 IniWriteTextLine,%w%,%LPM%,"Set,#$pTapp#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\x86"
 IniWriteTextLine,%w%,%LPM%,"Set,#$pSapp#$p,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p\#$pProgramFolder#$p"
@@ -1071,7 +1146,7 @@ IniWriteTextLine,%w%,%LPM%,"//--"
 IniWriteTextLine,%w%,%LPM%,"//Call,OpenDir,#$pProjectTemp#$p\TempExtractFolder\#$pProgramFolder#$p"
 IniWriteTextLine,%w%,%LPM%,"Run,#$pScriptFile#$p,Extract"
 If,%ProvideFile%,Equal,1,Begin
-IniWriteTextLine,%w%,%LPM%,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Exit,#$q#$pProvideFiles#$p\#$pSetupFile#$p NOT FOund#$q"
+IniWriteTextLine,%w%,%LPM%,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Exit,#$q#$pProgramTitle#$p - #$pProvideFiles#$p\#$pSetupFile#$p Not Found - Plugin Exit#$q"
 End
 End
 If,%ProvideFile%,Equal,1,Begin
@@ -1083,10 +1158,10 @@ If,%ProvideFile%,Equal,1,Begin
 IniWriteTextLine,%w%,Purge_Cache,""
 IniWriteTextLine,%w%,Purge_Cache,"Message,#$qYour cached download has been cleared. New setup install will be downloaded next build!#$q,Information"
 IniWriteTextLine,%w%,Purge_Cache,"Beep,OK"
-IniWriteTextLine,%w%,Purge_Cache,"System,CURSOR,NORMAL"
+IniWriteTextLine,%w%,Purge_Cache,"System,Cursor,Normal"
 IniWriteTextLine,%w%,Purge_Cache,"If,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Call,FileDelete,#$pProvideFiles#$p\#$pSetupFile#$p"
 IniWriteTextLine,%w%,Purge_Cache,"If,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Shellexecute,Hide,cmd.exe,#$q/C del /q /f ##$q#$pProvideFiles#$p\#$pSetupFile#$p##$q&del /q /f /A:R /A:H /A:S /A:A ##$q#$pProvideFiles#$p\#$pSetupFile#$p##$q#$q#$q"
-IniWriteTextLine,%w%,Purge_Cache,"System,CURSOR,WAIT"
+IniWriteTextLine,%w%,Purge_Cache,"System,Cursor,Wait"
 //--Text Information //-- Added by Prz42
 IniWriteTextLine,%w%,Example_Information,""
 IniWriteTextLine,%w%,Example_Information,"//Call,StartDoc,#$pProjectTemp#$p\       .txt"
@@ -1100,73 +1175,134 @@ IniWriteTextLine,%w%,Download,"Call,Download,#$pProvideFiles#$p\#$pSetupFile#$p,
 IniWriteTextLine,%w%,Download,"Echo,#$qYour files are being Downloaded from the Internet#$q"
 End
 //-------------- Launch ----------
+//--
+IniWriteTextLine,%w%,Image_Software_SeePic_P_B,"Call,StartImageUI,,,Image_Software"
+//--
+If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
+//-
+IniWriteTextLine,%w%,ProvideFile_Info_P_B,"Run,#$pScriptFile#$p,ProvideFile_Info_P"
+//-
+IniWriteTextLine,%w%,ProvideFile_Info_P,"Message,#$pIniReadSectionVar#$p,Information"
+IniWriteTextLine,%w%,ProvideFile_Info_P,"Echo,#$qRead Information#$q"
+IniWriteTextLine,%w%,ProvideFile_Info_P,"Call,IniReadSectionVar,|ProvideFile_Info_Txt"
+//-
+Call,IniReadSectionFileVar,|ProvideFile_Info_Txt
+IniWriteTextLine,%w%,ProvideFile_Info_Txt,%IniReadSectionFileVar%
+//-
+End
+//--
+If,%File_Container%,Equal,1,Begin
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Begin
+IniWriteTextLine,%w%,Open_Container_x86_P_B,""
+IniWriteTextLine,%w%,Open_Container_x86_P_B,"Call,FileOpenWait,#$pFileContainer_x86#$p"
+IniWriteTextLine,%w%,Open_Container_x86_P_B,"Echo,#$qWait - Change Files and Close to Continue#$q"
+End
+End
+//--
 If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
 IniWriteTextLine,%w%,ProvideFiles_OpenDir_P_B,"Call,OpenDir,#$pProvideFiles#$p"
 //--
 If,%Add_DownloadB_CheckBox%,Equal,True,Begin
 If,%MArch%,Equal,1,Begin
-IniWriteTextLine,%w%,Button_Download_Web_P_B,"//Run,#$pScriptFile#$p,Button_Download_Web_P"
-IniWriteTextLine,%w%,Button_Download_Web_P_B,"//Set,#$pSetupFile#$p,#$pSetupFilex64#$p"
-IniWriteTextLine,%w%,Button_Download_Web_P_B,"//Set,#$pFileWeb#$p,#$pFileWeb_x64#$p"
+IniWriteTextLine,%w%,Button_Download_x64_Web_P_B,"//Run,#$pScriptFile#$p,Download_Web_x64_P"
+IniWriteTextLine,%w%,Button_Download_x64_Web_P_B,"//Set,#$pDownloadMessage#$p,Yes"
+//-
+IniWriteTextLine,%w%,Download_Web_x64_P,"//Run,#$pScriptFile#$p,Download_Process"
+IniWriteTextLine,%w%,Download_Web_x64_P,"//Set,#$pSetupFile#$p,#$pSetupFile_x64#$p"
+IniWriteTextLine,%w%,Download_Web_x64_P,"//Set,#$pFileWeb#$p,#$pFileWeb_x64#$p"
+IniWriteTextLine,%w%,Download_Web_x64_P,"//Run,#$pScriptFile#$p,PluginSet_x64"
+//-
+IniWriteTextLine,%w%,Button_Download_Web_x86_P_B,"//Run,#$pScriptFile#$p,Download_Web_x86_P"
+IniWriteTextLine,%w%,Button_Download_Web_x86_P_B,"//Set,#$pDownloadMessage#$p,Yes"
+//-
+IniWriteTextLine,%w%,Download_Web_x86_P,"//Run,#$pScriptFile#$p,Download_Process"
+IniWriteTextLine,%w%,Download_Web_x86_P,"//Set,#$pSetupFile#$p,#$pSetupFile_x86#$p"
+IniWriteTextLine,%w%,Download_Web_x86_P,"//Set,#$pFileWeb#$p,#$pFileWeb_x86#$p"
+IniWriteTextLine,%w%,Download_Web_x86_P,"//Run,#$pScriptFile#$p,PluginSet_x86"
 End
-IniWriteTextLine,%w%,Button_Download_Web_P_B,"Run,#$pScriptFile#$p,Button_Download_Web_P"
+Else,Begin
+IniWriteTextLine,%w%,Button_Download_Web_x86_P_B,"//Run,#$pScriptFile#$p,Download_Web_x86_P"
+IniWriteTextLine,%w%,Button_Download_Web_x86_P_B,"//Set,#$pDownloadMessage#$p,Yes"
+//-
+IniWriteTextLine,%w%,Download_Web_x86_P,"//Run,#$pScriptFile#$p,Download_Process"
+End
 //--
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,Not,ExistFile,##8,Call,Echo,#$qFailed downloading ##9#$q,Warn,,MessageError,5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"//If,Not,ExistFile,##8,Call,Echo,#$qFailed downloading ##9 - Exit#$q,Warn,,MessageError,5,Exit"
-IniWriteTextLine,%w%,Button_Download_Web_P,"//-"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"FileRename,##8_Backup_##4##5,##8"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Call,Echo,#$qDownload Update Failed ##9#$q,Warn,,MessageError,5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Else,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qNew ##9 File UPDATED#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Message,#$qNew ##9 File UPDATED#$q,Information,5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Else,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Call,FileDelete,##8_Backup_##4##5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qNo new ##9#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Message,#$qNo new ##9#$q,Information,5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,##7,Equal,##6,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Retrieve,MD5,##8,##6"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,ExistFile,##8,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,Not,##7,Equal,-,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"//-"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qDownload ##9 - Finish#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Call,Download,##8,#$pFileWeb#$p"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qDownload ##9 - Start#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"//-"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"FileRename,##8,##8_Backup_##4##5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"StrFormat,EXT,##8,##5"
-IniWriteTextLine,%w%,Button_Download_Web_P,"StrFormat,DATE,##4,yyyymmddhhnn"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Retrieve,MD5,##8,##7"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,ExistFile,##8,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Set,##7,-"
-IniWriteTextLine,%w%,Button_Download_Web_P,"//-"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Set,##8,#$pProvideFiles#$p\##9"
-IniWriteTextLine,%w%,Button_Download_Web_P,"StrFormat,Replace,##9,#$q##$p20#$q,#$q #$q,##9"
-IniWriteTextLine,%w%,Button_Download_Web_P,"StrFormat,Filename,#$pFileWeb#$p,##9"
+Call,IniReadSectionFileVar,|Download_Process_Type_1
+IniWriteTextLine,%w%,Download_Process,%IniReadSectionFileVar%
+//-
+If,%FileContainer_File_Packed_CheckBox%,Equal,False,Begin
+//You must change Call,PackedExtractFile,%FileContainer%,%ProvideFiles%,%SetupFile%
+IniWriteTextLine,%w%,Download_Process,"-"
+IniWriteTextLine,%w%,Download_Process,"ExtractFile,#$pFileContainer#$p,Folder,#$pSetupFile#$p,#$pProvideFiles#$p"
+IniWriteTextLine,%w%,Download_Process,"Exit,#$xYou must change 1 Line Call,PackedExtractFile with ExtractFile on next line"
+End
+//--------------------OLD Lines
+Set,%t%,1
+Set,%t%,0
+If,%t%,Equal,1,Begin
+IniWriteTextLine,%w%,Download_Process,"If,Not,ExistFile,##8,Call,Echo,#$qFailed downloading ##9#$q,Warn,,MessageError,5"
+IniWriteTextLine,%w%,Download_Process,"//If,Not,ExistFile,##8,Call,Echo,#$qFailed downloading ##9 - Exit#$q,Warn,,MessageError,5,Exit"
+IniWriteTextLine,%w%,Download_Process,"//-"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"FileRename,##8_Backup_##4##5,##8"
+IniWriteTextLine,%w%,Download_Process,"Call,Echo,#$qDownload Update Failed ##9#$q,Warn,,MessageError,5"
+IniWriteTextLine,%w%,Download_Process,"Else,Begin"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qNew ##9 File UPDATED#$q"
+IniWriteTextLine,%w%,Download_Process,"Message,#$qNew ##9 File UPDATED#$q,Information,5"
+IniWriteTextLine,%w%,Download_Process,"Else,Begin"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"Call,FileDelete,##8_Backup_##4##5"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qNo new ##9#$q"
+IniWriteTextLine,%w%,Download_Process,"Message,#$qNo new ##9#$q,Information,5"
+IniWriteTextLine,%w%,Download_Process,"If,##7,Equal,##6,Begin"
+IniWriteTextLine,%w%,Download_Process,"Retrieve,Md5,##8,##6"
+IniWriteTextLine,%w%,Download_Process,"If,ExistFile,##8,Begin"
+IniWriteTextLine,%w%,Download_Process,"If,Not,##7,Equal,-,Begin"
+IniWriteTextLine,%w%,Download_Process,"//-"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qDownload ##9 - Finish#$q"
+IniWriteTextLine,%w%,Download_Process,"Call,Download,##8,#$pFileWeb#$p"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qDownload ##9 - Start#$q"
+IniWriteTextLine,%w%,Download_Process,"//-"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"FileRename,##8,##8_Backup_##4##5"
+IniWriteTextLine,%w%,Download_Process,"StrFormat,Ext,##8,##5"
+IniWriteTextLine,%w%,Download_Process,"StrFormat,Date,##4,yyyy_mm_dd_hhnn_ss_zzz"
+IniWriteTextLine,%w%,Download_Process,"Retrieve,Md5,##8,##7"
+IniWriteTextLine,%w%,Download_Process,"If,ExistFile,##8,Begin"
+IniWriteTextLine,%w%,Download_Process,"Set,##7,-"
+IniWriteTextLine,%w%,Download_Process,"//-"
+IniWriteTextLine,%w%,Download_Process,"Set,##8,#$pProvideFiles#$p\##9"
+IniWriteTextLine,%w%,Download_Process,"StrFormat,Replace,##9,#$q##$p20#$q,#$q #$q,##9"
+IniWriteTextLine,%w%,Download_Process,"StrFormat,FileName,#$pFileWeb#$p,##9"
 //--
-IniWriteTextLine,%w%,Button_Download_Web_P,"//-"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qExtractFile - FileContainer - Wait Patiently - Finish#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"ExtractFile,#$pFileContainer#$p,Folder,#$pSetupFile#$p,#$pProvideFiles#$p"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qExtractFile - FileContainer - Wait Patiently - Start#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,ExistFile,#$pFileContainer#$p,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,ExistVar,#$pFileContainer#$p,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"End"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qExtractFile - Wait Patiently - Finish#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"ExtractFile,#$pScriptFile#$p,Folder,#$pSetupFile#$p,#$pProvideFiles#$p"
-IniWriteTextLine,%w%,Button_Download_Web_P,"Echo,#$qExtractFile - Wait Patiently - Start#$q"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,ExistSection,#$pScriptFile#$p,EncodedFile-Folder-#$pSetupFile#$p,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Begin"
-IniWriteTextLine,%w%,Button_Download_Web_P,"If,Not,ExistDir,#$pProvideFiles#$p,DirMake,#$pProvideFiles#$p"
+IniWriteTextLine,%w%,Download_Process,"//-"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qExtractFile - FileContainer - Wait Patiently - Finish#$q"
+If,%FileContainer_File_Packed_CheckBox%,Equal,False,Begin
+IniWriteTextLine,%w%,Download_Process,"ExtractFile,#$pFileContainer#$p,Folder,#$pSetupFile#$p,#$pProvideFiles#$p"
+End
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Begin
+IniWriteTextLine,%w%,Download_Process,"Call,PackedExtractFile,#$pFileContainer#$p,#$pProvideFiles#$p,#$pSetupFile#$p"
+End
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qExtractFile - FileContainer - Wait Patiently - Start#$q"
+IniWriteTextLine,%w%,Download_Process,"If,ExistFile,#$pFileContainer#$p,Begin"
+IniWriteTextLine,%w%,Download_Process,"If,ExistVar,#$pFileContainer#$p,Begin"
+IniWriteTextLine,%w%,Download_Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Begin"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"End"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qExtractFile - Wait Patiently - Finish#$q"
+IniWriteTextLine,%w%,Download_Process,"ExtractFile,#$pScriptFile#$p,Folder,#$pSetupFile#$p,#$pProvideFiles#$p"
+IniWriteTextLine,%w%,Download_Process,"Echo,#$qExtractFile - Wait Patiently - Start#$q"
+IniWriteTextLine,%w%,Download_Process,"If,ExistSection,#$pScriptFile#$p,EncodedFile-Folder-#$pSetupFile#$p,Begin"
+IniWriteTextLine,%w%,Download_Process,"If,Not,ExistFile,#$pProvideFiles#$p\#$pSetupFile#$p,Begin"
+IniWriteTextLine,%w%,Download_Process,"If,Not,ExistDir,#$pProvideFiles#$p,DirMake,#$pProvideFiles#$p"
+End
+//--------------------OLD Lines
 End
 End
 //--
@@ -1176,7 +1312,7 @@ IniWriteTextLine,%w%,Delete_Cache_P_B,"//Call,OpenDir,#$pPluginCacheFolder#$p"
 IniWriteTextLine,%w%,Delete_Cache_P_B,"//-"
 IniWriteTextLine,%w%,Delete_Cache_P_B,"Set,#$pPluginCacheFolder#$p,#$pBaseDir#$p\Workbench\PluginCache\Plugins\#$pPluginFNNoExt#$p"
 IniWriteTextLine,%w%,Delete_Cache_P_B,"Call,FileNameNoExt,#$pPluginFN#$p,PluginFNNoExt"
-IniWriteTextLine,%w%,Delete_Cache_P_B,"StrFormat,FILENAME,#$pScriptFile#$p,#$pPluginFN#$p"
+IniWriteTextLine,%w%,Delete_Cache_P_B,"StrFormat,FileName,#$pScriptFile#$p,#$pPluginFN#$p"
 End
 //--
 IniWrite,%w%,AuthorEncoded,sc4848.ico,"3290,4387"
@@ -1187,34 +1323,53 @@ IniWrite,%w%,EncodedFile-AuthorEncoded-sc4848.ico,0,eJztmAlwVeUVxy9Gkrfd+/Z9327e
 IniWrite,%w%,EncodedFile-AuthorEncoded-sc4848.ico,1,8sK4v9+dtm+ibXvfeW/amsrIj69Ild7ds3Tv3751O/fkVQKQ0Y0J8GDbqXbjXjv7tGj35ix/DhD/+jvHwIPfjgIGjwF+Xl5R8NGzas4ZFHhr8wcuSjD91qxv/Ei75yHZNHxi8Of2XSxPEz+bNXGGaOPOqF8TDDZMhj2v/4mHF9XK4wPaQ4Nq+XxsP+G0fp+iffAgiDeJzjKk42sTCx0MtMzmcYBSMP7FOF0BN4sMtfz7y7lIEJAOpHB2WfqSIvAQAAAAIAAAAmAAAAkAwAAAAAAAABAAAAAAAAAAAAAAA
 //--
 IniWriteTextLine,%w%,InterfaceEncoded,""
+//--
+IniWrite,%w%,InterfaceEncoded,Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,"791,1055"
+//-
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,0,eJylk21IU1EYxw360qeKgj5YZFroQFFSJyuhHJFGqCFZiElZJqm9pyaac85aMyaKli+hhk7pQ0EQFEiEzspliUUbhAiFURTp7u7u2+6+7N+zk9oyKKQDP+7hOef3PM85nKvPrFwZxoaWiCHWEGuJFWERLL57fj10APgvAoEAVFWFz6eE4PsLP/f4/X4suN1NtWg3ly+L/nYLy6EoPkyNDFIrgWURdIIu84dtFFIprtD3H7A9KnMW/ZEBWHu9WJfOIfwYj8jLAjTNIuIHZcTflaFplRBVLWDjCR7r93EwtvHMCfVbBzik0Hr0KR7xdQKS2yWk3peR+kCBtktCgolynuax5SAHU6f7l+8L+ja09M1CX8pDd9GL2BovklpE6Pok6GwyktpEljOmhEdEDvkd35mjKOp8fRuaer5h53EPsgwC9l6n/WaBeck3RWxvFBBX5UV0kQebMznU3/q6xO9HY9cXaPM8SC/34vANEfmdEvTNEuIayL3iheYsj60FHmzKcMPY+vkP39w2g4RsDml0hmzq9UiLhNJeGWV3ZORaRaRVepFY6EFUuhvWzhnmhPbfYP0AzR43dlCNDLqDXJOIQqpfRvdYcVuGoVuGpUeBpUPGk6efltQfgPHaNCJT5pB4gHo4ySOLzpFXL6DIIuJMk4RKymWgnkw0H3r8kfnB97zg19W+R7hmFrF6N3SH6B6KeeRQHwU1AoqNIs5dFVFlFmEghh5OM+c3v9qFVavnsCGaw7ZUHomZAnbli9hfJCG3TMbR8zJKLsm4UCHj0b2pRd+v+jFlp/crOgH/O0AlfIQ8j7QEkeCdzFn4B13j45gYHibsmBixY3J0DK/tDkyMOjD5zIG3L17C6XDA5XgO59goXGN2TL95xdwfR9Ne2Xics3dLLEnOL9d1SyzK1XUrSi3O0PXMTUxPjS8vL9dLA8vpJefn6qYVpabqZibn5xXHG8QbGJqBsF5SbgHDKBjSoIwFQs9jwi4vcqb7OAMTALUZGb1B2iP4AQAAAAIAAABVAAAAngIAAAAAAAABAAAAAAAAAAAAAAA
+//--
+If,%File_Container%,Equal,1,Begin
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Begin
+IniWrite,%w%,InterfaceEncoded,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,"978,1304"
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,0,eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+End
+End
+//--
 If,%ProvideFile%,Equal,1,Begin
-IniWrite,%w%,InterfaceEncoded,opendir.bmp,"571,762"
-IniWrite,%w%,InterfaceEncoded,trash.bmp,"867,1156"
+IniWrite,%w%,InterfaceEncoded,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,"806,1075"
+IniWrite,%w%,InterfaceEncoded,Icons8-Windows-8-Industry-Trash_0_016016.bmp,"322,430"
 IniWrite,%w%,InterfaceEncoded,Mazenl77-NX11-Internet-Real_016_016.bmp,"909,1212"
-IniWrite,%w%,InterfaceEncoded,Exclamation.bmp,"452,603"
+IniWrite,%w%,InterfaceEncoded,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,"748,998"
 End
 If,%AddCache_CheckBox%,Equal,True,Begin
-IniWrite,%w%,InterfaceEncoded,trash.bmp,"867,1156"
+IniWrite,%w%,InterfaceEncoded,Icons8-Windows-8-Industry-Trash_0_016016.bmp,"322,430"
 End
-IniWrite,%w%,InterfaceEncoded,Launch.bmp,"913,1218"
+IniWrite,%w%,InterfaceEncoded,media_controls_dark_play_splashyIcons_016016.bmp,"446,595"
 IniWriteTextLine,%w%,EncodedFolders,""
 IniWriteTextLine,%w%,EncodedFolders,Folder
-IniWrite,%w%,EncodedFile-InterfaceEncoded-Launch.bmp,lines,0
-IniWrite,%w%,EncodedFile-InterfaceEncoded-Launch.bmp,0,eJxN0WtMFFcUAGCM/W/SXzSxaZOmTX8YtdLSJk1jQsIPpUZNSGMTWk1tKvFVMDVGCaIWRKWGgrLaRbq4AruwT92XWoshUVAhKtFAYVmWZXdgdmdnZ+beedy587gdXJr05JyTm3O/5J7kVuywrS15E+VWfWzVOqvetmpNSemb+b7V+/8HI5vLgggx+K73x2/sP1Tb9+QBRXEwrxAG4qyk0lClgcxAhRBi+RN/L1T9efTM+OUQgZ38qyvceHW0YWNrVe2z7M/j7OGXuYNP0keD443PmcHnScvvdbbXPTz4gtBVd2sqQ19vi+yqffHb7uBPW7tPHM+QujjfEOdqwzORR8PR0IDlNzeXX50fmCTshp7yj65vXt/xbmVg//6RptIDa05myeEptmGG/d73OjI3N70wY/myXze1TfXO6sInPV+WXn7vw65Pz0LSkHy67tuSJo7Uz3Dn4uze4GSMQs8oYPmd16p33N3zWX/F5wNbKz3bym5u6dZIa+r+O4fWnufI8Vm+dY7bd2fyr2X5ZZqx/BGvw5/wD9H3jzz6pe5xfWcieo/I2/u/qLhxqjlLTs0LzQnu2IPpO6zqja/4jleZGm99cMo3QWanyNI0EWsCu8u6djUmwOkkbEyClhRoHk20zxUuTaQs75wHLlY8FLF91bLlgwNvbTr9flVf04UMOk+pZ5LCSqbAxTgT/mcJIGz53oVCRCFejUTISt4mpEckXTncRsELadCyCFsWhba0NEbxxf9yLhRCkuli8S3esBc0O610MehqDlm9dRFepJQ2ClxKwdF0oehdiyAsmR6o9YtGH685AHEUkJ3F13JKO610LMPfl8ROGo1luKJ3Z8CwSvyi7gG6W8C3CoqTQw5e6ykgW06x5dCVnGzLCKOZ1X2GKPAAkaho+CTNJ+o+qLtFw5lXbuZRd16+zqAbednBoKdLQtEPUmAYkduyFlRwUMbWYh5Bc0tmn/WWbHQzkp03/qClCRoWvUdQR1RzBJv3kBlTjZhihJDmFbWAZAwJ2MXjQQH7eXWCWfVuWgwDHBNxTDKioh6GWgjggIADvOrnsItTvSyyZ+Wx7KoHmlFM0TBF3YS6aZ3hf0Pe6lhnNUPWjKL/F4rXcD14nOPySSzNS87QS8otYBgFIw9MY4bQ7szY5SXNdJ4zMAEARyYGGuVhjnsBAAAAAgAAACYAAABHAwAAAAAAAAEAAAAAAAAAAAAAAA
+IniWrite,%w%,EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp,0,eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
 If,%ProvideFile%,Equal,1,Begin
 IniWrite,%w%,EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp,lines,0
 IniWrite,%w%,EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp,0,eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
-IniWrite,%w%,EncodedFile-InterfaceEncoded-opendir.bmp,lines,0
-IniWrite,%w%,EncodedFile-InterfaceEncoded-opendir.bmp,0,eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
-IniWrite,%w%,EncodedFile-InterfaceEncoded-trash.bmp,lines,0
-IniWrite,%w%,EncodedFile-InterfaceEncoded-trash.bmp,0,eJxtlNtTEnEUx2umtx5qtKb+hN7MyUxCELxfkBRvjToTXkYTu3i3tJdq8sHeLEfNLBJSQcVLKCy7wCIsKyiwKOEFZyjxkoOvNl7GqRMk4yBnvmdn9/c7n99v95zf2fjMmgvnfBYNfgM8HDwM/Py5677xuzAfdtHvJ/bnxA4PD+fnLQa9ISA9XA2EwW96g81GHR8fB+JPs4gSmSXJr2KxqF8klUjFItHQ4CA8SoaGxCKxuF9ktVhQFXqWXV5edq2ucjOzxmSytjdtly+Fl5WWYyjKyci8euVa5/vOT31997hZjkWHx+MJYmdnTdNT8iePnxoNxNLS0s2IyMmJSSNBdHd1M+gMi8UyZzYX3i9UIciCfSGIJY3klFxeW1OrVCitVuvtqGjZqAxBkK6uLjYrXq/XazQa/gM+qlLZKXswS84qpqcb6uoh3mazxdyJGZONQeSHnp7EhETIFK7FS/il8BUhWUSpbGpsUiEqirLRafSJ8XFgP/b2piQlQ65xHC8vK9eoMSoUC9/yvPkZsHaKYjKY3yYnIauQovTUNIIw6HC8sqJCq1GH3BdDVS9aWxUKBUVRbBZbLpdD1YSfhVxOJlRaq9FWCwS4VhtyXzWGtba0WC3WNZeLHcdSKpWwyBehkJOe7nA4FhcWH1ZWzujws6zJZNLP6JITk2CFdx0dkRERjQ0NpJEo4fOjbkUJhULZ6AgzNhZGHI7vQSyKYktOZ052dg6Pl8vLKS4qys/Ny8nmFeTnFxcW5fJ4MFWQl+daXcEw9WkWjvGGZ10qkQyDpFLQiE/DJ5LCGZUMSeCMDgysrbnMJnOAJUlya2uzuqqKHhMTx2CAWMw4dtx/sZhM/yCdRnskEKyurECDBNj9/X14591db0N9HWSGm8FJT01N8yslBe65nH8jr1+93N7ehsLt7f0O6iMdroM1obhbm5vNTY0MOj0pIT6WRnvb3r65sWG32ZxOp5EwhuxBsJ1fO263G0Ox9fWfkFJoSWiHDY9HrVa73T+8Xu/p4CDWbwcHB2bzHEEYYRfCQEATHR0dnQ3z/Tn+Ah/33RZ4nOMsKUosztBLyi1gGAUjEBSwQGgpZuzyyx1fajMwAQDHowYo0vtiWAEAAAACAAAAJQAAABoDAAAAAAAAAQAAAAAAAAAAAAAA
-IniWrite,%w%,EncodedFile-InterfaceEncoded-Exclamation.bmp,lines,0
-IniWrite,%w%,EncodedFile-InterfaceEncoded-Exclamation.bmp,0,eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+IniWrite,%w%,EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,0,eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp,0,eJztky0Og0AQhWmowZBdjVlZT1LdVGEquAMSgapGIJBIbsQVMGiO8dg3KQ0hFFa0rpt8yeT9sBMI98fz7Mm5Wi4WZdGWk2dEv7385QHwFcZxRBzH4CP3YIbZdb8sy8PuDLPrflEU4gVBgLquobVGmqYCZ2r0mGH2U18pJZ4xBm3bCpyp0fv3f9sPwxB93yOKIvnOhDM1ekd9F7b63DNJEieYXd/t2p1Z7lBVlfPuM+wsdxiGQd5R13Xi53mOpmkEztToMcPs3r+cZRl833/fxZnaVnYCtxtLZnic0/FMzs8rttANz8xLyS8v1rXQ9cxLKS0uKarUDSlKLM6IN4g3MDQDIr2k3AKGUTDcQBkLhL6JQ5496GYFAxMAem4SJP0g8REBAAAAAgAAAEUAAADZAAAAAAAAAAEAAAAAAAAAAAAAAA
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,0,eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
 End
 If,%ProvideFile_CheckBox%%ProvideFile%,Equal,True0,Begin
-IniWrite,%w%,InterfaceEncoded,opendir.bmp,"571,762"
-IniWrite,%w%,EncodedFile-InterfaceEncoded-opendir.bmp,lines,0
-IniWrite,%w%,EncodedFile-InterfaceEncoded-opendir.bmp,0,eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+IniWrite,%w%,InterfaceEncoded,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,"806,1075"
+IniWrite,%w%,EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,0,eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+//-
+IniWrite,%w%,InterfaceEncoded,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,"748,998"
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,0,eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+//-
 If,%Add_DownloadB_CheckBox%,Equal,True,Begin
 IniWrite,%w%,InterfaceEncoded,Mazenl77-NX11-Internet-Real_016_016.bmp,"909,1212"
 IniWrite,%w%,EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp,lines,0
@@ -1222,8 +1377,8 @@ IniWrite,%w%,EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bm
 End
 End
 If,%AddCache_CheckBox%,Equal,True,Begin
-IniWrite,%w%,EncodedFile-InterfaceEncoded-trash.bmp,lines,0
-IniWrite,%w%,EncodedFile-InterfaceEncoded-trash.bmp,0,eJxtlNtTEnEUx2umtx5qtKb+hN7MyUxCELxfkBRvjToTXkYTu3i3tJdq8sHeLEfNLBJSQcVLKCy7wCIsKyiwKOEFZyjxkoOvNl7GqRMk4yBnvmdn9/c7n99v95zf2fjMmgvnfBYNfgM8HDwM/Py5677xuzAfdtHvJ/bnxA4PD+fnLQa9ISA9XA2EwW96g81GHR8fB+JPs4gSmSXJr2KxqF8klUjFItHQ4CA8SoaGxCKxuF9ktVhQFXqWXV5edq2ucjOzxmSytjdtly+Fl5WWYyjKyci8euVa5/vOT31997hZjkWHx+MJYmdnTdNT8iePnxoNxNLS0s2IyMmJSSNBdHd1M+gMi8UyZzYX3i9UIciCfSGIJY3klFxeW1OrVCitVuvtqGjZqAxBkK6uLjYrXq/XazQa/gM+qlLZKXswS84qpqcb6uoh3mazxdyJGZONQeSHnp7EhETIFK7FS/il8BUhWUSpbGpsUiEqirLRafSJ8XFgP/b2piQlQ65xHC8vK9eoMSoUC9/yvPkZsHaKYjKY3yYnIauQovTUNIIw6HC8sqJCq1GH3BdDVS9aWxUKBUVRbBZbLpdD1YSfhVxOJlRaq9FWCwS4VhtyXzWGtba0WC3WNZeLHcdSKpWwyBehkJOe7nA4FhcWH1ZWzujws6zJZNLP6JITk2CFdx0dkRERjQ0NpJEo4fOjbkUJhULZ6AgzNhZGHI7vQSyKYktOZ052dg6Pl8vLKS4qys/Ny8nmFeTnFxcW5fJ4MFWQl+daXcEw9WkWjvGGZ10qkQyDpFLQiE/DJ5LCGZUMSeCMDgysrbnMJnOAJUlya2uzuqqKHhMTx2CAWMw4dtx/sZhM/yCdRnskEKyurECDBNj9/X14591db0N9HWSGm8FJT01N8yslBe65nH8jr1+93N7ehsLt7f0O6iMdroM1obhbm5vNTY0MOj0pIT6WRnvb3r65sWG32ZxOp5EwhuxBsJ1fO263G0Ox9fWfkFJoSWiHDY9HrVa73T+8Xu/p4CDWbwcHB2bzHEEYYRfCQEATHR0dnQ3z/Tn+Ah/33RZ4nOMsKUosztBLyi1gGAUjEBSwQGgpZuzyyx1fajMwAQDHowYo0vtiWAEAAAACAAAAJQAAABoDAAAAAAAAAQAAAAAAAAAAAAAA
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp,lines,0
+IniWrite,%w%,EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp,0,eJztky0Og0AQhWmowZBdjVlZT1LdVGEquAMSgapGIJBIbsQVMGiO8dg3KQ0hFFa0rpt8yeT9sBMI98fz7Mm5Wi4WZdGWk2dEv7385QHwFcZxRBzH4CP3YIbZdb8sy8PuDLPrflEU4gVBgLquobVGmqYCZ2r0mGH2U18pJZ4xBm3bCpyp0fv3f9sPwxB93yOKIvnOhDM1ekd9F7b63DNJEieYXd/t2p1Z7lBVlfPuM+wsdxiGQd5R13Xi53mOpmkEztToMcPs3r+cZRl833/fxZnaVnYCtxtLZnic0/FMzs8rttANz8xLyS8v1rXQ9cxLKS0uKarUDSlKLM6IN4g3MDQDIr2k3AKGUTDcQBkLhL6JQ5496GYFAxMAem4SJP0g8REBAAAAAgAAAEUAAADZAAAAAAAAAAEAAAAAAAAAAAAAAA
 End
 //-
 //IniWriteTextLine,%w%,EncodedFolders,innounp
@@ -1243,7 +1398,7 @@ StrFormat,Split,%Exe_BlIcon%,.,1,%Exe_BlIcon%
 StrFormat,Replace,%Exe_BlIcon%,".","",%Exe_BlIcon%
 
 [Ico_Extract_Innounp]
-StrFormat,filename,%File_FileBox%,%File_FileBox_FileName%
+StrFormat,FileName,%File_FileBox%,%File_FileBox_FileName%
 //--
 //ExtractFile,%ScriptFile%,Folder,innounp.7z,%ProjectTemp%\TempExtractFolder\Ico_Extract
 //ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Ico_Extract\innounp.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Ico_Extract#$q"
@@ -1317,7 +1472,7 @@ End
 If,Not,ExistFile,%File_FileBox%,Message,"%File_FileBox% File Not Found",Error
 If,Not,ExistFile,%File_FileBox%,Exit,"%File_FileBox% File Not Found"
 //--
-StrFormat,filename,%File_FileBox%,%File_FileBox_FileName%
+StrFormat,FileName,%File_FileBox%,%File_FileBox_FileName%
 //--
 If,ExistDir,%ProjectTemp%\TempExtractFolder\Test_Innounp,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\Test_Innounp#$q"
 If,ExistDir,%ProjectTemp%\TempExtractFolder\Test_Innounp,Call,DirDelete,%ProjectTemp%\TempExtractFolder\Test_Innounp
@@ -1374,18 +1529,16 @@ ShellExecute,Open,cmd.exe,"/C #$q%w%#$q",%ProjectTemp%\TempExtractFolder\Test_In
 End
 
 [Innounp_Test_Opendir]
-If,Not,ExistDir,%ProjectTemp%\TempExtractFolder\Test_Innounp,DirMake,%ProjectTemp%\TempExtractFolder\Test_Innounp
-System,FILEREDIRECT,OFF
-ShellExecuteEx,Open,explorer.exe,/e#$c#$q%ProjectTemp%\TempExtractFolder\Test_Innounp#$q
-System,FILEREDIRECT,ON
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\Test_Innounp
 
 [Example_Process]
 Call,HostDesktopDir
 Echo,%HostDesktopDir%
 If,ExistDir,%HostDesktopDir%,Begin
-ExtractFile,%ScriptFile%,Example,vnc-4_1_3-x86_win32.exe,%HostDesktopDir%
-Set,%File_FileBox%,%HostDesktopDir%\vnc-4_1_3-x86_win32.exe,Permanent
-ChangeInterface,Write,Value,%ScriptFile%,Interface,File_FileBox,%HostDesktopDir%\vnc-4_1_3-x86_win32.exe
+If,Not,ExistDir,%HostDesktopDir%\PluginCreator,DirMake,%HostDesktopDir%\PluginCreator
+ExtractFile,%ScriptFile%,Example,vnc-4_1_3-x86_win32.exe,%HostDesktopDir%\PluginCreator
+Set,%File_FileBox%,%HostDesktopDir%\PluginCreator\vnc-4_1_3-x86_win32.exe,Permanent
+ChangeInterface,Write,Value,%ScriptFile%,Interface,File_FileBox,%HostDesktopDir%\PluginCreator\vnc-4_1_3-x86_win32.exe
 Set,%Exe_TextBox%,vncviewer.exe,Permanent
 ChangeInterface,Write,Value,%ScriptFile%,Interface,Exe_TextBox,vncviewer.exe
 Set,%M_Author_TextBox%,"",Permanent
@@ -1396,9 +1549,9 @@ ChangeInterface,Write,Value,%ScriptFile%,Interface,Startup_CheckBox,False
 Set,%FileContainer_ScrollBox%,Auto,Permanent
 Set,%RunAsSystem_CheckBox%,False,Permanent
 Set,%AddCache_CheckBox%,False,Permanent
-System,CURSOR,Wait
+System,Cursor,Wait
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 End
 
 [Example_Information]
@@ -1406,6 +1559,23 @@ Echo,"Information on Message Box"
 Message,"How to use:#$xHit Example button than hit Goooo button#$x#$xInfo:#$xExample button#$xExtract 'FS Capture.7z' to Desktop#$xand#$xPut required info to current plugin interface#$x#$x:)",Information
 
 [Process_File_Container]
+If,%FileContainer_File_Packed_CheckBox%,Equal,False,Run,%ScriptFile%,Process_File_Container_Plugin
+If,%FileContainer_File_Packed_CheckBox%,Equal,True,Run,%ScriptFile%,Process_File_Container_Packed
+
+[Process_File_Container_Packed]
+Set,%FCw%,%TarMy%\%FCNewPluginName%
+//-
+If,ExistFile,%FCw%,Begin
+System,FileRedirect,OFF
+Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%FCw%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%FCw%#$q"
+System,FileRedirect,ON
+End
+If,ExistFile,%FCw%,Message,"%FCw% not deleted",Error
+If,ExistFile,%FCw%,Exit,"%FCw% not deleted"
+//-
+Call,PackedAddFile,%FCw%,%File_FileBox%
+
+[Process_File_Container_Plugin]
 Set,%FCw%,%TarMy%\%FCNewPluginName%
 //-
 If,ExistFile,%FCw%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%FCw%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%FCw%#$q"
@@ -1432,7 +1602,8 @@ IniWrite,%FCw%,Main,Contact,http://TheOven.org
 IniWrite,%FCw%,Main,Date,%MyDate%
 IniWrite,%FCw%,Main,Depend,""
 IniWrite,%FCw%,Main,Disable,""
-//IniWrite,%FCw%,Main,Web1,""
+IniWrite,%FCw%,Main,InterfaceList,""
+IniWrite,%FCw%,Main,Web1,""
 //IniWrite,%FCw%,Main,Web1C,""
 IniWrite,%FCw%,Main,CertifiedBy,""
 IniWrite,%FCw%,Main,Certification,""
@@ -1473,17 +1644,192 @@ IniWrite,%FCw%,AuthorEncoded,%IcoFile_Name%,"%t%"
 IniWrite,%FCw%,AuthorEncoded,Logo,%IcoFile_Name%
 End
 //--
-IniWrite,%FCw%,Interface,WebLabel_Homepg,"HomePage,1,10,343,20,55,18,https://Write_Homepage_Here"
-IniWrite,%FCw%,Interface,WebLabel_Plugin,"#$qPlugin Page#$q,1,10,338,4,55,18,http://TheOven.org/index.php?board=9"
+IniWrite,%FCw%,Interface,WebLabel_Homepg,"HomePage,1,10,326,20,51,18,"
+IniWrite,%FCw%,Interface,WebLabel_Plugin,"#$qPlugin Page#$q,1,10,321,4,55,18,http://TheOven.org/index.php?board=9"
 //--
 Encode,%FCw%,Folder,%File_FileBox%
 
-[ReScan_P_B]
-System,ReScanScripts
+[Download_Process_Type_1]
+//Download_Process_Type_1
+//Use PluginSet_xXXXX --> %ProvideFiles% - %SetupFile% - %FileContainer% - %FileWeb% (Optional: %DownloadMessage% Yes NO)
+//-
+If,Not,ExistVar,%DownloadMessage%,Set,%DownloadMessage%,Yes
+//-
+If,Not,ExistDir,%ProvideFiles%,DirMake,%ProvideFiles%
+//-
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+If,ExistVar,%FileContainer%,Begin
+If,ExistFile,%FileContainer%,Begin
+Echo,"ExtractFile - FileContainer - Wait Patiently - Start"
+Call,PackedExtractFile,%FileContainer%,%ProvideFiles%,%SetupFile%
+Echo,"ExtractFile - FileContainer - Wait Patiently - Finish"
+End
+End
+End
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+Echo,"ExtractFile - Wait Patiently - Start"
+If,ExistSection,%ScriptFile%,EncodedFile-Folder-%SetupFile%,ExtractFile,%ScriptFile%,Folder,%SetupFile%,%ProvideFiles%
+Echo,"ExtractFile - Wait Patiently - Finish"
+End
+//-
+StrFormat,Filename,%FileWeb%,#9
+StrFormat,Replace,#9,"#$p20"," ",#9
+Set,#8,%ProvideFiles%\#9
+//-
+StrFormat,Date,#4,yyyy_mm_dd_hhnn_ss_zzz
+StrFormat,Ext,#8,#5
+//-
+If,ExistFile,#8,Begin
+Retrieve,Md5,#8,#7
+FileRename,#8,#8_Backup_#4#5
+End
+//-
+Echo,"Download #9 - Start"
+Call,Download,#8,%FileWeb%
+Echo,"Download #9 - Finish"
+//-
+If,%CallDownloadFileName%-,Equal,-,Begin
+If,ExistFile,#8_Backup_#4#5,FileRename,#8_Backup_#4#5,#8
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"Can NOT Download #9 - %FileWeb%",Warning,5
+Echo,"Can NOT Download #9 - %FileWeb%",Warn
+End
+End
+Else,Begin
+Retrieve,Md5,#8,#6
+If,#7,Equal,#6,Begin
+Call,FileDelete,#8_Backup_#4#5
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"No new #9",Information,5
+Echo,"No new #9"
+End
+End
+Else,Begin
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"New #9 File UPDATED",Information,5
+Echo,"New #9 File UPDATED"
+End
+End
+End
+
+[ProvideFile_Info_Txt]
+Information:
+______________________________________________________________
+|
+|  * Use 'Open Folder' Button(s)
+|                 to Get (or Update) File(s) manually
+|
+|  OR
+|
+|  * Use 'Download' Button(s)
+|                 to Get (or Update) File(s) automatically
+|
+|    Tip: Change 'TextBox' (FileName) to Update Download Link ;)
+|_____________________________________________________________
+
+[ReStart_P_B]
+Call,ReStart
+
+[AppsMy_1Prepare_Button_P]
+System,Cursor,Wait
+//Run,%ScriptFile%,Advanced_Show-Hide-First_Gui,False
+//Run,%ScriptFile%,Advanced_Show-Hide-Second_Gui,True
+Visible,%AppsMy_1Prepare_Button%,False,Permanent
+Visible,%AppsMy_2Prepare_Button%,True,Permanent
+Visible,%Info_TextLabel%,True,Permanent
+Visible,%Info_TextLabel_B%,False,Permanent
+Set,%CheckBox_2Prepare%,False,Permanent
+System,RefreshInterface
+System,Cursor,Normal
+
+[AppsMy_2Prepare_Button_P]
+System,Cursor,Wait
+//Run,%ScriptFile%,Advanced_Show-Hide-Second_Gui,False
+//Run,%ScriptFile%,Advanced_Show-Hide-First_Gui,True
+Visible,%AppsMy_1Prepare_Button%,True,Permanent
+Visible,%AppsMy_2Prepare_Button%,False,Permanent
+Visible,%Info_TextLabel%,False,Permanent
+Visible,%Info_TextLabel_B%,True,Permanent
+Set,%CheckBox_2Prepare%,True,Permanent
+System,RefreshInterface
+System,Cursor,Normal
+
+[Second_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-First_Gui,False
+Run,%ScriptFile%,Show-Hide-Second_Gui,True
+If,%CheckBox_2Prepare%,Equal,True,Begin
+Visible,%AppsMy_1Prepare_Button%,True,Permanent
+Visible,%AppsMy_2Prepare_Button%,False,Permanent
+End
+Else,Begin
+Visible,%AppsMy_1Prepare_Button%,False,Permanent
+Visible,%AppsMy_2Prepare_Button%,True,Permanent
+End
+System,RefreshInterface
+System,Cursor,Normal
+
+[First_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Show-Hide-First_Gui,True
+Visible,%AppsMy_1Prepare_Button%,False,Permanent
+Visible,%AppsMy_2Prepare_Button%,False,Permanent
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show-Hide-Second_Gui]
+Visible,%Bevel_Big%,#1,Permanent
+//-
+Visible,%Innounp_Test_Button%,#1,Permanent
+Visible,%Innounp_Test_Opendir_Button%,#1,Permanent
+Visible,%Show_Template_Button%,#1,Permanent
+Visible,%Show_TemplateM_Button%,#1,Permanent
+Visible,%Innounp_Test_Bevel%,#1,Permanent
+//-
+Set,%M_Author_TextBox%,"",Permanent
+Visible,%M_Author_TextBox%,#1,Permanent
+//-
+Set,%Startup_CheckBox%,False,Permanent
+Visible,%Startup_CheckBox%,#1,Permanent
+//-
+Set,%AddCache_CheckBox%,False,Permanent
+Visible,%AddCache_CheckBox%,#1,Permanent
+//-
+Set,%FC_Visible_CheckBox%,False,Permanent
+Visible,%FC_Visible_CheckBox%,#1,Permanent
+//-
+Set,%RunAsSystem_CheckBox%,False,Permanent
+//Visible,%RunAsSystem_CheckBox%,#1,Permanent
+//--
+Set,%ProvideFile_CheckBox%,False,Permanent
+Visible,%ProvideFile_CheckBox%,#1,Permanent
+Visible,%Add_DownloadB_CheckBox%,#1,Permanent
+Set,%Add_DownloadB_CheckBox%,False,Permanent
+Visible,%ProvideFileP_Bevel%,#1,Permanent
+//--
+Visible,%Main_Bevel%,#1,Permanent
+//--
+Set,%FileContainer_ScrollBox%,Auto,Permanent
+Visible,%FileContainer_ScrollBox%,#1,Permanent
+//--
+Visible,%DoNOTReScanPlugins_CheckBox%,#1,Permanent
+Set,%DoNOTReScanPlugins_CheckBox%,False,Permanent
+Visible,%ReStart_Button%,#1,Permanent
+//--
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
+//--
+Visible,%pButton_Show_First_Gui%,#1,Permanent
+
+[Show-Hide-First_Gui]
+//Visible,%Bevel_Big%,#1,Permanent
+//--
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
 
 [AuthorEncoded]
-sc4848.ico=3290,4387
 Logo=sc4848.ico
+sc4848.ico=3290,4387
 
 [EncodedFile-AuthorEncoded-sc4848.ico]
 lines=1
@@ -1492,19 +1838,37 @@ lines=1
 
 [InterfaceEncoded]
 sc3232.bmp=1833,2444
-Exclamation.bmp=452,603
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
 DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
 Double-J-Design-Ravenna-3d-Reload024024.bmp=1230,1640
 
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add to Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+
+[Settings_Default]
+Run,%ScriptFile%,First_Gui
+//--
+//Set,%Startup_CheckBox%,False,Permanent
+//Set,%RunAsSystem_CheckBox%,False,Permanent
+Set,%DoNOTReScanPlugins_CheckBox%,False,Permanent
+
+[CompareEditXXX]
+Call,CompareEdit
+
 [EncodedFile-InterfaceEncoded-sc3232.bmp]
 lines=0
 0=eJzVl3tQVHUUx8GQ3btvHsu+7r5hF3Z5LJmKlU3DNE5WZg8r0qYy6SGgCaaUCj5Kx1AGxRAfiRQ+IR8NGlaUpmkZJuPYuCvmhI+AsoyMsiz99t0dmpqpv27aTHfmcH/L3vl9fuec7znnbu6oIbqoyDWElkpz9Ft05C+v/u//egH4X1lnZ6f95MmTritXrkT/V8yampUFJSVTq7Kzh7fLldnQakxwOq2n8/PzV9fX1z8WCoW814Ib3lenu7kvMXEiRo0qRfb1r0Crew0mcQWMpnLok8ZDrbsNgtwBURTP5OU90Hjp0qWBV4Pd19entNqMSNRPgaB4BirtUBgsM2Aw1sEoLodFXAObfRvcnoNITTsCj7cFKZ5lyMgs+rKxcfuDFy5cUP8b/sqVr0wfPDgAlXIaFMpiXBfthzZuIizW5TCZF0XMxrXT3Qxv2sdIz/gcmYEeBK7/AemB43Alb0TFy+1VUvm1tVXPezw5EISXoNEW8QyDkaAvJn8FzJZl9L+etghGcx4/T4DD+SKSPQ2MQyt8vmPwZXQwLkex/0DvHVL4r75aNS0h4QkolXPJnwSF6ibmYiZE2zqeYQ3sjndhMs2CUoiCQhEFlSoK8fEKPuPmuUqQ4g3C6w9i1aqecin8pqZdjwtCKZSqqVCrC7n/jdRbOayORojWdXC525n/Bmi110GjiaLFRO4qniVOF8uchOBLD2HJ0q6FUvgHDpy6Wakq4J6TyH+SfOrPOIdx3kLuJrhTPuN6E+LiZNDpopCYqKclMQbR0OvNSPWdJT+IJdXdFVL4ra0dIxXKMH8K1JqnodIMZ80tg9PVArtzB7X+BddbkZAgkBcNg8GIpKTwGQZwbSf/PNL9x1FZ1b1YCn/nzuB9goJxVz8HtXIi4rQjqPn1jPseOFzvkt/N9U4yVTAaY2A2W3g3wpgUQ74V3tTveIYOzF/QXS2Fv7nx8DiFugByoZDaH4943Z0wWbawrvbB5WqlvnrgTNlODeqofznsdjvPYIbJEMtziOSfhyftOGbP6aqVwt+w4dAEuVCA2Nh8xv9x1t5omMUWuJP38wzvw5P6NWt/O6wWLfuAgv3YzR5ooe9hvpnff8VaDKKs/NQqKfy6NQefkcmfxcCBT0FJfpLhYer+Izg9h6i9/dy/l/HfzlrTwGZTMibJsFpFWCyyfv455iiEsrLTkvg1NR+WyGQliBlYxN77FLX/BERLB9zeY+wzh5GcdpFxCPNVf+HbGAM5c2Ii/1s+dwKzys5I4i9ZuvcFmayI8Z/I+OdHepxoCbODtPZ+fhN5athtajgcTp4jPIcU/fyv+dxxzCr/crUU/ty5LS+F8y+TU3+qJ+F2T8Ddo3fjpuGf0uej7C8/MP4b/843C9ShSH5PhF9ccuA1KfyysrcWy+Thvl+KuMSp3LsArpRa9vUt1N0Z+t8X4dvJd9g15LtZAzbmQEEN2Mj/Bu7UDkyavHudFP6MGW9XyoUprP95kb7rdBYzBzWsuzfpVxftZ8a/kXMg7PuffJtNAavoIP876vQLTHr20AYp/Oem7VgiKNj74+ZQzzMZ/2mcPTXsKc1kn6bRf89m8jXUXlxEf3a7g3zqUUyO1IeH/k+WyL/33ul75fJS9va59HsW676U9bcUaf6dZHdG4p+cEs6/klxqwO6M+G+xxFIDGWT/CE9KkPH/aKMUfkqyBYKygvOkgvNmNnNdFpn9af6WCD/V9xv/v5r9Pzx3Y9iHEyMzKD4+ivnysPddZK46UDR5jyS+22Xh7KlFQuJScubBaZ/PONTD59/FvtvNdwtwHk3l+0l49g+gqWlKzkrOYq1A9jfsf2dRULhNUvxzhuWdTdCvoS/LqK0ZjP1C+rgWWYH13Bu0H3meXM6+KPZcfWT+GQwGGuvfKCCV/c/nP4PCoh0NUvhjx7W2GM1rYTCtZb09T01X0rd34E8vQ2BQL3xZR5GV5UVmpoGWhYyMTKSn+2kOZGWakBEIUpu7MO6Rxjek8O9/oH2vaH0LoiM8ays56xezFsEYHOT6CIYMGY9bbxmAYcNMyMkRMXSoiWbAjTkCBg3SM2/7+K7+Dqqrj8yWwn+9oWe6aG3jrA+Rv5s2HwlJp/iuf5mzaAffs29AIHswdfAovJ6xtLuZ7/t4H81ny5GZce786w3ni6Ww/7CFFV3VI27vPDHmoXNthUVdb74ws23r8hWfL/pgb+/ItrbeW44FLwTq6vYt3LrtdP4nbb/e+unhX4Z3nPgls/f7y/HX4vdZU1NNaXFx/p5Q6GSgufm9/KqqlZW5ueno7Dzhv9qsf7Lm5rp5Y8eOxD335GLMmBHIy7sLCxbM3nPx4k+q/4J/Lex3NNWd/Xic4ypONjYyNtJLyi1gGAUjD5gJQOj7bNjlw96E3mVgAgDETwa5xxmaOgEAAAACAAAAJgAAAN8GAAAAAAAAAQAAAAAAAAAAAAAA
 
-[EncodedFile-InterfaceEncoded-Exclamation.bmp]
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
 lines=0
-0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
@@ -1517,6 +1881,10 @@ lines=0
 [EncodedFile-InterfaceEncoded-Double-J-Design-Ravenna-3d-Reload024024.bmp]
 lines=0
 0=eJzdlHtQVGUYxu0vWCKDWGBZKG5K4BKXkL1fWfbsroQikMCCtUqZ3FFQtCxXxxTUBbkoEEERhJITE4XaUNroP9VA1pgWmBqkaJcBJ3S5LfD0nQPDyGAThn95Zp45O3u+87zP+d7v/UVEH2EtYi4+kT8Rh8iN6LFFXsz/xunn914AHml193Wh7mwddrbuxvaWHdjbVojmr5vR138DC/Ht/bMHOcfzoDmaCOojA7knQNPwIiLfj4W6NgaqwyuQ35SPq7euPHCd0x3tWL4lDNqWtaCOJ4M6lgjNh2sQWR8Hdd1qRNSsRERlFFQVeqiLKTSda5x3jdpPq+Gqs4eTxhYhJj6o5iRomhIQ2RAP9XvT3tUvMPmVZVooSiIh269EaVvxvGq0nmsBm2LhqUgbsLUsCMwqiA6p4ZftDQ+jIzxedoBvmjtCd4Qy3oqDasiLlJDukaLpbMO8ahxo3Mvkp7XE4AbqDQlUBXx4G53AMdiBk0SUyILXOheI90gg3yeHjNwVJgku93X/Z43JyUlkHdyAyo/LYBmxzKy/fWcAlW2lWGrkwDWeBZdYFjySHCHeJYJ0lxiStwTIqHx1QeeKVtdvPyEo1RfOq1hwjraF7zp3SE1CSHaEQ7TteXRf/3nBNb6/3AluzGKwo2zhHMVC+NZgiF9fDtHWUJS0FC3Yn1Z+RRbYetInnQ38X/GEmGQXbQlGcmHsQ/H/4ZfzYOuIv9YG3gYXJrswLwjyzaGwjlvn1Lh49QJqvqjGqfMncan3RwwM9oPu9b/5j46NwjPGifH3TGBDlB8M4aZACLMCMWgZnPUefSbdViyGpJxi5pSeI2W5FrrSKKRUrUXjV/Vz6tC1eUlejP+SFA6Em4MgyOFBmLkMd4fuzKy3Wq14Jprk0NhAWqFl5lT97qrpOdUjpz4bw6NDc/yHRobgsdKB2aOgjb4Q5gZCkBUA1aYwTExM4N7v5OifYOZJRvsTfkW8Ew0VYYzcrMbF3gv33aPTne2M99PxjiT7cxBk8yDI8McGc8qs9ZZhC5wpO8ZfTvIyjKmayk4zhjJr8VlH66xMY9Yx6HIVcI9zQHgubyY7P80Px858MMt/4O9+hjlOFO2vg/KIHgriqywnvw9pGMbIChWIN6+G+ZP9TC/SSteD95oPhHRPp7PzSXZNHh+W4buz/G/9dXOKN8RfUqKGp9EV3qlcyIsJv4jkB1TTjJESDoggeVMwNUsFoRDlBU9lzwyAIO1ZtHeenLOXPX3XGF5yo56EoTCO4YprnB28jORM0/wqUkD2tgzS3WJId05xQLwtjMxSCDmPdPZlEKT7o+5U1X37dO3GFeQWp6Pn5q8YHx/HvqMmcBPswVnDAjfJHrzspRATvkhNdHb+DAdEZJaEOYHQb5fiy+8+f6CZ7ej+BjEmDdwMjzNM5ibbwyfVFQFpnghM90FIph82lr6EE9+2YmRs5H/zoOv6JVSfKENeTToyDq9HQW02Gs/U4Y/bvz8UxixU/wDOLxv7eJzTdskvTcpJ1fXSdUktzkzP0w1KLEvNy0vUNU7RDUrNyU9MMTAyASK9pNwChlEw7MA0TgidyoJd/rnmIwEGJgDhFxFq3jfyRwEAAAACAAAARQAAAGUEAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Example
@@ -1755,6 +2123,9 @@ lines=221
 220=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
 221=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
 
+[Example]
+vnc-4_1_3-x86_win32.exe=715599,954132
+
 [EncodedFile-Example-vnc-4_1_3-x86_win32.exe]
 lines=233
 0=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
@@ -1991,124 +2362,4 @@ lines=233
 231=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
 232=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
 233=JX+WtPXrlcv6Unt6/hvf5n/I03LSsLJ/mVnbSAKG4VZpqirHWOlDNUfRfX5fuztSoHl9reD/aRIbyr5d9RDfPL1g6+vFf4LN8cv6vWzegpLuVY0CF+zYSKuIwzXau1yaWHnDtNU3AtF/OKwnwiufWO7xYN0t/7pBdNHEiI+2WLCNk4mE3U+37RHDZpB/uf9hOZZcxG+k43bxr/4VturnMul8x2WYgPmzwh+/LjbYvzq0WlfXYQZi1vr/o7zVBTy12mjeSXVtLmPpLRiYCfsELPkx4Dt87FeuU12D8voNelNDecDGDjzTdciS8zznTJ0jlAuGShY7dnecBuinH9QMFD/18e9Z3oyfcuIkmxaMWGPY2BYSC5+jfF2Vcw/emdj0xSDwxHA6+KJWmMfa8ETMa01ElaYKxXD0z81BFHQvdRoh/P7l+uxHyxTXMW/lZqCpXJrQPLxnTRIC0CdJlrOg2aDwVCnhACfQcJIBZ6INAcKBriQCL05EPxaDsG/Rag3+GoJR718aEkSFhkkm40rBP5AglQziWiCy5fn0Qq8hnkcJJ0R04/fJu5W+eVqlf/EnZ001JeZ0wCv/jX36pfirQNp+DntO+TGvk1XerGEhKNBMbPHNSa37Ucv5F6osxo3+YLK6Iiz/1gJyX7lBcvOK3+r0sR1wwzij2+K+1Nvu5rzOaL7qj+diQmNE8368V5+8G3fmQNnv9JJe1THgUPibiK7y+cV5pXJIVXoVxL/bRQyiQpHIea2PKcYv8lj79feUGnoayiGAAGlbZsAVoVjQm5+qf3jTAa8VGPEkkb3Qhp6N7nSHJC9z8qHeXNmIiPx+EJC+n//kW8UGtq8lN81i2q+ZcR2OTOPZ8l2Bcju0I2L51Z8A+zm0W/5evZb8Vwrc4UT+1ctl/PC7+665byVtVjymsW7GnZWEPh2S1R9WQ+E5sHZRkc9l3RVXiUXZ9qcEX1w5Fw/z3nQkvnFU/uNJtzWUf2ripw6/q06W67XxWIbgR71R19n9taNWNfWl3lpiOS8q0Hw64h2/8DnK4eUXicEy/LS9Y1iTeMN9atsDCLL8/MMzbSS61IZRgFIwIUBHKD6W+vuLDKO+4/oMjABAAQJwwQLKTL2wEAAAACAAAANQAAAPbqCgAAAAAAAQAAAAAAAAAAAAAA
-
-[Example]
-vnc-4_1_3-x86_win32.exe=715599,954132
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
-
-[AppsMy_1Prepare_Button_P]
-System,CURSOR,Wait
-//Run,%ScriptFile%,Advanced_Show-Hide-First_Gui,False
-//Run,%ScriptFile%,Advanced_Show-Hide-Second_Gui,True
-Visible,%AppsMy_1Prepare_Button%,False,PERMANENT
-Visible,%AppsMy_2Prepare_Button%,True,PERMANENT
-Visible,%Info_TextLabel%,True,PERMANENT
-Visible,%Info_TextLabel_B%,False,PERMANENT
-Set,%CheckBox_2Prepare%,False,PERMANENT
-System,RefreshInterface
-System,CURSOR,Normal
-
-[AppsMy_2Prepare_Button_P]
-System,CURSOR,Wait
-//Run,%ScriptFile%,Advanced_Show-Hide-Second_Gui,False
-//Run,%ScriptFile%,Advanced_Show-Hide-First_Gui,True
-Visible,%AppsMy_1Prepare_Button%,True,PERMANENT
-Visible,%AppsMy_2Prepare_Button%,False,PERMANENT
-Visible,%Info_TextLabel%,False,PERMANENT
-Visible,%Info_TextLabel_B%,True,PERMANENT
-Set,%CheckBox_2Prepare%,True,PERMANENT
-System,RefreshInterface
-System,CURSOR,Normal
-
-[Second_Gui]
-System,CURSOR,Wait
-Run,%ScriptFile%,Show-Hide-First_Gui,False
-Run,%ScriptFile%,Show-Hide-Second_Gui,True
-If,%CheckBox_2Prepare%,Equal,True,Begin
-Visible,%AppsMy_1Prepare_Button%,True,PERMANENT
-Visible,%AppsMy_2Prepare_Button%,False,PERMANENT
-End
-Else,Begin
-Visible,%AppsMy_1Prepare_Button%,False,PERMANENT
-Visible,%AppsMy_2Prepare_Button%,True,PERMANENT
-End
-System,RefreshInterface
-System,CURSOR,Normal
-
-[First_Gui]
-System,CURSOR,Wait
-Run,%ScriptFile%,Show-Hide-Second_Gui,False
-Run,%ScriptFile%,Show-Hide-First_Gui,True
-Visible,%AppsMy_1Prepare_Button%,False,PERMANENT
-Visible,%AppsMy_2Prepare_Button%,False,PERMANENT
-System,RefreshInterface
-System,CURSOR,Normal
-
-[Show-Hide-Second_Gui]
-Visible,%Bevel_Big%,#1,PERMANENT
-//-
-Visible,%Innounp_Test_Button%,#1,PERMANENT
-Visible,%Innounp_Test_Opendir_Button%,#1,PERMANENT
-Visible,%Show_Template_Button%,#1,PERMANENT
-Visible,%Show_TemplateM_Button%,#1,PERMANENT
-Visible,%Innounp_Test_Bevel%,#1,PERMANENT
-//-
-Set,%M_Author_TextBox%,"",PERMANENT
-Visible,%M_Author_TextBox%,#1,PERMANENT
-//-
-Set,%Startup_CheckBox%,False,PERMANENT
-Visible,%Startup_CheckBox%,#1,PERMANENT
-//-
-Set,%AddCache_CheckBox%,False,PERMANENT
-Visible,%AddCache_CheckBox%,#1,PERMANENT
-//-
-Set,%FC_Visible_CheckBox%,False,PERMANENT
-Visible,%FC_Visible_CheckBox%,#1,PERMANENT
-//-
-Set,%RunAsSystem_CheckBox%,False,PERMANENT
-Visible,%RunAsSystem_CheckBox%,#1,PERMANENT
-//--
-Set,%ProvideFile_CheckBox%,False,PERMANENT
-Visible,%ProvideFile_CheckBox%,#1,PERMANENT
-Visible,%Add_DownloadB_CheckBox%,#1,PERMANENT
-Set,%Add_DownloadB_CheckBox%,False,PERMANENT
-Visible,%ProvideFileP_Bevel%,#1,PERMANENT
-//--
-Visible,%Main_Bevel%,#1,PERMANENT
-//--
-Set,%FileContainer_ScrollBox%,Auto,PERMANENT
-Visible,%FileContainer_ScrollBox%,#1,PERMANENT
-//--
-Visible,%DoNOTReScanPlugins_CheckBox%,#1,PERMANENT
-Set,%DoNOTReScanPlugins_CheckBox%,False,PERMANENT
-Visible,%ReScan_Button%,#1,PERMANENT
-//--
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
-//--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
-
-[Show-Hide-First_Gui]
-//Visible,%Bevel_Big%,#1,PERMANENT
-//--
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
-
-[Settings_Default]
-Run,%ScriptFile%,First_Gui
-//--
-//Set,%Startup_CheckBox%,False,Permanent
-//Set,%RunAsSystem_CheckBox%,False,Permanent
-Set,%DoNOTReScanPlugins_CheckBox%,False,Permanent
 

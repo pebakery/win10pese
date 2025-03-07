@@ -4,20 +4,21 @@ Type=Plugin
 Author=Dera, ChrisR, ied206
 Description=Search programs and files - Search in
 Credits=Dera
-Version=018
+Version=022
 Download_Level=0
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.21
+Date=2019.01.27
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Search.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Search.script
 CertifiedBy=
 Certification=
-HistoryNotes01=
+HistoryNotes01=Lanncelot query.exe not found at Win10 1809 index 1 - found at index 10 (pro) ( Win10_1809_English_x64.iso )
 History004=ChrisR - Cosmetics - HostOSTools
 History005=ChrisR - Added SearchFolder.dll and StructuredQuery.dll to work regardless of the display script
 History006=ChrisR - Win8.1 Compatibility
@@ -29,9 +30,13 @@ History011=ied206 - en-US support by ading prm0009.dll
 History012=ied206,mynhow - support for pt-BR, it-IT and probably others languages
 History013=ChrisR - RegDelete VolumeInfoCache if exist
 History015=ChrisR - Test if msshooks.dll exist, not present in Win10 redstone 1 - Date:2016.07.19
-History016=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History016=Lancelot - Added Components_PluginCache_Extract - Date:2016.11.10
 History017=Lancelot - workaround yet another winbuilder bug - I/O error 145: [FileCopy,%Source_sys%\prm*.dll,%Target_sys%] - log_20161110_130800_Win10PESE_Support.7z - Reply 19 http://TheOven.org/index.php?topic=1924 - Date:2016.11.11
 History018=Lancelot - PEBakery no need workaround to winbuilder bug - I/O error 145 anymore: http://TheOven.org/index.php?topic=2330.0 - Date:2017.12.21
+History019=Lancelot - Add BuildClass 3 support - Date:2018.10.09
+History020=Lancelot - query.exe not found at Win10 1809 index 1 - found at index 10 (pro) - put a Echo warning giving more information on Process - Date:2018.10.23 // Minor Fix with BuildType - Date:2018.11.23
+History021=Lancelot - Add BuildClass - Date:2019.01.14
+History022=Lancelot - Add Call,HostOSArch - Date:2019.01.27
 
 [Interface]
 Image_Software=Search.jpg,1,5,151,51,249,47,
@@ -51,13 +56,20 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 If,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Set,%RegexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%SysType%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"reg.exe MAY write wrong values",Warn
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 //-
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
+//-
 Run,%ScriptFile%,%OS%_FileCopy
+If,%OS%,Equal,Win10,Begin
+If,Not,ExistFile,%Target_Sys%\query.exe,Echo,"'%ScriptTitle%' - query.exe not found -- Maybe wrong index.",Warn
+End
 Run,%ScriptFile%,Search_Registry
 
 [Win7_FileCopy]
@@ -188,7 +200,9 @@ Require_FileQ,tquery.dll
 Require_FileQ,NaturalLanguage6.dll
 Require_FileQ,explorerframe.dll
 //-
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\msshooks.dll,Require_FileQ,msshooks.dll
+End
 Require_FileQ,mssph.dll
 Require_FileQ,mssprxy.dll
 Require_FileQ,mssrch.dll
@@ -203,7 +217,7 @@ Require_FileQ,wsepno.dll
 // File History Search Protocol handler Require_FileQ,fhsrchph.dll
 // Microsoft Text prediction Require_FileQ,mstextprediction.dll
 //-
-DirCopy,%Source_Win%\inf\wsearchidxpi,%target_win%\inf
+If,%BuildClass%,Equal,2,DirCopy,%Source_Win%\inf\wsearchidxpi,%target_win%\inf
 Require_FileQ,Windows.Shell.Search.UriHandler.dll
 //Require_FileQ,Windows.UI.Search.dll
 //- need for SearchIndexer.exe in win10
@@ -251,6 +265,7 @@ End
 // Copy only if files exist in system32 Source. On Windows 10 RTM, the Natural Language Data and Code exist only for the product language (only prm0009.dll exist on win10 en-US without others prm*.dll files)
 //Error I/O error 145 --> If,ExistFile,%Source_sys%\prm*.dll,FileCopy,%Source_sys%\prm*.dll,%Target_Sys%
 //-
+If,%BuildClass%,Equal,2,Begin
 If,ExistVar,%EngineVersion%,Begin
 If,ExistFile,%Source_Sys%\prm*.dll,FileCopy,%Source_Sys%\prm*.dll,%Target_Sys%,NOREC
 End
@@ -262,10 +277,23 @@ End
 //-
 If,ExistFile,%Source_sys%\MLS*.dll,FileCopy,%Source_sys%\MLS*.dll,%Target_Sys%
 //If,ExistFile,%Source_sys%\NlsData*.dll,FileCopy,%Source_sys%\NlsData*.dll,%Target_Sys%
+//--
+End
+//-
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistDir,%Target_Win%\inf\wsearchidxpi,DirMake,%Target_Win%\inf\wsearchidxpi
+Require,FileList,%ScriptFile%,Win10_FileCopy_Require_FileList
+End
+
+[Win10_FileCopy_Require_FileList]
+\Windows\System32\prm*.dll
+\Windows\System32\MLS*.dll
+\Windows\inf\wsearchidxpi\*
+\Windows\System32\msshooks.dll
 
 [Search_Registry]
-IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
-IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+IniRead,%ProjectDir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
+IniRead,%ProjectDir%\script.project,IniVariables,RegistryCache,%RegistryCache%
 //-
 If,ExistDir,%ProjectTemp%\Search,DirDelete,%ProjectTemp%\Search
 If,ExistDir,%ProjectTemp%\Search,Call,DirDelete,%ProjectTemp%\Search
@@ -288,27 +316,27 @@ DirDelete,%ProjectTemp%\Search
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
 //-
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchSoft.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchSys.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchSoft.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchSys.reg#$q"
 
 [Win8_Search_Registry]
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
 //-
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchClasses.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WindowsSearchSoft.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchClasses.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WindowsSearchSoft.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
 
 [Win8.1_Search_Registry]
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchFiles,0
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
 // Use NaturalLanguage6.dll instead of MSWB7.dll used in Win8.1
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{61A48126-EF74-4D4A-9DDA-43FD542CAD1E}\InprocServer32,,#$pSystemRoot#$p\System32\NaturalLanguage6.dll
 RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{61A48126-EF74-4D4A-9DDA-43FD542CAD1E}\InprocServer32,ThreadingModel,Both
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{9DAA54E8-CD95-4107-8E7F-BA3F24732D95}\InprocServer32,,#$pSystemRoot#$p\System32\NaturalLanguage6.dll
 RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{9DAA54E8-CD95-4107-8E7F-BA3F24732D95}\InprocServer32,ThreadingModel,Both
 // Failed to get data VolumeInfoCache\C:,DriveType in x64 build > Delete + Write
@@ -329,9 +357,9 @@ RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",Dri
 RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",VolumeLabel,
 //-
 If,%BuildType%,Equal,PE,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
 End
 // disable WSearch service. It cause search very slowly
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WSearch,Start,4
@@ -341,13 +369,13 @@ RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer
 RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced,Start_SearchPrograms,1
 //-
 If,%SoftwareHive%,Equal,Boot.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchClasses.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\SearchClasses.reg#$q"
 If,ExistFile,%RegistryCache%\PreparedHive.Done,Begin
 RegHiveLoad,Tmp_InsSoftware,%RegistryCache%\install_wim\SOFTWARE
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_InsSoftware\Windows Search#$q #$qHKLM\Tmp_Software\Microsoft\Windows Search#$q /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_InsSoftware\Windows Search#$q #$qHKLM\Tmp_Software\Microsoft\Windows Search#$q /s /f"
 RegHiveunLoad,Tmp_InsSoftware
 End
-Else,ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WindowsSearchSoft.reg#$q"
+Else,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WindowsSearchSoft.reg#$q"
 End
 // Failed to get data VolumeInfoCache\C:,DriveType in x64 build > Delete + Write
 If,ExistRegSection,HKLM,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache",RegDelete,HKLM,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache"
@@ -368,15 +396,15 @@ RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows Search\VolumeInfoCache\I:",Vol
 //-
 If,ExistFile,%RegistryCache%\PreparedHive.Done,Begin
 RegHiveLoad,Tmp_InsSystem,%RegistryCache%\install_wim\SYSTEM
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\ContentIndex HKLM\Tmp_System\ControlSet001\Control\ContentIndex /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\services\WSearch HKLM\Tmp_System\ControlSet001\services\WSearch /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\services\WSearchIdxPi HKLM\Tmp_System\ControlSet001\services\WSearchIdxPi /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\ContentIndex HKLM\Tmp_System\ControlSet001\Control\ContentIndex /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\services\WSearch HKLM\Tmp_System\ControlSet001\services\WSearch /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\services\WSearchIdxPi HKLM\Tmp_System\ControlSet001\services\WSearchIdxPi /s /f"
 RegHiveunLoad,Tmp_InsSystem
 End
 Else,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\ContentIndex.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearch.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Search\WSearchIdxPi.reg#$q"
 End
 // disable WSearch service. It cause search very slowly
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WSearch,Start,4
@@ -394,6 +422,35 @@ Search.jpg=4094,5459
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-Search.jpg]
 lines=1
@@ -428,25 +485,4 @@ lines=1
 lines=1
 0=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
 1=2tNvGxg3FhYvYB0QArxGECuieYU+mX/X8fB+NbBb+FR7+JticqXZ4SG8Wyf0Vwq21kkOR+n/PAcFizPtUIb8qfcjSzFt76FFD+5Cnom12QaD6hON56pleKrrOo3akAkv7cmbnWpC/vWoCqoGpDppNEzOF/3TQ7WYTj5dKkaW50pXkSzqHyuL0gqPobdZOzIOBTYvrNvtpg7vVBHikv/VUrGWS3r24kl9IVx8EE9ZSDweELAzYzwJ54K+juyqIpZmh7j1dAMKVXbeJHUO9mvHfNWk+gQ1FDmnNWICwyhong5IvI+WKXmff5N1g5KRnRJoudwNh1iguaXWVK4dIJntsFRRy3T971TI1jxiYvneZAs/xCXjNN0W7Jec20wvUMRq9D/f7ZDAbUYrSw6Qc9o4u/ZgjGfIHL9nnDAQSKAFo4BU5g933w7dtllNGd2aeq1YPVu4hJ8d8DLuGCSpHaniGiPc8dzlN53vHnX+SdOk+nzNcAG0v+/usd2+oOKV+8CxWJSrHQsDPIMoh7UqFtE+abJNYHGLOpeBKWCiB2c9tOjSp/wLYQIayuN0ha0jU1m7U2bXDF0ah818EYjUK6am6zaZkam0bu/S4+aeILthuOMa1tBDVqZXs7eoZ0wR5VTaQco5ZFZcGWbhp13Ul1I7dA9jWSuhE4DyDK4aKRWixhsAh24I++w7spH+cur1MuD9o2D9Bvsw/g8QayrQAAAIEzB64P1cFWsJclR1cF0xrTce+br5lc5Y2ciW+051Ao7QzrFU1QgE21/Az2KG/nm9UQ0UUpufjtihtqnBlZ4ZYZzWQaYq6iZ3Dc4UT5sxspAQVRENhGvWvmeZjkQAEmP2UzdQgf0koppNNvx6v3/tMcMocwEnRS7ctGkox2UXs6k2K3ffS1ONXykbb6JePyRjeZ723i193XKM3MsvfojYgH2YZ7bUqlE7yYdjBfPJHlv3EcyR+haEbqulwifRnD2qtHMEyhWwAXBo34AQmAyQAHCwEAASMDAQEFXQAQAAAMgUIKAWN1PzoAAHic4w9OTSxKzogPz8wzNNAzr2IYBSMKsPDjl3+XutGOkQEAE3kHiWZU2GQBAAAAAgAAACcAAAAEDwAAAAAAAAEAAAAAAAAAAAAAAA
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

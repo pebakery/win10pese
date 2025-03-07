@@ -4,14 +4,14 @@ Type=Plugin
 Author=NightMan, yahooUK, JFX, ChrisR, Lancelot
 Description=Mounting source and more...
 Credits=http://www.7-zip.org/ , r3incarnat0r
-Version=070
+Version=081
 Download_Level=0
 Level=1
 Selected=True
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.11.22
+Date=2020.03.10
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/0-preconfig.script
@@ -33,14 +33,14 @@ History038=Lancelot - Added ClearTarget_CheckBox (to get clean TargetDir before 
 History040=Lancelot - Added Clear_TargetImageWim
 History041=Lancelot - Backup at first run (See Echo,"--------------- Plugin Manager" )
 History042a=Lancelot - [History] --> [History_Old] ( [History] is now a special section ..... )
-History042b=Lancelot - Call,DirDelete --> Call,DirDeleteE (deletes all Files/Folders inside a Directory. It does not delete the Directory.)
+History042b=Lancelot - Call,DirDelete --> Call,DirMakeE (deletes all Files/Folders inside a Directory. It does not delete the Directory.)
 History042=Lancelot - Avoid deleting BaseDir - Halt -  Tony4219 Case: http://TheOven.org/index.php?topic=1427
 History043=Kyhi - Moved create Custom Folder to copy files Plugin - interface change - added checkbox option to backup project
 History045=ChrisR - Synchronize Plugin between SE projects
 History046=ChrisR updated v046
 History047=Lancelot Added ShowHide // Added Update_DLPlugins_CheckBox
 History048=Lancelot Added PrepareCodeBox
-History049=JFX - Added Hidden feature ("Main Configuration" + "PreConfig") Reason behind, I'm playing with different wimmount and wofadk drivers and everytime I build a project they get set to ADK 5 one.  -> IniWrite,%projectdir%\script.project,IniVariables,InstallWimSYSMount,1 + IniRead,%projectdir%\script.project,IniVariables,InstallWimSYSMount,%t% ....
+History049=JFX - Added Hidden feature ("Main Configuration" + "PreConfig") Reason behind, I'm playing with different wimmount and wofadk drivers and everytime I build a project they get set to ADK 5 one.  -> IniWrite,%ProjectDir%\script.project,IniVariables,InstallWimSYSMount,1 + IniRead,%ProjectDir%\script.project,IniVariables,InstallWimSYSMount,%t% ....
 History050=ChrisR check Windows 10 RTM 10.0.10240.16384
 History051=Lancelot Implement Call,TargetVersion,,4x Call,HostOSVersion,,4x to avoid version bug and ease maintain in future etc. ;)
 History052=Lancelot Added DownloadXXX_Container_Small to give instruction on getting latest Download_Pack.7z for new "Download Plugin" files on server
@@ -60,9 +60,19 @@ History067=Lancelot - Add NOCheck_CheckBox to test others sources easily - JFX R
 History068=ChrisR - Compatible with Win10 1709 build 16299.15 - Date:2017.10.13
 History069=Lancelot Fixed typo - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
 History070=Lancelot %ISODir% deprecated - Date:2017.11.22
+History071=ChrisR - Compatible with Win10 1803 build 17134.1 - Date:2018.05.04
+History072=Bob.Omb - Compatible with Win10 1809 build 17763.1 - Date:2018.10.13
+History073=Lancelot Disable "Plugin Organisations" - Further waiting for Galapo Download utility... - Date:2018.10.24
+History074=Lancelot - Add Call,HostOSArch - Date:2019.01.27
+History075=Lancelot Removed support to ReadEnv ( VariablesReadEnv IniVariablesReadEnv ) - Not exists anymore - Date:2019.02.01
+History076=Lancelot Comment out DotNet plugin VerificationP - Probably Not Required anymore with Lancelot Major update on all SE - Reply7 http://TheOven.org/index.php?topic=2594.msg31346#msg31346 - Date:2019.02.05
+History077=Lancelot Add Test_WIMLIB_IMAGEX_IGNORE_CASE - Thanks cretino jmsallo ChrisR - see wimlib document https://wimlib.net/man1/wimextract.html - Date:2019.03.13
+History078=Lancelot Early check for unsupported source before Mount (Win10PESE not support sources after Win10-1809) ->  -> FallBack Azin Mini to support sources after Win10-1809 so endusers continue using their exiting plugins - Date:2020.02.04 // update Comment - Date:2020.02.13
+History079=Lancelot Update Syntax with Call,DirMakeE - Date:2020.02.27
+History081=Lancelot only mount with BuildClass 2 and no extracted folders -  BuildClass 3 no need mount - Date:2020.03.04 // BuildClass 3 no need to create InstallSRC BootSRC folders - Date:2020.03.10
 
 [Interface]
-DownloadXXX_Container_Bevel=pBevel1,0,12,327,64,124,36
+DownloadXXX_Container_Bevel=pBevel1,0,12,327,82,124,36
 pTextLabel1="Preconfiguration Plugin, Mounting source and more...",1,1,12,20,304,18,8,Bold
 ManualInstallWimSYS_Button="Install / UnInstall WIM Drivers manually",1,8,12,46,265,30,ManualInstallWimSYS,0,False,False,_ManualInstallWimSYS_,False
 ManualInstallWimSYS_Label="in Host System32\Drivers Folder",1,1,18,76,165,18,8,Normal
@@ -80,18 +90,19 @@ Clear_TargetImageWim_Button="Clear Target Wim Folder Now",1,8,12,198,155,20,Clea
 FInstallwimmount_CheckBox="Force Install wimmount driver",0,3,16,148,178,18,False
 DetectLangMethod_CheckBox="Detect Source DVD Language OLD School",0,3,12,301,327,18,False
 Update_DLPlugins_Button=P,0,8,215,153,16,16,Update_DLPlugins_P,0,False,False,_Update_DLPlugins_P_,False,"__Process ''Update Download Plugins (610 milliseconds)''"
-Update_DLPlugins_CheckBox="Update Download Plugins (2nd run: 156 miliseconds                  1st run: 1.360/2.656 Small/Big seconds)",0,3,232,147,307,30,True
+Update_DLPlugins_CheckBox="Update Download Plugins (2nd run: 156 miliseconds                  1st run: 1.360/2.656 Small/Big seconds)",0,3,232,147,307,30,False
 DL_Download_Pack_Big_Button="DL Download_Pack_Big.7z (~20 MB)",0,8,328,178,198,25,DL_Download_Pack_Big_Button_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DL_Download_Pack_Big_Button_B_,False,"__Download - 'Download_Pack_Big.7z' (~20 MB)"
 pButton_Show_Second_Gui=a,1,8,403,274,16,16,Show_Second_Gui,True,False,False,_Show_Second_Gui_,False,"__Advanced Options"
 pButton_Show_First_Gui="<<--- Basic Options",0,8,403,274,114,21,Show_First_Gui,True,False,False,_Show_First_Gui_,False,"__Basic Options"
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,0,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,0,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
-DownloadXXX_Container_Small=,0,8,330,68,28,28,DownloadXXX_Container_Small,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_Small_,False,"__1-2 MB - Download Container Plugin"
-Auto_CheckBox=AutoRefresh,0,3,360,75,85,16,True
+DownloadXXX_Container_Small=,0,8,330,85,28,28,DownloadXXX_Container_Small,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_Small_,False,"__1-2 MB - Download Container Plugin"
+Auto_CheckBox=AutoRefresh,0,3,360,91,85,16,True
 pVerifyCheckBox="Verify Plugin dependencies",0,3,31,126,154,18,True
 pVerify_Button=V,0,8,14,126,16,16,Verify_Dependencies_B,0,False,False,_Verify_Dependencies_B_,False,"__Verify Plugin dependencies"
 NOCheck_CheckBox="BETA TEST - Test NOT SUPPORTED SOURCE",0,3,12,279,245,18,False,"__Test NOT SPORTED SOURCE"
+Test_WIMLIB_IMAGEX_IGNORE_CASE_Button="Test WIMLIB_IMAGEX_IGNORE_CASE",0,8,298,50,225,25,Test_WIMLIB_IMAGEX_IGNORE_CASE_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Test_WIMLIB_IMAGEX_IGNORE_CASE_P_B_,False
 
 [Variables]
 %cmdexeFolder%=
@@ -115,16 +126,16 @@ NOCheck_CheckBox="BETA TEST - Test NOT SUPPORTED SOURCE",0,3,12,279,245,18,False
 //InstWimFltr.exe previous method--Begin
 //Set,%wimfiltrsyshostos%,No
 //Call,HostSystemDir
-//System,FILEREDIRECT,OFF
+//System,FileRedirect,OFF
 //If,ExistFile,%HostSystemDir%\drivers\wimfltr.sys,Set,%wimfiltrsyshostos%,Yes
-//System,FILEREDIRECT,ON
+//System,FileRedirect,ON
 //If,Not,%wimfiltrsyshostos%,Equal,Yes,ShellExecute,Hide,%Tools%\AU3381.exe,"#$q%Tools%\InstWimFltr.exe#$q -install"
 //InstWimFltr.exe previous method--End
 
 [ManualInstallWimSYS]
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Open,%Tools%\InstallWimSYS.exe
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [Process]
 Echo,"%ScriptTitle% For %ProjectName%"
@@ -140,12 +151,16 @@ If,%IsoFolder%\TI\WIM,Equal,%BaseDir%,Call,Echo,"IsoFolder\TI\WIM=BaseDir SOMETH
 If,%IsoFolder%\TI\WIM,Equal,%BaseDir%,Halt,"IsoFolder\TI\WIM=BaseDir SOMETHING REALLY WRONG - Report Log to http://TheOven.org"
 //-
 Set,%t%,-
-StrFormat,SPLIT,%TargetDir%,\,0,%t%
+StrFormat,Split,%TargetDir%,\,0,%t%
 If,%t%,Equal,1,Call,Echo,"TargetDir can not be root drive (ex: D: )",Warn,,MessageError,,Halt
 If,%t%,Equal,1,Halt,"TargetDir can not be root drive (ex: D: )"
-If,%t%,Equal,2,StrFormat,SPLIT,%TargetDir%,\,2,%t%
+If,%t%,Equal,2,StrFormat,Split,%TargetDir%,\,2,%t%
 If,%t%-,Equal,-,Call,Echo,"TargetDir can not be root drive (ex: D:\ )",Warn,,MessageError,,Halt
 If,%t%-,Equal,-,Halt,"TargetDir can not be root drive (ex: D:\ )"
+//--
+Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE
+//--
+Call,HostOSArch
 //--
 If,%pVerifyCheckBox%,Equal,True,Run,%ScriptFile%,Verify_Dependencies
 //--
@@ -158,15 +173,26 @@ If,%PrepareCodeBox_CheckBox%,Equal,True,Run,%ScriptFile%,PrepareCodeBox_P
 //-
 If,%BackupProject_CheckBox%,Equal,True,Run,%ScriptFile%,FirstRun_Copy_P
 //-
+//MUST Check BEFORE Mount (unwanted error or restart can cause wims mounted AND no need to loose mount time if there is failure with version check)
+//If,%OS%,Equal,Win7,Run,%ScriptFile%,CheckWin7RTM
+//If,%OS%,Equal,Win8,Run,%ScriptFile%,CheckWin8RTM
+//If,%OS%,Equal,Win8.1,Run,%ScriptFile%,CheckWin8.1RTM
+//If,%OS%,Equal,Win10,Run,%ScriptFile%,CheckWin10RTM
+If,%NOCheck_CheckBox%,Equal,True,Echo,"BETA TEST for NOT SUPPORTED SOURCE - End User responsible with the result.",Warn
+If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,6.1_False,Run,%ScriptFile%,CheckWin7RTM
+If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,6.2_False,Run,%ScriptFile%,CheckWin8RTM
+If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,6.3_False,Run,%ScriptFile%,CheckWin8.1RTM
+If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,10.0_False,Run,%ScriptFile%,CheckWin10RTM
+//-
 If,%Update_DLPlugins_CheckBox%,Equal,True,Run,%ScriptFile%,Update_DLPlugins_P
 //-
 Echo,"Preparing system..."
-IniRead,%projectdir%\script.project,IniVariables,OS,%OS%
-IniRead,%projectdir%\script.project,IniVariables,WIMEditionID,%WIMEditionID%
-IniRead,%projectdir%\script.project,IniVariables,WimToolsMode,%WimToolsMode%
-IniRead,%projectdir%\script.project,IniVariables,WIMDriver,%WIMDriver%
-IniRead,%projectdir%\script.project,IniVariables,ShowImageX,%ShowImageX%
-IniRead,%projectdir%\script.project,IniVariables,ExtractWimFolder,%ExtractWimFolder%
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+IniRead,%ProjectDir%\script.project,IniVariables,WIMEditionID,%WIMEditionID%
+IniRead,%ProjectDir%\script.project,IniVariables,WimToolsMode,%WimToolsMode%
+IniRead,%ProjectDir%\script.project,IniVariables,WIMDriver,%WIMDriver%
+IniRead,%ProjectDir%\script.project,IniVariables,ShowImageX,%ShowImageX%
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%ExtractWimFolder%
 If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
 //-- utility peimg for WinVista
 If,%OS%,Equal,WinVista,Run,%ScriptFile%,CheckPEimg
@@ -180,20 +206,12 @@ Run,%ScriptFile%,SaveSettings
 Run,%ScriptFile%,MakeDirectory
 // If not extracted wim folder - Mount and check that mounted successfully
 If,Not,%ExtractWimFolder%,Equal,Yes,Begin
+If,%BuildClass%,Equal,2,Begin
 Run,%ScriptFile%,MountWin
 Run,%ScriptFile%,CheckMountInstallWim
 Run,%ScriptFile%,CheckMountBootWim
 End
-//-
-//If,%OS%,Equal,Win7,Run,%ScriptFile%,CheckWin7RTM
-//If,%OS%,Equal,Win8,Run,%ScriptFile%,CheckWin8RTM
-//If,%OS%,Equal,Win8.1,Run,%ScriptFile%,CheckWin8.1RTM
-//If,%OS%,Equal,Win10,Run,%ScriptFile%,CheckWin10RTM
-If,%NOCheck_CheckBox%,Equal,True,Echo,"BETA TEST for NOT SUPPORTED SOURCE - End User responsible with the result.",Warn
-If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,6.1_False,Run,%ScriptFile%,CheckWin7RTM
-If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,6.2_False,Run,%ScriptFile%,CheckWin8RTM
-If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,6.3_False,Run,%ScriptFile%,CheckWin8.1RTM
-If,%TargetVersion1%.%TargetVersion2%_%NOCheck_CheckBox%,Equal,10.0_False,Run,%ScriptFile%,CheckWin10RTM
+End
 //-- Check Bcdedit exist
 Run,%ScriptFile%,CheckBCDedit
 //-- DetectLang OLD School
@@ -211,11 +229,11 @@ Set,%IMAGEX%,""
 Set,%WIMUTIL%,""
 Set,%WimGapiFound%,Noo
 Set,%WimtoolsFound%,Noo
-Set,%WimtoolsArch%,%OSArch%
+Set,%WimtoolsArch%,%HostOSArch%
 //--
 Run,%ScriptFile%,CheckWimToolsArch
 // If Hostos x64 and wim tools not found in %tools%\x64 then try with the x86 version
-If,Not,%WimtoolsFound%,Equal,Yes,If,%OSArch%,Equal,x64,Begin
+If,Not,%WimtoolsFound%,Equal,Yes,If,%HostOSArch%,Equal,x64,Begin
 Set,%WimtoolsArch%,x86
 Run,%ScriptFile%,CheckWimToolsArch
 End
@@ -289,7 +307,7 @@ If,%WIMDriver%,Equal,Wimmount,Begin
 If,%FInstallwimmount_CheckBox%,Equal,True,Run,%ScriptFile%,InstallWimSYSMount
 Else,Begin
 // Install wimmount driver only if service is not installed: status=0
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -status"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -status"
 If,%ExitCode%,Equal,0,Run,%ScriptFile%,InstallWimSYSMount
 Else,Begin
 // If Wimmount service ImagePath points to a not existing location delete this entry. Thanks JFX
@@ -297,10 +315,10 @@ If,ExistRegKey,HKLM,SYSTEM\CurrentControlSet\services\WIMMount,ImagePath,Begin
 RegRead,HKLM,SYSTEM\CurrentControlSet\services\WIMMount,ImagePath,%WIMMountImagePath%
 Set,%WIMMountImagePathExist%,No
 Call,HostWindowsDir
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 If,ExistFile,%WIMMountImagePath%,Set,%WIMMountImagePathExist%,Yes
 If,ExistFile,%HostWindowsDir%\%WIMMountImagePath%,Set,%WIMMountImagePathExist%,Yes
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,%WIMMountImagePathExist%,Equal,No,RegDelete,HKLM,SYSTEM\CurrentControlSet\services\WIMMount,ImagePath
 End
 Set,%InstallDriver%,Yes
@@ -313,10 +331,10 @@ If,Not,%InstallDriver%,Equal,Yes,Run,%ScriptFile%,WimDriverNotInstalled
 
 [InstallWimSYSFltr]
 Echo,"Install WimFltr filter ..."
-If,ExistFile,%Tools%\%OSArch%\wimfltr.inf,Set,%winfltrinf%,Yes
-If,ExistFile,%Tools%\%OSArch%\wimfltr.sys,Set,%winfltrsys%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\wimfltr.inf,Set,%winfltrinf%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\wimfltr.sys,Set,%winfltrsys%,Yes
 If,%winfltrinf%%winfltrsys%,Equal,YesYes,Begin
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimfltr -checkinstall -log:#$q%ProjectTemp%\InstallWimSYS.ini#$q"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimfltr -checkinstall -log:#$q%ProjectTemp%\InstallWimSYS.ini#$q"
 IniRead,%ProjectTemp%\InstallWimSYS.ini,Info,hostoswimfltr,%CheckFltr%
 IniRead,%ProjectTemp%\InstallWimSYS.ini,Info,hostoswimfltrinstall,%CheckFltrInstall%
 If,%CheckFltr%,Equal,YES,Set,%InstallDriver%,Yes
@@ -324,20 +342,20 @@ If,%CheckFltrInstall%,Equal,YES,Set,%InstallDriver%,Yes
 End
 Else,Begin
 //WimFltr not a must BUT project always tested with this so better a warning on log to ease supporting
-Echo,"WimFltr Driver - Files Not ALL found in Tools\%OSArch%",Warn
-Echo,"WimFltr Driver - Files Not ALL found in Tools\%OSArch%",Warn
-Echo,"WimFltr Driver - Files Not ALL found in Tools\%OSArch%",Warn
+Echo,"WimFltr Driver - Files Not ALL found in Tools\%HostOSArch%",Warn
+Echo,"WimFltr Driver - Files Not ALL found in Tools\%HostOSArch%",Warn
+Echo,"WimFltr Driver - Files Not ALL found in Tools\%HostOSArch%",Warn
 // If all the required files are not present check -status (returns to the calling program : 0=service not installed, 1 =stopped), 4 =Running)
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimfltr -status"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimfltr -status"
 If,Not,%ExitCode%,Equal,0,Set,%InstallDriver%,Yes
 End
 
 [InstallWimSYSMount]
 Echo,"Install Wimmount filter ..."
-If,ExistFile,%Tools%\%OSArch%\wimmount.inf,Set,%wimmountinf%,Yes
-If,ExistFile,%Tools%\%OSArch%\wimmount.sys,Set,%wimmountsys%,Yes
-If,ExistFile,%Tools%\%OSArch%\WimMountInstall.exe,Set,%WimMountInstallexe%,Yes
-If,ExistFile,%Tools%\%OSArch%\wimserv.exe,Set,%wimservexe%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\wimmount.inf,Set,%wimmountinf%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\wimmount.sys,Set,%wimmountsys%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\WimMountInstall.exe,Set,%WimMountInstallexe%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\wimserv.exe,Set,%wimservexe%,Yes
 //-
 If,%wimmountinf%%wimmountsys%%WimMountInstallexe%%wimservexe%,Equal,YesYesYesYes,Begin
 // Always install to get the driver Waik/ADK suitable to the source OS version
@@ -349,13 +367,13 @@ If,%wimmountinf%%wimmountsys%%WimMountInstallexe%%wimservexe%,Equal,YesYesYesYes
 //If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
 //If,%XP2k3HostOS%,Equal,Yes,Begi-n
 If,%HostOSVersion1%,Smaller,6,Begin
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -install"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -install"
 End
 Else,Begin
-ShellExecute,Hide,%Tools%\%OSArch%\WimMountInstall.exe,/install
+ShellExecute,Hide,%Tools%\%HostOSArch%\WimMountInstall.exe,/install
 End
 // Check that the service/driver is properly installed. If not retry the installation with wimmount.inf method
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -checkinstall -log:#$q%ProjectTemp%\InstallWimSYS.ini#$q"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -checkinstall -log:#$q%ProjectTemp%\InstallWimSYS.ini#$q"
 IniRead,%ProjectTemp%\InstallWimSYS.ini,Info,hostoswimmount,%CheckMount%
 IniRead,%ProjectTemp%\InstallWimSYS.ini,Info,hostoswimmountinstall,%CheckMountInstall%
 If,%CheckMount%,Equal,YES,Set,%InstallDriver%,Yes
@@ -363,11 +381,11 @@ If,%CheckMountInstall%,Equal,YES,Set,%InstallDriver%,Yes
 End
 Else,Begin
 // Wimmount not a must BUT project always tested with this so better a warning on log to ease supporting
-Echo,"wimmount Driver - Files Not ALL found in Tools\%OSArch%",Warn
-Echo,"wimmount Driver - Files Not ALL found in Tools\%OSArch%",Warn
-Echo,"wimmount Driver - Files Not ALL found in Tools\%OSArch%",Warn
+Echo,"wimmount Driver - Files Not ALL found in Tools\%HostOSArch%",Warn
+Echo,"wimmount Driver - Files Not ALL found in Tools\%HostOSArch%",Warn
+Echo,"wimmount Driver - Files Not ALL found in Tools\%HostOSArch%",Warn
 // If all the required files are not present check -status (returns to the calling program : 0=service not installed, 1 =stopped), 4 =Running)
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -status"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimmount -status"
 If,Not,%ExitCode%,Equal,0,Set,%InstallDriver%,Yes
 End
 //
@@ -375,7 +393,7 @@ End
 // No check if Wimftlr service running and Extracted Wim folder (driver used only for debug Plugins), building works without ANY driver
 If,Not,%ExtractWimFolder%,Equal,Yes,Begin
 If,%InstallDriver%,Equal,Yes,Begin
-ShellExecute,Hide,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimfltr -status"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\InstallWimSYS.exe#$q -wimfltr -status"
 If,%ExitCode%,Equal,4,Begin
 Message,"Wimfltr Service Running #$x#$xWimgapi.dll not compatible with Wimfltr Running#$xTo fix Read 'Waik Troubles'.#$x#$xExiting...",Error
 Echo,"Wimfltr Service Running - Wimgapi.dll not compatible with Wimfltr Running - To fix Read 'Waik Troubles' on Preconfig. Exiting..."
@@ -399,46 +417,87 @@ Halt,"Check Wimmount driver NOT Installed. Check Wimmount.sys, Wimmount.inf, Wim
 End
 
 [CheckWin7RTM]
-//Retrieve,FILEVERSION,%Source_Win%\explorer.exe,%ExplorerexeVer%
+//Retrieve,FileVersion,%Source_Win%\explorer.exe,%ExplorerexeVer%
 //If,Not,%ExplorerexeVer%,Equal,6.1.7601.17514,If,Not,%ExplorerexeVer%,Equal,6.1.7600.16385,Run,%ScriptFile%,Win7RTMNotFound,"explorer.exe %ExplorerexeVer%"
-//Retrieve,FILEVERSION,%Source_Sys%\UXInit.dll,%UXInitdllVer%
+//Retrieve,FileVersion,%Source_Sys%\UXInit.dll,%UXInitdllVer%
 //If,Not,%UXInitdllVer%,Equal,6.1.7601.17514,If,Not,%UXInitdllVer%,Equal,6.1.7600.16385,Run,%ScriptFile%,Win7RTMNotFound,"UXInit.dll %UXInitdllVer%"
-//Retrieve,FILEVERSION,%Source_Sys%\tzres.dll,%tzresdllVer%
+//Retrieve,FileVersion,%Source_Sys%\tzres.dll,%tzresdllVer%
 //If,Not,%tzresdllVer%,Equal,6.1.7601.17514,If,Not,%tzresdllVer%,Equal,6.1.7600.16385,Run,%ScriptFile%,Win7RTMNotFound,"tzres.dll %tzresdllVer%"
 //--
 //If,Not,%TargetVersion%,Equal,6.1.7601.17514,Run,%ScriptFile%,Win7RTMNotFound,"TargetVersion %TargetVersion%"
 
 [CheckWin8RTM]
-Retrieve,FILEVERSION,%Source_Win%\explorer.exe,%ExplorerexeVer%
+Retrieve,FileVersion,%Source_Win%\explorer.exe,%ExplorerexeVer%
 If,Not,%ExplorerexeVer%,Equal,6.2.9200.16384,Run,%ScriptFile%,Win8RTMNotFound,"explorer.exe %ExplorerexeVer%"
-Retrieve,FILEVERSION,%Source_Sys%\UXInit.dll,%UXInitdllVer%
+Retrieve,FileVersion,%Source_Sys%\UXInit.dll,%UXInitdllVer%
 If,Not,%UXInitdllVer%,Equal,6.2.9200.16384,Run,%ScriptFile%,Win8RTMNotFound,"UXInit.dll %UXInitdllVer%"
-Retrieve,FILEVERSION,%Source_Sys%\tzres.dll,%tzresdllVer%
+Retrieve,FileVersion,%Source_Sys%\tzres.dll,%tzresdllVer%
 If,Not,%tzresdllVer%,Equal,6.2.9200.16384,Run,%ScriptFile%,Win8RTMNotFound,"tzres.dll %tzresdllVer%"
 //--
 //If,Not,%TargetVersion%,Equal,6.2.9200.16384,Run,%ScriptFile%,Win8RTMNotFound,"TargetVersion %TargetVersion%"
 
 [CheckWin8.1RTM]
 // Windows 8.1, no check for now
-//Retrieve,FILEVERSION,%InstallSRC%\Windows\System32\ntdll.dll,%ntdlldllVer%
+//Retrieve,FileVersion,%InstallSRC%\Windows\System32\ntdll.dll,%ntdlldllVer%
 //If,Not,%ntdlldllVer%,Equal,6.3.9600.16384,Run,%ScriptFile%,Win8.1RTMNotFound,"ntdll.dll %ntdlldllVer%"
-//Retrieve,FILEVERSION,%InstallSRC%\Windows\explorer.exe,%ExplorerexeVer%
+//Retrieve,FileVersion,%InstallSRC%\Windows\explorer.exe,%ExplorerexeVer%
 //If,Not,%ExplorerexeVer%,Equal,6.3.9600.16384,Run,%ScriptFile%,Win8.1RTMNotFound,"explorer.exe %ExplorerexeVer%"
 //--
 //If,Not,%TargetVersion%,Equal,6.3.9600.16384,Run,%ScriptFile%,Win8.1RTMNotFound,"TargetVersion %TargetVersion%"
 
 [CheckWin10RTM]
-//Retrieve,FILEVERSION,%InstallSRC%\Windows\System32\ntdll.dll,%ntdlldllVer%
+//IMPORTANT - CURRENT SECTION ALSO USED BY IMAGES PLUGIN
+//-----'Images Configuration' Plugin:------->Set,%t%,-
+//-----'Images Configuration' Plugin:------->If,%OS%,Equal,Win10,Call,IniReadCSVQ,%ProjectDir%\Build\0-preconfig.script,Interface,NOCheck_CheckBox,8,t
+//-----'Images Configuration' Plugin:------->If,%OS%_%t%,Equal,Win10_False,Exec,%ProjectDir%\Build\0-preconfig.script,CheckWin10RTM
+//---
+//Retrieve,FileVersion,%InstallSRC%\Windows\System32\ntdll.dll,%ntdlldllVer%
 //If,Not,%ntdlldllVer%,Equal,10.0.10240.16384,Run,%ScriptFile%,Win10RTMNotFound,"ntdll.dll %ntdlldllVer%"
-//Retrieve,FILEVERSION,%InstallSRC%\Windows\explorer.exe,%ExplorerexeVer%
+//Retrieve,FileVersion,%InstallSRC%\Windows\explorer.exe,%ExplorerexeVer%
 //If,Not,%ExplorerexeVer%,Equal,10.0.10240.16384,Run,%ScriptFile%,Win10RTMNotFound,"explorer.exe %ExplorerexeVer%"
 //--
 //If,Not,%TargetVersion%,Equal,10.0.10240.16384,Run,%ScriptFile%,Win10RTMNotFound,"TargetVersion %TargetVersion%"
 //--
 //Call,TargetVersion
+//To run current section out of current plugin be sure you have %TargetVersion%
+If,Not,ExistVar,%TargetVersion%,Call,TargetVersion
+//-
 // Test Latest Win 10 compatible version: Win10 1709 build 16299.15
-Call,CompareVersions,%TargetVersion%,10.0.16300.0,Win10_1709
-If,Not,%Win10_1709%,Equal,Smaller,Call,Echo,"Your Windows 10 Source version %TargetVersion% is not supported !!!#$x#$xYou must select a folder with Win10 v 10.0.16299.15 or below#$x#$xTip: Download Windows 10 v1709 Fall Creator Update#$x#$xhttps://tb.rg-adguard.net/index.php#$x#$xhttp://windowsiso.net",Warn,,MessageError,,Halt
+//10.0.17763.1 --> Win10 1809 RedStone 5 Sept 2018
+//10.0.18252.30 -> Win10 1903 19H1
+Call,CompareVersions,%TargetVersion%,10.0.18252.0,Win10_1809
+//-
+Set,%t%,1
+Set,%AzinMini%,0
+If,Not,%Win10_1809%,Equal,Smaller,Set,%t%,0
+If,%t%,Equal,0,Begin
+If,ExistFile,%ProjectDir%\Utils\Azin_Mini.Script,Begin
+If,ExistFile,%ProjectDir%\Utils\Azin_Mini_File.Packed,Begin
+If,ExistSection,%ProjectDir%\Utils\Azin_Mini.Script,Add_Azin_Mini_P_Win10PESE,Set,%AzinMini%,1
+End
+End
+End
+//-
+If,%t%-%AzinMini%,Equal,0-0,Call,Echo,"Your Windows 10 Source version %TargetVersion% is not supported !!!#$x#$xYou must select a folder with Win10 (1809) v10.0.17763.1 or below#$x#$xTip: Download Windows 10 v1809 RedStone 5 (Sept 2018)#$x#$xhttps://tb.rg-adguard.net/index.php#$x#$xhttp://windowsiso.net",Warn,,MessageError,,Halt
+If,%t%-%AzinMini%,Equal,0-1,Run,%ScriptFile%,CheckWin10RTM_Azin
+
+[CheckWin10RTM_Azin]
+Set,%Restart%,0
+If,Not,ExistFile,%BaseDir%\Projects\Azin\script.project,Set,%Restart%,1
+If,Not,ExistFile,%BaseDir%\Projects\Azin\script.project,Exec,%ProjectDir%\Utils\Azin_Mini.Script,Add_Azin_Mini_P_Win10PESE
+If,%Restart%,Equal,0,Set,%m%,"You can **continue** using your Plugins with Azin Project#$x by selecting Win10 1903 Source and later#$x#$xSelect Azin on Project List (Builder-Left Tree)#$xFollow instructions on Azin 'Main Plugin'#$x#$xAzin Topic: http://TheOven.org/index.php?topic=3052#$x#$xHave Fun :)"
+If,%Restart%,Equal,1,Set,%m%,"You can **continue** using your Plugins with Azin Project#$x by selecting Win10 1903 Source and later#$x#$xSelect Azin on Project List (Builder-Left Tree)#$xFollow instructions on Azin 'Main Plugin'#$x#$xAzin Topic: http://TheOven.org/index.php?topic=3052#$x#$xCurrent Builder will Restart now with Azin Project Available on Left tree#$x#$xHave Fun :)"
+If,Not,ExistVar,%EngineVersion%,Begin
+If,%Restart%,Equal,1,Begin
+Call,ParentProcessFileNameNoExt
+If,ExistFile,%ParentProcessFileNameNoExt%.ini,IniWrite,%ParentProcessFileNameNoExt%.ini,Main,Last_Project,Azin
+End
+End
+//Exec,%ProjectDir%\script.project,Win10PESE-ONBUILDEXIT
+If,%Restart%,Equal,0,Call,Echo,"%m%",Warn,,MessageError,,Halt
+If,%Restart%,Equal,1,Call,Echo,"%m%",Warn,,MessageError,10
+//Restart before Mount ! so Better check versions before Mount
+If,%Restart%,Equal,1,Call,Restart
 
 [Win7RTMNotFound]
 Message,"#1 detected. Your Windows 7 source version is not supported !!!#$x#$xYou must select a folder with Windows 7 RTM SP0 or SP1 files in 'Source Directory'#$x#$xTo download an official version of Windows 7 SP0 or SP1, use the button in the main Win7PESE plugin#$xExiting...",Error
@@ -471,7 +530,7 @@ Halt,"Can not detect %OS% Source. Exiting..."
 // Find Win already done in config Plugin
 //Run,%ScriptFile%,Find-Win
 //-
-IniRead,%projectdir%\script.project,IniVariables,WIMIndex,%WIMIndex%
+IniRead,%ProjectDir%\script.project,IniVariables,WIMIndex,%WIMIndex%
 If,%WimTools%,Equal,ImageX,Begin
 Echo,"Mounting Windows %OS% boot.wim with %WimTools%..."
 ShellExecute,%ShowImageX%,%IMAGEX%,"/mount #$q%SourceDir%\sources\boot.wim#$q 2 #$q%BootSRC%#$q"
@@ -484,7 +543,7 @@ End
 //-
 If,%WimTools%,Equal,WimUtil,Begin
 Echo,"Mounting Windows %OS% boot.wim with %WimTools%..."
-IniRead,%projectdir%\script.project,IniVariables,ShowWimUtil,%ShowWimUtil%
+IniRead,%ProjectDir%\script.project,IniVariables,ShowWimUtil,%ShowWimUtil%
 ShellExecute,Hide,%WIMUTIL%,"/mount #$q%SourceDir%\sources\boot.wim#$q 2 #$q%BootSRC%#$q %ShowWimUtil%"
 Echo,"%WimTools% mount boot.wim return : %ExitCode%"
 //-
@@ -503,11 +562,11 @@ If,Not,ExistFile,%Source_Win%\explorer.exe,Halt,"Error with mounting source! (In
 
 [SaveSettings]
 Echo,"Saving settings..."
-IniWrite,%projectdir%\script.project,IniVariables,WIMTool,%WimTools%
+IniWrite,%ProjectDir%\script.project,IniVariables,WIMTool,%WimTools%
 If,%WimTools%,Equal,ImageX,Set,%WIMToolFile%,%IMAGEX%
 If,%WimTools%,Equal,WimUtil,Set,%WIMToolFile%,%WIMUTIL%
 //--
-IniWrite,%projectdir%\script.project,IniVariables,WIMToolFile,%WIMToolFile%
+IniWrite,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMToolFile%
 If,ExistVar,%ProjectInfo%,Begin
 If,Not,ExistFile,%ProjectInfo%,FileCreateBlank,%ProjectInfo%
 IniAddSection,%ProjectInfo%,ProjectInfo
@@ -515,29 +574,19 @@ IniWrite,%ProjectInfo%,ProjectInfo,WimTools,%WimTools%
 IniWrite,%ProjectInfo%,ProjectInfo,ImageX,%IMAGEX%
 IniWrite,%ProjectInfo%,ProjectInfo,WimUtil,%WIMUTIL%
 End
-If,ExistSection,%projectdir%\script.project,VariablesReadEnv,Begin
-IniWrite,%projectdir%\script.project,VariablesReadEnv,#$pWimTools#$p,%WimTools%
-IniWrite,%projectdir%\script.project,VariablesReadEnv,#$pImageX#$p,%IMAGEX%
-IniWrite,%projectdir%\script.project,VariablesReadEnv,#$pWimUtil#$p,%WIMUTIL%
-End
-If,ExistSection,%projectdir%\script.project,IniVariablesReadEnv,Begin
-IniWrite,%projectdir%\script.project,IniVariablesReadEnv,WimTools,%WimTools%
-IniWrite,%projectdir%\script.project,IniVariablesReadEnv,ImageX,%IMAGEX%
-IniWrite,%projectdir%\script.project,IniVariablesReadEnv,WimUtil,%WIMUTIL%
-End
 
 [CheckBCDedit]
 If,Not,ExistFile,%Tools%\%SourceArch%\bcdedit.exe,FileCopy,%Source_Sys%\bcdedit.exe,%Tools%\%SourceArch%
-If,Not,ExistFile,%Tools%\%OSArch%\bcdedit.exe,If,ExistFile,%ProjectTemp%\HostOSTools\bcdedit.exe,FileCopy,%ProjectTemp%\HostOSTools\bcdedit.exe,%Tools%\%OSArch%
+If,Not,ExistFile,%Tools%\%HostOSArch%\bcdedit.exe,If,ExistFile,%ProjectTemp%\HostOSTools\bcdedit.exe,FileCopy,%ProjectTemp%\HostOSTools\bcdedit.exe,%Tools%\%HostOSArch%
 //
 // Use bcdedit.exe (x86) on a x64 HostOS works, but not the reverse
-If,%OSArch%,Equal,x86,If,Not,ExistFile,%Tools%\%OSArch%\bcdedit.exe,Begin
-Message,"%Tools%\%OSArch%\bcdedit.exe NOT found. Build Stop Now",Error
+If,%HostOSArch%,Equal,x86,If,Not,ExistFile,%Tools%\%HostOSArch%\bcdedit.exe,Begin
+Message,"%Tools%\%HostOSArch%\bcdedit.exe NOT found. Build Stop Now",Error
 Run,%ScriptFile%,PreRequesthtm
-Halt,"%Tools%\%OSArch%\bcdedit.exe NOT found. Build Stop Now"
+Halt,"%Tools%\%HostOSArch%\bcdedit.exe NOT found. Build Stop Now"
 End
 //
-Set,%BcdEditExe%,%Tools%\%OSArch%\bcdedit.exe
+Set,%BcdEditExe%,%Tools%\%HostOSArch%\bcdedit.exe
 If,Not,ExistFile,%BcdEditExe%,Set,%BcdEditExe%,%Tools%\x86\bcdedit.exe
 //
 If,%OS%,Equal,Win7,Set,%CheckBcdeditVer%,6.1.7600.16385
@@ -556,8 +605,10 @@ If,Not,ExistFile,%Tools%\peimg.exe,Halt,"%Tools%\peimg.exe NOT found. Build Stop
 [MakeDirectory]
 Echo,"Make Directory..."
 If,Not,ExistDir,%BaseDir%\Temp,DirMake,%BaseDir%\Temp
+If,%BuildClass%,Equal,2,Begin
 If,Not,ExistDir,%BootSRC%,DirMake,%BootSRC%
 If,Not,ExistDir,%InstallSRC%,DirMake,%InstallSRC%
+End
 If,Not,ExistDir,%IsoFolder%,DirMake,%IsoFolder%
 If,Not,ExistDir,%TargetDir%,DirMake,%TargetDir%
 
@@ -567,16 +618,12 @@ If,%OS%,Equal,Win7,Set,%PreRequest7z%,PreRequestWin7.7z
 Else,Set,%PreRequest7z%,PreRequest.7z
 ExtractFile,%ScriptFile%,Folder,%PreRequest7z%,%ProjectTemp%
 ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\%PreRequest7z%#$q -y -o#$q%ProjectTemp%#$q"
-System,FILEREDIRECT,OFF
-ShellExecuteex,Hide,cmd.exe,"/C #$q%ProjectTemp%\PreRequest.htm#$q",%ProjectTemp%
-System,FILEREDIRECT,ON
+Call,StartDoc,%ProjectTemp%\PreRequest.htm
 
 [WaikTroubles_ReadMe]
 If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
 ExtractFile,%ScriptFile%,Folder,Waik_Troubles.htm,%ProjectTemp%
-System,FILEREDIRECT,OFF
-ShellExecuteex,Hide,cmd.exe,"/C #$q%ProjectTemp%\Waik_Troubles.htm#$q",%ProjectTemp%
-System,FILEREDIRECT,ON
+Call,StartDoc,%ProjectTemp%\Waik_Troubles.htm
 
 [DetectLang_OLD_School]
 Set,%searchfile%,winload.exe.mui
@@ -586,15 +633,13 @@ Set,%searchfold%,%Source_Sys%\Boot
 Run,%ScriptFile%,FindLangIDNumberPEXau3
 IniRead,%ProjectTemp%\%InfoSourceOSIni%,infoSourceos,Fileoslang,%LangIDNumber%
 IniRead,%ProjectTemp%\%InfoSourceOSIni%,infoSourceos,SubFolder,%LocalizeLocaleMini%
-If,Not,%LangIDNumber%,Equal,0000,Set,%DistLang%,%LocalizeLocaleMini%,PERMANENT
+If,Not,%LangIDNumber%,Equal,0000,Set,%DistLang%,%LocalizeLocaleMini%,Permanent
 Else,Run,%ScriptFile%,DetectLangBootwim_OLD_School
 // SaveSettings Language
 If,ExistVar,%ProjectInfo%,IniWrite,%ProjectInfo%,ProjectInfo,Language,%DistLang%
-If,ExistSection,%projectdir%\script.project,VariablesReadEnv,IniWrite,%projectdir%\script.project,VariablesReadEnv,#$pLanguage#$p,%DistLang%
-If,ExistSection,%projectdir%\script.project,IniVariablesReadEnv,IniWrite,%projectdir%\script.project,VariablesReadEnv,Language,%DistLang%
-Shellexecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%w%#$q"
+ShellExecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%w%#$q"
 If,ExistFile,%w%,Echo,"FILE NOT DELETED",WARN
-Shellexecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\%InfoSourceOSIni%#$q"
+ShellExecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\%InfoSourceOSIni%#$q"
 If,ExistFile,%ProjectTemp%\%InfoSourceOSIni%,Echo,"FILE NOT DELETED",WARN
 
 [DetectLangBootwim_OLD_School]
@@ -605,10 +650,10 @@ Set,%searchfold%,%BootSRC%\Windows\System32\Boot
 Run,%ScriptFile%,FindLangIDNumberPEXau3
 //IniRead,%ProjectTemp%\%InfoSourceOSIni%,infoSourceos,Fileoslang,%LangIDNumber%
 IniRead,%ProjectTemp%\%InfoSourceOSIni%,infoSourceos,SubFolder,%LocalizeLocaleMini%
-Set,%DistLang%,%LocalizeLocaleMini%,PERMANENT
-Shellexecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%w%#$q"
+Set,%DistLang%,%LocalizeLocaleMini%,Permanent
+ShellExecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%w%#$q"
 If,ExistFile,%w%,Echo,"FILE NOT DELETED",WARN
-Shellexecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\%InfoSourceOSIni%#$q"
+ShellExecute,Hide,%cmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\%InfoSourceOSIni%#$q"
 If,ExistFile,%ProjectTemp%\%InfoSourceOSIni%,Echo,"FILE NOT DELETED",WARN
 
 [FindLangIDNumberPEXau3]
@@ -648,11 +693,11 @@ TxtAddline,%w%,"		WEnd",Append
 TxtAddline,%w%,"	EndIf",Append
 TxtAddline,%w%,"	Return SetError(1, 0, #$q#$q)",Append
 TxtAddline,%w%,"EndFunc   ;==>_BL_FIND_FILE",Append
-ShellExecute,Hide,%Tools%\%SysType%\AU3381.exe,"#$q%w%#$q",%ProjectTemp%
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%w%#$q",%ProjectTemp%
 
 [ClearTarget]
 If,ExistDir,%TargetDir%,Echo,"Deleting [%TargetDir%]"
-If,ExistDir,%TargetDir%,Call,DirDeleteE,%TargetDir%
+If,ExistDir,%TargetDir%,Call,DirMakeE,%TargetDir%
 //If,ExistDir,%TargetDir%,Call,DirDelete,%TargetDir%
 //If,ExistDir,%TargetDir%,Call,Echo,"%TargetDir% could not be deleted!",Warn,,Message,,Exit
 
@@ -665,10 +710,10 @@ If,ExistDir,%IsoFolder%\TargetImage,Call,DirDelete,%IsoFolder%\TargetImage
 //-
 If,ExistDir,%IsoFolder%\TI\Wim,Call,DirDelete,%IsoFolder%\TI\Wim
 If,ExistDir,%IsoFolder%\TI,Echo,"Deleting [%IsoFolder%\TI]"
-If,ExistDir,%IsoFolder%\TI,Call,DirDeleteE,%IsoFolder%\TI
+If,ExistDir,%IsoFolder%\TI,Call,DirMakeE,%IsoFolder%\TI
 //-
 //If,ExistDir,%IsoFolder%\TargetImage\WIM,Echo,"Deleting [%IsoFolder%\TargetImage\WIM]"
-//If,ExistDir,%IsoFolder%\TargetImage\WIM,Call,DirDeleteE,%IsoFolder%\TargetImage\WIM
+//If,ExistDir,%IsoFolder%\TargetImage\WIM,Call,DirMakeE,%IsoFolder%\TargetImage\WIM
 //If,ExistDir,%IsoFolder%\TargetImage\WIM,Call,DirDelete,%IsoFolder%\TargetImage\WIM
 //If,ExistDir,%IsoFolder%\TargetImage\WIM,Call,Echo,"%IsoFolder%\TargetImage\WIM could not be deleted!",Warn,,Message,,Exit
 
@@ -681,67 +726,120 @@ Call,CreateCodeBox,,NoOverWrite
 [Update_DLPlugins_P]
 If,ExistFile,"%ProjectDir%\Utils\Plugin Organisations.Script",Begin
 If,ExistSection,"%ProjectDir%\Utils\Plugin Organisations.Script",ExtractDownload,Begin
-Run,"%ProjectDir%\Utils\Plugin Organisations.Script",ExtractDownload,"%ProjectDir%\Utils\Plugin Organisations.Script",NoRefresh
+//Run,"%ProjectDir%\Utils\Plugin Organisations.Script",ExtractDownload,"%ProjectDir%\Utils\Plugin Organisations.Script",NoRefresh
 End
 End
 
 [DL_Download_Pack_Big_Button_B]
 If,ExistFile,"%ProjectDir%\Utils\Plugin Organisations.Script",Begin
 If,ExistSection,"%ProjectDir%\Utils\Plugin Organisations.Script",DownloadXXX_Container_Big,Begin
-Exec,"%ProjectDir%\Utils\Plugin Organisations.Script",DownloadXXX_Container_Big
+//Exec,"%ProjectDir%\Utils\Plugin Organisations.Script",DownloadXXX_Container_Big
 End
 End
 
 [Show_Second_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-First_Gui,False
 Run,%ScriptFile%,Show-Hide-Second_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show_First_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 //-
-Set,%PrepareCodeBox_CheckBox%,True,PERMANENT
-Set,%BackupProject_CheckBox%,True,PERMANENT
-Set,%ClearTarget_CheckBox%,True,PERMANENT
-Set,%Clear_TargetImageWim_CheckBox%,True,PERMANENT
-Set,%Update_DLPlugins_CheckBox%,True,PERMANENT
-Set,%pVerifyCheckBox%,True,PERMANENT
-Set,%NOCheck_CheckBox%,False,PERMANENT
+Set,%PrepareCodeBox_CheckBox%,True,Permanent
+Set,%BackupProject_CheckBox%,True,Permanent
+Set,%ClearTarget_CheckBox%,True,Permanent
+Set,%Clear_TargetImageWim_CheckBox%,True,Permanent
+//Set,%Update_DLPlugins_CheckBox%,True,Permanent
+Set,%pVerifyCheckBox%,True,Permanent
+Set,%NOCheck_CheckBox%,False,Permanent
 //-
 Run,%ScriptFile%,Show-Hide-Second_Gui,False
 Run,%ScriptFile%,Show-Hide-First_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show-Hide-Second_Gui]
 Echo,"Changing Interface"
 //--
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
 //--
-Visible,%Bevel_Options%,#1,PERMANENT
-Visible,%PrepareCodeBox_CheckBox%,#1,PERMANENT
-Visible,%PrepareCodeBox_Button%,#1,PERMANENT
-Visible,%BackupProject_Button%,#1,PERMANENT
-Visible,%BackupProject_CheckBox%,#1,PERMANENT
-Visible,%ClearTarget_CheckBox%,#1,PERMANENT
-Visible,%Clear_TargetImageWim_CheckBox%,#1,PERMANENT
-Visible,%Update_DLPlugins_Button%,#1,PERMANENT
-Visible,%Update_DLPlugins_CheckBox%,#1,PERMANENT
-Visible,%DL_Download_Pack_Big_Button%,#1,PERMANENT
-Visible,%FInstallwimmount_CheckBox%,#1,PERMANENT
-Visible,%pVerifyCheckBox%,#1,PERMANENT
-Visible,%pVerify_Button%,#1,PERMANENT
-Visible,%NOCheck_CheckBox%,#1,PERMANENT
+Visible,%Bevel_Options%,#1,Permanent
+Visible,%PrepareCodeBox_CheckBox%,#1,Permanent
+Visible,%PrepareCodeBox_Button%,#1,Permanent
+Visible,%BackupProject_Button%,#1,Permanent
+Visible,%Test_WIMLIB_IMAGEX_IGNORE_CASE_Button%,#1,Permanent
+Visible,%BackupProject_CheckBox%,#1,Permanent
+Visible,%ClearTarget_CheckBox%,#1,Permanent
+Visible,%Clear_TargetImageWim_CheckBox%,#1,Permanent
+//Visible,%Update_DLPlugins_Button%,#1,Permanent
+//Visible,%Update_DLPlugins_CheckBox%,#1,Permanent
+//Visible,%DL_Download_Pack_Big_Button%,#1,Permanent
+Visible,%FInstallwimmount_CheckBox%,#1,Permanent
+Visible,%pVerifyCheckBox%,#1,Permanent
+Visible,%pVerify_Button%,#1,Permanent
+Visible,%NOCheck_CheckBox%,#1,Permanent
 //--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+Visible,%pButton_Show_First_Gui%,#1,Permanent
 
 [Show-Hide-First_Gui]
 Echo,"Changing Interface"
 //--
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
+
+[DownloadXXX_Container_Small]
+IniRead,%ScriptFile%,Main,Web1CS,%WebFileContainer%
+Call,DownloadXQ,%FileContainer%,%WebFileContainer%
+//-
+//Run,%ScriptFile%,ExtractDownload
+Run,%ScriptFile%,Update_DLPlugins_P
+If,%Auto_CheckBox%,Equal,True,System,ReScanScripts
+
+[Verify_Dependencies_B]
+Run,%ScriptFile%,Verify_Dependencies
+
+[Verify_Dependencies]
+If,ExistFile,%ProjectDir%\Components\DotNet.script,Begin
+//If,ExistSection,%ProjectDir%\Components\DotNet.script,VerificationP,Run,%ProjectDir%\Components\DotNet.script,VerificationP,%ProjectDir%\Components\DotNet.script
+End
+
+[Test_WIMLIB_IMAGEX_IGNORE_CASE]
+Set,%t%,0
+If,%BuildClass%,Equal,3,Set,%t%,1
+If,%BuildClass%,Equal,2,Begin
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%ExtractWimFolder%
+If,%ExtractWimFolder%,Equal,YES,Begin
+Set,%t%,1
+//XenonKilla case: Temporary support to Special case : "Extracted wim Folders" with manually deleted "install.wim"
+If,Not,ExistFile,%SourceDir%\sources\install.wim,Set,%t%,0
+End
+End
+If,%t%,Equal,1,Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE_P,t
+If,%t%,Equal,1,Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE_Halt
+
+[Test_WIMLIB_IMAGEX_IGNORE_CASE_Halt]
+Call,Echo,"Halt: Serious Error#$x#$xYou have #$pWIMLIB_IMAGEX_IGNORE_CASE#$p Variable set to 0 on your Environment Variables#$x#$xChange your WIMLIB_IMAGEX_IGNORE_CASE value to 1#$xOR Better DELETE WIMLIB_IMAGEX_IGNORE_CASE from your 'Environmental Variable' Value#$x#$xComment: Using such value is not common on Windows ! #$x#$x#$xTip: Right Click 'My Computer' OR 'This PC' - Click 'Properties'#$x - Click 'Advanced system settings'#$x -- Select 'Advanced' at Top -> Click 'Environment Variables'#$x  ***** Check 'User Variables' and 'System Variables'#$x#$x#$xIMPORTANT:#$x#$xAfter you change WIMLIB_IMAGEX_IGNORE_CASE 'Environmental Variable' setting. #$x#$x RESTART Your builder and Start Building again.",Warn,,MessageError,,Halt
+
+[Test_WIMLIB_IMAGEX_IGNORE_CASE_P_B]
+Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE_P,t
+//Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE_P_B_CMD
+If,%t%,Equal,1,Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE_P_B_CMD
+If,%t%,Equal,1,Run,%ScriptFile%,Test_WIMLIB_IMAGEX_IGNORE_CASE_Halt
+If,%t%,Equal,0,Message,"Test Pass. :)",Information,5
+
+[Test_WIMLIB_IMAGEX_IGNORE_CASE_P_B_CMD]
+System,FileRedirect,OFF
+ShellExecute,Open,cmd.exe,"/K Title Project WIMLIB_IMAGEX_IGNORE_CASE Error TEST&Set&@Echo Off&Echo.&Echo.&Echo.&Echo Above Full list of cmd 'Environmental Variables'&Echo.&Echo You must not see WIMLIB_IMAGEX_IGNORE_CASE=0 on above list&Echo.&IF DEFINED WIMLIB_IMAGEX_IGNORE_CASE ( Echo.&Echo.&Echo Failure: AutoFound WIMLIB_IMAGEX_IGNORE_CASE=0 on above list&Echo WIMLIB_IMAGEX_IGNORE_CASE=#$pWIMLIB_IMAGEX_IGNORE_CASE#$p ) Else (Echo.)&Echo Close CMD window&pause&exit"
+System,FileRedirect,ON
+
+[Test_WIMLIB_IMAGEX_IGNORE_CASE_P]
+If,#1-,Equal,-,Set,#1,t
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C If Defined WIMLIB_IMAGEX_IGNORE_CASE ( If #$pWIMLIB_IMAGEX_IGNORE_CASE#$p==0 Exit 1 ) Else ( Exit 0 )"
+Set,%#1%,%ExitCode%
+System,FileRedirect,ON
 
 [History_Old]
 History014=JFX -BlueLife - InstWimFltr.exe -install -uninstall -checkinstall -log:"C:\bu bir test\InstWimFltr.ini"
@@ -764,6 +862,45 @@ Logo=preconfig.jpg
 [EncodedFile-AuthorEncoded-preconfig.jpg]
 lines=0
 0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+Run,%ScriptFile%,Show_First_Gui
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Folder
@@ -922,54 +1059,4 @@ lines=69
 67=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
 68=7r3u2aI16iSgsiJHfGevwde85uBGanuUed5ihNtm2o7BPVS6hf/ybYRoeO01KGTj5foO/os8r7TdrduDA8au9+6loKV9pzvcEXeMVwrzWzwiyAbFwUhsa2TGKjoI2qgpbC3rusNYQyVME46tbqmynoVUaexyiisvBW1BXin9JJLNTyOvfeZ6OhvpuK54I5/RydUJrCD9bKCx7sQn2p3EdpNzPt84fMFUJTrraLes5eZuVHnoTnwnPfR5PEW5C3Jl31wUcrNDe8GdUTBFkUxtoUK/Poc68i78yd5O5SZxNkZBHS5ufaNJ+3QuX27zVujT2rYfR3wwFeQzX6ByedLggmZDJB5Dnavhpomkvz+w9ZE2YmqvDbDSlYmqoA6Y2cn30lulbpoNSWiMetw+otWdmitO7htbVDEtJuCLzXc27oSmlntPpPl+r+s2f1Bi8k0JUw/bjjjcOjg7IHwsHlB190zEDiVPgW4YEWcPlIcUWdNx41RHctudjMZO+I+aKjp7TA06CvmB5K0R680fC5JWOr9hl644aGOBU8sWL0IWV6mRreipm00/NozuEzcjV+Kd1Rky3VzzLmN/jEaxlsOQCS88YGNv7mM7v/pna6GoQnzqi+ujJZBvDvOchlHQP0nNwxJF3kkMa3ve4EXYvmfWpdJ2J8/JtDY9MX2UprXLns6rHjYdeAuqmMMv9XEMxEOUqVI58P7NgRBeiwCpzHK8NtajF931BWVNiH9pUy5LG05wRpngN3qG21BkZgZqOMF2fEGbF0mqwvZmG+QiCTgjUVtqUMa6KOP7LEa+0eFFXg/c8WeMB+WhDbZ7HqI8I6e3rUjWeV+9g5ctadRy6VLyhXGNnEgnOHeSfWkJOAbr7Vsiqq1VrcfKawGmfSfhygwAMnfk5cjqv/zYz6MywQRHSXMwcB2HKGgZfqWYTvNEbzWzi0RhSWLtR/EnJ97cJxYXPMQINjj1gNWR3PaBMsAmJvF8yxq/ToSUDXlwWBWVn2swtfGp0QPRs9hHQgQjsFssXrjdj7MGfxyGZQAP0M0bxSSdqhckgpBoPmdwvtfd6UvGwpxQ1y6LexfxWpX13fcxCqVZwJi6sv4Uz2Ht6NDxisZPfuBfdJDK4Gqiv1KmPNdZ6U98ohhLT/teGhPU6tuSJT4FIMreaR41GwTAxrQUvj3yWOWj8aZbin85+XTjaPL+KuhRMOTHse710inSs1d6+eMGlACiuLX5lvK+m614RCLncg9F1/FCrO7whfKfxGs6ZR5WOFVFN1xBKjJyHlTRHnhP67dZBs+Iuvsq5fQF7khMVtQiVnymdkwTv6s5af82QCI3ZGn9YwQvbzNJerRAa56NLoRbPqY9LQuD9He9U07LyODEDX4rRsBC1dlumX+WVa353YbOznB/xIamMUyisjLchAdX1STDAK0WzfZ/2essL9GEH/GbOnHCH/T3B1wRdIi1u7wlKEOCqRdsEYIDN/SshoVZcvfoEW6KxgzSvymOg3fsUnfxCNtSqaLK/+iDhzq0CV8qLF3nT4LxR1OHByQ8BKHhesqd8ZhpikE1q0RRz1NuhAY2K6qcPFBYEmUtnsZM+7lzTJOFD45RHXImQSIMNgGK/57Xgt7is9tUOg7Hxe1ufv2x9Ni0VomZRJ2VgUYTgkIoaLn9oILIt9ZSGxq4VnlHq1vsDuqepbCPwN39k79fXqIEmPzX7iR6kpvogESw+LMu35+9JX78QqRskWvkPUYfsFS37GLHp/Zqe55vAr6R1JMFbQ9FCvp3e6zmdXu8aoFPvyel9SXwgRVawYIDOaGF5ZFHFdXylnCs25Kjcg6ftKwmsdN/axEWonUrhI/tMDvs//H0/ceMaUBbiZjI8kc9EZyi822K7hEuYycP1Qbb7nu0Qxbzad3BRn4wr3+5D2/d82MWfN8yVzj8LXKMY7wXfAY3dnUCAWrARzF/XtdXLg8GsWDUZyPGVqCQAiuSM26L4sNNJRQFGbczy7CVyZufuBNk26RftGj4paVkHFqCStzU7bDDLLrb3gQKcWn6OpTnlz4LMEPRa0uWSgRMg2aoNNKm7LrzMydcj2g07efTLGOBNFF1tSMtcPoTsZ0nxYjJ5gIgXkB9i559xfEILq22jmCiTEwgCv0615zrm4y/svGNzNEfgqo1HrWcwuzN0CArdWXeiTLssJhQtN9gRXjcJmRsrt4PtPQLEC6ddkpWv/JmxFC7WZgeR3F+havMdWMSthuCYzLuPyB5qzVRg8l1tan0HkWg5MSpCcUO6JV/H7fZ3/n/UA1o7po3aagMYxlN/Wxv66xdsSg8fQOasuphuX3UyaDjCCO1ZURDGCI6LS9UBBQ+0kkKNGnSUoafWDl8OUBMv1ioDsjDb3OZtBy/IAmX2kFhc1CPr4gSbbFdB7FDedL5GeNJykLyAUA6/TXMqKfU26JNzgiXFgBD7zFRIweraZAc9xXKP6LYmR0HIJJp0XeTntYhz63zeDBbfCMwRlpXDLmwA0MaPRnZd55yA6ikHptrE9nvi3hiantMtndTlU33NZJdx+D/3oJ0zNTqeqLpB0v0aYDPfke4e0FZDUwc+bVSxdNkuiximlBFyQrgpOx2lrgfji1EFIOyZv00mJNpRNn/YKWtzhkEC7IvQ2WDTO7fuk6VE2UpalY1zMKTGWv6BxmhWnCblzzZTDIoOqHjO0Sjns1Fu6bC/miFckN57Pa+leLD+jcqvlFqfTCwS4sd6nOELn4hiqXWsKhFu91WHQ+eNlWoZnbD0xUtgMIh6c/XDMYPZ3iZaOJRsuZRsW1mjjkVj+1+M71ERscTo6ihtV9WEFMDWvtvUXJNn7ya1svpIsMZfT9ZY19BAl8hEj3xEsLxPq1Uza5idCgKqKpQaW4Ikd60fTEbCTtUThS6Af+HdIHyhrmh0xXgWRmWLZL5QBHj919QkYNYSRdzTxhTLOF/4iuHy+PXDCeA7iRSqcBmp4BIcOnNBpqALKEYuZCjs7BGoqWq09dT7qOTBxx6s9NlpO71ubPUxmI+NeY+zqHnkZv3kxqGg60Of31yScWPiDYnADJa4TO4MJsSZTPw/6tywpdOjKLeWHo6ExVsIL+L39uGXFTsIgMyJapPKWfqpf89igBs6FiryBW0fW3/LyXcZx0HRJCB7vThAUc425trfopb7Hg7JfZltzUQKm/ANdsn8sQ++4Hgsjpf3XcQXCnw8nVOq/ilryUsYkEedzglXOZvD9Fh5Y7WnTIbTWLx9fp1g2Oz0ndO62yJjInae0qwDBe19rQplonGjI42bSkfhjBRdeW7Cew/OSDeroAt4GP+92N4P4mTi0Mi+hO8EKhA+3SvHrs31wFeB47pyPpB/WS9HGz7sEFVLt9ofMbUDwqf7lviWANGCN4X1KeULM4s6ZiKE1UdPFOjO+CjoaVjvZZtHIS/qo3H4JUonvnmcBFQxyBnxZOShOZ5fEgMMQoBhql6cLscKt4TSlKpzQOkvDim+uJ1vPV1CjAivFlfoaqd1PJ58fXLIcpLXIJyz0lULnetilUbth+Yx7zoNkKb0ma4sADbnu5/Bcj/PblxAB3marBHLbZkzkec1W3gckdHd+B3L3fGwd8O1d3kQ27iabXZr9m0dQ11z+MtXex16X8xaqgKgZl+85v5ceImz1+ouBCVtRb/ObqIvsSrDYuqXsVZqEkIAPBxpkYtEe595TQ3hYsofoKTMndIW31so40d7511yNmbNKoU1sroZg8Eq2LTj3x/E5th12GgX+RrQxXl9yamuiCkABdME7GeqlGLLovif7g6JPzsNLpBnseELFQmBQ9oiu2SaA59tSAdnqUEQ75qh3ccYCTAhjDg9MzzXcFbWIOJ3VA7kOfaTkMf43ngEHJFws2cVPvYsvUsmjizbVZbjA3w34FBcxaBf9fXf7TBTGRw/kaArDPkI/jgwIgCKzZkmONAQvnBJZBiWFkZXVCWsqLcXyJIMRLTmtkVLsdOkA7Dn0xgwCnmGplNjqWDMpmBZa+FOQjC9LbxBgeg2um6MlgQ/rowCfOaRKMQ+w05gijlTqABdG4pcTmmGx4eHiQPTVfTtlsInokAV/WVGoGb0XNTkQYHBKy4Jw
 69=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
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[Settings_Default]
-Run,%ScriptFile%,Show_First_Gui
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
-lines=0
-0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
-
-[DownloadXXX_Container_Small]
-IniRead,%ScriptFile%,Main,Web1CS,%WebFileContainer%
-Call,DownloadXQ,%FileContainer%,%WebFileContainer%
-//-
-//Run,%ScriptFile%,ExtractDownload
-Run,%ScriptFile%,Update_DLPlugins_P
-If,%Auto_CheckBox%,Equal,True,System,RESCANSCRIPTS
-
-[Verify_Dependencies_B]
-Run,%ScriptFile%,Verify_Dependencies
-
-[Verify_Dependencies]
-If,ExistFile,%ProjectDir%\Components\DotNet.script,Begin
-If,ExistSection,%ProjectDir%\Components\DotNet.script,VerificationP,Run,%ProjectDir%\Components\DotNet.script,VerificationP,%ProjectDir%\Components\DotNet.script
-End
 

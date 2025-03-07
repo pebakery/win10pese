@@ -4,20 +4,21 @@ Type=Plugin
 Author=JFX, John Adamopoulos
 Description=Adds Word pad to the PE compilation.
 Credits=ChrisR, PEBuilder plugin HWPnP.inf
-Version=027
+Version=031
 Download_Level=1
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.18
+Date=2019.01.15_00:36.01 (GMT0: -3 Hours)
 Depend=
 Disable=
 CertifiedBy=
 Certification=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/MsWordPad.script
 Web2=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/Accessories/MsWordPad.script
+Web3=http://yomi.cwcodes.net/Yomi/ComponentsY/MsWordPad.script
 HistoryNotes01=
 History014=Lancelot source - Accessories naming
 History015=JFX wordpad codes added to support pex ;). ( Lancelot)
@@ -28,6 +29,9 @@ History024=ChrisR to open .docx OpcServices.dll Reply 39: http://TheOven.org/ind
 History025=Lancelot Added Components_PluginCache_Extract - Date:2016.11.09
 History026=Lancelot Added MultiLanguage Desktop.ini Support - http://TheOven.org/index.php?topic=2024 - http://TheOven.org/index.php?topic=2025 - Date:2017.02.07
 History027=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+History029=Lannelot Add BuildClass 3 support x2- Date:2018.10.09 - Date:2018.10.09
+History030=Lancelot updated v030 - Date:2018.10.22
+History031=Lancelot Add BuildClass - Date:2019.01.14 - Date:2019.01.15
 
 [Interface]
 pBevel1=pBevel1,1,12,8,49,154,234
@@ -72,11 +76,14 @@ Run,%ScriptFile%,%OSFamily%_Process
 Set,%ProgramFolder%,"#$pProgramFiles#$p\Windows NT\Accessories"
 //-
 If,Not,ExistDir,"%TargetDir%\Program Files\Windows NT\Accessories",DirMake,"%TargetDir%\Program Files\Windows NT\Accessories\"
-FileCopy,"%InstallSRC%\Program Files\Windows NT\Accessories\wordpad*.*","%TargetDir%\Program Files\Windows NT\Accessories\"
+If,%BuildClass%,Equal,3,Require,FileList
+If,%BuildClass%,Equal,2,FileCopy,"%InstallSRC%\Program Files\Windows NT\Accessories\wordpad*.*","%TargetDir%\Program Files\Windows NT\Accessories\"
 Require_FileQ,IconCodecService.dll
 Require_FileQ,MFC42u.dll
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\UIRibbon.dll,Require_FileQ,UIRibbon.dll
 If,ExistFile,%Source_Sys%\UIRibbonRes.dll,Require_FileQ,UIRibbonRes.dll
+End
 Require_FileQ,WindowsCodecs.dll
 Require_FileQ,WindowsCodecsExt.dll
 //-
@@ -106,6 +113,13 @@ If,%pCheckBox2%,Equal,True,Add_Pin,RecentPrograms,,$Start_Menu\Programs\%Startme
 Else,If,%pCheckBox1%,Equal,True,Add_Pin,RecentPrograms,,$Desktop\%shname%.lnk
 End
 Run,%ScriptFile%,NT6_Process_DesktopINI
+
+[Require_FileList]
+\Program Files\Windows NT\Accessories\wordpad*.*
+\Windows\System32\UIRibbon.dll
+\Windows\System32\??-??\UIRibbon.dll.mui
+\Windows\System32\UIRibbonRes.dll
+\Windows\System32\??-??\UIRibbonRes.dll.mui
 
 [NT6_Process_DesktopINI]
 //Win10: Wordpad.lnk=@%SystemRoot%\system32\shell32.dll,-22069
@@ -263,16 +277,24 @@ Logo=wordpad.ico
 lines=0
 0=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
 
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
-
 [InterfaceEncoded]
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+//Add to Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2|Web3
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0

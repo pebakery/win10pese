@@ -1,0 +1,233 @@
+[Main]
+Title=CMD Settings Console
+Type=Plugin
+Author=Lancelot
+Description=Customize Cmd.exe "Command Processor" settings
+Credits=http://TheOven.org
+Version=008
+Download_Level=1
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=389
+Date=2020.01.23
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks%20CMD/CMD%20Settings_Console.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks%20CMD/CMD%20Settings_Console.script
+Web3=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks%20CMD/CMD%20Settings_Console.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Lancelot: Adding Echo to cmd.exe have unwanted effect with some .cmd files using For /F .... See topic and slore workarounds : http://TheOven.org/index.php?topic=2669.0
+History001=Lancelot ~ 2012.11.20 Plugin created
+History003=Lancelot - "Autorun 'Echo 'ProjectName UserName' Title 'ProjectName UserName''" --> System or Administrator ;)
+History004=Lancelot Added DU Buttons - Date:2015.10.11
+History005=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History006=Lancelot Fixed: Else must be used after If - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.09
+History007=Lancelot Add Win10PESE - Date:2019.02.02
+History008=Lancelot Add Support to SelectedProject - Date:2020.01.23
+
+[Interface]
+pBevel1=pBevel1,1,12,10,28,535,50
+pBevel2=pBevel2,1,12,10,76,288,41
+pBevel3=pBevel3,1,12,10,115,288,50
+PathCompletionChar_TextLabel="PathCompletionChar (only folders)",1,1,16,128,171,18,8,Normal
+PathCompletionChar_ScrollBox="CTRL + D",1,4,193,125,85,21,"CTRL + D","CTRL + F",TAB,BACKSPACE,Default
+CompletionChar_TextLabel="CompletionChar (files and folders)",1,1,15,83,168,18,8,Normal
+CompletionChar_ScrollBox="CTRL + F",1,4,193,82,85,21,"CTRL + D","CTRL + F",TAB,BACKSPACE,Default
+EnableExtensions_CheckBox="EnableExtensions (+)",1,3,19,213,128,18,True
+DefaultColor_CheckBox="DefaultColor (-)",1,3,19,180,131,16,False
+Autorun_TextLabel="Autorun Settings",1,1,15,32,86,18,8,Normal
+AutoRun_Custom_TextBox="Autorun Custom",1,0,408,51,124,21,"Echo Lancelot&Title Hello"
+AutoRun_ScrollBox="Autorun 'Title ''ProjectName'''",1,4,20,52,364,21,"Autorun Default (Empty)","Autorun 'Echo ''ProjectName'''","Autorun 'Title ''ProjectName'''","Autorun 'Echo 'ProjectName UserName' Title 'ProjectName UserName''","Autorun Custom"
+WebLabel_Plugin="Plugin Page",1,10,315,4,55,18,http://TheOven.org/index.php?topic=389
+Button_Download=,1,8,380,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%SCompletionChar%=64
+%DCompletionChar%=9
+%SPathCompletionChar%=64
+%DPathCompletionChar%=64
+%EnableExtensions%=1
+%DefaultColor%=0
+%AutoRun%=
+
+[ControlCharacter]
+If,#1,Equal,"CTRL + D",Set,%#2%,4
+If,#1,Equal,"CTRL + F",Set,%#2%,6
+If,#1,Equal,TAB,Set,%#2%,9
+If,#1,Equal,BACKSPACE,Set,%#2%,8
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//--
+Run,%ScriptFile%,ControlCharacter,%CompletionChar_ScrollBox%,SCompletionChar
+Run,%ScriptFile%,ControlCharacter,%CompletionChar_ScrollBox%,DCompletionChar
+Run,%ScriptFile%,ControlCharacter,%PathCompletionChar_ScrollBox%,SPathCompletionChar
+Run,%ScriptFile%,ControlCharacter,%PathCompletionChar_ScrollBox%,DPathCompletionChar
+//--
+If,Not,%EnableExtensions_CheckBox%,Equal,True,Set,%EnableExtensions%,0
+If,%DefaultColor_CheckBox%,Equal,True,Set,%DefaultColor%,1
+//--
+If,%AutoRun_ScrollBox%,Equal,"Autorun Custom",Set,%AutoRun%,%AutoRun_Custom_TextBox%
+//--
+If,%AutoRun_ScrollBox%,Equal,"Autorun 'Echo ''ProjectName'''",Begin
+If,ExistFile,%ProjectDir%\script.project,Begin
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,Main,Title,%t%
+If,Not,%t%-,Equal,-,Begin
+Set,%AutoRun%,"Echo %t%"
+End
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,IniVariables,SelectedProject,%t%
+If,Not,%t%-,Equal,-,Begin
+Set,%AutoRun%,"Echo %t%"
+End
+End
+End
+//--
+If,%AutoRun_ScrollBox%,Equal,"Autorun 'Title ''ProjectName'''",Begin
+If,ExistFile,%ProjectDir%\script.project,Begin
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,Main,Title,%t%
+If,Not,%t%-,Equal,-,Begin
+Set,%AutoRun%,"Title %t%"
+End
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,IniVariables,SelectedProject,%t%
+If,Not,%t%-,Equal,-,Begin
+Set,%AutoRun%,"Title %t%"
+End
+End
+End
+//--
+If,%AutoRun_ScrollBox%,Equal,"Autorun 'Echo 'ProjectName UserName' Title 'ProjectName UserName''",Begin
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,IniVariables,SelectedProject,%t%
+If,Not,%t%-,Equal,-,IniRead,%ProjectDir%\script.project,Main,Title,%t%
+Set,%AutoRun%,"Echo %t% UserName:#$pUserName#$p&Title %t% UserName : #$pUserName#$p"
+End
+//--
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_Default,%RegDefault%
+//Autorun: Run a command when CMD.exe starts - //Empty Default
+//CompletionChar,64 Default
+//DefaultColor,1 Default
+//EnableExtensions,1 Default
+//PathCompletionChar,64 Default
+If,%NoWarnROW%,Equal,True,System,ErrorOff,5
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Command Processor",AutoRun,%AutoRun%
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Command Processor",CompletionChar,%SCompletionChar%
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Command Processor",DefaultColor,%DefaultColor%
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Command Processor",EnableExtensions,%EnableExtensions%
+RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Command Processor",PathCompletionChar,%SPathCompletionChar%
+//--
+//CompletionChar,9 Default
+//DefaultColor,1 Default
+//EnableExtensions,1 Default
+//PathCompletionChar key not exists Default
+If,%NoWarnROW%,Equal,True,System,ErrorOff,3
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\Command Processor",CompletionChar,%DCompletionChar%
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\Command Processor",DefaultColor,%DefaultColor%
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\Command Processor",EnableExtensions,%EnableExtensions%
+If,%PathCompletionChar_ScrollBox%,Equal,Default,Begin
+If,ExistRegKey,HKLM,"Tmp_Default\Microsoft\Command Processor",PathCompletionChar,RegDelete,HKLM,"Tmp_Default\Microsoft\Command Processor",PathCompletionChar
+End
+Else,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x4,"Tmp_Default\Microsoft\Command Processor",PathCompletionChar,%DPathCompletionChar%
+End
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+
+[infos]
+//--
+//EnableExtensions,1 values 1 or 0
+//cmd /y disables command extensions for this cmd session
+//cmd /x enables command extensions for this cmd session
+//Command Extensions
+//Much of the functionality of CMD.exe can be disabled - this will affect all the internal commands, Command Extensions are enabled by default. This is controlled by setting a value in the registry: HKCU\Software\Microsoft\Command Processor\EnableExtensions Alternatively under Win XP you can run CMD /e:on or CMD /e:off
+//---
+//**http://technet.microsoft.com/en-us/library/bb490880.aspx
+//--
+//http://support.microsoft.com/kb/310530
+//CompletionChar - Folder completion
+//PathCompletionChar - FileName completion
+//
+//use control character
+//9 ( 0x9 ) for Tab
+//0x4 for CTRL+D
+//0x6 for CTRL+F
+//0×08 is BACKSPACE
+//To disable a particular completion character in the registry, use the value for white space [0×20] because it is not a valid control character.
+//---
+//To activate automatic completion for the current command session,
+// type cmd /f. Then type CTRL+D to complete a folder name or CTRL+F to complete a file name.
+//To deactivate automatic complete, type cmd /f:off.
+//--
+//---
+//--Additional Information
+//--Note the following differences between folder and file name completion:
+//--
+//--    The file name completion feature works on folders also
+//- because the feature searches for a complete path and matches against both file and folder names.
+//--    If you use the file-completion control character with a command
+//-- that works only with folders (for example, the cd or rd command), only folder names are searched.
+//--    The folder completion feature matches only against folder names.
+//- This makes the folder completion feature faster for folder searching
+//- than the file name completion feature if there are both files and folders with matching strings.
+//--
+
+[AuthorEncoded]
+cmdICON4848_Red.ico=1519,2026
+Logo=cmdICON4848_Red.ico
+
+[EncodedFile-AuthorEncoded-cmdICON4848_Red.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

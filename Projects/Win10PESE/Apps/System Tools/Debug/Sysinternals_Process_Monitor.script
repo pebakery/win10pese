@@ -4,17 +4,18 @@ Type=Plugin
 Author=JonF
 Description=Process Monitor (Procmon) is an advanced monitoring tool for Windows that shows real-time file system, Registry and process/thread activity
 Credits=Lancelot, Saydin77
-Version=009
+Version=011
 Download_Level=1
 Level=5
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.01.12_21:18.18 (GMT0: -3 Hours)
+Date=2020.01.09
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Apps/System%20Tools/Debug/Sysinternals_Process_Monitor.script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/System%20Tools/Debug/Sysinternals_Process_Monitor.script
 CertifiedBy=
 Certification=
 HistoryNotes01=JFX Gena WimBoot + Process Monitor don't get along with each other. Just a matter of time until it goes BSoD. Reply 8 http://TheOven.org/index.php?topic=524
@@ -30,23 +31,26 @@ History006=Lancelot - Added 2 Filter ready to debug easily // improved fltmgr sy
 History007=Lancelot - weblink updated - apinux http://TheOven.org/index.php?topic=1627
 History008=Lancelot - fltlib.dll line fixed - Date:2016.02.02
 History009=Lancelot - weblink changes all the time with lower uppercase - added fallback to 2nd weblink - Date:2016.02.08 // Lancelot - Add Compare Button - Date:2017.01.12
+History010=Lancelot Add To Yomi Server - Date:2018.10.23 // Cosmetics x2 - Date:2019.02.24
+History011=Lancelot - Add noconnect option - Date:2020.01.09
 
 [Interface]
-pBevel1=pBevel1,1,12,4,6,133,105
-pCheckBox1="Desktop shortcut",1,3,8,10,122,18,True
-pCheckBox2="Start Menu shortcut",1,3,8,48,122,18,True
-pCheckBox3="Quicklaunch shortcut",1,3,8,29,122,18,False
-pTextBox1="Start Menu folder:",1,0,11,85,121,23,
-Image_Software=ProcMon.gif,1,5,143,32,177,109
-ScrollBox_RunFromWhere="Run from Normal",1,4,143,6,130,21,"Run from Normal","Run from RAM","Run from RAM-X","Run from CD"
-Button_Launch_Program=Launch,1,8,13,207,80,25,Launch_Program
-x64_CheckBox="Priority x64 on x64",1,3,6,121,79,27,True
-BootLog_CheckBox="Enable Boot Logging (developer only)",1,3,6,161,136,27,False
+pBevel1=pBevel1,1,12,-3,-3,83,100
+pCheckBox1=Desktop,1,3,1,1,59,14,True,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pTextBox1=,1,0,1,43,75,21,,"__'Start Menu' Folder"
+Parameter_noconnect_CheckBox=/noconnect,1,3,2,74,75,18,True
+Image_Software=ProcMon.gif,1,5,84,26,177,109
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from RAM-X","Run from CD"
+Button_Launch_Program=Launch,1,8,2,206,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False
+x64_CheckBox="Priority x64 on x64",1,3,6,144,116,19,True
+BootLog_CheckBox="Enable Boot Logging (developer only)",1,3,6,174,136,27,False
 Extract_Del_CheckBox="Delete 'Extract' after organisation",0,3,143,224,186,18,True
-Opendir_Main_Button=,1,8,240,181,24,24,Opendir_Main,opendir.bmp,False,False,_Opendir_Main_,False,"__Open Folder for 'Provided Files'"
+Opendir_Main_Button=,1,8,240,181,24,24,Opendir_Main,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_Opendir_Main_,False,"__Open Folder for 'Provided Files'"
 WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://technet.microsoft.com/en-us/sysinternals/bb896645
 WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
-Download_Button=Download,1,8,143,180,80,25,Download,_Download_,False
+Download_Button=Download,1,8,158,180,80,25,Download,Mazenl77-NX11-Internet-Real_016_016.bmp,False,False,_Download_,False
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
@@ -72,7 +76,7 @@ Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bm
 
 [Process]
 Echo,"Processing %ScriptTitle%..."
-StrFormat,REPLACE,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
 If,Not,%Here%,Equal,Normal,RunFrom,%Here%
 //--
 If,Not,ExistFile,%ProvideFiles%\%ProgramEXE%,Run,%ScriptFile%,Check
@@ -95,12 +99,12 @@ Call,DirDeleteMake,%Target_Prog%\%ProgramFolder%
 FileCopy,%SFile%,%Target_Prog%\%ProgramFolder%
 //--
 If,%BootLog_CheckBox%,Equal,True,Begin
-If,ExistFile,%SDrivers%,FileCopy,%SDrivers%,%target_sys%\drivers
+If,ExistFile,%SDrivers%,FileCopy,%SDrivers%,%Target_Sys%\drivers
 Run,%ScriptFile%,Add_procmonSrv
 End
 Else,Begin
-If,ExistFile,%target_sys%\drivers\%DriverFile%,FileDelete,%target_sys%\drivers\%DriverFile%
-If,ExistFile,%target_sys%\drivers\%DriverFile%,Call,FileDelete,%target_sys%\drivers\%DriverFile%
+If,ExistFile,%Target_Sys%\drivers\%DriverFile%,FileDelete,%Target_Sys%\drivers\%DriverFile%
+If,ExistFile,%Target_Sys%\drivers\%DriverFile%,Call,FileDelete,%Target_Sys%\drivers\%DriverFile%
 Run,%ScriptFile%,Del_procmonSrv
 End
 //--
@@ -126,9 +130,13 @@ RegWrite,HKLM,0x3,"Tmp_Default\Software\Sysinternals\Process Monitor","Filter#Fi
 RegWrite,HKLM,0x3,"Tmp_Default\Software\Sysinternals\Process Monitor","Filter#Filter C1TT + Exclude Success",01,21,00,00,00,75,9c,00,00,00,00,00,00,00,18,00,00,00,50,00,72,00,6f,00,63,00,6d,00,6f,00,6e,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,18,00,00,00,50,00,72,00,6f,00,63,00,65,00,78,00,70,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1a,00,00,00,41,00,75,00,74,00,6f,00,72,00,75,00,6e,00,73,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1c,00,00,00,50,00,72,00,6f,00,63,00,6d,00,6f,00,6e,00,36,00,34,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1c,00,00,00,50,00,72,00,6f,00,63,00,65,00,78,00,70,00,36,00,34,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,0e,00,00,00,53,00,79,00,73,00,74,00,65,00,6d,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1e,00,00,00,50,00,72,00,6f,00,63,00,6d,00,6f,00,6e,00,78,00,36,00,34,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,14,00,00,00,6c,00,73,00,61,00,73,00,73,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1a,00,00,00,45,00,78,00,70,00,6c,00,6f,00,72,00,65,00,72,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1a,00,00,00,73,00,65,00,72,00,76,00,69,00,63,00,65,00,73,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,14,00,00,00,63,00,73,00,72,00,73,00,73,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1a,00,00,00,77,00,69,00,6e,00,6c,00,6f,00,67,00,6f,00,6e,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,18,00,00,00,73,00,76,00,63,00,68,00,6f,00,73,00,74,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,10,00,00,00,64,00,77,00,6d,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,75,9c,00,00,00,00,00,00,00,1a,00,00,00,77,00,6d,00,69,00,70,00,72,00,76,00,73,00,65,00,2e,00,65,00,78,00,65,00,00,00,00,00,00,00,00,00,00,00,77,9c,00,00,04,00,00,00,00,10,00,00,00,49,00,52,00,50,00,5f,00,4d,00,4a,00,5f,00,00,00,00,00,00,00,00,00,00,00,77,9c,00,00,04,00,00,00,00,10,00,00,00,46,00,41,00,53,00,54,00,49,00,4f,00,5f,00,00,00,00,00,00,00,00,00,00,00,78,9c,00,00,04,00,00,00,00,10,00,00,00,46,00,41,00,53,00,54,00,20,00,49,00,4f,00,00,00,00,00,00,00,00,00,00,00,78,9c,00,00,00,00,00,00,00,10,00,00,00,53,00,55,00,43,00,43,00,45,00,53,00,53,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,1a,00,00,00,70,00,61,00,67,00,65,00,66,00,69,00,6c,00,65,00,2e,00,73,00,79,00,73,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,0a,00,00,00,24,00,4d,00,66,00,74,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,12,00,00,00,24,00,4d,00,66,00,74,00,4d,00,69,00,72,00,72,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,12,00,00,00,24,00,4c,00,6f,00,67,00,46,00,69,00,6c,00,65,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,10,00,00,00,24,00,56,00,6f,00,6c,00,75,00,6d,00,65,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,12,00,00,00,24,00,41,00,74,00,74,00,72,00,44,00,65,00,66,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,0c,00,00,00,24,00,52,00,6f,00,6f,00,74,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,10,00,00,00,24,00,42,00,69,00,74,00,6d,00,61,00,70,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,0c,00,00,00,24,00,42,00,6f,00,6f,00,74,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,12,00,00,00,24,00,42,00,61,00,64,00,43,00,6c,00,75,00,73,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,10,00,00,00,24,00,53,00,65,00,63,00,75,00,72,00,65,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,05,00,00,00,00,10,00,00,00,24,00,55,00,70,00,43,00,61,00,73,00,65,00,00,00,00,00,00,00,00,00,00,00,87,9c,00,00,06,00,00,00,00,10,00,00,00,24,00,45,00,78,00,74,00,65,00,6e,00,64,00,00,00,00,00,00,00,00,00,00,00,92,9c,00,00,00,00,00,00,00,14,00,00,00,50,00,72,00,6f,00,66,00,69,00,6c,00,69,00,6e,00,67,00,00,00,00,00,00,00,00,00,00,00
 RegHiveUnLoad,Tmp_Default
 //--
-If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
-If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
-If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+Set,%ShortcutParameter%,""
+If,%Parameter_noconnect_CheckBox%,Equal,True,Set,%ShortcutParameter%,/noconnect
+//-
+//Add_Shortcut,Type,StartMenuFolder,(path\)FileName,Title,Work Folder,Parameters,(path\)IconFile#$cIconIndex,StartMode=(1,2,3)#$cHotKey,ToolTipText
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,,,,%ShortcutParameter%
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%,,,,%ShortcutParameter%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch,,,,,%ShortcutParameter%
 
 [Add_procmonSrv]
 RegHiveLoad,Tmp_System,%RegSystem%
@@ -253,15 +261,54 @@ lines=1
 1=M3TF/GA0e/CALzn0JALI0NUakQeHt7s/37WjuN8zsh8ithKJwwFEMZcnqHIYUk6qOkphjCV5Qty5C8yxYs0zeIpr9f6E//3YdNC0UsKjpF7asg4VUN2Ut14IY1QOpKHURO1UDocBUm7KnEf8wqIGj0Ehy9InA0C8BRfwKOfCY4oukYPSWyQ1NLL8TzpLeZ/AWXcmHHjRA5vg0ifj90MxT2IzlLdPuoZNzhTvlEjxbF5BMkTnbSswQ3kc/Qvu69OOAHrLPYGU6fq/Snv629a9B8u5c5onZVEHd/BWn/WnBvNEAmpB6z/Woww+0VJtlVYsz2Cny3rgwcg2JwtJ6DszAPHOVscCTTITiVBwVlQ96ePXsOrrp2OmqmowlEXM1I/dshShji3nKotMu8cfxaSbr+/epCxez6MuGc+vJZvNpi+YjyXK2zL+79YPro4i35WKdmScKQxK0dMPE+Ekd/V9Kffjq2+7wKFNlbidlHXkHKrxZyV+sge6Me4v41mOlZjckHKzHOgujfUAbBVSXgrCgEZ/EzcObkgCOdAYHpGZgtZllInwVb3LzgN+2QOUSdN0EpwK7UJzvG4kVj9fgP0ZHXUDktqOShkV6Kx31dP/sn/Z3h+ONqYqOhiGVll6jzK0ieIgxdJgyF1kOSsCR8shpCzlUYb12J0ZsJQ2tKCUMvwNHIB0eNMMTNhIBwOiYIBTXttt7rfO7uTROVYM9n9knBriVNNWM+5PPfHi2d7Z8V1ldN/tC/39zaNUTlx7Ji0QOEITLf0hcoQ/WQDqqD6JkaTCPrMtGG9MA2ot+YMKRf3N0D84l+xSxwxNPAmZgK9+NhlqWlpYJ1Lc1f/Bndf2WsO1Z5U8SG6Ce8S52tgdy1esher4fYz7WYQfpi8oFKjN1Rju/+SxhaSRjSIgwt6u4B6kHjpB63BEWUruzvGeDfNcIzWrSVnKoqxA51MyQXVA854kOSF+swi/jSVCfCkGUFRpmUQ3A1YWjFCwiQHhaYm4Nl1s+T0opapDq78I9o54+y+s7RIZmtRhbhDZdVrtTVUx+V5vvoIeKj1hUYvaWc9dH/rCxq1zlUFhP2uEmnpb1ryD+p+32jqL5zYlxJ++Jfcls3u99vdrS92+hrE97g43q70S7gXvOmR8XtMh2d+CB/+Hf8O/6pAXbQ3MUMYHML+UJzwW/ZlmaGzQc6urMd/cfK/eRx7+YomkcwTMH78uDfsnHP67N7rmtoHvBblu3Jgj25heZPGKajJw/ryfwG7OjJXT15UE/m/0cDfGgmhSgXdGe0snkAO39RzOCePILNBYwymzuYnvnFe/P/A/4fhBN4nOMPKMpPzs3PM7EwsdDLTM5nGAUjCuxThdB3+bHLF11/ysjABABEAwkvsCTscAEAAAACAAAAKwAAAN0PAAAAAAAAAQAAAAAAAAAAAAAA
 
 [InterfaceEncoded]
-opendir.bmp=571,762
 ProcMon.gif=17012,22683
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+Mazenl77-NX11-Internet-Real_016_016.bmp=909,1212
 
-[EncodedFile-InterfaceEncoded-opendir.bmp]
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp]
+lines=0
+0=eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-ProcMon.gif]
 lines=5
@@ -276,25 +323,4 @@ lines=5
 Folder
 
 [Folder]
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

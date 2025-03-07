@@ -4,14 +4,14 @@ Type=Plugin
 Author=JFX, Altorian
 Description=common library (VB5, VB6 and etc)
 Credits=http://TheOven.org
-Version=006
+Version=010
 Download_Level=0
 Level=1
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2016.11.01
+Date=2019.01.14
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/6-Common-files.script
@@ -21,6 +21,8 @@ History003=ChrisR - added asycfilt.dll
 History004=ChrisR - Use Require_FileQ (en-US fallback) - 2013.05.23
 History005=Lancelot - Added DU Buttons
 History006=Lancelot Added Basic_PluginCache_Extract - Date:2016.11.01
+History009=Bob.Omb - updated compatibility for Win10 v1809 - (x3 Lancelot update codes) Date:2018.10.14 - Date:2018.10.15
+History010=Lancelot Add BuildClass - Date:2019.01.14
 
 [Interface]
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
@@ -37,6 +39,9 @@ If,Not,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Run,%ScriptFile%,Pr
 [Process_Normal]
 Echo,"Processing %ScriptTitle%..."
 Run,%ScriptFile%,CopyCommonFiles
+//- 1809 Testing, Not needed
+//Call,TargetVersion,,4x
+//Call,CompareVersions,%TargetVersion%,10.0.17134.1,Win10_1803
 //--
 If,%SourceArch%,Equal,x86,Begin
 Require_FileQ,avifile.dll
@@ -55,6 +60,8 @@ Require_FileQ,wow32.dll
 Set,%PluginArch%,""
 End
 End
+//-
+Run,%ScriptFile%,ExistFiles
 
 [CopyCommonFiles]
 Require_FileQ,avicap32.dll
@@ -70,9 +77,67 @@ Require_FileQ,msxml6r.dll
 Require_FileQ,oledlg.dll
 Require_FileQ,quartz.dll
 Require_FileQ,query.dll
-Require_FileQ,shellstyle.dll
+//-
 Require_FileQ,snmpapi.dll
 Require_FileQ,wdi.dll
+
+[ExistFiles]
+If,%BuildClass%,Equal,2,Run,%ScriptFile%,ExistFiles_2
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,ExistFiles_3
+
+[ExistFiles_2]
+If,ExistFile,%InstallSRC%\Windows\System32\shellstyle.dll,Require_FileQ,shellstyle.dll
+If,ExistFile,%InstallSRC%\Windows\SysWOW64\shellstyle.dll,Begin
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+Set,%PluginArch%,x86
+Require_FileQ,shellstyle.dll
+Set,%PluginArch%,""
+End
+End
+End
+
+[ExistFiles_3]
+Require,FileList,,RFL_System32_shellstyle.dll
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+Require,FileList,,RFL_SysWOW64_shellstyle.dll
+End
+End
+
+[RFL_System32_shellstyle.dll]
+\Windows\System32\shellstyle.dll
+\Windows\System32\??-??\shellstyle.dll.mui
+
+[RFL_SysWOW64_shellstyle.dll]
+\Windows\SysWOW64\shellstyle.dll
+\Windows\SysWOW64\??-??\shellstyle.dll.mui
+
+[History_shellstyle.dll_notes_CANCEL]
+//bob.omb history 8 - Start
+If,ExistFile,%InstallSRC%\Windows\System32\shellstyle.dll,Begin
+FileCopy,%InstallSRC%\Windows\System32\shellstyle.dll,%Target_Sys%
+End
+If,ExistFile,%InstallSRC%\Windows\System32\%DistLang%\shellstyle.dll.mui,Begin
+FileCopy,%InstallSRC%\Windows\System32\%DistLang%\shellstyle.dll.mui,%Target_Sys%\%DistLang%
+End
+If,ExistFile,%InstallSRC%\Windows\SysWOW64\shellstyle.dll,Begin
+FileCopy,%InstallSRC%\Windows\SysWOW64\shellstyle.dll,%Target_Sys%
+End
+If,ExistFile,%InstallSRC%\Windows\SysWOW64\%DistLang%\shellstyle.dll.mui,Begin
+FileCopy,%InstallSRC%\Windows\SysWOW64\%DistLang%\shellstyle.dll.mui,%Target_Sys%\%DistLang%
+End
+//bob.omb history 8 - Finish
+//----
+// 1809 compatibility testing - save for notes - Start
+//Before Win10
+//If,%TargetVersion1%,Smaller,10,Require_FileQ,shellstyle.dll
+//Win10 and later
+//If,%TargetVersion1%,Bigger,9,Begin
+//shellstyle.dll not exists at 1803
+//If,%Win10_1803%,Equal,Smaller,Require_FileQ,shellstyle.dll
+//End
+// 1809 compatibility testing - save for notes - Finish
 
 [EncodedFile-AuthorEncoded-Common.jpg]
 lines=0

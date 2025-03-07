@@ -4,14 +4,14 @@ Type=Plugin
 Author=ChrisR, Lancelot
 Description=(Win10PESE - Win8.1SE - Win8PESE) Optimizations required to be made at pre-end of the build
 Credits=http://TheOven.org
-Version=022
+Version=026
 Download_Level=1
 Level=8
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.09.29
+Date=2019.02.03
 Depend=
 Disable=
 Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Finals/1-50_Optimizations.script
@@ -40,7 +40,11 @@ History016=ChrisR - Option to Hide Administrative Tool in Menu - Date:2016.06.09
 History017=Lancelot - Add DUC buttons - Date:2017.01.10
 History020=Lancelot - Add AutoRotation - Reply 3 http://Theoven.org/index.php?topic=2030.0 - Date:2017.02.11
 History021=Lancelot Update hiderun lines - Date:2017.09.23
-History022=Lancelot Add RemoveAccessories_CheckBox RemoveSystemTools_CheckBox - Reply 3 http://theoven.org/index.php?topic=2232.msg24160#msg24160 - Date:2017.09.29
+History022=Lancelot Add RemoveAccessories_CheckBox RemoveSystemTools_CheckBox - Reply 3 http://theoven.org/index.php?topic=2232.msg24160#msg24160 - Date:2017.09.29 - Date:2018.10.20
+History023=Bob.Omb - Added explorer Dark theme fix (if enabled) - Date:2018.10.21
+History024=Bob.Omb - Updated Dark Theme system fix to include both Build>Themes>Dropdown 0 or 14 - Date:2018.10.28 // Lancelot: Minor Fix with BuildType - Date:2018.11.23
+History025=Lancelot - Add Call,HostOSArch - Date:2019.01.27
+History026=Lancelot - Dark Theme settings Split to \Tweaks\Dark Theme plugin - Date:2019.02.03
 
 [Variables]
 %CmdexeFolder%=
@@ -50,7 +54,7 @@ History022=Lancelot Add RemoveAccessories_CheckBox RemoveSystemTools_CheckBox - 
 RemoveLibIcons_CheckBox="Remove Libraries Icons  (Fix Explorer File Rename issue)",0,3,8,8,297,18,False
 RemoveLibIcons_Warn_CheckBox=Warn,0,3,234,24,48,18,False
 RemoveLibIcons_Bevel=pBevel1,0,12,5,7,305,37
-CN_CheckBox="Use static ComputerName",1,3,13,55,157,18,True
+CN_CheckBox="Use static ComputerName",1,3,13,55,157,18,False
 Computername_TextLabel="PE ComputerName",1,1,180,57,99,18,8,Normal
 pComputerName=,1,0,279,55,150,21,Win10PESE
 ComputerName_Bevel=ComputerName_Bevel,1,12,6,48,432,33
@@ -77,12 +81,15 @@ Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bm
 AutoRotation_CheckBox=AutoRotation,1,3,235,294,98,18,True
 
 [Process]
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
 If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Begin
-If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 End
 If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
 //--
 RegHiveLoad,Tmp_Software,%RegSoftware%
 //Remove Libraries Icons... Begin
@@ -136,6 +143,9 @@ End
 If,%OS%%Ramdisk_CheckBoxSel%,Equal,Win8True,Run,%ScriptFile%,RamDisk
 If,%OS%%Ramdisk_CheckBoxSel%,Equal,Win8.1True,Run,%ScriptFile%,RamDisk
 //-
+// Remove "Contact" option from right click context menu for "New" items. (Requires Windows Mail)
+//RegDelete,HKLM,Tmp_Software\Classes\.contact\ShellNew
+//-
 Run,%ScriptFile%,Process_AutoRotation
 
 [Process_AutoRotation]
@@ -180,7 +190,7 @@ RegHiveUnLoad,Tmp_System
 
 [UsbStart]
 RegHiveLoad,Tmp_System,%RegSystem%
-If,%NoWarnROW%,Equal,True,System,ERROROFF,4
+If,%NoWarnROW%,Equal,True,System,ErrorOff,4
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbohci,Start,0
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbuhci,Start,0
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\usbhub,Start,0
@@ -192,16 +202,16 @@ StrFormat,Split,%ProjectDir%,\,0,%t%
 StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
 //-
 If,-%pComputerName%,Equal,-,Set,%pComputerName%,%ProjectFolderName%
-StrFormat,REPLACE,%pComputerName%,.,"",%pComputerName%
+StrFormat,Replace,%pComputerName%,.,"",%pComputerName%
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_System,%RegSystem%
 RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Session Manager\Environment",COMPUTERNAME,%pComputerName%
 //RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion",RegisteredOwner,%pRegisteredOwner%
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x1,"Tmp_software\Microsoft\Windows NT\CurrentVersion",RegisteredOwner,%pComputerName%
 RegWrite,HKLM,0x4,"Tmp_software\Microsoft\Windows NT\CurrentVersion\WinPE",SkipWaitForNetwork,0
 RegWrite,HKLM,0x4,"Tmp_software\Microsoft\Windows NT\CurrentVersion\WinPE",SetComputerName,0
-If,%NoWarnROW%,Equal,True,System,ERROROFF,4
+If,%NoWarnROW%,Equal,True,System,ErrorOff,4
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ComputerName,ComputerName,%pComputerName%
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ActiveComputerName,ComputerName,%pComputerName%
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,"NV Hostname",%pComputerName%
@@ -267,7 +277,7 @@ Add_Shortcut,StartMenu,%pTextBox_SM%,#$pSystemRoot#$p\system32\hiderun.exe,%pTex
 Echo,"Copy RamDisk Driver"
 //-
 // Copy DriverStore files
-DirCopy,%Source_Sys%\DriverStore\FileRepository\ramdisk.inf_*,%target_sys%\DriverStore\FileRepository
+DirCopy,%Source_Sys%\DriverStore\FileRepository\ramdisk.inf_*,%Target_Sys%\DriverStore\FileRepository
 // Already in boot.wim
 If,Not,ExistFile,%Target_Win%\inf\ramdisk.inf,FileCopy,%Source_Win%\inf\ramdisk.inf,%Target_Win%\inf\ramdisk.inf
 If,Not,ExistFile,%Target_Sys%\drivers\ramdisk.sys,FileCopy,%Source_Sys%\drivers\ramdisk.sys,%Target_Sys%\drivers\ramdisk.sys
@@ -318,6 +328,71 @@ Logo=Optimizations.jpg
 [EncodedFile-AuthorEncoded-Optimizations.jpg]
 lines=0
 0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+Run,%ScriptFile%,Settings_Default
+If,ExistSection,%ScriptFile%,Settings_Default_%ProjectFolderName%,Run,%ScriptFile%,Settings_Default_%ProjectFolderName%
+System,RefreshInterface
+
+[UploadXXX]
+Call,UploadXMultiQ
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+Set,%RemoveAccessories_CheckBox%,False,Permanent
+Set,%RemoveSystemTools_CheckBox%,False,Permanent
+//-
+Set,%pComputerName%,WinPESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,True,PERMANENT
+
+[Settings_Default_Win10PESE]
+Set,%pComputerName%,Win10PESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
+
+[Settings_Default_Win8.1SE]
+Set,%pComputerName%,Win8.1SE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
+
+[Settings_Default_Win8PESE]
+Set,%pComputerName%,Win8PESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
+
+[Settings_Default_Win7PESE]
+Set,%pComputerName%,Win7PESE,Permanent
+Visible,%RemoveLibIcons_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Warn_CheckBox%,True,PERMANENT
+Visible,%RemoveLibIcons_Bevel%,True,PERMANENT
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Icon
@@ -381,69 +456,4 @@ lines=0
 [EncodedFile-Reg-RamDisk_System_Win10.reg]
 lines=0
 0=eJztlF9rE1EQxc+z4HdYCoJCUpLNZtNVhJYqGGqrtKKIW0pMNjaYNiUb1CL96upvZtvsjY0Pgk9FLrv3zJmZM3Nn//z88U4TnWukmb6qVKRDFfoEV2qhuS5hnuOdYM2wI73FP8c7wT7H7mpTLdZ93fPrg15oj5z3OtFLvdKudthPtM++i6+vA7y53uhMF/BH1LBaBXZOhKla5Zmm+Aqwqbdv+cyeakBuCf6ujC5Tv1LYVE2yPnINQQldpuqAMpgeq0lMC/WMvce9yxpgJ7rSsZ9jI9Df0FOuQ6wzn0Wpz9i/Rz0jv6ReFb1Nn2H8ps95rIYeBDkHHlPAPUF/hylF6FQZEblz8BfXval3BDOFsUn0udvsBjDT67rtZWSfXmxir/EvdOr+UzK/6SFnfqTHijl1w+fbAHWW2CZS45BPljgNcm3utU4c8OO1OPcOI1aouNrN8J931gniO0GXYa1Ks+7vtmJYqbfCt4Kq7T/wdfcxT6Lmw+6Ha3Ec4Lq/eOV83QDXiuvvd+d7zXnDrcaF/5kWfB/2vRzf+RNaDVO2Z23v9pi96bqxV0tcb8uVMypnoBH7CFTQxYi4LVYCd/V/Xn85r9xP1SKzmtx28HcdX6/q3G3/15p9M+FfS/MMm3ickwhKzHXJLM6OD64sLknNjQ/PzDM00CtKTWcYBSMBlLFD6HuM2OW3WiouZ2ACACNVDBYAN8ZAAQAAAAIAAAA0AAAA3gEAAAAAAAABAAAAAAAAAAAAAAA
-
-[DownloadXXX]
-Call,DownloadXQ
-StrFormat,Split,%ProjectDir%,\,0,%t%
-StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
-Run,%ScriptFile%,Settings_Default
-If,ExistSection,%ScriptFile%,Settings_Default_%ProjectFolderName%,Run,%ScriptFile%,Settings_Default_%ProjectFolderName%
-System,RefreshInterface
-
-[UploadXXX]
-Call,UploadXMultiQ
-//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[Settings_Default]
-Set,%RemoveAccessories_CheckBox%,False,Permanent
-Set,%RemoveSystemTools_CheckBox%,False,Permanent
-//-
-Set,%pComputerName%,WinPESE,Permanent
-Visible,%RemoveLibIcons_CheckBox%,True,PERMANENT
-Visible,%RemoveLibIcons_Warn_CheckBox%,True,PERMANENT
-Visible,%RemoveLibIcons_Bevel%,True,PERMANENT
-
-[Settings_Default_Win10PESE]
-Set,%pComputerName%,Win10PESE,Permanent
-Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
-Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
-Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
-
-[Settings_Default_Win8.1SE]
-Set,%pComputerName%,Win8.1SE,Permanent
-Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
-Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
-Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
-
-[Settings_Default_Win8PESE]
-Set,%pComputerName%,Win8PESE,Permanent
-Visible,%RemoveLibIcons_CheckBox%,False,PERMANENT
-Visible,%RemoveLibIcons_Warn_CheckBox%,False,PERMANENT
-Visible,%RemoveLibIcons_Bevel%,False,PERMANENT
-
-[Settings_Default_Win7PESE]
-Set,%pComputerName%,Win7PESE,Permanent
-Visible,%RemoveLibIcons_CheckBox%,True,PERMANENT
-Visible,%RemoveLibIcons_Warn_CheckBox%,True,PERMANENT
-Visible,%RemoveLibIcons_Bevel%,True,PERMANENT
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

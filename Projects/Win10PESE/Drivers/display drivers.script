@@ -4,14 +4,14 @@ Type=Plugin
 Author=ChrisR
 Description=(Win10PESE) Add original display drivers to your Windows PE > New NVidia diplay driver can't be installed without reboot, but the original work
 Credits=JFX, Martt
-Version=014
+Version=016
 Download_Level=1
 Level=6
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.01.10
+Date=2020.03.07_00:03.57 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Drivers/display%20drivers.script
@@ -30,11 +30,8 @@ History011=ChrisR - Update Driver Database registry from Install.wim Drivers Hiv
 History012=cobraman - fix launch UpdDriverDatabase.cmd if .cmd not associated with cmd.exe by using cmd.exe /C "xxxx.cmd" - Date:2015.01.27
 History013=ChrisR -Test if catalog exist before copying - Date:2016.07.19
 History014=Lancelot Add DUC Buttons - Date:2017.01.10
-
-[Variables]
-%ProgramExe%=
-%CmdexeFolder%=
-%RegeditexeFolder%=
+History015=Lancelot - Add Call,HostOSArch - Date:2019.01.27
+History016=Lancelot - BuildClass 3 support for now only Win10PE - Date:2020.03.06 - Date:2020.03.07
 
 [Interface]
 pBevel1=pBevel1,1,12,4,25,510,122
@@ -106,18 +103,23 @@ Monitor_TextLabel="Monitor drive",1,1,47,70,135,18,8,Bold
 Monitor_TextLabel2="to prevent unknown device",1,1,47,82,150,18,8,Normal
 TimeSpace_TextLabel="(Takes times and spaces)",1,1,403,224,124,18,8,Normal
 
+[Variables]
+%ProgramTitle%=Original display drivers
+%ProgramExe%=
+%CmdexeFolder%=
+%RegeditexeFolder%=
+
 [Process]
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
-IniRead,%projectdir%\script.project,IniVariables,DriversHive,%DriversHive%
-IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+IniRead,%ProjectDir%\script.project,IniVariables,DriversHive,%DriversHive%
+IniRead,%ProjectDir%\script.project,IniVariables,RegistryCache,%RegistryCache%
 //-
-Echo,"Processing %ScriptTitle% ..."
-If,%Basic_CheckBoxSel%%NVidia_CheckBoxSel%%ATI_CheckBoxSel%%Intel_CheckBoxSel%%Monitor_CheckBoxSel%,Equal,FalseFalseFalseFalseFalse,Begin
-echo,"No Display driver to Install"
-exit,"No Display driver to Install"
-End
+Echo,"Processing %ProgramTitle% ..."
+If,%Basic_CheckBoxSel%%NVidia_CheckBoxSel%%ATI_CheckBoxSel%%Intel_CheckBoxSel%%Monitor_CheckBoxSel%,Equal,FalseFalseFalseFalseFalse,Echo,"No Display driver to Install"
+If,%Basic_CheckBoxSel%%NVidia_CheckBoxSel%%ATI_CheckBoxSel%%Intel_CheckBoxSel%%Monitor_CheckBoxSel%,Equal,FalseFalseFalseFalseFalse,Exit,"No Display driver to Install"
 //-
 Call,DirDeleteMake,%ProjectTemp%\DisplayDrvReg
 ExtractFile,%ScriptFile%,Reg,Display_Drivers_%OS%%SourceArch%.7z,%ProjectTemp%\DisplayDrvReg
@@ -149,35 +151,64 @@ Echo,"Copy Basic display Drivers"
 //-
 // basicdisplay.inf, basicrender.inf, c_display.inf and associated files are allready in boot.wim
 // Copy DriverStore files
-DirCopy,%Source_Sys%\DriverStore\FileRepository\display.inf_*,%target_sys%\DriverStore\FileRepository
-DirCopy,%Source_Sys%\DriverStore\FileRepository\displayoverride.inf_*,%target_sys%\DriverStore\FileRepository
+If,%BuildClass%,Equal,2,Begin
+DirCopy,%Source_Sys%\DriverStore\FileRepository\display.inf_*,%Target_Sys%\DriverStore\FileRepository
+DirCopy,%Source_Sys%\DriverStore\FileRepository\displayoverride.inf_*,%Target_Sys%\DriverStore\FileRepository
+End
+If,%BuildClass%,Equal,3,Require,FileList,,BasicDrivers_FileList
 //-
 // Copy inf/dll/sys/... files
-If,Not,ExistFile,%target_win%\Inf\display.inf,FileCopy,%Source_Win%\Inf\display.inf,%target_win%\Inf\
-If,Not,ExistFile,%target_win%\Inf\displayoverride.inf,FileCopy,%Source_Win%\Inf\displayoverride.inf,%target_win%\Inf\
+If,%BuildClass%,Equal,2,Begin
+If,Not,ExistFile,%Target_Win%\Inf\display.inf,FileCopy,%Source_Win%\Inf\display.inf,%Target_Win%\Inf\
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistFile,%Target_Win%\Inf\display.inf,Require,FileList,,display_inf_FileList
+End
+If,%BuildClass%,Equal,2,Begin
+If,Not,ExistFile,%Target_Win%\Inf\displayoverride.inf,FileCopy,%Source_Win%\Inf\displayoverride.inf,%Target_Win%\Inf\
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistFile,%Target_Win%\Inf\displayoverride.inf,Require,FileList,,displayoverride_inf_FileList
+End
 //-
 If,Not,%DriversHive%,Equal,Install.wim,Begin
 RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
 Echo,"Import Basic display Drivers registry... "
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\BasicDisplay_Drivers.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\BasicDisplay_Drivers.reg#$q"
 //-
 RegHiveLoad,Tmp_Install_Drivers,%InstallDriversHive%
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd display.inf",%ProjectTemp%\DisplayDrvReg
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd displayoverride.inf",%ProjectTemp%\DisplayDrvReg
-RegHiveunLoad,Tmp_Install_Drivers
+RegHiveUnLoad,Tmp_Install_Drivers
 RegHiveUnLoad,Tmp_Drivers
 End
 //-
 // Load Basic display driver at startup
-If,%Basic_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\basicdisplay.inf #$pSystemRoot#$p\inf\basicrender.inf #$pSystemRoot#$p\inf\c_display.inf #$pSystemRoot#$p\inf\display.inf #$pSystemRoot#$p\inf\displayoverride.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//If,%Basic_CheckBoxLoad%,Equal,True,Begi-n
+//  If,ExistFile,%Target_Sys%\autorun.cmd,Begi-n
+//    TXTDelLine,%Target_Sys%\autorun.cmd,exit
+//    TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\basicdisplay.inf #$pSystemRoot#$p\inf\basicrender.inf #$pSystemRoot#$p\inf\c_display.inf #$pSystemRoot#$p\inf\display.inf #$pSystemRoot#$p\inf\displayoverride.inf >nul",Append
+//    TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+//  En-d
+//En-d
+//-
+If,%Basic_CheckBoxLoad%,Equal,True,Begin
+Add,StartupBeforeShellCMD,Original_display_drivers_Basic_Display_Driver,,"drvload.exe #$pSystemRoot#$p\inf\basicdisplay.inf #$pSystemRoot#$p\inf\basicrender.inf #$pSystemRoot#$p\inf\c_display.inf #$pSystemRoot#$p\inf\display.inf #$pSystemRoot#$p\inf\displayoverride.inf >nul"
 End
 // Shorcut Basic display driver
-If,%Basic_CheckBoxSM%,Equal,true,Begin
+If,%Basic_CheckBoxSM%,Equal,True,Begin
 Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Basic_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\basicdisplay.inf #$pSystemRoot#$p\inf\basicrender.inf #$pSystemRoot#$p\inf\c_display.inf #$pSystemRoot#$p\inf\display.inf #$pSystemRoot#$p\inf\displayoverride.inf >nul & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
+
+[BasicDrivers_FileList]
+\Windows\System32\DriverStore\FileRepository\display.inf_*
+\Windows\System32\DriverStore\FileRepository\displayoverride.inf_*
+
+[display_inf_FileList]
+\Windows\Inf\display.inf
+
+[displayoverride_inf_FileList]
+\Windows\Inf\displayoverride.inf
 
 [NVidia]
 Echo,"Copy NVidia Display Drivers"
@@ -186,30 +217,30 @@ Echo,"Copy NVidia Display Drivers"
 Call,DirDeleteMake,%ProjectTemp%\DisplayDrv
 DirCopy,%Source_Sys%\DriverStore\FileRepository\nv_lh.inf_*,%ProjectTemp%\DisplayDrv\
 //-
-Filecopy,%ProjectTemp%\DisplayDrv\*,%target_sys%\DriverStore\FileRepository
+Filecopy,%ProjectTemp%\DisplayDrv\*,%Target_Sys%\DriverStore\FileRepository
 //-
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing NVidia dos command ....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing NVidia dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing NVidia dos command....",Warn
 //-
 DirDelete,%ProjectTemp%\DisplayDrv
 //-
 RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
 Echo,"Import NVidia Drivers registry... "
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\NVidia_Drivers.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\NVidia_Drivers.reg#$q"
 RegHiveUnLoad,Tmp_Drivers
 //-
 // Load NVidia driver at startup
-If,%NVidia_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\nv_LH.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+If,%NVidia_CheckBoxLoad%,Equal,True,If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\nv_LH.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
 End
 // Shorcut NVidia driver
-If,%NVidia_CheckBoxSM%,Equal,true,Begin
+If,%NVidia_CheckBoxSM%,Equal,True,Begin
 Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%NVidia_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\nv_LH.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
 
@@ -220,34 +251,34 @@ Echo,"Copy ATI Display Drivers"
 Call,DirDeleteMake,%ProjectTemp%\DisplayDrv
 DirCopy,%Source_Sys%\DriverStore\FileRepository\atiilhag.inf_*,%ProjectTemp%\DisplayDrv\
 //-
-Filecopy,%ProjectTemp%\DisplayDrv\*,%target_sys%\DriverStore\FileRepository
+Filecopy,%ProjectTemp%\DisplayDrv\*,%Target_Sys%\DriverStore\FileRepository
 //-
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.blb') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.blb') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing ATI dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.cap') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.cap') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing ATI dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing ATI dos command ....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing ATI dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing ATI dos command....",Warn
 //-
 DirDelete,%ProjectTemp%\DisplayDrv
 //-
 RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
 Echo,"Import ATI Drivers registry... "
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Ati_Drivers.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Ati_Drivers.reg#$q"
 RegHiveUnLoad,Tmp_Drivers
 //-
 // Load ATI driver at startup
-If,%ATI_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\atiilhag.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+If,%ATI_CheckBoxLoad%,Equal,True,If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,Exit
+TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\atiilhag.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,Exit,Append
 End
 // Shorcut ATI driver
-If,%ATI_CheckBoxSM%,Equal,true,Begin
+If,%ATI_CheckBoxSM%,Equal,True,Begin
 Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%ATI_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\atiilhag.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
 
@@ -260,36 +291,38 @@ DirCopy,%Source_Sys%\DriverStore\FileRepository\igdlh10.inf_*,%ProjectTemp%\Disp
 DirCopy,%Source_Sys%\DriverStore\FileRepository\igdlh11.inf_*,%ProjectTemp%\DisplayDrv\
 DirCopy,%Source_Sys%\DriverStore\FileRepository\igdlh12.inf_*,%ProjectTemp%\DisplayDrv\
 //-
-Filecopy,%ProjectTemp%\DisplayDrv\*,%target_sys%\DriverStore\FileRepository
+Filecopy,%ProjectTemp%\DisplayDrv\*,%Target_Sys%\DriverStore\FileRepository
 //-
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.bin') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.bin') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing Intel dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.cpa') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.cpa') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing Intel dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing Intel dos command ....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing Intel dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing Intel dos command....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.vp') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\DisplayDrv#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.vp') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle%: Error executing Intel dos command....",Warn
 //-
 DirDelete,%ProjectTemp%\DisplayDrv
 //-
 RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
 Echo,"Import Intel Drivers registry... "
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Intel_Drivers.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Intel_Drivers.reg#$q"
 RegHiveUnLoad,Tmp_Drivers
 //-
 // Load Intel driver at startup
-If,%Intel_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\igdlh10.inf #$pSystemRoot#$p\inf\igdlh11.inf #$pSystemRoot#$p\inf\igdlh12.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+If,%Intel_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,Exit
+TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\igdlh10.inf #$pSystemRoot#$p\inf\igdlh11.inf #$pSystemRoot#$p\inf\igdlh12.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,Exit,Append
+End
 End
 // Shorcut Intel driver
-If,%Intel_CheckBoxSM%,Equal,true,Begin
+If,%Intel_CheckBoxSM%,Equal,True,Begin
 Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Intel_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\igdlh10.inf #$pSystemRoot#$p\inf\igdlh11.inf #$pSystemRoot#$p\inf\igdlh12.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
 
@@ -298,38 +331,67 @@ Echo,"Copy Monitor Drivers"
 //-
 // c_monitor.inf with Montr_CI.dll are allready in boot.wim
 // Copy DriverStore files
-DirCopy,%Source_Sys%\DriverStore\FileRepository\monitor.inf_*,%target_sys%\DriverStore\FileRepository
+If,%BuildClass%,Equal,2,DirCopy,%Source_Sys%\DriverStore\FileRepository\monitor.inf_*,%Target_Sys%\DriverStore\FileRepository
+If,%BuildClass%,Equal,3,Require,FileList,,Monitor_FileList
 //-
 // Copy inf/dll/sys/... files
-If,Not,ExistFile,%target_win%\Inf\monitor.inf,FileCopy,%Source_Win%\Inf\monitor.inf,%target_win%\Inf\
-If,Not,ExistFile,%target_sys%\Drivers\monitor.sys,FileCopy,%Source_Sys%\Drivers\monitor.sys,%target_sys%\Drivers\
+If,%BuildClass%,Equal,2,Begin
+If,Not,ExistFile,%Target_Win%\Inf\monitor.inf,FileCopy,%Source_Win%\Inf\monitor.inf,%Target_Win%\Inf\
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistFile,%Target_Win%\Inf\monitor.inf,Require,FileList,,monitor_inf_FileList
+End
+If,%BuildClass%,Equal,2,Begin
+If,Not,ExistFile,%Target_Sys%\Drivers\monitor.sys,FileCopy,%Source_Sys%\Drivers\monitor.sys,%Target_Sys%\Drivers\
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistFile,%Target_Sys%\Drivers\monitor.sys,Require,FileList,,monitor_sys_FileList
+End
 //-
 // The cat file can be found by using the signtool.exe from the Windows SDK 8.0, use signtool verify /kp /v /a c:\windows\system32\drivers\monitor.sys !!
-If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-windows-Package~*.cat,FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-windows-Package~*.cat,%target_sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
+If,%BuildClass%,Equal,2,Begin
+If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-windows-Package~*.cat,FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-windows-Package~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
+End
+If,%BuildClass%,Equal,3,Require,FileList,,Monitor_catroot_FileList
 //-
 RegHiveLoad,Tmp_System,%RegSystem%
 Echo,"Import Monitor Drivers registry... "
 If,ExistRegSection,HKLM,Tmp_System\ControlSet001\Control\Class\{4d36e96e-e325-11ce-bfc1-08002be10318},RegDelete,HKLM,Tmp_System\ControlSet001\Control\Class\{4d36e96e-e325-11ce-bfc1-08002be10318}
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Monitor_System.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Monitor_System.reg#$q"
 RegHiveUnLoad,Tmp_System
 //-
 If,Not,%DriversHive%,Equal,Install.wim,Begin
 RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
 Echo,"Import Monitor Drivers registry... "
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Monitor_Drivers.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\DisplayDrvReg\Monitor_Drivers.reg#$q"
 //-
 RegHiveLoad,Tmp_Install_Drivers,%InstallDriversHive%
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd monitor.inf",%ProjectTemp%\DisplayDrvReg
-RegHiveunLoad,Tmp_Install_Drivers
+RegHiveUnLoad,Tmp_Install_Drivers
 RegHiveUnLoad,Tmp_Drivers
 End
 //-
 // Load Monitor driver at startup
-If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\c_monitor.inf #$pSystemRoot#$p\inf\monitor.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//If,ExistFile,%Target_Sys%\autorun.cmd,Begi-n
+//  TXTDelLine,%Target_Sys%\autorun.cmd,Exit
+//  TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\c_monitor.inf #$pSystemRoot#$p\inf\monitor.inf >nul",Append
+//  TxtAddLine,%Target_Sys%\autorun.cmd,Exit,Append
+//En-d
+If,%Basic_CheckBoxLoad%,Equal,True,Begin
+Add,StartupBeforeShellCMD,Original_display_drivers_Load_Monitor_Driver,,"drvload.exe #$pSystemRoot#$p\inf\c_monitor.inf #$pSystemRoot#$p\inf\monitor.inf >nul"
 End
+
+[Monitor_FileList]
+\Windows\System32\DriverStore\FileRepository\monitor.inf_*
+
+[monitor_inf_FileList]
+\Windows\Inf\monitor.inf
+
+[monitor_sys_FileList]
+\Windows\System32\Drivers\monitor.sys
+
+[Monitor_catroot_FileList]
+\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-windows-Package~*.cat
 
 [AuthorEncoded]
 display.jpg=2095,2794
@@ -338,6 +400,32 @@ Logo=display.jpg
 [EncodedFile-AuthorEncoded-display.jpg]
 lines=0
 0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXQ
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Reg
@@ -391,30 +479,4 @@ lines=2
 0=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
 1=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
 2=x7H1ru/T1LOzhTe/gPKB2J2blzpt/JkLMQqhkJ5ZFHvYpR94umHB53y53+gIcSD9CGIPFD0UrejBKj7oqDZGvIz3GmlZc1FGGAkqHySh2k1HcPnvvABny6dVp65L9Nf0YwoYFVgtgkmJjrLF+cphYX6KSOdAnM2Vm2LlXqEkkYa8dwbE7oOoQ6jsfaGLwdN3IuG1KL3puVtd2/RebmsrAOR4oLURBhVoS2oeWm+n1RAIBb7skQ6mH9Tvncz8d8fbcGjzZrwgtex0OwdhFeH6EVGHlq3gtLZjm/txJ8f+o1MqG7sCTqcCZSBZk8R1OsOf4sxG4BfBloZ10/luYs3opSssQV/rTWw5AUHOo5smNWCKXHeocpq1z4N/tgbzIFPw/50+0Xfy4VdjQUEHpL6/Jy4GMOIGjNyJlylKkTDI110pQDGlpdz3jySdlN5vwXfwJFOU65HPmGm7c5DbopVw5jzCiWjweSC8Lf5eLAXGySYxdUg4rKDt50LBLfo482uCWpv6xwpD+1a0m+AgzxBwQ/mb/FQL8/lpsAAAAIEzB64P1kJe2Vck0/6zcBaxcUrP6QK6kguM+fgTcrIxzN9omp2H3dfr64euNo3M3JXc5PZq0KB8vQF72lCe+EgsYkVowqAAeilYcC3ki6wrg24kCiJraKE25e/ZDiULRQjjaPGFnyL6CSj9GB3jtuTvoZAG+n6dkQlq81afSzvdwv4Nte7Sta2o+CoO7/qCAdZnT65zRShAjkmPlOn6gsJPdFbMcDmMKixZZ+ThwYD0hwGAr9d+PEESLzrpRYAXBplxAQmAwAAHCwEAASMDAQEFXQAQAAAMgSYKAXIV3xgAAHick3bJLC7ISayMdynKLEstKo4Pz8wzNKiwMNMzr2IYBcMelEjhl7e2mPKfkQEA22sMeGL0jkkBAAAAAgAAADMAAAB0GgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXQ
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

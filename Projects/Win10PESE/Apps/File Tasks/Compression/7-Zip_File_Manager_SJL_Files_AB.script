@@ -4,17 +4,18 @@ Type=Plugin
 Author=saydin77, Jon Fleming, Lancelot
 Description=(x86/x64 packed vAlfa-Beta :> ) File Container Plugin
 Credits=http://www.7-zip.org/ , r3incarnat0r
-Version=012
+Version=014
 Download_Level=1
 Level=0
 Selected=None
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.09.30
+Date=2018.10.23
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Apps/File%20Tasks/Compression/7-Zip_File_Manager_SJL_Files_AB.script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/File%20Tasks/Compression/7-Zip_File_Manager_SJL_Files_AB.script
 CertifiedBy=
 Certification=
 HistoryNotes01=
@@ -28,6 +29,7 @@ History009=ChrisR - 7-zip 16.02 released - Date:2016.06.02
 History010=ChrisR - 7-zip 16.04 released - Date:2016.10.06
 History011=Lancelot - Add Compare button - Date:2017.02.01 - Selected=None - Date:2017.02.02
 History012=Lancelot - Removed attached files reserved plugin for future use - Date:2017.09.30
+History014=Lancelot Add To Yomi Server - Date:2018.10.23
 
 [IniVars]
 FileVer=001
@@ -47,7 +49,9 @@ Echo,"There is no Spoon"
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
 
 [Settings_Default]
 IniWrite,%ScriptFile%,Main,Level,0

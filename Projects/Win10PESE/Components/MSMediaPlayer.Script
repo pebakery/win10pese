@@ -1,0 +1,837 @@
+[Main]
+Title=MS Windows Media Player
+Type=Plugin
+Author=oscar
+Description=(Win10PE - Win10 1809 x86 x64 // Win8.1) Windows Media Player
+Credits=James
+Version=008
+Download_Level=2
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.01.13
+Depend=
+Disable=
+Web1=http://yomi.cwcodes.net/Yomi/ComponentsY/MSMediaPlayer.Script
+Web2=http://win10se.cwcodes.net/Projects/Win10PESE/Components/MSMediaPlayer.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Oscar: Sometimes media players need DirectX plugin enabled to work properly. Oscar Reply 39 http://TheOven.org/index.php?topic=1359.msg31611#msg31611
+HistoryNotes02=Tested with Win10 1809 x86 x64
+History001=Oscar 2019.02.13 Plugin shared Reply 19 http://TheOven.org/index.php?topic=1359.msg31568#msg31568
+History002=Lancelot add to Win10PESE server - Date:2019.02.20
+History003=Lancelot Added Components_PluginCache_Extract - Date:2019.02.20
+History004=Oscar Added .mui files Date:2019.02.21 - Date:2019.02.22
+History005=Lancelot Added Oscar Plugin info to support Win81 - Oscar: My old wmplayer win8.1SE x86 and old builds of win10 x86 plugin. Oscar Reply 53 http://TheOven.org/index.php?topic=1359.msg31846#msg31846 - Date:2019.02.27
+History006=Oscar fixed "class not registered" error (fail opening media formats) - Date:2019.03.02
+History007=Oscar fixed Win8.1 Lines - Oscar Reply 69 http://TheOven.org/index.php?topic=1359.msg31970#msg31970 - Date:2019.03.03
+History008=Lancelot Add to Yomi - Date:2020.01.13
+
+[Interface]
+pBevel1=pBevel1,1,12,4,6,133,121
+pCheckBox1="Desktop Shortcut",1,3,10,10,122,18,True,"__Add Desktop Shortcut"
+pCheckBox2="Start Menu Shortcut",1,3,10,28,122,18,True,"__Add Start Menu Shortcut"
+StartMpin_CheckBox="Pin To StartMenu",1,3,10,64,122,18,False,"__Add Pin To StartMenu Shortcut"
+pCheckBox3="Quicklaunch Shortcut",1,3,10,46,122,18,False,"__Add Quicklaunch Shortcut Shortcut"
+pTextBox1="Start Menu Folder:",1,0,10,100,121,18,Supplementary\MultiMedia,"__Start Menu Folder Name"
+Image_Software=MPlayer.jpg,1,5,224,47,252,275
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pTextLabel1="Sometimes media players need #$xDirectX (Plugin) enabled#$x  to work properly.",1,1,3,159,217,40,8,Bold
+
+[Variables]
+%ProgramTitle%=Windows Media Player
+%ProgramEXE%=wmplayer.exe
+%ProgramFolder%=Windows Media Player
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+Echo,"Processing %ScriptTitle%..."
+//-
+Call,TargetVersion,,4x
+Set,%t%,1
+If,%TargetVersion1%,Smaller,9,Begin
+Set,%t%,0
+If,%TargetVersion1%.%TargetVersion2%,Equal,6.3,Set,%t%,1
+End
+If,%t%,Equal,0,"%ProgramTitle% Plugin Compatible to Win10 and Win8.1 - Exit"
+//-
+RunFrom,RAM
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,DirDelete,%Target_Prog%\%ProgramFolder%
+//--
+// Windows Media Player
+If,%TargetVersion1%,Bigger,9,Require,FileList
+If,%TargetVersion1%.%TargetVersion2%,Equal,6.3,Require,FileList,,Win81_Require_FileList
+If,%TargetVersion1%.%TargetVersion2%,Equal,6.3,Run,%ScriptFile%,Win81_Require_Files
+//--
+RegHiveLoad,Tmp_System,%RegSystem%
+RegHiveLoad,Tmp_Default,%RegDefault%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+If,%TargetVersion1%,Bigger,9,Run,%ScriptFile%,Add_Registry
+If,%TargetVersion1%.%TargetVersion2%,Equal,6.3,Run,%ScriptFile%,Win81_Add_Registry
+RegHiveUnLoad,Tmp_Default
+RegHiveUnLoad,Tmp_System
+RegHiveUnLoad,Tmp_Software
+//--
+Run,%ScriptFile%,Add_Shortcuts
+
+[Add_Shortcuts]
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%StartMpin_CheckBox%,Equal,True,Add_Pin,StartMenu
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+
+[Require_FileList]
+\Program Files\Windows Media Player
+\Windows\System32\drivers\mmcss.sys
+\Windows\System32\drivers\monitor.sys
+\Windows\System32\wbem\WmiPrvSE.exe
+\Windows\System32\aepic.dll
+\Windows\System32\amcompat.tlb
+\Windows\System32\amsi.dll
+\Windows\System32\apphelp.dll
+\Windows\System32\AppXDeploymentClient.dll
+\Windows\System32\asferror.dll
+\Windows\System32\atl.dll
+\Windows\System32\avicap32.dll
+\Windows\System32\bcrypt.dll
+\Windows\System32\cewmdm.dll
+\Windows\System32\clbcatq.dll
+\Windows\System32\cldapi.dll
+\Windows\System32\CloudNotifications.exe
+\Windows\System32\COLORCNV.DLL
+\Windows\System32\CompPkgSup.dll
+\Windows\System32\CoreMessaging.dll
+\Windows\System32\CoreMmRes.dll
+\Windows\System32\CoreUIComponents.dll
+\windows\system32\credssp.dll
+\Windows\System32\cscui.dll
+\Windows\System32\DDORes.dll
+\Windows\System32\DevDispItemProvider.dll
+\Windows\System32\devenum.dll
+\Windows\System32\dllhost.exe
+\Windows\System32\dlnashext.dll
+\Windows\System32\DMRServer.dll
+\Windows\System32\DolbyDecMFT.dll
+\Windows\System32\dsound.dll
+\Windows\System32\dwmapi.dll
+\Windows\System32\dwmghost.dll
+\Windows\System32\dxmasf.dll
+\Windows\System32\dxva2.dll
+\Windows\System32\edputil.dll
+\Windows\System32\EhStorAPI.dll
+\Windows\System32\EhStorShell.dll
+\Windows\System32\evr.dll
+\Windows\System32\FirewallControlPanel.dll
+\Windows\System32\gnsdk_fp.dll
+\Windows\System32\HelpPaneProxy.dll
+\Windows\System32\iccvid.dll
+\Windows\System32\IEAdvpack.dll
+\Windows\System32\imaadp32.acm
+\Windows\System32\imageres.dll
+\Windows\System32\InputSwitch.dll
+\Windows\System32\iyuv_32.dll
+\Windows\System32\l3codeca.acm
+\Windows\System32\l3codecp.acm
+\Windows\System32\LAPRXY.DLL
+\Windows\System32\logagent.exe
+\Windows\System32\MDEServer.exe
+\Windows\System32\mf.dll
+\Windows\System32\mfAACEnc.dll
+\Windows\System32\mfasfsrcsnk.dll
+\Windows\System32\mfaudiocnv.dll
+\Windows\System32\MFCaptureEngine.dll
+\Windows\System32\mfcore.dll
+\Windows\System32\mfds.dll
+\Windows\System32\mfdvdec.dll
+\Windows\System32\mferror.dll
+\Windows\System32\mfh263enc.dll
+\Windows\System32\mfh264enc.dll
+\Windows\System32\MFMediaEngine.dll
+\Windows\System32\mfmjpegdec.dll
+\Windows\System32\mfmkvsrcsnk.dll
+\Windows\System32\mfmp4srcsnk.dll
+\Windows\System32\mfmpeg2srcsnk.dll
+\Windows\System32\mfnetcore.dll
+\Windows\System32\mfnetsrc.dll
+\Windows\System32\mfperfhelper.dll
+\Windows\System32\mfplat.dll
+\Windows\System32\MFPlay.dll
+\Windows\System32\mfpmp.exe
+\Windows\System32\mfps.dll
+\Windows\System32\mfreadwrite.dll
+\Windows\System32\mfsrcsnk.dll
+\Windows\System32\mfsvr.dll
+\Windows\System32\mftranscode.dll
+\Windows\System32\mfvdsp.dll
+\Windows\System32\mfvfw.dll
+\Windows\System32\MFWMAAEC.DLL
+\Windows\System32\midimap.dll
+\Windows\System32\MP3DMOD.DLL
+\Windows\System32\MP4SDECD.DLL
+\Windows\System32\MP43DECD.DLL
+\Windows\System32\Mpeg2Data.ax
+\Windows\System32\mpg2splt.ax
+\Windows\System32\MPG4DECD.DLL
+\Windows\System32\MSAC3ENC.DLL
+\Windows\System32\msadp32.acm
+\Windows\System32\MSAlacEncoder.dll
+\Windows\System32\MSAMRNBDecoder.dll
+\Windows\System32\MSAMRNBEncoder.dll
+\Windows\System32\MSAMRNBSink.dll
+\Windows\System32\MSAMRNBSource.dll
+\Windows\System32\MSAudDecMFT.dll
+\Windows\System32\msdmo.dll
+\Windows\System32\msdxm.tlb
+\Windows\System32\MSFlacDecoder.dll
+\Windows\System32\MSFlacEncoder.dll
+\Windows\System32\msg711.acm
+\Windows\System32\msgsm32.acm
+\Windows\System32\msimg32.dll
+\Windows\System32\msmpeg2adec.dll
+\Windows\System32\MSMPEG2ENC.DLL
+\Windows\System32\msmpeg2vdec.dll
+\Windows\System32\MSOpusDecoder.dll
+\Windows\System32\MSPhotography.dll
+\Windows\System32\msrle32.dll
+\Windows\System32\msvidc32.dll
+\Windows\System32\MSVideoDSP.dll
+\Windows\System32\MSVP9DEC.dll
+\Windows\System32\msvproc.dll
+\Windows\System32\MSVPXENC.dll
+\Windows\System32\mswmdm.dll
+\Windows\System32\msyuv.dll
+\Windows\System32\netprofm.dll
+\Windows\System32\ngcrecovery.dll
+\Windows\System32\npmproxy.dll
+\Windows\System32\OEMDefaultAssociations.dll
+\Windows\System32\oleacc.dll
+\Windows\System32\oleaccrc.dll
+\Windows\System32\OnDemandConnRouteHelper.dll
+\Windows\System32\PlayToDevice.dll
+\Windows\System32\playtomenu.dll
+\Windows\System32\PlayToReceiver.dll
+\Windows\System32\PortableDeviceApi.dll
+\Windows\System32\PortableDeviceClassExtension.dll
+\Windows\System32\PortableDeviceConnectApi.dll
+\Windows\System32\PortableDeviceStatus.dll
+\Windows\System32\PortableDeviceTypes.dll
+\Windows\System32\PortableDeviceWiaCompat.dll
+\Windows\System32\propsys.dll
+\Windows\System32\qasf.dll
+\Windows\System32\quartz.dll
+\Windows\System32\RESAMPLEDMO.DLL
+\Windows\System32\ResourcePolicyClient.dll
+\Windows\System32\rmclient.dll
+\Windows\System32\rpcss.dll
+\Windows\System32\rrinstaller.exe
+\Windows\System32\RTWorkQ.dll
+\Windows\System32\rundll32.exe
+\Windows\System32\shell32.dll
+\Windows\System32\spwmp.dll
+\Windows\System32\sqmapi.dll
+\Windows\System32\ssdpapi.dll
+\Windows\System32\sspicli.dll
+\Windows\System32\StorageUsage.dll
+\Windows\System32\taskschd.dll
+\Windows\System32\TileDataRepository.dll
+\Windows\System32\tsbyuv.dll
+\Windows\System32\twinapi.dll
+\Windows\System32\unregmp2.exe
+\Windows\System32\upnp.dll
+\Windows\System32\upnphost.dll
+\Windows\System32\userenv.dll
+\Windows\System32\uxtheme.dll
+\Windows\System32\VIDRESZR.DLL
+\Windows\System32\wdmaud.drv
+\Windows\System32\WebcamUi.dll
+\Windows\System32\Windows.ApplicationModel.dll
+\Windows\System32\Windows.Globalization.dll
+\Windows\System32\Windows.Media.Audio.dll
+\Windows\System32\Windows.Media.dll
+\Windows\System32\Windows.Media.Editing.dll
+\Windows\System32\Windows.Media.Renewal.dll
+\Windows\System32\Windows.Media.Streaming.dll
+\Windows\System32\Windows.Media.Streaming.ps.dll
+\Windows\System32\Windows.Security.Authentication.OnlineId.dll
+\Windows\System32\Windows.UI.dll
+\Windows\System32\Windows.UI.Xaml.Controls.dll
+\Windows\System32\Windows.Web.dll
+\Windows\System32\wininet.dll
+\Windows\System32\winmde.dll
+\Windows\System32\winmmbase.dll
+\Windows\System32\WMADMOD.DLL
+\Windows\System32\WMADMOE.DLL
+\Windows\System32\WMASF.DLL
+\Windows\System32\wmcodecdspps.dll
+\Windows\System32\wmdmlog.dll
+\Windows\System32\wmdmps.dll
+\Windows\System32\wmdrmsdk.dll
+\Windows\System32\wmerror.dll
+\Windows\System32\wmidx.dll
+\Windows\System32\WMNetMgr.dll
+\Windows\System32\wmp.dll
+\Windows\System32\WMPDMC.exe
+\Windows\System32\WmpDui.dll
+\Windows\System32\wmpdxm.dll
+\Windows\System32\wmpeffects.dll
+\Windows\System32\wmploc.DLL
+\Windows\System32\wmpps.dll
+\Windows\System32\wmpshell.dll
+\Windows\System32\WMSPDMOD.DLL
+\Windows\System32\WMSPDMOE.DLL
+\Windows\System32\WMVCORE.DLL
+\Windows\System32\WMVDECOD.DLL
+\Windows\System32\wmvdspa.dll
+\Windows\System32\WMVENCOD.DLL
+\Windows\System32\WMVSDECD.DLL
+\Windows\System32\WMVSENCD.DLL
+\Windows\System32\wpd_ci.dll
+\Windows\System32\wpdbusenum.dll
+\Windows\System32\wpdshext.dll
+\Windows\System32\WPDShextAutoplay.exe
+\Windows\System32\WPDShServiceObj.dll
+\Windows\System32\WPDSp.dll
+\Windows\System32\wtsapi32.dll
+\Windows\System32\wuaueng.dll
+\windows\System32\??-??\asferror.dll.mui
+\Windows\System32\??-??\devenum.dll.mui
+\Windows\System32\??-??\FirewallControlPanel.dll.mui
+\windows\System32\??-??\IEAdvpack.dll.mui
+\windows\System32\??-??\mfcore.dll.mui
+\windows\System32\??-??\mferror.dll.mui
+\Windows\System32\??-??\unregmp2.exe.mui
+\windows\System32\??-??\wmerror.dll.mui
+\windows\System32\??-??\wmploc.dll.mui
+
+[Add_Registry]
+Echo,"Processing %ScriptTitle% Registery Settings..."
+Retrieve,FileVersion,%Target_Prog%\%ProgramFolder%\%ProgramEXE%,%WMPVarResult%
+//-
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AcceptedPrivacyStatement,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,MetadataRetrieval,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,SilentAcquisition,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UsageTracking,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUMusic,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUPictures,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUVideo,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUPlaylists,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LaunchIndex,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,SQMLaunchIndex,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AppColorLimited,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrentDownloadXXXCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrent500ServerErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrent503ServerErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrentOtherServerErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrentNetworkErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataLastResetTime,493225487
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,MediaLibraryCreateNewDatabase,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,SyncPlaylistsAdded,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LibraryHMENodesVisible,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LibraryForceShowColumns,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LastContainerV12,{70C02500-7C6F-11D3-9FB6-00105AA620BB}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LastContainerMode,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UsageLoggerRanOnce,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,TranscodedFilesCacheSize,2048
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,TranscodedFilesCacheDefaultSizeSet,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,EverLoadedServices,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,FirstRun,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NextLaunchIndex,2
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,XV11,192
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,YV11,108
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,WidthV11,1536
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,HeightV11,864
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Maximized,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Volume,50
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ModeShuffle,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ModeLoop,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Mute,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Balance,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentEffectType,Bars
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentEffectPreset,3
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,VideoZoom,100
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShrinkToFit,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,StretchToFit,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowEffects,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowFullScreenPlaylist,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingQuickHide,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowTitles,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowCaptions,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingPlaylist,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingMetadata,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingSettings,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentDisplayView,VizView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentSettingsView,EQView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentMetadataView,MediaInfoView
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentDisplayPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentSettingsPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentMetadataPreset,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserDisplayView,VizView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPDisplayView,VizView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPSettingsView,EQView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPMetadataView,MediaInfoView
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserDisplayPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPDisplayPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPSettingsPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPMetadataPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPShowSettings,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPShowMetadata,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowAlbumArt,0
+//
+RegWrite,HKLM,0x4,Tmp_Software\Microsoft\MediaPlayer\PREFERENCES,RemoteSharingEnabled,0
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midimapper,midimap.dll
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux1,wdmaud.drv
+//--
+RegWrite,HKLM,0x1,Tmp_Software\WMP,InstallDir,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%"
+RegWrite,HKLM,0x1,Tmp_Software\WMP,Version,"%WMPVarResult%"
+RegWrite,HKLM,0x1,Tmp_Software\WMP,,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%"
+RegWrite,HKLM,0x1,Tmp_Software\WMP,Language,1033
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP\shell,,play
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP\shell\play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//-- Associate file types
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.wav,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.wmv,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.wma,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.mp3,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.asf,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.avi,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.divx,,WMP
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\.flv,,WMP
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\.flv4,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.m4v,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.mov,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.mpg,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.mp4,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.mkv,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.flac,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ts,,WMP
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.m2ts,,WMP
+//
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\EventLog\System\WMPNetworkSvc,ProviderGuid,{6A2DC7C1-930A-4FB5-BB44-80B30AEBED6C}
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System,WMPNetworkSvc-2,"V2.0|Action=Block|Dir=In|Protocol=6|App=#$pprogramfileS#$p\Windows Media Player\wmpnetwk.exe|Svc=WMPNetworkSvc|Name=@FirewallAPI.dll,-31702|"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System,WMPNetworkSvc-1,"V2.0|Action=Allow|Dir=In|LPort=554|LPort=8554|Protocol=6|App=#$pprogramfileS#$p\Windows Media Player\wmpnetwk.exe|Svc=WMPNetworkSvc|Name=@FirewallAPI.dll,-31700|Desc=@FirewallAPI.dll,-31701|"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\WMPNetworkSvc,DisplayName,"@#$pprogramfiles#$p\Windows Media Player\wmpnetwk.exe,-101"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WMPNetworkSvc,ErrorControl,1
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\WMPNetworkSvc,ImagePath,"#$q#$pprogramfiles#$p\Windows Media Player\wmpnetwk.exe#$q"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WMPNetworkSvc,Start,2
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WMPNetworkSvc,Type,16
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\WMPNetworkSvc,Description,"@#$pprogramfiles#$p\Windows Media Player\wmpnetwk.exe,-102"
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\WMPNetworkSvc,DependOnService,http,WSearch
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\WMPNetworkSvc,ObjectName,"NT AUTHORITY\NetworkService"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WMPNetworkSvc,ServiceSidType,1
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\WMPNetworkSvc,RequiredPrivileges,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Services\WMPNetworkSvc,FailureActions,80,51,01,00,00,00,00,00,00,00,00,00,03,00,00,00,14,00,00,00,01,00,00,00,30,75,00,00,01,00,00,00,30,75,00,00,00,00,00,00,00,00,00,00
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\WMPNetworkSvc,DelayedAutostart,1
+RegWrite,HKLM,0x3,Tmp_System\ControlSet001\Services\WMPNetworkSvc\Security,Security,01,00,14,80,8c,00,00,00,98,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,5c,00,04,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,9d,01,02,00,01,01,00,00,00,00,00,05,04,00,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,06,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+//
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmpconfig.exe","%PE_Programs%\%ProgramFolder%\Wmpconfig.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmpsideshowgadget.exe","%PE_Programs%\%ProgramFolder%\Wmpsideshowgadget.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmpshare.exe","%PE_Programs%\%ProgramFolder%\Wmpshare.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmpnetwk.exe","%PE_Programs%\%ProgramFolder%\Wmpnetwk.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\wmplayer.exe","%PE_Programs%\%ProgramFolder%\wmplayer.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmpenc.exe","%PE_Programs%\%ProgramFolder%\Wmpenc.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmlaunch.exe","%PE_Programs%\%ProgramFolder%\Wmlaunch.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmprph.exe","%PE_Programs%\%ProgramFolder%\Wmprph.exe"
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows\CurrentVersion\Parental Controls\HTTPExemptions","%PE_Programs%\%ProgramFolder%\Wmpnscfg.exe","%PE_Programs%\%ProgramFolder%\Wmpnscfg.exe"
+//
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Control\Network\LightweightCallHandlers\PNIDUI\OnPrivateNetworkAvailable\WMP_OnPrivateNetworkAvailable,ExeName,"#$q#$pprogramfiles#$p\Windows Media Player\wmpnscfg.exe#$q"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Network\LightweightCallHandlers\PNIDUI\OnPrivateNetworkAvailable\WMP_OnPrivateNetworkAvailable,Cardinality,0
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Stack.Audio\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Stack.Audio\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Audio\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Stack.Image\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Stack.Image\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Image\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Stack.Video\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Stack.Video\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Stack.Video\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\audio\DefaultIcon,,"#$pSystemRoot#$p\system32\shell32.dll,-16824"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\OpenWithList\wmplayer.exe,,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\audio\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Audio\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Image\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\Directory.Video\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+//
+RegWrite,HKLM,0x4,Tmp_Software\Classes\SystemFileAssociations\video,ThumbnailCutoff,1
+RegWrite,HKLM,0x4,Tmp_Software\Classes\SystemFileAssociations\video,Treatment,3
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\video\DefaultIcon,,"#$pSystemRoot#$p\system32\shell32.dll,-16825"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\OpenWithList\wmplayer.exe,OpenWithExclude,QT:MOV
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue,,"&Add to Windows Media Player list"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue\command,DelegateExecute,{45597c98-80f6-4549-84ff-752cf55e2d29}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shell\Play,,"&Play with Windows Media Player"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\SystemFileAssociations\video\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9801"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shell\Play,NeverDefault,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shell\Play\command,DelegateExecute,{ed1d0fdf-4414-470a-a56d-cfb68623fc58}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shellex\ContextMenuHandlers\PlayTo,,{7AD84985-87B4-4a16-BE58-8B72A5B390F7}
+RegWrite,HKLM,0x1,Tmp_Software\Classes\SystemFileAssociations\video\shellex\ContextMenuHandlers\ShellVideoSlideshow,,{E598560B-28D5-46aa-A14A-8A3BEA34B576}
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\AppID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58},,"Play with Windows Media Player"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58},,"Play with Windows Media Player"
+//Win10 x64 RegWrite - Overwrote existing key ""%ProgramFiles(x86)%\Windows Media Player\wmplayer.exe" /Play" with different data
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\LocalServer32,,"#$q#$pProgramFiles#$p\Windows Media Player\wmplayer.exe#$q /Play"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\SupportedProtocols,rtspt,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\SupportedProtocols,dlna-playsingle,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\SupportedProtocols,rtspu,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\SupportedProtocols,rtsp,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\SupportedProtocols,mms,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{ed1d0fdf-4414-470a-a56d-cfb68623fc58}\SupportedProtocols,http,
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{7AD84985-87B4-4a16-BE58-8B72A5B390F7},,"Play To menu"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{7AD84985-87B4-4a16-BE58-8B72A5B390F7},ContextMenuOptIn,
+//Win10 x64 RegWrite - Overwrote existing key "x:\Windows\System32\playtomenu.dll" with different data
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{7AD84985-87B4-4a16-BE58-8B72A5B390F7}\InProcServer32,,"@#$pSystemRoot#$p\System32\Windows.Media.Streaming.dll"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{7AD84985-87B4-4a16-BE58-8B72A5B390F7}\InProcServer32,ThreadingModel,Apartment
+//
+RegWrite,HKLM,0x1,Tmp_Software\Classes\AppID\{45597c98-80f6-4549-84ff-752cf55e2d29},,"Add to Windows Media Player list"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29},,"Add to Windows Media Player list"
+//Win10 x64  RegWrite - Overwrote existing key ""%ProgramFiles(x86)%\Windows Media Player\wmplayer.exe" /Enqueue" with different data
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\LocalServer32,,"#$q#$pProgramFiles#$p\Windows Media Player\wmplayer.exe#$q /Enqueue"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\SupportedProtocols,rtspt,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\SupportedProtocols,dlna-playsingle,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\SupportedProtocols,rtspu,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\SupportedProtocols,rtsp,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\SupportedProtocols,mms,
+RegWrite,HKLM,0x1,Tmp_Software\Classes\CLSID\{45597c98-80f6-4549-84ff-752cf55e2d29}\SupportedProtocols,http,
+//
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\unregmp2.exe,-9991","&Play"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\wmploc.dll,-102","Windows Media Player"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\unregmp2.exe,-9916","Windows Media Player Skin Package"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$psystemroot#$p\syswow64\unregmp2.exe,-155","Play digital media including music, videos, CDs, and DVDs."
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\wmploc.dll,-29400","Windows Media Player is your digital music software that puts you in control of your music experience."
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\unregmp2.exe,-4","Windows Media Player"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\unregmp2.exe,-9925","MP3 Format Sound"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@wmploc.dll,-102","Windows Media Player"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\unregmp2.exe,-9800","&Add to Windows Media Player list"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\unregmp2.exe,-9801","&Play with Windows Media Player"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\wmploc.dll,-128","Microsoft Windows Media Player"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pProgramfiles#$p\Windows Media Player\wmpnetwk.exe,-102","Shares Windows Media Player libraries to other networked players and media devices using Universal Plug and Play"
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\system32\wpdbusenum.dll,-101","Enforces group policy for removable mass-storage devices. Enables applications such as Windows Media Player and Image Import Wizard to transfer and synchronize content using removable mass-storage devices."
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$psystemroot#$p\system32\mmcss.dll,-101","Enables relative prioritization of work based on system-wide task priorities. This is intended mainly for multimedia applications.  If this service is stopped, individual tasks resort to their default priority."
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Local Settings\MuiCache\167\52C64B7E","@#$pSystemRoot#$p\System32\hidserv.dll,-102","Activates and maintains the use of hot buttons on keyboards, remote controls, and other multimedia devices. It is recommended that you keep this service running."
+//-
+//scope visualization
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,PlayerModeAlbumArtSelected,0
+
+[Win81_Notes]
+//mmcss.sys win10
+If,ExistFile,%Source_Sys%\Drivers\mmcss.sys,FileCopy,%Source_Sys%\drivers\mmcss.sys,%target_sys%\drivers
+// win8.1
+If,ExistFile,%Source_Sys%\mmcss.dll,Require_FileQ,mmcss.dll
+
+[Win81_Require_Files]
+Require_FileQ,cewmdm.dll
+Require_FileQ,CompPkgSup.dll
+Require_FileQ,ddores.dll
+Require_FileQ,DevDispItemProvider.dll
+Require_FileQ,evr.dll
+Require_FileQ,mf.dll
+Require_FileQ,mfasfsrcsnk.dll
+Require_FileQ,mfcore.dll
+Require_FileQ,mfds.dll
+Require_FileQ,mfmp4srcsnk.dll
+Require_FileQ,mfmpeg2srcsnk.dll
+Require_FileQ,mfnetcore.dll
+Require_FileQ,mfnetsrc.dll
+Require_FileQ,mfperfhelper.dll
+Require_FileQ,mfplat.dll
+Require_FileQ,mfps.dll
+Require_FileQ,mfsrcsnk.dll
+Require_FileQ,MP3DMOD.dll
+Require_FileQ,MP4SDECD.dll
+Require_FileQ,MSAudDecMFT.dll
+Require_FileQ,msmpeg2adec.dll
+Require_FileQ,msmpeg2vdec.dll
+Require_FileQ,mswmdm.dll
+Require_FileQ,netprofm.dll
+Require_FileQ,pdh.dll
+Require_FileQ,pdhui.dll
+Require_FileQ,RESAMPLEDMO.dll
+Require_FileQ,RTWorkQ.dll
+Require_FileQ,spwmp.dll
+Require_FileQ,upnp.dll
+Require_FileQ,upnphost.dll
+Require_FileQ,Windows.Media.Streaming.dll
+Require_FileQ,wmdmps.dll
+Require_FileQ,wmp.dll
+Require_FileQ,WMPDMC.exe
+Require_FileQ,wmpdui.dll
+Require_FileQ,wmpdxm.dll
+Require_FileQ,wmpeffects.dll
+Require_FileQ,wmploc.dll
+Require_FileQ,wmpmde.dll
+Require_FileQ,wmpps.dll
+Require_FileQ,wmpshell.dll
+Require_FileQ,WMVCORE.dll
+Require_FileQ,WMVDECOD.DLL
+Require_FileQ,wmvdspa.dll
+Require_FileQ,WMVENCOD.DLL
+Require_FileQ,WMVSDECD.DLL
+Require_FileQ,WMVSENCD.DLL
+Require_FileQ,WMVXENCD.DLL
+Require_FileQ,Wpc.dll
+//mmcss.sys win10
+//If,ExistFile,%Source_Sys%\Drivers\mmcss.sys,FileCopy,%Source_Sys%\drivers\mmcss.sys,%target_sys%\drivers
+// win8.1
+//If,ExistFile,%Source_Sys%\mmcss.dll,Require_FileQ,mmcss.dll
+Require_FileQ,mmcss.dll
+//// more for playing audio CD
+Require_FileQ,APPREPAPI.DLL
+Require_FileQ,CERTCA.DLL
+Require_FileQ,COREUICOMPONENTS.DLL
+Require_FileQ,CRYPTNGC.DLL
+Require_FileQ,DEVICELOCKHELPERS.DLL
+Require_FileQ,DFSCLI.DLL
+Require_FileQ,EFSADU.DLL
+Require_FileQ,EFSUTIL.DLL
+Require_FileQ,ELSCORE.DLL
+Require_FileQ,TBS.DLL
+Require_FileQ,HLINK.DLL
+Require_FileQ,IEAPFLTR.DLL
+Require_FileQ,IEUI.DLL
+Require_FileQ,IMGUTIL.DLL
+Require_FileQ,MCICDA.DLL
+Require_FileQ,MSFEEDS.DLL
+Require_FileQ,MSOERT2.DLL
+Require_FileQ,OCCACHE.DLL
+Require_FileQ,PRINTUI.DLL
+Require_FileQ,PRNTVPT.DLL
+Require_FileQ,RSTRTMGR.DLL
+Require_FileQ,SRPAPI.DLL
+Require_FileQ,VAULTCLI.DLL
+Require_FileQ,WEBSOCKET.DLL
+Require_FileQ,WPCWEBFILTER.DLL
+
+[Win81_Require_FileList]
+\Program Files\Windows Media Player
+
+[Win81_Add_Registry]
+Run,%ScriptFile%,Win81_Add_Registry_1strun
+Run,%ScriptFile%,Win81_Add_Registry_MIDI
+
+[Win81_Add_Registry_1strun]
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AcceptedPrivacyStatement,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,MetadataRetrieval,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,SilentAcquisition,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UsageTracking,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUMusic,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUPictures,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUVideo,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,DisableMRUPlaylists,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LaunchIndex,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,SQMLaunchIndex,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AppColorLimited,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrentDownloadCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrent500ServerErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrent503ServerErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrentOtherServerErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataCurrentNetworkErrorCount,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,AutoMetadataLastResetTime,493225487
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,MediaLibraryCreateNewDatabase,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,SyncPlaylistsAdded,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LibraryHMENodesVisible,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LibraryForceShowColumns,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LastContainerV12,{70C02500-7C6F-11D3-9FB6-00105AA620BB}
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,LastContainerMode,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UsageLoggerRanOnce,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,TranscodedFilesCacheSize,2048
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,TranscodedFilesCacheDefaultSizeSet,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,EverLoadedServices,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,FirstRun,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NextLaunchIndex,2
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,XV11,192
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,YV11,108
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,WidthV11,1536
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,HeightV11,864
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Maximized,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Volume,50
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ModeShuffle,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ModeLoop,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Mute,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,Balance,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentEffectType,Bars
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentEffectPreset,3
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,VideoZoom,100
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShrinkToFit,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,StretchToFit,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowEffects,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowFullScreenPlaylist,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingQuickHide,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowTitles,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowCaptions,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingPlaylist,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingMetadata,1
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,NowPlayingSettings,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentDisplayView,VizView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentSettingsView,EQView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentMetadataView,MediaInfoView
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentDisplayPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentSettingsPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,CurrentMetadataPreset,0
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserDisplayView,VizView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPDisplayView,VizView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPSettingsView,EQView
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPMetadataView,MediaInfoView
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserDisplayPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPDisplayPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPSettingsPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPMetadataPreset,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPShowSettings,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,UserWMPShowMetadata,0
+RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\MediaPlayer\Preferences,ShowAlbumArt,0
+//-
+RegWrite,HKLM,0x4,Tmp_Software\Microsoft\MediaPlayer\PREFERENCES,RemoteSharingEnabled,0
+//-
+RegWrite,HKLM,0x0,Tmp_System\ControlSet001\Services\MpsSvc\Parameters\PortKeywords\DHCP
+
+[Win81_Add_Registry_MIDI]
+//RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midimapper,midimap.dll
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux1,wdmaud.drv
+
+[AuthorEncoded]
+Logo=wmplayer4848.ico
+wmplayer4848.ico=4408,5878
+
+[EncodedFile-AuthorEncoded-wmplayer4848.ico]
+lines=1
+0=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
+1=bGozOOWztgQaQTNuea3dz6BFdvxR6DtjdDrexMU9plNPNd/MXb1FZJvXxa/IUfgAb5jUNNOSacYZO0tZB/44orOGkEwhJGIBB7aDXuk5oBF1zrwu8tGS5YHo87HesTjDMSiq+HEcL+IeTx4fMShPwvp41BF6N6gkMNtyg7UzXannSNpuuyzilvsHIyX7p1/+Dl33qbn5GwZSr8HQXvg3qgpMo41JBtGGosNMvoZEVnlrqeHAePXwBYkjAKAdgjj2EvPHEWmfFxKLJ7+ivOG4lZuSWPH6wJvvfpxDEoo7WMDzaesSs5V/QGXoFuuD9nWNOVrnXIaRaCn++7/yT4ueTb/FJmyvYp8/eTvfyS+kKjtKlY1X1VPnQj2VhTdsX9FF5zQpMBlmG/LDk/SfE+xU3y4VNANM7FhREorW9zDzGSnFJmqtHEp+j0vOs6fX+eTsu9ivwNXv6q3UoDfn+5M/9T5W8v+AvBX2EU12cbxPUFWAOygpOtVvfmy/C+VEivSh5/NskGT6ViLZJGYVmiE73gniT83PQU7/B4CYlzwZOxAC9fngBWW41b3J5iV3bn6E3CMq2BR9YZeEXooUCn68vXOpWtHv5B6g7NcH/BXf0z9fz/BVR95Aq9uC7Lwy8h+LPUyq6rSrO0oXd4oJQnZqSa4nPI4J8I8CT2lD9qEdYkMAkjPrcAZ/2JBO//k0q7QMbOHZV1ppv0mHODkKozEJFXovN6IOuGBwq1LlWbh78fvwtoufnG++a/jvzcIg+/TlRzHfmLFOwMtYKTozRJaH0mEa3fICgX4nNOVXeuvaU6ezQmqwS+yGDBf8XJYWt6L8TlN0ATrWBcwcl3ageKzNqB4mGjqFJrFJbrDAKqV/wyn49iHfa71qW+4eHvLQnXqbuvmif3/0D+a1Pvn+sbQdVLLtcLazN1oup8vaiuSMHK0Cg52Xgtp3GNopp+k6haqOMWOPQ8it4orNDo+WXDw7xSA/KY9AKqAf0NGwQVWoOwXGMSVWqMoioPu0cCQlSv+ITKsIdKNDf5e4q2WlSdlx305BUwWPzRmL7z2Kiq9j1iVb82Ff5uagTun2KGTdfXatfzO51GSa9Nw9VZVByrXdevs+v6CGltmh6zVc22WZVMq1XZMUntVrO0xWyW0i231WoxSRrNKIz1GOstWEcz5sKE/k3DfIrepWVYB/Jfx/xH6Dz8mP+u/DftnPy3hnvLwnGK4PEp9U/Bh9ncygMOLuVzax81wtpXvtPeX7XLPljz5big4eiYsDlyXNR8akLU8t24hB49LmMmT8hZKeNydtq4knNpXMXJGNNw88aGB0tGdYPFY8MDJaN6XumoQVg9YhLXjeB1EdXqMsvpLouC4bKqmE6bssPmUuNuoq6F7rz/dnVlrRnn5K3DbzcwYyrMdx4xI/3XPY1Rq/vo0Wu66w69OdB4ZCO37qtPeivDt7AK3/2MVbA2HGMEs2DTt6yCTZGs65tiWQUbE5jXN17sLtuWw8xdW9FZ/Elxx7W1dFbeehYzd30XO299Hyt3Pd4SrpN05q1XdOa/Z2Hnb7SyctfZOrLesLZdfMHYmv3aifvh/fn8fH4+P5+fz/0fvFYcmQ1EbCDNJKKJRHoQ47jnRRLJRMRvSaQGIvrfEWf74kxffMAXSb74lS9++/8zEnmSYFzjyR9xph//F7Gaktt4nBMozy3ISaxMLTKxMLHQy0zOZxgFIwnsU4XQLwSwy/vJJjAxMAEAdxAIbW8oQK4BAAAAAgAAACwAAADoEAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+MPlayer.jpg=11380,15174
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-MPlayer.jpg]
+lines=3
+0=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
+1=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
+2=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
+3=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
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

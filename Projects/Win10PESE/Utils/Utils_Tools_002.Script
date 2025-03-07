@@ -1,0 +1,267 @@
+[Main]
+Title=Utils Tools 002
+Type=Plugin
+Author=Lancelot
+Description=Utils_Tools_002
+Credits=http://TheOven.org
+Version=017
+Download_Level=2
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.01.28
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Utils_Tools_002.Script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_002.Script
+Web3=http://azin.cwcodes.net/Projects/Azin/Utils/Utils_Tools_002.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2019.12.14 Plugin created
+History002=Lancelot Add to Server - Date:2019.12.15
+History011=Lancelot updated v011 - Date:2019.12.15 - Date:2019.12.15 - Date:2019.12.15 - Date:2019.12.28 - Date:2020.01.02 - Date:2020.01.03 - Date:2020.01.07 - Date:2020.01.07 - Date:2020.01.07
+History012=Lancelot updated v012 - Date:2020.01.07
+History014=Lancelot updated v014 - Date:2020.01.22
+History015=Lancelot updated v015 - Date:2020.01.22
+History016=Lancelot updated v016 - Date:2020.01.22
+History017=Lancelot Add to Azin - Date:2020.01.28
+
+[InterFace]
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://TheOven.org/index.php?board=9
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Utils_Tools_002_File_TextLabel=Utils_Tools_002_File.Packed,1,1,12,42,152,18,8,Normal
+Utils_Tools_002_File_PackedContainer_Open_Button=,1,8,199,37,24,24,Utils_Tools_002_File_PackedContainer_Open_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Utils_Tools_002_File_PackedContainer_Open_B_,False,"__'Open Packed File Container'"
+Utils_Tools_002_File_PackedContainer_UploadX_Button=,1,8,224,37,24,24,Utils_Tools_002_File_PackedContainer_UploadX_B,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_Utils_Tools_002_File_PackedContainer_UploadX_B_,False,"__UPLOAD Packed File Container (Admins Only)"
+Utils_Tools_002_File_PackedContainer_Button_DownloadX=,1,8,168,37,24,24,Utils_Tools_002_File_PackedContainer_DownloadX_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_Utils_Tools_002_File_PackedContainer_DownloadX_B_,False,"__DOWNLOAD Packed File Container"
+Explorer_PlusPlus_TextLabel=Explorer_PlusPlus_File.Packed,1,1,12,74,152,18,8,Normal
+Explorer_PlusPlus_PackedContainer_Open_Button=,1,8,199,68,24,24,Explorer_PlusPlus_PackedContainer_Open_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Explorer_PlusPlus_PackedContainer_Open_B_,False,"__'Open Packed File Container'"
+Explorer_PlusPlus_PackedContainer_UploadX_Button=,1,8,224,68,24,24,Explorer_PlusPlus_PackedContainer_UploadX_B,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_Explorer_PlusPlus_PackedContainer_UploadX_B_,False,"__UPLOAD Packed File Container (Admins Only)"
+Explorer_PlusPlus_PackedContainer_Button_DownloadX=,1,8,168,68,24,24,Explorer_PlusPlus_PackedContainer_DownloadX_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_Explorer_PlusPlus_PackedContainer_DownloadX_B_,False,"__DOWNLOAD Packed File Container"
+LTR_Data_WebLabel=Ltr-Data-se,1,10,311,62,55,18,http://www.ltr-data.se/opencode.html/
+LTR_Data_Junc_Test_Extract_Button=Junc.exe,1,8,299,81,80,25,Extract_LTR_Data_Junc_Test_P_B,0,False,False,_Extract_LTR_Data_Junc_Test_P_B_,False
+LTR_Data_HardLink_Test_Extract_Button=HardLink.exe,1,8,299,107,80,25,Extract_LTR_Data_HardLink_M_Test_P_B,0,False,False,_Extract_LTR_Data_HardLink_M_Test_P_B_,False
+pTextLabel1=BLIconextract#$xBlueLink#$xsCalculate.exe,1,1,392,84,95,57,10,Normal
+
+[Extract_LTR_Data_HardLink_M_Test_P_B]
+Call,DirDelete,%ProjectTemp%\LTR_Data_HardLink_M
+//Run,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002.Script,Extract_LTR_Data_Junc_Extract,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002.Script
+Run,%ScriptFile%,Extract_LTR_Data_HardLink,%ScriptFile%
+//-
+Call,OpenDir,%ProjectTemp%\LTR_Data_HardLink_M
+
+[Extract_LTR_Data_HardLink]
+If,#1-,Equal,-,Set,#1,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002.Script
+If,Not,ExistFile,#1,Call,Echo,"#1 NOT FOUND - HardLink NOT Extracted",Warn,,MessageError
+If,ExistFile,#1,Run,#1,Extract_LTR_Data_HardLink_Latest,#1,#2,#3,#4,#,#6,#7,#8,#9
+
+[Extract_LTR_Data_HardLink_Latest]
+If,Not,ExistFile,%ProjectTemp%\7zLatest\HostOS\7z.exe,Run,#1,Get_SevenZip_Latest
+//-
+Call,DirDelete,%ProjectTemp%\LTR_Data_HardLink_M
+//-
+If,ExistFile,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,Begin
+Call,PackedExtractFolder,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_HardLink_M
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_HardLink_M\x86\hardlink.exe,Begin
+Call,Download,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_002_File.Packed
+Call,PackedExtractFolder,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_HardLink_M
+End
+End
+Else,Begin
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,Call,PackedExtractFolder,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_HardLink_M
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_HardLink_M\x86\hardlink.exe,Begin
+Call,Download,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_002_File.Packed
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,Call,PackedExtractFolder,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_HardLink_M
+End
+End
+//-
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_HardLink_M\x86\hardlink.exe,Call,Echo,"Halt: Can not get HardLink.exe Ready.",Warn,,MessageError,,Halt
+//-
+Call,HostOSArch
+If,%HostOSArch%,Equal,x86,FileCopy,%ProjectTemp%\LTR_Data_HardLink_M\x86\HardLink.exe,%ProjectTemp%\LTR_Data_HardLink_M\HostOS
+If,%HostOSArch%,Equal,x64,FileCopy,%ProjectTemp%\LTR_Data_HardLink_M\x64\HardLink.exe,%ProjectTemp%\LTR_Data_HardLink_M\HostOS
+//------------FileCopy,%ProjectTemp%\LTR_Data_HardLink_M\ARM\HardLink.exe,%ProjectTemp%\LTR_Data_HardLink_M\HostOS
+//FallBack - x86
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_HardLink_M\HostOS\HardLink.exe,FileCopy,%ProjectTemp%\LTR_Data_HardLink_M\x86\HardLink.exe,%ProjectTemp%\LTR_Data_HardLink_M\HostOS
+//-
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_HardLink_M\HostOS\HardLink.exe,Call,Echo,"Halt: Can not get HardLink.exe Ready.",Warn,,MessageError,,Halt
+
+[Extract_LTR_Data_Junc_Test_P_B]
+Call,DirDelete,%ProjectTemp%\LTR_Data_Junc_M
+//Run,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002.Script,Extract_LTR_Data_Junc_Extract,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002.Script
+Run,%ScriptFile%,Extract_LTR_Data_Junc,%ScriptFile%
+//-
+Call,OpenDir,%ProjectTemp%\LTR_Data_Junc_M
+
+[Extract_LTR_Data_Junc]
+If,#1-,Equal,-,Set,#1,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002.Script
+If,Not,ExistFile,#1,Call,Echo,"#1 NOT FOUND - Junc NOT Extracted",Warn,,MessageError
+If,ExistFile,#1,Run,#1,Extract_LTR_Data_Junc_Latest,#1,#2,#3,#4,#,#6,#7,#8,#9
+
+[Extract_LTR_Data_Junc_Latest]
+If,Not,ExistFile,%ProjectTemp%\7zLatest\HostOS\7z.exe,Run,#1,Get_SevenZip_Latest
+//-
+Call,DirDelete,%ProjectTemp%\LTR_Data_Junc_M
+//-
+If,ExistFile,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,Begin
+Call,PackedExtractFolder,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_Junc_M
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_Junc_M\junc.zip,Begin
+Call,Download,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_002_File.Packed
+Call,PackedExtractFolder,%ProjectDir%\Utils\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_Junc_M
+End
+End
+Else,Begin
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,Call,PackedExtractFolder,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_Junc_M
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_Junc_M\junc.zip,Begin
+Call,Download,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_002_File.Packed
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,Call,PackedExtractFolder,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_002_File.Packed,%ProjectTemp%,LTR_Data_Junc_M
+End
+End
+//-
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_Junc_M\junc.zip,Call,Echo,"Halt: Can not get junc.zip Ready.",Warn,,MessageError,,Halt
+//-
+Call,HostOSArch
+DirMake,%ProjectTemp%\LTR_Data_Junc_M\HostOS
+If,%HostOSArch%,Equal,x86,ShellExecute,Hide,%ProjectTemp%\7zLatest\HostOS\7z.exe,"x #$q%ProjectTemp%\LTR_Data_Junc_M\junc.zip#$q -y -o#$q%ProjectTemp%\LTR_Data_Junc_M\HostOS#$q"
+If,%HostOSArch%,Equal,x64,ShellExecute,Hide,%ProjectTemp%\7zLatest\HostOS\7z.exe,"x #$q%ProjectTemp%\LTR_Data_Junc_M\junc64.zip#$q -y -o#$q%ProjectTemp%\LTR_Data_Junc_M\HostOS#$q"
+//junc_ARM.zip
+//FallBack - x86
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_Junc_M\HostOS\junc.exe,ShellExecute,Hide,%ProjectTemp%\7zLatest\HostOS\7z.exe,"x #$q%ProjectTemp%\LTR_Data_Junc_M\junc.zip#$q -y -o#$q%ProjectTemp%\LTR_Data_Junc_M\HostOS#$q"
+//-
+If,Not,ExistFile,%ProjectTemp%\LTR_Data_Junc_M\HostOS\junc.exe,Call,Echo,"Halt: Can not get junc.exe Ready.",Warn,,MessageError,,Halt
+
+[Variables]
+
+[Process]
+Echo,"There is no Spoon :):>"
+
+[Utils_Tools_002_File_PackedContainer_Main]
+Web1=http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_002_File.Packed
+Web2=http://gena.cwcodes.net/Projects/Gena/Utils/Utils_Tools_002_File.Packed
+Web3=http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/Utils_Tools_002_File.Packed
+Web4=http://w8pese.cwcodes.net/Projects/Win8PESE/Utils/Utils_Tools_002_File.Packed
+Web5=http://win81se.cwcodes.net/Projects/Win8.1SE/Utils/Utils_Tools_002_File.Packed
+Web6=http://win10se.cwcodes.net/Projects/Win10PESE/Utils/Utils_Tools_002_File.Packed
+Web7=http://azin.cwcodes.net/Projects/Azin/Utils/Utils_Tools_002_File.Packed
+WebHardLink=True
+
+[Utils_Tools_002_File_PackedContainer_DownloadX_B]
+IniRead,%ScriptFile%,Utils_Tools_002_File_PackedContainer_Main,Web1,%Web%
+Set,%Folder%,%ScriptDir%\
+Call,DownloadX,%Folder%,%Web%
+
+[Utils_Tools_002_File_PackedContainer_UploadX_B]
+Run,%ScriptFile%,Utils_Tools_002_File_PackedContainer_UploadX_B_P
+
+[Utils_Tools_002_File_PackedContainer_UploadX_B_P]
+IniRead,%ScriptFile%,Utils_Tools_002_File_PackedContainer_Main,Web1,%Web%
+StrFormat,FileName,%Web%,%FileName%
+StrFormat,Replace,%FileName%,%20," ",%FileName%
+Set,%File%,%ScriptDir%\%FileName%
+//-
+Call,UploadXMultiQ,%File%,|Utils_Tools_002_File_PackedContainer_Main
+
+[Utils_Tools_002_File_PackedContainer_Open_B]
+Call,FileOpenWait,%ScriptDir%\Utils_Tools_002_File.Packed
+
+[Explorer_PlusPlus_PackedContainer_Main]
+Web1=http://yomi.cwcodes.net/Yomi/UtilsY/Explorer_PlusPlus_File.Packed
+Web2=http://gena.cwcodes.net/Projects/Gena/Utils/Explorer_PlusPlus_File.Packed
+Web3=http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/Explorer_PlusPlus_File.Packed
+Web4=http://w8pese.cwcodes.net/Projects/Win8PESE/Utils/Explorer_PlusPlus_File.Packed
+Web5=http://win81se.cwcodes.net/Projects/Win8.1SE/Utils/Explorer_PlusPlus_File.Packed
+Web6=http://win10se.cwcodes.net/Projects/Win10PESE/Utils/Explorer_PlusPlus_File.Packed
+Web7=http://azin.cwcodes.net/Projects/Azin/Utils/Explorer_PlusPlus_File.Packed
+WebHardLink=True
+
+[Explorer_PlusPlus_PackedContainer_DownloadX_B]
+IniRead,%ScriptFile%,Explorer_PlusPlus_PackedContainer_Main,Web1,%Web%
+Set,%Folder%,%ScriptDir%\
+Call,DownloadX,%Folder%,%Web%
+
+[Explorer_PlusPlus_PackedContainer_UploadX_B]
+Run,%ScriptFile%,Explorer_PlusPlus_PackedContainer_UploadX_B_P
+
+[Explorer_PlusPlus_PackedContainer_UploadX_B_P]
+IniRead,%ScriptFile%,Explorer_PlusPlus_PackedContainer_Main,Web1,%Web%
+StrFormat,FileName,%Web%,%FileName%
+StrFormat,Replace,%FileName%,%20," ",%FileName%
+Set,%File%,%ScriptDir%\%FileName%
+//-
+Call,UploadXMultiQ,%File%,|Explorer_PlusPlus_PackedContainer_Main
+
+[Explorer_PlusPlus_PackedContainer_Open_B]
+Call,FileOpenWait,%ScriptDir%\Explorer_PlusPlus_File.Packed
+
+[Get_SevenZip_Latest]
+If,ExistFile,%ProjectDir%\Utils\SevenZip_Latest_File.Script,Run,%ProjectDir%\Utils\SevenZip_Latest_File.Script,Extract_7zLatest_Mini,%ProjectDir%\Utils\SevenZip_Latest_File.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\SevenZip_Latest_File.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\SevenZip_Latest_File.Script,http://yomi.cwcodes.net/Yomi/UtilsY/SevenZip_Latest_File.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\SevenZip_Latest_File.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\SevenZip_Latest_File.Script,Extract_7zLatest_Mini,%BaseDir%\Projects\YomiY\Utils\SevenZip_Latest_File.Script
+End
+If,Not,ExistFile,%ProjectTemp%\7zLatest\HostOS\7z.exe,Call,Echo,"Halt: Can not get 7z.exe Ready.",Warn,,MessageError,,Halt
+
+[AuthorEncoded]
+Logo=Papirus-Team-Papirus-Mimetypes-X-office-document_0_048048.ico
+Papirus-Team-Papirus-Mimetypes-X-office-document_0_048048.ico=731,975
+
+[EncodedFile-AuthorEncoded-Papirus-Team-Papirus-Mimetypes-X-office-document_0_048048.ico]
+lines=0
+0=eJxjYGAEQgMDBiCpwLBClYFBjIGBQQOIgUIMCQwQcRBoUGUYBaNgFJAOmBkg2UqSTlgMaidVgLYwr2+tmdb+divdM22WuqeRaUrZ2ORAdoHspJb757uaPt7ib/sfhDf52fxDpill45ID2Ukt92/2s8Uwn9bu3+Rv849a7geZORCYWu7HFlYgeqOfzf/V3lb/V3pZ/gPRhNhrfayIDv/N/rY0d/+OpOD/x+fP+H9s3vR/IJoQ+1B346By/7Gq3P8g8Pfv33//oQAf+83lcwPiflzp82B+4r/Xl84Sje9uXDmo0j8tyx96hP8ab6t/052MKcIgMwYq/ElN/9jYIDOGSv4dKPfjit/tkZ7/jlblUoRBZgyV+gsbG2TGUKm/sLFBZgxU+gHFPygtU4JBZgxU+jmUn/gfVKeC6iYQTQ4bZMZApZ/R+mu0/hoJ7h+u9ddQyb9D3f244pfWmFrup2b4bwa2d1YBy0xY+wdP22jQuR/k9gXetv/XxgX825AQ9B+G1yUE/UNnb00IvDfY3L/B3+7/6Zq8/+caiv5daCr+D8PIfBD7XGPx/ePl+QrUcj+10vPOaK9/YPfhxYX3ztdTz+0gQK3w3x3thRHeKHxguFPb7XRzP43cDgK0Tz/UTzPIgKbhT8Nwp7n76eB2EKBJ+mksoovbQWBzgB1V5i/g4U9Ht4PA9giPu1sC7KDusP2HTJPCBrufTmkGGWyL9TPcGee3Hoj3U4L3pYdtP16eTle3j4JRMAoGL4CMYuChGxgYGEcIzQyl2aE0P5SWh9L2ULoeSkPDhxFKM0NpdrzhiUYDAINrBKJ4nLMNSCzILCot1g1JTczVhXF8M3NTSyoLUot1I3Tz09Iyk1N1U/KTS3NT80riDeINTCyASC8zOZ9hFAxxsE8VQqcxYZefvuVMMgMTAAz6GdErVwJwAQAAAAIAAABRAAAAZgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
+
+[DownloadXXX]
+IniRead,%ScriptFile%,Main,Level,%LevelBefore%
+Call,DownloadXQ
+IniWrite,%ScriptFile%,Main,Level,%LevelBefore%
+
+[UploadXXX]
+IniRead,%ScriptFile%,Main,Level,%LevelBefore%
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+//Add To Azin
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2|Web3
+IniWrite,%ScriptFile%,Main,Level,%LevelBefore%
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

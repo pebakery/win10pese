@@ -4,18 +4,19 @@ Type=Plugin
 Author=Gena People, JFX
 Description=Adds MS Paint
 Credits=http://TheOven.org
-Version=021
+Version=024
 Download_Level=1
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.02.08
+Date=2019.01.17_10:34.48 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/MsPaint.script
 Web2=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/Accessories/MsPaint.script
+Web3=http://yomi.cwcodes.net/Yomi/ComponentsY/MsPaint.script
 CertifiedBy=
 Certification=
 HistoryNotes01=
@@ -27,6 +28,9 @@ History016=ChrisR - Empty custom Folder Name - Date:2014.03.18
 History018=Lancelot - Added DU buttons - Date:2015.10.11
 History019=Lancelot Added Components_PluginCache_Extract - Date:2016.11.09
 History021=Lanncelot Lanncelot Add SE Desktop.ini // Add Default Accessories Folder Localized - Date:2017.02.08
+History022=Lanncelot Add BuildClass 3 support - Date:2018.10.09
+History023=Lancelot Add To Yomi Server - Date:2018.10.23
+History024=Lancelot Add BuildClass - Date:2019.01.14 - Date:2019.01.17
 
 [Interface]
 pBevel1=pBevel1,1,12,4,6,133,140
@@ -87,13 +91,22 @@ If,ExistFile,%ProjectInfo%,IniWrite,%ProjectInfo%,UPX-Switches,MSPAINT.exe,"-9 -
 Require_FileQ,mspaint.exe
 Require_FileQ,IconCodecService.dll
 Require_FileQ,MFC42u.dll
+If,%BuildClass%,Equal,3,Require,FileList
+Else,Begin
 If,ExistFile,%Source_Sys%\UIRibbon.dll,Require_FileQ,UIRibbon.dll
 If,ExistFile,%Source_Sys%\UIRibbonRes.dll,Require_FileQ,UIRibbonRes.dll
+End
 Require_FileQ,WindowsCodecs.dll
 Require_FileQ,WindowsCodecsExt.dll
 Require_FileQ,odbc32.dll
 Require_FileQ,wiaservc.dll
 //Require_FileQ,mapi32.dll
+
+[Require_FileList]
+\Windows\System32\UIRibbon.dll
+\Windows\System32\??-??\UIRibbon.dll.mui
+\Windows\System32\UIRibbonRes.dll
+\Windows\System32\??-??\UIRibbonRes.dll.mui
 
 [AuthorEncoded]
 authorlogo.jpg=924,1232
@@ -113,13 +126,18 @@ lines=1
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2|Web3
 
 [Settings_Default]
 IniWrite,%ScriptFile%,Main,Selected,False
 
 [Settings_Default_Win10PESE]
 IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
 
 [InterfaceEncoded]
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830

@@ -4,14 +4,14 @@ Type=Plugin
 Author=JFX
 Description=WoW64 (Windows on Windows64) provides support for running 32bit programs in a 64bit environment.
 Credits=All credits go to Microsoft for developing this Operative System and to everybody on the BootLand forums for helping on the debuggind and improvement of this plugin. yamingw setWow64 tool
-Version=048
+Version=054
 Download_Level=0
 Level=1
 Selected=None
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.12
+Date=2020.03.20
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/5-Wow64.script
@@ -62,6 +62,12 @@ History045=ChrisR - Check if the catalogs exist before copying. Microsoft-Window
 History046=ChrisR - Include Win10 SxS registry with CopySoftKey.cmd - Date:2017.10.13
 History047=Lancelot Fixed typo and syntax - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.08
 History048=JFX - ied2006 Add new files for Win10 1703 and later Reply 21 20 http://TheOven.org/index.php?topic=1701.msg24974#msg24974 - Date:2017.12.12
+History049=ChrisR - Add fltLib.dll for Win10 1703 and later - Date:2018.05.04
+History050=Bob.Omb - Add ShellStyle.dll to SysWOW64 only if exist for x64 >= v1809 - Date:2018.10.13
+History051a=Lancelot - Add: [PInstall_CopySysWoW_IF_Exists_3] [PInstall_CopySysWoWMui_IF_Exists_3] -> To get If Exist copy-mui easier with Type3 Iwim eg. Run,%ScriptFile%,PInstall_CopySysWoWMui_IF_Exists_3,sxsstore.dll - Date:2018.11.11
+History051=Lancelot - Add BuildClass 3 support - Date:2018.11.11
+History052=Lancelot - Add BuildClass - Date:2019.01.14 - Date:2019.01.17
+History054=Lancelot - Add Call,HostOSArch - Date:2019.01.27 // More BuildClass 3 support x2 - Date:2019.11.10 // - Date:2020.03.20
 
 [Variables]
 //WinNT6 Variables
@@ -73,20 +79,91 @@ History048=JFX - ied2006 Add new files for Win10 1703 and later Reply 21 20 http
 %tSXS%=%Target_Win%\Winsxs
 //Safer to declare %MuiLang3(4)% if used to test if blank or not. %MuiLang1(2)% are at minimum declared in MuiLang section
 //WinNT6 Macro variables
-CopySysWoW=Run,%ScriptFile%,P_CopySysWoW
+CopySysWoW=Run,%ScriptFile%,P_CopySysWoW_%BuildClass%
 //WinNT5 Macro variables
 CoEXWOW64=Run,%ScriptFile%,P_CoEXWOW64
-CopyWoWNLS=Run,%ScriptFile%,P_CopyWoWNLS
+CopyWoWNLS=Run,%ScriptFile%,P_CopyWoWNLS_%BuildClass%
 %ProgramExe%=
 %RegeditexeFolder%=
 %RegexeFolder%=
 %CmdexeFolder%=
+%PInstall%=%ProjectTemp%\PInstall_WOW64.txt
+%PInstall_EWait%=ex
 
-[P_CopySysWoW]
+[PInstall_CopySysWoW_IF_Exists_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+
+[PInstall_CopySysWoWMui_IF_Exists_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+Loop,%ScriptFile%,P_CopySysWoW_Loop_3,1,%NbLang%,#1
+
+[P_CopySysWoW_3_CANCEL]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,Not,ExistFile,#$q%tWow%\#1#$q,Echo,#$q%tWow%\#1 not Found!#$q,Warn"
+Loop,%ScriptFile%,P_CopySysWoW_Loop_3,1,%NbLang%,#1
+
+[P_CopySysWoW_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,Not,ExistFile,#$q%tWow%\#1#$q,Echo,#$q%tWow%\#1 not Found!#$q,Warn"
+If,%NbLang%,Equal,1,TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+If,%NbLang%,Equal,2,Run,%ScriptFile%,P_CopySysWoW_II_3,#1
+If,%NbLang%,Equal,3,Run,%ScriptFile%,P_CopySysWoW_III_3,#1
+If,%NbLang%,Equal,4,Run,%ScriptFile%,P_CopySysWoW_IIII_3,#1
+If,%NbLang%,Bigger,4,Loop,%ScriptFile%,P_CopySysWoW_Loop_3,1,%NbLang%,#1
+
+[P_CopySysWoW_I_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+
+[P_CopySysWoW_II_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang2%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang2%\#1.mui##$q#$q"
+
+[P_CopySysWoW_III_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang2%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang3%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang2%\#1.mui##$q#$q"
+
+[P_CopySysWoW_IIII_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang2%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang3%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang4%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang3%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang2%\#1.mui##$q#$q"
+
+[P_CopySysWoW_Loop_3]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#9\#1.mui",Append
+//If,Not,#c,Equal,%NbLang%,Loop,%ScriptFile%,P_CopySysWoW_Loop_Del_Mui_3,#c,%NbLang%,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,#c,Equal,1,Begin
+If,Not,#c,Equal,%NbLang%,Begin
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+If,%NbLang%,Bigger,2,IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#8\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\#8\#1.mui##$q#$q"
+End
+End
+
+[P_CopySysWoW_Loop_Del_Mui_3]
+Echo,"Loop inside Loop VERY SLOW - DO NOT USE",Warn
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\#8\#1.mui##$q#$q"
+
+[P_CopySysWoW_2]
 If,Not,ExistFile,%tWow%\#1,FileCopy,%Wow%\#1,%tWow%\#1
-Loop,%ScriptFile%,P_CopySysWoW_Loop,1,%NbLang%,#1
+Loop,%ScriptFile%,P_CopySysWoW_Loop_2,1,%NbLang%,#1
 
-[P_CopySysWoW_Loop]
+[P_CopySysWoW_Loop_2]
 StrFormat,Split,%MuiLangAll%,|,#c,#9
 If,ExistFile,%Wow%\#9\#1.mui,Begin
 If,Not,ExistFile,%tWow%\#9\#1.mui,FileCopy,%Wow%\#9\#1.mui,%tWow%\#9\#1.mui
@@ -96,7 +173,10 @@ End
 [P_CoExWOW64]
 If,Not,ExistFile,%Target_Win%\SysWOW64\#1,CopyOrExpand,%SourceDir%\i386\W#1,%Target_Win%\SysWOW64\#1
 
-[P_CopyWoWNLS]
+[P_CopyWoWNLS_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+
+[P_CopyWoWNLS_2]
 If,Not,ExistFile,%tWow%\#1,Begin
 If,ExistFile,%Wow%\#1,FileCopy,%Wow%\#1,%tWow%\#1
 End
@@ -147,17 +227,29 @@ If,Not,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Run,%ScriptFile%,Pr
 
 [Process_CopyFiles_Cache]
 //Things to be done by plugin when PluginCache used (mostly thing written to script.project ;) )
-If,%Enable_WoW64_CheckBox%,Equal,True,Set,%TargetWOW64%,x86,PERMANENT
+If,%Enable_WoW64_CheckBox%,Equal,True,Set,%TargetWOW64%,x86,Permanent
 
 [Process_Normal]
 If,%Enable_WoW64_CheckBox%,Equal,True,Run,%ScriptFile%,Process_Normal_WOW64
 
 [Process_Normal_WOW64]
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
 If,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Set,%RegexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%SysType%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
 If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
+//--
+//Echo,Test,Warn
+//Set,%BuildClass%,3
+//AddVariables,%ScriptFile%,Variables
+If,%BuildClass%,Equal,3,Begin
+Call,FileCreateBlank,%PInstall%,OverWrite
+Call,FileCreateBlank,%PInstall%.ini,OverWrite
+TxtAddLine,%PInstall%.ini,"[Process]",Append
+IniWriteTextLine,%PInstall%.ini,Process,"Echo,[Process]_END"
+IniWriteTextLine,%PInstall%.ini,Process,"System,FileRedirect,ON"
+End
 //--
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 If,Not,ExistVar,%OS%,IniRead,%projectdir%\script.project,IniVariables,OS,%OS%
@@ -182,11 +274,23 @@ If,%OS%%SourceArch%,Equal,Win8.1x64,Run,%ScriptFile%,processWinNT6
 If,%OS%%SourceArch%,Equal,Win10x64,Run,%ScriptFile%,processWinNT6
 //-
 If,ExistDir,%ProjectTemp%\WOW64Basic,DirDelete,%ProjectTemp%\WOW64Basic
+//-
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,%PInstall%
+IniWriteTextLine,%PInstall%.ini,Process,"System,FileRedirect,OFF"
+IniWriteTextLine,%PInstall%.ini,Process,"Echo,#$qProcess 'After Copy' Wait Patiently.....#$q"
+Run,%PInstall%.ini,Process
+//Call,StartDoc,%PInstall%
+//Call,StartDoc,%PInstall%.ini
+Call,FileDelete,%PInstall%
+Call,FileDelete,%PInstall%.ini
+End
 
 [processWinNT6]
-Call,CompareVersions,%TargetVersion%,10.0.15063.0,TargetVersion_Win10_v1703
+Call,CompareVersions,%TargetVersion%,10.0.15063.0,Win10_1703
+Call,CompareVersions,%TargetVersion%,10.0.17763.1,Win10_1809
 ExtractFile,%ScriptFile%,Files,run64.exe,%Target_Win%\syswow64\
-Set,%TargetWOW64%,x86,PERMANENT
+Set,%TargetWOW64%,x86,Permanent
 IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
 IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
 //-
@@ -200,19 +304,29 @@ If,%OS%,Equal,WinVista,ShellExecute,Hide,%ProjectTemp%\WOW64Basic\WOW64Patch.exe
 RegHiveLoad,Tmp_System,%RegSystem%
 If,%version%,Smaller,80,ShellExecute,Hide,Reg.exe,"add #$qHKLM\Tmp_System\ControlSet001\Control\Session Manager\Memory Management#$q /v #$qPagingFiles#$q /t REG_MULTI_SZ /f"
 Else,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x7,"Tmp_System\ControlSet001\Control\Session Manager\Memory Management",PagingFiles,""
 End
 RegHiveUnLoad,Tmp_System
 //-
 //Core WoW files
+If,%BuildClass%,Equal,2,Begin
 If,Not,ExistFile,%Target_Sys%\wow64.dll,FileCopy,%Source_Sys%\wow64.dll,%Target_Sys%\
 If,Not,ExistFile,%Target_Sys%\wow64cpu.dll,FileCopy,%Source_Sys%\wow64cpu.dll,%Target_Sys%\
 If,Not,ExistFile,%Target_Sys%\wow64win.dll,FileCopy,%Source_Sys%\wow64win.dll,%Target_Sys%\
+End
+If,%BuildClass%,Equal,3,Begin
+TxtAddLine,%PInstall%,"\Windows\System32\wow64.dll",Append
+TxtAddLine,%PInstall%,"\Windows\System32\wow64cpu.dll",Append
+TxtAddLine,%PInstall%,"\Windows\System32\wow64win.dll",Append
+End
 //Vista only
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\wowreg32.exe,Begin
 If,Not,ExistFile,%Target_Sys%\wowreg32.exe,FileCopy,%Source_Sys%\wowreg32.exe,%Target_Sys%\
 End
+End
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\System32\wowreg32.exe",Append
 Loop,%ScriptFile%,MakeDirsMui_Loop,1,%NbLang%,Windows\SysWow64
 If,Not,ExistDir,"%TargetDir%\Program Files (x86)\Common Files",DirMake,"%TargetDir%\Program Files (x86)\Common Files"
 //-
@@ -261,19 +375,19 @@ RegHiveLoad,Tmp_software,%RegSoftware%
 RegHiveLoad,Tmp_Install_Software,%RegistryCache%\install_wim\SOFTWARE
 // Reduce Software registry for Win10 boot.wim
 If,%OS%,Equal,Win10,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\CLSID HKLM\Tmp_Software\Classes\Wow6432Node\CLSID /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\Interface HKLM\Tmp_Software\Classes\Wow6432Node\Interface /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\CLSID HKLM\Tmp_Software\Classes\Wow6432Node\CLSID /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\Interface HKLM\Tmp_Software\Classes\Wow6432Node\Interface /s /f"
 //-
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\CTF HKLM\Tmp_Software\Wow6432Node\Microsoft\CTF /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\CTF HKLM\Tmp_Software\Wow6432Node\Microsoft\CTF /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q /s /f"
 End
 Else,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node HKLM\Tmp_Software\Wow6432Node /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node HKLM\Tmp_Software\Classes\Wow6432Node /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node HKLM\Tmp_Software\Wow6432Node /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node HKLM\Tmp_Software\Classes\Wow6432Node /s /f"
 End
 RegHiveunLoad,Tmp_Install_Software
 RegHiveUnLoad,Tmp_software
@@ -286,23 +400,23 @@ If,Not,ExistFile,%ProjectTemp%\WOW64Basic\WOW64Patch.exe,ExtractFile,%ScriptFile
 If,%OS%,Equal,Win10,Begin
 RegHiveLoad,Tmp_software,%RegSoftware%
 RegHiveLoad,Tmp_Install_Software,%ProjectTemp%\WOW64Basic\SOFTWARE
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\CLSID HKLM\Tmp_Software\Classes\Wow6432Node\CLSID /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\Interface HKLM\Tmp_Software\Classes\Wow6432Node\Interface /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\CLSID HKLM\Tmp_Software\Classes\Wow6432Node\CLSID /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Classes\Wow6432Node\Interface HKLM\Tmp_Software\Classes\Wow6432Node\Interface /s /f"
 //-
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\CTF HKLM\Tmp_Software\Wow6432Node\Microsoft\CTF /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\CTF HKLM\Tmp_Software\Wow6432Node\Microsoft\CTF /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Authentication /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Themes /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Svchost#$q /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy #$qHKLM\Tmp_Install_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q #$qHKLM\Tmp_Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon#$q /s /f"
 RegHiveunLoad,Tmp_Install_Software
 RegHiveUnLoad,Tmp_software
 End
 Else,Begin
 Echo,"Exporting WoW64 Registry keys..."
 RegHiveLoad,WB-TMP,%ProjectTemp%\WOW64Basic\SOFTWARE
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/e #$q%ProjectTemp%\WOW64Basic\Wow6432Node.reg#$q HKEY_LOCAL_MACHINE\WB-TMP\Wow6432Node"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/e #$q%ProjectTemp%\WOW64Basic\Classes_Wow6432Node.reg#$q HKEY_LOCAL_MACHINE\WB-TMP\Classes\Wow6432Node"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/e #$q%ProjectTemp%\WOW64Basic\Wow6432Node.reg#$q HKEY_LOCAL_MACHINE\WB-TMP\Wow6432Node"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/e #$q%ProjectTemp%\WOW64Basic\Classes_Wow6432Node.reg#$q HKEY_LOCAL_MACHINE\WB-TMP\Classes\Wow6432Node"
 // Change driver Letter is useless with 14393 and Up. Already X:, also Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion,PathName no longer exist
 If,%ver3%,Smaller,14393,Begin
 Echo,"Set drive letter to X: ..."
@@ -312,19 +426,22 @@ RegHiveunLoad,WB-TMP
 //-
 Echo,"Importing WoW64 Registry keys..."
 RegHiveLoad,WB-TMP,%RegSoftware%
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\Wow6432Node.reg#$q"
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\Classes_Wow6432Node.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\Wow6432Node.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\Classes_Wow6432Node.reg#$q"
 RegHiveunLoad,WB-TMP
 End
 End
 End
 //History 4
 RegHiveLoad,Tmp_Software,%RegSoftware%
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 If,ExistRegSection,HKLM,"Tmp_Software\Wow6432Node\Microsoft\Active Setup\Installed Components",RegDelete,HKLM,"Tmp_Software\Wow6432Node\Microsoft\Active Setup\Installed Components"
 RegHiveunLoad,Tmp_Software
 
 [SxS]
+Run,%ScriptFile%,SxS_%BuildClass%
+
+[SxS_2]
 //- DistLang without fallback languages should be enough for copied WinSxS
 DirMake,%tSXS%
 DirMake,%tManif%
@@ -344,6 +461,25 @@ DirCopy,%SXS%\x86_microsoft-windows-m..tion-isolationlayer_*,%tSXS%
 FileCopy,%Manif%\x86_microsoft-windows-m..tion-isolationlayer_*,%tManif%
 End
 
+[SxS_3]
+DirMake,%tSXS%
+DirMake,%tManif%
+TxtAddLine,%PInstall%,"\Windows\Winsxs\x86_microsoft.windows.common-controls_*",Append
+TxtAddLine,%PInstall%,"\Windows\Winsxs\x86_microsoft.windows.c..-controls.resources_*_%DistLang%*",Append
+TxtAddLine,%PInstall%,"\Windows\Winsxs\x86_microsoft.windows.gdiplus*",Append
+TxtAddLine,%PInstall%,"\Windows\Winsxs\x86_microsoft.windows.i..utomation.proxystub_*",Append
+TxtAddLine,%PInstall%,"\Windows\Winsxs\x86_microsoft.windows.isolationautomation_*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft.windows.c..-controls.resources_*_%DistLang%*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft.windows.common-controls_*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft.windows.gdiplus*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft.windows.i..utomation.proxystub_*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft.windows.isolationautomation_*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft.windows.systemcompatible_*",Append
+If,Not,%ver3%,Bigger,15063,Begin
+TxtAddLine,%PInstall%,"\Windows\Winsxs\x86_microsoft-windows-m..tion-isolationlayer_*",Append
+TxtAddLine,%PInstall%,"\Windows\WinSxS\Manifests\x86_microsoft-windows-m..tion-isolationlayer_*",Append
+End
+
 [SxS_10SP0]
 ExtractFile,%ScriptFile%,Folder,CopySoftKey.cmd,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
@@ -351,7 +487,14 @@ If,ExistFile,%RegistryCache%\install_wim\SOFTWARE,Begin
 RegHiveLoad,Tmp_Install_Software,%RegistryCache%\install_wim\SOFTWARE
 End
 Else,Begin
-If,Not,ExistFile,%ProjectTemp%\WOW64Basic\SOFTWARE,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\WOW64Basic
+If,Not,ExistFile,%ProjectTemp%\WOW64Basic\SOFTWARE,Begin
+If,%BuildClass%,Equal,2,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\WOW64Basic
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,Require_FileList_System32_Config_Software,,,,%ProjectTemp%\WOW64Basic_TEMP
+FileCopy,%ProjectTemp%\WOW64Basic_TEMP\Windows\System32\config\SOFTWARE,%ProjectTemp%\WOW64Basic
+Call,DirDelete,%ProjectTemp%\WOW64Basic_TEMP
+End
+End
 RegHiveLoad,Tmp_Install_Software,%ProjectTemp%\WOW64Basic\SOFTWARE
 End
 // CopySoftKey MainKey Key (* accepted in key). Use quotes #$q if there are any spaces in the main key or the searched key
@@ -372,39 +515,42 @@ RegHiveunLoad,Tmp_Software
 If,ExistFile,%ProjectTemp%\WOW64Basic\CopySoftKey.cmd,FileDelete,%ProjectTemp%\WOW64Basic\CopySoftKey.cmd
 Set,%FixSxS%,Yes
 
+[Require_FileList_System32_Config_Software]
+\Windows\System32\config\SOFTWARE
+
 [SxS_8.1SP0]
 ExtractFile,%ScriptFile%,Folder,9600_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\9600_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\9600_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\9600_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\9600_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\9600_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\9600_SxS.reg
 Set,%FixSxS%,Yes
 
 [SxS_8SP0]
 ExtractFile,%ScriptFile%,Folder,9200_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\9200_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\9200_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\9200_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\9200_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\9200_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\9200_SxS.reg
 Set,%FixSxS%,Yes
 
 [SxS_7SP1]
 ExtractFile,%ScriptFile%,Folder,7601_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\7601_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\7601_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\7601_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\7601_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\7601_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\7601_SxS.reg
 Set,%FixSxS%,Yes
 
 [SxS_7SP0]
 ExtractFile,%ScriptFile%,Folder,7600_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\7600_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\7600_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\7600_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\7600_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\7600_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\7600_SxS.reg
 Set,%FixSxS%,Yes
 
@@ -412,10 +558,10 @@ Set,%FixSxS%,Yes
 ExtractFile,%ScriptFile%,Folder,6002_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_Component,%Target_Sys%\config\COMPONENTS
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\6002_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\6002_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
 RegHiveunLoad,Tmp_Component
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\6002_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\6002_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\6002_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\6002_SxS.reg
 Set,%FixSxS%,Yes
 
@@ -423,10 +569,10 @@ Set,%FixSxS%,Yes
 ExtractFile,%ScriptFile%,Folder,6001_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_Component,%Target_Sys%\config\COMPONENTS
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\6001_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\6001_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
 RegHiveunLoad,Tmp_Component
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\6001_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\6001_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\6001_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\6001_SxS.reg
 Set,%FixSxS%,Yes
 
@@ -434,10 +580,10 @@ Set,%FixSxS%,Yes
 ExtractFile,%ScriptFile%,Folder,6000_SxS.reg,%ProjectTemp%\WOW64Basic
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_Component,%Target_Sys%\config\COMPONENTS
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\6000_SxS.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\WOW64Basic\6000_SxS.reg#$q"
 RegHiveunLoad,Tmp_Software
 RegHiveunLoad,Tmp_Component
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\6000_SxS.reg#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C del /q /f #$q%ProjectTemp%\WOW64Basic\6000_SxS.reg#$q"
 If,ExistFile,%ProjectTemp%\WOW64Basic\6000_SxS.reg,FileDelete,%ProjectTemp%\WOW64Basic\6000_SxS.reg
 Set,%FixSxS%,Yes
 
@@ -452,7 +598,7 @@ If,Not,ExistFile,%ProjectTemp%\WOW64Basic\COMPONENTS,FileCopy,%Source_Sys%\confi
 RegHiveLoad,WB-TMP,%ProjectTemp%\WOW64Basic\SOFTWARE
 RegHiveLoad,WB-CMP,%ProjectTemp%\WOW64Basic\COMPONENTS
 ShellExecute,Open,%ProjectTemp%\WOW64Basic\WOW64Patch.exe," -export HKEY_LOCAL_MACHINE\WB-CMP\Winners #$q%ProjectTemp%\WOW64Basic\SxS_Unknow#$q"
-ShellExecute,hide,reg.exe,"export #$qHKLM\WB-TMP\Microsoft\Windows\CurrentVersion\SMI\WinSxS Settings#$q #$q%ProjectTemp%\WOW64Basic\SxS_Unknow\SMI.SxS#$q"
+ShellExecute,Hide,reg.exe,"export #$qHKLM\WB-TMP\Microsoft\Windows\CurrentVersion\SMI\WinSxS Settings#$q #$q%ProjectTemp%\WOW64Basic\SxS_Unknow\SMI.SxS#$q"
 RegHiveunLoad,WB-TMP
 RegHiveunLoad,WB-CMP
 RegHiveLoad,WB-TMP,%RegSoftware%
@@ -465,40 +611,70 @@ Else,Begin
 If,Not,ExistFile,%ProjectTemp%\WOW64Basic\SOFTWARE,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\WOW64Basic
 RegHiveLoad,WB-TMP,%ProjectTemp%\WOW64Basic\SOFTWARE
 ShellExecute,Open,%ProjectTemp%\WOW64Basic\WOW64Patch.exe," -export HKEY_LOCAL_MACHINE\WB-TMP\Microsoft\Windows\CurrentVersion\SideBySide\Winners #$q%ProjectTemp%\WOW64Basic\SxS_Unknow#$q"
-ShellExecute,hide,reg.exe,"export #$qHKLM\WB-TMP\Microsoft\Windows\CurrentVersion\SMI\WinSxS Settings#$q #$q%ProjectTemp%\WOW64Basic\SxS_Unknow\SMI.SxS#$q"
+ShellExecute,Hide,reg.exe,"export #$qHKLM\WB-TMP\Microsoft\Windows\CurrentVersion\SMI\WinSxS Settings#$q #$q%ProjectTemp%\WOW64Basic\SxS_Unknow\SMI.SxS#$q"
 RegHiveunLoad,WB-TMP
 RegHiveLoad,WB-TMP,%RegSoftware%
 ShellExecute,Open,%ProjectTemp%\WOW64Basic\WOW64Patch.exe," -import #$q%ProjectTemp%\WOW64Basic\SxS_Unknow#$q"
 RegHiveunLoad,WB-TMP
 End
 
-[PWoW_CopybasedllMui_Loop]
+[PWoW_CopybasedllMui_Loop_3]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#9\#1.mui",Append
+//If,Not,#c,Equal,%NbLang%,Loop,%ScriptFile%,P_CopySysWoW_Loop_Del_Mui_3,#c,%NbLang%,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,#c,Equal,1,Begin
+If,Not,#c,Equal,%NbLang%,Begin
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\#8\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#8\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\en-US\#1.mui##$q#$q"
+End
+End
+
+[PWoW_CopybasedllMui_Loop_2]
 StrFormat,Split,%MuiLangAll%,|,#c,#9
 FileCopy,%Wow%\#9\*base.dll.mui,%tWow%\#9,NoWarn
 
 [CopyFiles]
+If,%BuildClass%,Equal,2,Begin
 If,ExistDir,%Wow%\config,DirCopy,%Wow%\config,%tWow%
+End
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\config\",Append
 If,Not,ExistDir,%tWow%\drivers,DirMake,%tWow%\drivers
+If,%BuildClass%,Equal,2,Begin
 If,ExistDir,%Wow%\manifeststore,DirCopy,%Wow%\manifeststore,%tWow%
+End
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\manifeststore\",Append
 //History 7
-DirCopy,%Wow%\wbem,%tWow%
+If,%BuildClass%,Equal,2,DirCopy,%Wow%\wbem,%tWow%
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\wbem\",Append
 //-
 // All NLS National Language Support or same as System32  (test on IBM EBCDIC Arabic 20420 and IBM EBCDIC Thai 20838)
 Set,%AllNLS%,Yes
 If,Not,ExistFile,%Target_Sys%\C_20420.NLS,Set,%AllNLS%,No
 If,Not,ExistFile,%Target_Sys%\C_20838.NLS,Set,%AllNLS%,No
-If,%AllNLS%,Equal,Yes,FileCopy,%Wow%\*.nls,%tWow%
+If,%AllNLS%,Equal,Yes,Begin
+If,%BuildClass%,Equal,2,FileCopy,%Wow%\*.nls,%tWow%
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\*.nls",Append
+End
 Else,Begin
 Set,%LF%,%ProjectTemp%\nls_CopyFiles.txt
-If,ExistFile,%LF%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%LF%#$q"
-Shellexecute,Hide,cmd.exe,"/C dir /A:-D /B /S #$q%Target_Sys%\C_*.nls#$q >#$q%LF%#$q"
+If,ExistFile,%LF%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%LF%#$q"
+ShellExecute,Hide,cmd.exe,"/C dir /A:-D /B /S #$q%Target_Sys%\C_*.nls#$q >#$q%LF%#$q"
 TXTReplace,%LF%,%Target_Sys%\,"CopyWoWNLS,"
-TXTAddLine,%LF%,[Process],Prepend
+TxtAddLine,%LF%,[Process],Prepend
 Run,%LF%,Process
 End
 // copy all the *base.dll files
+If,%BuildClass%,Equal,2,Begin
 FileCopy,%Wow%\*base.dll,%tWow%
-Loop,%ScriptFile%,PWoW_CopybasedllMui_Loop,1,%NbLang%
+Loop,%ScriptFile%,PWoW_CopybasedllMui_Loop_2,1,%NbLang%
+End
+If,%BuildClass%,Equal,3,Begin
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\*base.dll",Append
+Loop,%ScriptFile%,PWoW_CopybasedllMui_Loop_3,1,%NbLang%,*base.dll
+End
 //-
 CopySysWoW,activeds.dll
 CopySysWoW,actxprxy.dll
@@ -584,7 +760,8 @@ CopySysWoW,stdole32.tlb
 CopySysWoW,svchost.exe
 CopySysWoW,sxs.dll
 // test if exist ( does not exist in win10 build 14251)
-If,ExistFile,%Wow%\sxsstore.dll,CopySysWoW,sxsstore.dll
+If,%BuildClass%,Equal,2,If,ExistFile,%Wow%\sxsstore.dll,CopySysWoW,sxsstore.dll
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,PInstall_CopySysWoWMui_IF_Exists_3,sxsstore.dll
 CopySysWoW,sxstrace.exe
 CopySysWoW,syssetup.dll
 CopySysWoW,tzres.dll
@@ -634,7 +811,8 @@ CopySysWoW,wship6.dll
 //-
 CopySysWoW,ExplorerFrame.dll
 CopySysWoW,networkexplorer.dll
-CopySysWoW,shellstyle.dll
+If,%BuildClass%,Equal,2,If,ExistFile,%Source_Sys%\shellstyle.dll,CopySysWoW,shellstyle.dll
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,PInstall_CopySysWoWMui_IF_Exists_3,shellstyle.dll
 //-
 //imageres.dll is only a resource file, so let's take the native one &_
 //and save space with WIM duplicates-once Compression
@@ -654,7 +832,8 @@ CopySysWoW,winhttp.dll
 CopySysWoW,wtsapi32.dll
 
 [Files_7_only]
-FileCopy,%Wow%\api-ms-win*.dll,%tWow%\
+If,%BuildClass%,Equal,2,FileCopy,%Wow%\api-ms-win*.dll,%tWow%\
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\api-ms-win*.dll",Append
 CopySysWoW,cryptsp.dll
 CopySysWoW,devobj.dll
 CopySysWoW,netutils.dll
@@ -676,22 +855,35 @@ CopySysWoW,rpcrtremote.dll
 CopySysWoW,webio.dll
 
 [Files_8_only]
-FileCopy,%Wow%\ext-ms-win*.dll,%tWow%\
+If,%BuildClass%,Equal,2,FileCopy,%Wow%\ext-ms-win*.dll,%tWow%\
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\ext-ms-win*.dll",Append
 CopySysWoW,shcore.dll
 CopySysWoW,cmdext.dll
 CopySysWoW,mprext.dll
 CopySysWoW,slcext.dll
 If,Not,ExistDir,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE},DirMake,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}
+If,%BuildClass%,Equal,2,Begin
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-ApisetNamespace-WOW64-*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-CoreSystem-WOW64-*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-Package-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-SKU-Foundation-Package-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-drivers~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
+End
+If,%BuildClass%,Equal,3,Begin
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-ApisetNamespace-WOW64-*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-CoreSystem-WOW64-*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-Package-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-SKU-Foundation-Package-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-drivers~*.cat",Append
+End
 
 [Files_8.1_only]
-DirCopy,%Wow%\downlevel,%tWow%
-FileCopy,%Wow%\ext-ms-win*.dll,%tWow%\
+If,%BuildClass%,Equal,2,DirCopy,%Wow%\downlevel,%tWow%
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\downlevel\",Append
+If,%BuildClass%,Equal,2,FileCopy,%Wow%\ext-ms-win*.dll,%tWow%\
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\ext-ms-win*.dll",Append
 CopySysWoW,shcore.dll
 CopySysWoW,cmdext.dll
 CopySysWoW,mprext.dll
@@ -704,24 +896,34 @@ CopySysWoW,kerberos.dll
 CopySysWoW,bcd.dll
 //-
 If,Not,ExistDir,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE},DirMake,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}
+If,%BuildClass%,Equal,2,Begin
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-ApisetNamespace-WOW64-*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-CoreSystem-WOW64-*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-Package-AutoMerged-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-drivers~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
+End
+If,%BuildClass%,Equal,3,Begin
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-ApisetNamespace-WOW64-*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-CoreSystem-WOW64-*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-Package-AutoMerged-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-drivers~*.cat",Append
+End
 
 [Files_10_only]
 //- SetWOW64 by yamingw. It works by creating the KnownDlls32 kernel object and linking it against X:\Windows\SysWow64 folder. It ~does what smss.exe should do. Note that it does not allow ThinApp packages to work.
 //ExtractFile,%ScriptFile%,Files,SetWOW64.7z,%ProjectTemp%\WOW64Basic
 //ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\WOW64Basic\SetWOW64.7z#$q -y -o#$q%Target_Sys%#$q"
 //TXTReplace,%Target_Sys%\winpeshl.ini,[LaunchApps],"hiderun.exe SetWOW64.exe"
-//TXTAddLine,%Target_Sys%\winpeshl.ini,[LaunchApps],Prepend
+//TxtAddLine,%Target_Sys%\winpeshl.ini,[LaunchApps],Prepend
 ExtractFile,%ScriptFile%,Files,loadWoW64.exe,%Target_Sys%
 RegHiveLoad,Tmp_System,%RegSystem%
 Call,RegMultiSZ,Append,Tmp_System\ControlSet001\Control\Session Manager,BootExecute,loadWoW64.exe
 RegHiveUnLoad,Tmp_System
 //-
-DirCopy,%Wow%\downlevel,%tWow%
+If,%BuildClass%,Equal,2,DirCopy,%Wow%\downlevel,%tWow%
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SysWOW64\downlevel\",Append
 CopySysWoW,SHCore.dll
 CopySysWoW,cmdext.dll
 CopySysWoW,mprext.dll
@@ -749,10 +951,14 @@ CopySysWoW,dxgi.dll
 // MS C Runtime library. msvcp110_win.dll already in boot.wim
 CopySysWoW,msvcp_win.dll
 // 14295 gdi client gdi32full
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Wow%\gdi32full.dll,CopySysWoW,gdi32full.dll
+End
+If,%BuildClass%,Equal,3,CopySysWoW,gdi32full.dll
 //-  All Catalog for now. If not already fully copied (Add All Install.wim catalog in 1-Copy files) to gain time.
 If,Not,ExistDir,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE},DirMake,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}
 If,Not,ExistFile,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-OneCore-AppRuntime-WOW64-xbox-Package*,Begin
+If,%BuildClass%,Equal,2,Begin
 //FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat,FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-WOW64-Package~*.cat,FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-WOW64-Package~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
@@ -761,20 +967,27 @@ If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microso
 If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-WOW64-Package-AutoMerged-net~*.cat,FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-WOW64-Package-AutoMerged-net~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 If,ExistFile,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Network-Security-Core-WOW64-Package~*.cat,FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Network-Security-Core-WOW64-Package~*.cat,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
 End
+If,%BuildClass%,Equal,3,Begin
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-Package-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Drivers-WOW64-Package~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-WOW64-Package-AutoMerged-drivers~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-WOW64-Package-AutoMerged-base~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Client-Features-WOW64-Package-AutoMerged-net~*.cat",Append
+TxtAddLine,%PInstall%,"\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-Network-Security-Core-WOW64-Package~*.cat",Append
+End
+End
 //-
-Set,%PluginArch%,x86
-//-
-If,Not,%TargetVersion_Win10_v1703%,Equal,Smaller,Begin
-//1703 and later
-Require_FileQ,msiso.dll
-Require_FileQ,CoreUIComponents.dll
-Require_FileQ,textinputframework.dll
-Require_FileQ,usermgrcli.dll
+If,Not,%Win10_1703%,Equal,Smaller,Begin
+CopySysWoW,msiso.dll
+CopySysWoW,CoreUIComponents.dll
+CopySysWoW,textinputframework.dll
+CopySysWoW,usermgrcli.dll
+CopySysWoW,fltLib.dll
 End
 
 [ProcessWinNT5]
 ExtractFile,%ScriptFile%,Files,run64.exe,%Target_Win%\syswow64\
-Set,%TargetWOW64%,x86,PERMANENT
+Set,%TargetWOW64%,x86,Permanent
 //-
 Require_FileQ,ntvdm64.dll
 Require_FileQ,smss.exe
@@ -790,7 +1003,7 @@ ShellExecute,Hide,%ProjectTemp%\WOW64Basic\WOW64Patch.exe,"-EnableWow64 #$q%Targ
 RegHiveLoad,Tmp_System,%Target_Sys%\setupreg.hiv
 If,%version%,Smaller,80,ShellExecute,Hide,Reg.exe,"add #$qHKLM\Tmp_System\ControlSet001\Control\Session Manager\Memory Management#$q /v #$qPagingFiles#$q /t REG_MULTI_SZ /f"
 Else,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x7,"Tmp_System\ControlSet001\Control\Session Manager\Memory Management",PagingFiles,""
 End
 RegHiveUnLoad,Tmp_System
@@ -939,6 +1152,37 @@ Logo=Win_48.ico
 lines=1
 0=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
 1=4MQ3+fCAwcfAEDh1zAAJ9IBASWwu2mdSzkslkibW2N/U6bRV2QUytN8vh+AzvxKtKJnbhU2bCqc4kxixhTafRw29RZJK5HmmxSDlTCDEwYux4dO65Hp85MHf7o2m0vuvc4hB4PHKN6gtBvwAkMHBSMo8cKG7kb9Qfp03vht2r4OeaKlBvZK4m9ijxneNU5xJUHm64Adr2A9nlN3HbitWt5sOty4dDlsapX5eOrFWF4+OEDGORzEBMmnMCcOWexZMlFvPlWHJ54KgQL3ohERobiZvZG2Vw284g282sFOebKdA+7zMNer8ggn7PI80Z2PsvuMBTBWVMCB3MvT9wOhpv2HfoCjwx89m9tRiUs9XZkZmgQEkr3y4XUK+meobSkFjptPct59fa65rSYXmgrv01bxKtTZDazk+8WFcPOY9ntxOMwFNL9ezGx0/OTsQxOUzkdEzQxO6sFpEI6X0jPKQKW/w58d9M1l9X0Ypv59cW8+ioum3fG9/om3/Ob2J0Mu1EIl0lEEsNVK6F7SynxFrHMTiONxmKqrRh2mqP25LcbSngWJY/WqofdosqB1ZuZRnZXjZe9VsxyN9RVoKFeTqqg46VeCVnZDcXtzC/kWVW07qqa+4xNy+TdmxnGd+PN7JVwW6rgtipplHtr88hOz4ntyl9dxrNSVprZqc/oKNvVRWzenV72hlbYr9jU9JyiYWtoMJeTxMRf2q78jmoRj/HbouKBqcPGsOs9fcbpXatM3hl2dyO7rZFdi6t2eiZ06Ok4U5sUDspau/LXlBN/IXmf1yI3JWxunEYvu1lG/HJiVLTw3cN+ldivOqrZkZkHB9Xc3vx28tuqKfB4T+vP0ZgbttdIvd4Tu4VhV7GZueJoZr/mrME1Vw3t64hf1K78TqM4166nNacVtPDemxsT0ydlrWRe62U3EDvxu4xemeCketuXX5JrN9Ca0xWyvc9RLWS9dzZ5z/RJBct/xerxvmVuPN4Te4OJFfMdld2o+nP8lnvhl+YyzDbKEP0voOyUeXLPeF/bmPtm76+28N6T+2o6p4a9RgJbtRQWvZj9jvB++em910yKwilt5jcx/GWUnWK297X03mVu2S9VLD9Th6NGTPVSzg2UlZpKOOuolgYHrrkbiOH+RbmBviwtTF0Y173t/DLiF3m8r/b0HKfXe5eZ+klNOSwaASxaIawGCewmFdwOC3u9a1fct+h+2S36CquaH/t3bUnSbb8rb52/IpdhZNcArWPm/rdOWUDMxKuXebyleW2N9X/If91YUTD9XrgbN4umONGsyEe9xtO3G71tqbay3zd/g9NdpxH73A9/JTdsrFoQd1gnTI3Wi9KT9aKMdpeuNOW0puhSt7YyA5gBdqsayQ5/cDgd2Jd0cgb7kh3rvSNzmDPyLmPf24zd7jJ2us3Y4S4j5zZjg2fs4C2H0zhubOfRe91OrYz/BSTbFzN4nOMKz8yLN7HQy0zOZxgFIw/sU4XQtgLY5W/WTxBgYAIAfn8Gl+eefB0BAAAAAgAAACYAAAA9EAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+opendir.bmp=571,762
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-opendir.bmp]
+lines=0
+0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Patcher
@@ -1157,30 +1401,6 @@ lines=57
 56=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
 57=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
 
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[InterfaceEncoded]
-opendir.bmp=571,762
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-opendir.bmp]
-lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
 [EncodedFile-Files-setWOW64.7z]
 lines=2
 0=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
@@ -1190,13 +1410,6 @@ lines=2
 [EncodedFile-Files-loadWoW64.exe]
 lines=0
 0=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
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-Folder-CopySoftKey.cmd]
 lines=0

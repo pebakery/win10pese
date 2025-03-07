@@ -4,14 +4,14 @@ Type=Plugin
 Author=Paraglider
 Description=HwPnP: Install Plug and Play Hardware Detection
 Credits=PEBuilder plugin HWPnP.inf
-Version=036
+Version=037
 Download_Level=1
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://wb.paraglidernc.com/default.htm
-Date=2016.11.10
+Date=2019.01.14
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/HwPnp.script
@@ -26,6 +26,7 @@ History033=ChrisR - newer version 2012.03.25 x86/x64 with win8 supporting. Thank
 History034=ChrisR - HwPnP.htm updtated - Date:2012.03.27
 History035=Lancelot Added DU Buttons - Date:2016.01.27
 History036=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History037=Lancelot Add BuildClass - Date:2019.01.14
 
 [Variables]
 %ProgramTitle%=HWPnP
@@ -38,20 +39,19 @@ If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFil
 
 [Process_Normal]
 Arch,x86|x64
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 Echo,"Processing %ScriptTitle% ..."
 Run,%ScriptFile%,SourceDisksFolders
 Run,%ScriptFile%,ShortCuts
-If,ExistFile,%target_sys%\ntdll.dll,Begin
-Retrieve,FILEVERSION,%target_sys%\ntdll.dll,%sysver%
-Echo,"Source Version=%sysver%"
-End
-If,%API_TYPE%,Equal,2,Begin
+Call,TargetVersion
+Echo,"TargetVersion=%TargetVersion%"
+//If,%BuildClass%,Equal,2,Begi-n
 RegHiveLoad,Tmp_Software,%RegSoftware%
 //
-System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ERROROFF
 RegWrite,HKLM,0x4,Tmp_Software\Microsoft\Windows\CurrentVersion\Setup,LogLevel,0x7070
 RegHiveUnLoad,Tmp_Software
-End
+//En-d
 //-- Autorun
 If,%pCheckBox1%,Equal,True,Begin
 //AddAutoRun,"Install Devices",#$pSystemRoot#$p\system32\HWPnP.exe,"+all -storage\removable -storage\volume -root\volmgr -USB\ROOT +USB\ /log /p /u /d+ /a /rs /v=105",1
@@ -65,11 +65,11 @@ End
 
 [SourceDisksFolders]
 Echo,"Copying directories.."
-//FileCopy,%ScriptDir%\Files\*.*,%target_sys%
-ExtractAllFiles,%ScriptFile%,%SourceArch%,%target_sys%
-If,ExistFile,%target_win%\inf\ramdisk.inf,FileDelete,%target_win%\inf\ramdisk.inf
-If,ExistFile,%target_win%\inf\*.log,FileDelete,%target_win%\inf\*.log
-//If,ExistFile,%target_win%\inf\machine.inf,FileDelete,%target_win%\inf\machine.inf
+//FileCopy,%ScriptDir%\Files\*.*,%Target_Sys%
+ExtractAllFiles,%ScriptFile%,%SourceArch%,%Target_Sys%
+If,ExistFile,%Target_Win%\inf\ramdisk.inf,FileDelete,%Target_Win%\inf\ramdisk.inf
+If,ExistFile,%Target_Win%\inf\*.log,FileDelete,%Target_Win%\inf\*.log
+//If,ExistFile,%Target_Win%\inf\machine.inf,FileDelete,%Target_Win%\inf\machine.inf
 
 [ShortCuts]
 Echo,"Processing %ScriptTitle% ... Add Shorcut"

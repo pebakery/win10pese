@@ -1,0 +1,1290 @@
+[Main]
+Title=PrePost
+Type=Plugin
+Author=Lancelot
+Description=PrePost Settings ( Add Missing Mun Files - Add Missing Mui Files - Optimize Mui Files (Del) - etc.)
+Credits=Slore
+Version=023
+Download_Level=0
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.01.28
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Finals/yv_50-PrePost.Script
+Web2=http://azin.cwcodes.net/Projects/Azin/Finals/yv_50-PrePost.Script
+Interface=Interface_EndUser
+InterfaceList=Interface,Interface_EndUser
+CertifiedBy=
+Certification=
+HistoryNotes01=Plugin Will be probably hidden After BETA Period
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2019.03.20 Plugin created - Thanks to slore - slore Reply 77 http://theoven.org/index.php?topic=2390.msg31976#msg31976 -- Lancelot Reply 88 http://theoven.org/index.php?topic=2390.msg31988#msg31988
+History002=Lancelot Add Plugin to Projects - For now BETA (Only Body of Plugin Designed nothing functional for now) - Date:2019.03.20
+History003=Lancelot Add Test - Date:2019.03.20
+History004=Lancelot Add feature to add missing mun files following System32 // add feature to add mui files following System32 - Date:2019.03.20
+History005=Lancelot minor debug feature to add all SysWOW64 - Date:2019.03.24
+History007=Lancelot Add Button_Compare_Sabatoge x2 - Date:2019.03.26 - Date:2019.03.27
+History008=Lancelot Add [Optimize_Mui_Del - related topic Lancelot Reply 44 http://TheOven.org/index.php?topic=2669.msg32597#msg32597 - Date:2019.03.27
+History009=Lancelot Improve [Optimize_Mui_Del - slore Reply 47 http://TheOven.org/index.php?topic=2669.msg32610#msg32610 - Date:2019.03.27
+History010=Lancelot Improve [Optimize_Mui_Del with Type - Lancelot Reply 51 http://TheOven.org/index.php?topic=2669.msg32632#msg32632 - Date:2019.03.31
+History011=Lancelot Improve [Optimize_Mui_Del - Slore Reply 53 http://TheOven.org/index.php?topic=2669.msg32688#msg32688 - Date:2019.03.31
+History012=Lancelot Add [Add_Missing_Mun_Files (For now only check \System32\ ) - Date:2019.04.01
+History016=Lancelot Changed Plugin FileName - Date:2019.04.01 // Improved UI - Date:2019.04.01 // WorkFolder change to PrePost - Date:2019.04.01
+History017=Lancelot Add [Add_Missing_Mui_Files - Date:2019.04.02
+History018=Lancelot Opendir_WorkFolder - Date:2019.04.02
+History019=Lancelot Add [Prepare_Dir_Compare_P Compare.cmd DirBS_List.cmd // Add [Delete_WorkFolder_P - Date:2019.04.02
+History020=Lancelot Add [Create_Compare_List_TargetDir [Create_Before_List_TargetDir [Create_After_List_TargetDir // Improve [Prepare_Dir_Compare with parameters to be used by other sections + improve Dir with /A - Date:2019.04.02
+History021=Lancelot Improve [Create_Compare to give Summary + Give info for Deleted files (mui optimization) // [Add_Missing_Mui_Files_P] [Add_Missing_Mun_Files_P] [Optimize_Mui_Del_P] first created TargetDir list to be used by Compare at the end // [Add_Missing_Mun_Files_CMD] improved to create Target \Windows\SystemResources Folder with FileCopy method - Date:2019.04.02
+History022=Lancelot UI improved // Plugin not Beta Anymore // Plugin process MissingMun+MissingMui+OptimizedMui -> x64 en-US 10.0.17763.1 -> 22 Seconds first run 18 Seconds second run // x64_es-mx_18343 10.0.18343.1  -> 59 Seconds first run 50 Seconds second run - Date:2019.04.02
+History023=Lancelot Add to Azin // Hide Plugin For now (nothing exists for regular user) - Date:2020.01.28
+
+[Interface_EndUser]
+Button_IntMain=a,1,8,429,243,14,14,P_Interface_I,0,False,False,_P_Interface_I_,False,"__Interface Debug"
+Button_Compare_Sabatoge=,1,8,510,-1,24,24,Button_Compare_Sabatoge_P_B,Fatcow_Farm_Fresh_Toxic_1616.bmp,False,False,_Button_Compare_Sabatoge_P_B_,False,"__Check Current Plugin to see If Plugin can be sabotaged by IDIOT winbuilder developers or not."
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pTextLabel1="Plugin Used By 'Post Config' Plugin#$x#$xNo Settings here.",1,1,59,60,317,51,10,Bold
+
+[Interface]
+Button_Compare_Sabatoge=,1,8,510,-1,24,24,Button_Compare_Sabatoge_P_B,Fatcow_Farm_Fresh_Toxic_1616.bmp,False,False,_Button_Compare_Sabatoge_P_B_,False,"__Check Current Plugin to see If Plugin can be sabotaged by IDIOT winbuilder developers or not."
+Button_Int="<-- Normal UI",1,8,229,-1,102,25,P_Interface_EndUser,0,False,False,_P_Interface_EndUser_,False
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Process_Pre_PostConfig_Button="Just Before PostConfig Plugin",1,8,31,91,224,62,Process_Pre_PostConfig_B,0,False,False,_Process_Pre_PostConfig_B_,False
+Process_Pre_Package_Button="Before Creating Package",1,8,31,155,218,58,Process_Pre_Package_B,0,False,False,_Process_Pre_Package_B_,False
+pButton1=Test,1,8,85,228,80,25,Process_Test,0,False,False,_Process_Test_,False
+pButton2="Optimize Mui - Del",1,8,359,118,99,25,Optimize_Mui_Del_P_B,0,False,False,_Optimize_Mui_Del_P_B_,False
+pButton3="Add Missing Mun Files",1,8,359,70,115,25,Add_Missing_Mun_Files_P_B,0,False,False,_Add_Missing_Mun_Files_P_B_,False
+pButton4="Add Missing Mun Files Direct List",1,8,578,73,202,25,Add_Missing_Mun_DirectMethod_P_B,0,False,False,_Add_Missing_Mun_DirectMethod_P_B_,False
+pButton5="Add Missing Mui en-US only",1,8,590,101,153,25,Add_Missing_Mui_en-US_DirectMethod_P_B,0,False,False,_Add_Missing_Mui_en-US_DirectMethod_P_B_,False
+pButton6="Add Missing Mui MuiLang ",1,8,590,126,151,25,Add_Missing_Mui_MuiLang_DirectMethod_P_B,0,False,False,_Add_Missing_Mui_MuiLang_DirectMethod_P_B_,False
+pTextLabel1="Add Missing Mui MuiLang #$x--> Cause double files#$x---> Require 'Optimize Mui - Del'",1,1,592,152,168,40,8,Normal
+pButton7="Add ALL \SystemResources\",1,8,595,195,151,25,Require_FileList_ALL_SystemResources_P_B,0,False,False,_Require_FileList_ALL_SystemResources_P_B_,False
+pButton8="Add ALL \System32\en-US\",1,8,610,223,145,25,Require_FileList_ALL_System32_en-US_P_B,0,False,False,_Require_FileList_ALL_System32_en-US_P_B_,False
+pButton9="Add ALL \SysWOW64\en-US\",1,8,611,248,153,25,Require_FileList_ALL_SysWOW64_en-US_P_B,0,False,False,_Require_FileList_ALL_SysWOW64_en-US_P_B_,False
+pTextLabel2="Debug Only",1,1,577,56,75,18,8,Bold
+pBevel1=pBevel1,1,12,571,50,227,247
+pButton10="Add Missing Mui Files",1,8,359,94,110,25,Add_Missing_Mui_Files_P_B,0,False,False,_Add_Missing_Mui_Files_P_B_,False
+Opendir_WorkFolder_Button=,1,8,348,21,20,20,OpenDir_WorkFolder_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_WorkFolder_P_B_,False,"__Open Folder"
+pButton11="Prepare Dir Compare Files",1,8,371,306,152,25,Prepare_Dir_Compare_P_B,0,False,False,_Prepare_Dir_Compare_P_B_,False
+Delete_WorkFolder_Button=,1,8,368,21,20,20,Delete_WorkFolder_P_B,Icons8-Windows-8-Industry-Trash_0_016016.bmp,False,False,_Delete_WorkFolder_P_B_,False
+pButton12=Create_Before_List_TargetDir,1,8,371,233,156,25,Create_Before_List_TargetDir_P_B,0,False,False,_Create_Before_List_TargetDir_P_B_,False
+pButton13=Create_Compare_List_TargetDir_EchoFile,1,8,348,196,214,37,Create_Compare_List_TargetDir_EchoFile_P_B,0,False,False,_Create_Compare_List_TargetDir_EchoFile_P_B_,False
+pButton14=Create_After_List_TargetDir,1,8,371,258,150,25,Create_After_List_TargetDir_P_B,0,False,False,_Create_After_List_TargetDir_P_B_,False
+pButton15=Create_Compare_List_TargetDir,1,8,371,282,167,25,Create_Compare_List_TargetDir_P_B,0,False,False,_Create_Compare_List_TargetDir_P_B_,False
+pTextLabel3="Debug Only",1,1,359,52,80,18,9,Bold
+pBevel2=pBevel2,1,12,343,48,224,307
+pTextLabel4="Advanced Users ONLY#$xNO Settings Here#$xONLY Debug for Advanced Users#$x#$xClick '<-- Normal UI' Button",1,1,5,2,223,86,10,Bold
+
+[P_Interface_I]
+Run,%api%,Button_Compare_Sabatoge_P
+IniWrite,%ScriptFile%,Main,Interface,Interface
+System,RefreshInterface
+
+[P_Interface_EndUser]
+Run,%api%,Button_Compare_Sabatoge_P
+IniWrite,%ScriptFile%,Main,Interface,Interface_EndUser
+System,RefreshInterface
+
+[Variables]
+
+[Process]
+Echo,"There is no Spoon"
+//Run,%ScriptFile%,Process_Test
+
+[Process_Test]
+//10.0.17763.1
+//Call,CompareVersions,%TargetVersion%,10.0.17763.1,Win10_1809
+// Mun files ( \Windows\SystemResources\*.mun) after 1809 ( 10.0.17763.1 )
+//If,Not,%Win10_1809%,Equal,Smaller,
+//-
+//Call,DirDeleteMake,%BaseDir%\Target\Win10PESE_1
+//DirCopy,%TargetDir%\*,%BaseDir%\Target\Win10PESE_1
+//Call,CompareEditDirect,%TargetDir%,%BaseDir%\Target\Win10PESE_1
+//Call,OpenDir,%TargetDir%\Windows\SystemResources
+//-
+//-
+//Run,%ScriptFile%,Require_FileList_ALL_SystemResources_P
+//-
+//Run,%ScriptFile%,Require_FileList_ALL_System32_en-US_P
+//-
+//Run,%ScriptFile%,Require_FileList_ALL_SysWOW64_en-US_P
+//-
+//Basic Build 64.9 MB - 10.0.18290.1000
+//Run,%ScriptFile%,Add_Missing_Mun_DirectMethod_P
+//-
+//Run,%ScriptFile%,Add_Missing_Mui_en-US_DirectMethod_P
+//Run,%ScriptFile%,Add_Missing_Mui_MuiLang_DirectMethod_P
+//-
+//Run,%ScriptFile%,Optimize_Mui_Del_P
+//-
+//11 seconds filelist - 7 seconds BuildClass 2
+//Run,%ScriptFile%,Add_Missing_Mun_Files_P
+//-
+//Run,%ScriptFile%,Add_Missing_Mui_Files_P
+//-
+//Run,%ScriptFile%,Prepare_Dir_Compare_P
+//-
+//Run,%ScriptFile%,Create_Before_List_TargetDir_P
+//Run,%ScriptFile%,Create_After_List_TargetDir_P
+//Run,%ScriptFile%,Create_Compare_List_TargetDir_P
+//Run,%ScriptFile%,Create_Compare_List_TargetDir_EchoFile_P
+
+[Add_Missing_Mun_DirectMethod_P_B]
+Run,%ScriptFile%,Add_Missing_Mun_DirectMethod_P
+
+[Add_Missing_Mun_DirectMethod_P]
+If,Not,ExistDir,%ProjectTemp%\PrePost,DirMake,%ProjectTemp%\PrePost
+Call,HostWindowsDir
+System,FileRedirect,OFF
+ShellExecute,Hide,%HostWindowsDir%\System32\cmd.exe,"/C dir * /b>#$q%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt#$q",%Target_Sys%
+System,FileRedirect,ON
+TxtAddLine,%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt,"[:Dummy]",Prepend
+TxtReplace,%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt,"#$x",".mun#$x\Windows\SystemResources\"
+TxtReplace,%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt,"#$x\Windows\SystemResources\#$x","#$x"
+TxtReplace,%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt,"[:Dummy].mun#$x",""
+//Call,StartDocNotepad,%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt
+Require,FileList,%ProjectTemp%\PrePost\System32_SystemResources_Mun.txt
+
+[Add_Missing_Mui_en-US_DirectMethod_P_B]
+Run,%ScriptFile%,Add_Missing_Mui_en-US_DirectMethod_P
+
+[Add_Missing_Mui_en-US_DirectMethod_P]
+If,Not,ExistDir,%ProjectTemp%\PrePost,DirMake,%ProjectTemp%\PrePost
+Call,HostWindowsDir
+System,FileRedirect,OFF
+ShellExecute,Hide,%HostWindowsDir%\System32\cmd.exe,"/C dir * /b>#$q%ProjectTemp%\PrePost\System32_en-US_Mui.txt#$q",%Target_Sys%
+System,FileRedirect,ON
+TxtAddLine,%ProjectTemp%\PrePost\System32_en-US_Mui.txt,"[:Dummy]",Prepend
+TxtReplace,%ProjectTemp%\PrePost\System32_en-US_Mui.txt,"#$x",".mui#$x\Windows\System32\en-US\"
+TxtReplace,%ProjectTemp%\PrePost\System32_en-US_Mui.txt,"#$x\Windows\System32\en-US\#$x","#$x"
+TxtReplace,%ProjectTemp%\PrePost\System32_en-US_Mui.txt,"[:Dummy].mui#$x",""
+//Call,StartDocNotepad,%ProjectTemp%\PrePost\System32_en-US_Mui.txt
+Require,FileList,%ProjectTemp%\PrePost\System32_en-US_Mui.txt
+
+[Add_Missing_Mui_MuiLang_DirectMethod_P_B]
+Run,%ScriptFile%,Add_Missing_Mui_MuiLang_DirectMethod_P
+
+[Add_Missing_Mui_MuiLang_DirectMethod_P]
+If,Not,ExistDir,%ProjectTemp%\PrePost,DirMake,%ProjectTemp%\PrePost
+Call,HostWindowsDir
+AddVariables,%ProjectDir%\script.project,MuiLang
+//To test: Set,%MuiLangAll%,ar-SA|en-US
+StrFormat,Split,%MuiLangAll%,|,0,#9
+Loop,%ScriptFile%,Add_Missing_Mui_MuiLang_DirectMethod_P_Loop,1,#9
+
+[Add_Missing_Mui_MuiLang_DirectMethod_P_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+System,FileRedirect,OFF
+ShellExecute,Hide,%HostWindowsDir%\System32\cmd.exe,"/C dir * /b>#$q%ProjectTemp%\PrePost\System32_#9_Mui.txt#$q",%Target_Sys%
+System,FileRedirect,ON
+TxtAddLine,%ProjectTemp%\PrePost\System32_#9_Mui.txt,"[:Dummy]",Prepend
+TxtReplace,%ProjectTemp%\PrePost\System32_#9_Mui.txt,"#$x",".mui#$x\Windows\System32\#9\"
+TxtReplace,%ProjectTemp%\PrePost\System32_#9_Mui.txt,"#$x\Windows\System32\#9\#$x","#$x"
+TxtReplace,%ProjectTemp%\PrePost\System32_#9_Mui.txt,"[:Dummy].mui#$x",""
+//Call,StartDocNotepad,%ProjectTemp%\PrePost\System32_#9_Mui.txt
+Require,FileList,%ProjectTemp%\PrePost\System32_#9_Mui.txt
+
+[Require_FileList_ALL_SystemResources_P_B]
+Run,%ScriptFile%,Require_FileList_ALL_SystemResources_P
+
+[Require_FileList_ALL_SystemResources_P]
+//ALL 172 MB - 10.0.18290.1000
+Require,FileList,,Require_FileList_ALL_SystemResources
+
+[Require_FileList_ALL_SystemResources]
+\Windows\SystemResources\
+
+[Require_FileList_ALL_System32_en-US_P_B]
+Run,%ScriptFile%,Require_FileList_ALL_System32_en-US_P
+
+[Require_FileList_ALL_System32_en-US_P]
+//ALL 42.4 MB - 10.0.18290.1000
+Require,FileList,,Require_FileList_ALL_System32_en-US
+
+[Require_FileList_ALL_System32_en-US]
+\Windows\System32\en-US\
+
+[Require_FileList_ALL_SysWOW64_en-US_P_B]
+Run,%ScriptFile%,Require_FileList_ALL_SysWOW64_en-US_P
+
+[Require_FileList_ALL_SysWOW64_en-US_P]
+Require,FileList,,Require_FileList_ALL_SysWOW64_en-US
+
+[Require_FileList_ALL_SysWOW64_en-US]
+\Windows\SysWOW64\en-US\
+
+[Process_Pre_PostConfig_B]
+Run,%ScriptFile%,Process_Pre_PostConfig
+
+[Process_Pre_PostConfig]
+//Things to be done Just before PostConfig Plugin  (similarity: Gena\Finals\1 Optimizations\ - Gena\Finals\1 Optimizations\'Post Processing Tools' - Gena PreISO)
+//-
+//To get Updated list for each run of current plugins - Search [Added:] at log
+If,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt,Call,FileDelete,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt
+//-
+Call,TargetVersion
+Call,CompareVersions,%TargetVersion%,10.0.17763.1,Win10_1809
+//Bigger means After Win10_1809
+//Mun files ( \Windows\SystemResources\*.mun) after 1809 ( 10.0.17763.1 )
+If,%Win10_1809%,Equal,Bigger,Run,%ScriptFile%,Add_Missing_Mun_Files_P
+//-
+//It adds missing mui files with some not required ones ....
+Run,%ScriptFile%,Add_Missing_Mui_Files_P
+//-
+//To avoid extra mui files that comes with \??-??\
+Run,%ScriptFile%,Optimize_Mui_Del_P
+//-
+//-
+//Last Line : Compare TargetDir Before After and Echo result to log
+Run,%ScriptFile%,Create_Compare_List_TargetDir_EchoFile_P
+
+[Process_Pre_Package_B]
+Run,%ScriptFile%,Process_Pre_Package
+
+[Process_Pre_Package]
+//Things to be done Just before creating Package (similarity: Gena PreISO) eg. Just before creating Wim
+
+[Button_Compare_Sabatoge_P_B]
+//Check to see if IDIOT winbuilder developers sabotage current plugin.
+Run,%api%,Button_Compare_Sabatoge_P
+//-
+If,%CurrentPluginMD5%,Equal,%TestPluginMD5%,Message,"Sabatoge not exists#$x#$xSuccessfull Workarounds#$x#$xGood Work ;)",Information,5
+
+[Create_Compare_List_TargetDir_EchoFile_P_B]
+Run,%ScriptFile%,Create_Compare_List_TargetDir_EchoFile_P
+
+[Create_Compare_List_TargetDir_EchoFile_P]
+Run,%ScriptFile%,Create_Compare_List_TargetDir_P
+Echo,"Echo Compare TargetDir"
+Call,EchoFile,%ProjectTemp%\PrePost\Dir_Compare\List_Compare_TargetDir_Summary.txt
+
+[Create_Compare_List_TargetDir_P_B]
+Run,%ScriptFile%,Create_Compare_List_TargetDir_P
+
+[Create_Compare_List_TargetDir_P]
+//If no Compare made before OR if you have not create Before_TargetDir.txt --> result naturally will be empty ;)
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\DirBS_List.cmd,Run,%ScriptFile%,Prepare_Dir_Compare_P
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt,Run,%ScriptFile%,Create_Before_List_TargetDir_P
+Run,%ScriptFile%,Create_After_List_TargetDir_P
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/D /V:Off /E:ON /C Compare.cmd #$qList_5_Before_TargetDir.txt#$q #$qList_6_After_TargetDir.txt#$q #$qList_Compare_TargetDir_Added.txt#$q #$qList_Compare_TargetDir_Deleted.txt#$q #$qList_Compare_TargetDir_Summary.txt#$q",%ProjectTemp%\PrePost\Dir_Compare
+System,FileRedirect,ON
+
+[Create_Before_List_TargetDir_P_B]
+Run,%ScriptFile%,Create_Before_List_TargetDir_P
+
+[Create_Before_List_TargetDir_P]
+//For other sections:
+//If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt,Run,%ScriptFile%,Create_Before_List_TargetDir_P
+//-
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\DirBS_List.cmd,Run,%ScriptFile%,Prepare_Dir_Compare_P
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/D /V:Off /E:ON /C DirBS_List.cmd #$q%TargetDir%#$q #$qList_5_Before_TargetDir#$q",%ProjectTemp%\PrePost\Dir_Compare
+System,FileRedirect,ON
+
+[Create_After_List_TargetDir_P_B]
+Run,%ScriptFile%,Create_After_List_TargetDir_P
+
+[Create_After_List_TargetDir_P]
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\DirBS_List.cmd,Run,%ScriptFile%,Prepare_Dir_Compare_P
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/D /V:Off /E:ON /C DirBS_List.cmd #$q%TargetDir%#$q #$qList_6_After_TargetDir#$q",%ProjectTemp%\PrePost\Dir_Compare
+System,FileRedirect,ON
+
+[Prepare_Dir_Compare_P_B]
+Run,%ScriptFile%,Prepare_Dir_Compare_P
+
+[Prepare_Dir_Compare_P]
+Set,#9,%ProjectTemp%\PrePost\Dir_Compare
+Call,DirDeleteMake,#9
+//-
+Set,#8,Compare.cmd
+Set,#7,#9\#8
+Call,IniExtractSectionN,,Compare_CMD,#7
+//-
+FileCreateBlank,"#9\Compare List_6_After_TargetDir MINUS List_5_Before_TargetDir EQUAL List_Compare_TargetDir.cmd"
+TxtAddLine,"#9\Compare List_6_After_TargetDir MINUS List_5_Before_TargetDir EQUAL List_Compare_TargetDir.cmd","cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,"#9\Compare List_6_After_TargetDir MINUS List_5_Before_TargetDir EQUAL List_Compare_TargetDir.cmd","Call Compare.cmd #$qList_5_Before_TargetDir.txt#$q #$qList_6_After_TargetDir.txt#$q #$qList_Compare_TargetDir_Added.txt#$q #$qList_Compare_TargetDir_Deleted.txt#$q #$qList_Compare_TargetDir_Summary.txt#$q",Append
+TxtAddLine,"#9\Compare List_6_After_TargetDir MINUS List_5_Before_TargetDir EQUAL List_Compare_TargetDir.cmd","Exit",Append
+//-
+Set,#8,DirBS_List.cmd
+Set,#7,#9\#8
+Call,IniExtractSectionN,,DirBS_List_CMD,#7
+//-
+FileCreateBlank,"#9\DirBS_List TargetDir List_5_Before_TargetDir.cmd"
+TxtAddLine,"#9\DirBS_List TargetDir List_5_Before_TargetDir.cmd","cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,"#9\DirBS_List TargetDir List_5_Before_TargetDir.cmd","Call DirBS_List.cmd #$q%TargetDir%#$q #$qList_5_Before_TargetDir#$q",Append
+TxtAddLine,"#9\DirBS_List TargetDir List_5_Before_TargetDir.cmd","Exit",Append
+//-
+FileCreateBlank,"#9\DirBS_List TargetDir List_6_After_TargetDir.cmd"
+TxtAddLine,"#9\DirBS_List TargetDir List_6_After_TargetDir.cmd","cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,"#9\DirBS_List TargetDir List_6_After_TargetDir.cmd","Call DirBS_List.cmd #$q%TargetDir%#$q #$qList_6_After_TargetDir#$q",Append
+TxtAddLine,"#9\DirBS_List TargetDir List_6_After_TargetDir.cmd","Exit",Append
+//-
+//gsar
+If,Not,ExistFile,%ProjectTemp%\gsar_gnuwin32_M\gsar.exe,Run,%ScriptFile%,gnuwin32_gsar_Ready
+DirMake,#9\gsar_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\gsar_gnuwin32_M\*,#9\gsar_gnuwin32_M_HostOS
+//-
+//grep
+If,Not,ExistFile,%ProjectTemp%\grep_gnuwin32_M\HostOS\grep.exe,Run,%ScriptFile%,gnuwin32_grep_Ready
+DirMake,#9\grep_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\grep_gnuwin32_M\HostOS\*,#9\grep_gnuwin32_M_HostOS
+
+[Compare_CMD]
+Rem ------------------------- CMD Start HERE ----- Above Lines maybe added by another tool -- Remove if required --------
+Cls
+@Echo off
+Echo Lancelot 2019.04.02 : CMD To Compare 2 Ascii txt files with output to another txt file
+Echo Parameters for cmd file: 1 FileCompare1  2 FileCompare2 3 ResultFileName2Minus1 4 ResultFileName1Minus2
+Echo FileCompare2-FileCompare1=ResultFileName2Minus1 eg. Added Files
+Echo FileCompare1-FileCompare2=ResultFileName1Minus2 eg. Deleted Files ( Mui optimization )
+Echo for now all under same folder
+Echo eg. Call Compare.cmd "List_5_Before_TargetDir.txt" "List_6_After_TargetDir.txt" "List_Compare_TargetDir_Added.txt" "List_Compare_TargetDir_Deleted.txt" "List_Compare_TargetDir_Summary.txt"
+Rem -
+cd /d "%~dp0"
+Rem -
+Rem FOR DEBUG TESTS
+Rem Set FileCompare1=List_5_Before_TargetDir.txt
+Rem Set FileCompare2=List_6_After_TargetDir.txt
+Rem Set FileCompare2Minus1=List_Compare_TargetDir_Added_Files.txt
+Rem Set FileCompare1Minus2=List_Compare_TargetDir_Deleted_Files.txt
+Rem Set FileCompareSummary=List_Compare_TargetDir_Summary.txt
+Rem FOR DEBUG TESTS
+Rem -
+Rem ---------------
+Rem -
+If %1- Neq - Set FileCompare1=%~1
+If %2- Neq - Set FileCompare2=%~2
+If %3- Neq - Set FileCompare2Minus1=%~3
+If %4- Neq - Set FileCompare1Minus2=%~4
+If %5- Neq - Set FileCompareSummary=%~5
+Rem -
+If [%FileCompare1%] Equ [] Exit
+If [%FileCompare2%] Equ [] Exit
+If [%FileCompare2Minus1%] Equ [] Exit
+If [%FileCompare1Minus2%] Equ [] Exit
+If [%FileCompareSummary%] Equ [] Exit
+Rem -
+Set gsarexe=.\gsar_gnuwin32_M_HostOS\gsar.exe
+If Not Exist %gsarexe% Exit
+Set grepexe=.\grep_gnuwin32_M_HostOS\grep.exe
+If Not Exist %grepexe% Exit
+Rem -
+%grepexe% -v -i -F -x -f %FileCompare1% %FileCompare2%>%FileCompare2Minus1%
+Rem Grep changes Carriage Return AND LineFeed to ONLY LineFeed -- Revert Back to CarriageReturn AND LineFeed
+%gsarexe% -o -i "-s:x0A" "-r:x0D:x0A" %FileCompare2Minus1%
+Rem -
+%grepexe% -v -i -F -x -f %FileCompare2% %FileCompare1%>%FileCompare1Minus2%
+Rem Grep changes Carriage Return AND LineFeed to ONLY LineFeed -- Revert Back to CarriageReturn AND LineFeed
+%gsarexe% -o -i "-s:x0A" "-r:x0D:x0A" %FileCompare1Minus2%
+Rem -
+Echo [Added:]>%FileCompareSummary%
+Type %FileCompare2Minus1%>>%FileCompareSummary%
+Echo [Deleted:]>>%FileCompareSummary%
+Type %FileCompare1Minus2%>>%FileCompareSummary%
+Echo.
+Echo.
+Echo.
+Echo.
+Echo.
+:: cmd.exe /D /V:Off /E:ON
+:: Pause
+Exit
+cmd.exe /D /V:Off /E:ON
+Exit
+
+[DirBS_List_CMD]
+Rem ------------------------- CMD Start HERE ----- Above Lines maybe added by another tool -- Remove if required --------
+Cls
+@Echo off
+Echo Lancelot 2019.04.02 : CMD List Files with Bare format without path
+Echo Parameters for cmd file: 1 TargetDir  2 FileName (Default DirBS_List)
+Echo eg. blabla.cmd "D:\B ase\Target\Win10PESE" "List_Before_TargetDir"
+Echo tip: You can use set at top of cmd without parameters See relevant lines at ::FOR DEBUG TESTS
+Rem -
+cd /d "%~dp0"
+Rem -
+Rem FOR DEBUG TESTS
+Rem Set TargetDir=D:\B ase\Target\Win10PESE
+Rem Set TargetDir=%SystemDrive%
+Rem Set TargetDir=%SystemRoot%
+Rem Set TargetDir=%SystemRoot%\System32
+Set FileName=DirBS_List
+Rem FOR DEBUG TESTS
+Rem -
+If %1- Neq - Set TargetDir=%~1
+If %2- Neq - Set FileName=%~2
+Rem -
+If [%FileName%] Equ [] Set FileName=DirBS_List
+Rem -
+If "%TargetDir%" Equ "" Exit
+Rem -
+Set gsarexe=.\gsar_gnuwin32_M_HostOS\gsar.exe
+If Not Exist %gsarexe% Exit
+Rem -
+Rem -
+Rem -
+Rem -
+Rem -
+Dir /b /s /A "%TargetDir%\">%FileName%.txt
+Set t=%TargetDir::=::%
+%gsarexe% -o -i "-s%t%" "-r" %FileName%.txt
+Rem -
+Echo.
+Echo.
+Echo.
+Echo.
+Echo.
+:: cmd.exe /D /V:Off /E:ON
+:: Pause
+Exit
+cmd.exe /D /V:Off /E:ON
+Exit
+
+[Add_Missing_Mui_Files_P_B]
+Run,%ScriptFile%,Add_Missing_Mui_Files_P
+
+[Add_Missing_Mui_Files_P]
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt,Run,%ScriptFile%,Create_Before_List_TargetDir_P
+Echo,"Add Missing Mui Files - Start"
+// 8 seconds with 3 languages only creates list ( + Plus Time to copy )
+// 3 loops 3 languages 23 seconds only cretes list ( + Plus Time to copy )
+//-
+//To ADD optimized mui list files we use same cmd with each lang - Loop
+//Other Method (Available) - Add missing mui files for all languages -- Requires Mui Optimization with Del
+//-
+Set,%WorkFolder%,%ProjectTemp%\PrePost\Add_Missing_Mui_Files
+Call,DirDeleteMake,%WorkFolder%
+Set,%wf%,Add_Missing_Mui_CMD.cmd
+Set,%w%,%WorkFolder%\%wf%
+Call,IniExtractSectionN,,Add_Missing_Mui_Files_CMD,%w%
+//-
+//cmd file support parameters but to ease testing lines added to the top
+If,%BuildClass%,Equal,2,Begin
+TxtAddLine,%w%,"Set SourceDirInstallWim=%InstallSRC%",Prepend
+End
+AddVariables,%ProjectDir%\script.project,MuiLang
+StrFormat,Replace,%MuiLangAll%,|,;,%MuiLangAll_SemiColon%
+TxtAddLine,%w%,"Set MuiLangAll=%MuiLangAll_SemiColon%",Prepend
+TxtAddLine,%w%,"Set TargetDir=%TargetDir%",Prepend
+//-
+//gsar
+If,Not,ExistFile,%ProjectTemp%\gsar_gnuwin32_M\gsar.exe,Run,%ScriptFile%,gnuwin32_gsar_Ready
+DirMake,%WorkFolder%\gsar_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\gsar_gnuwin32_M\*,%WorkFolder%\gsar_gnuwin32_M_HostOS
+//-
+//grep
+If,Not,ExistFile,%ProjectTemp%\grep_gnuwin32_M\HostOS\grep.exe,Run,%ScriptFile%,gnuwin32_grep_Ready
+DirMake,%WorkFolder%\grep_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\grep_gnuwin32_M\HostOS\*,%WorkFolder%\grep_gnuwin32_M_HostOS
+//-
+//Create List - Start
+StrFormat,Split,%MuiLangAll%,|,0,#9
+//Method1 loop for each language (Mostly 2 loops : eg. mostly 8x2 16 seconds + Copy Files x2) (eg. 3 Mui: 8x3 24 seconds + Copy Files x2)
+Loop,%ScriptFile%,Add_Missing_Mui_Files_Method1_Loop,1,#9
+//-
+//Method2 Add All missing Mui files at first run -> Faster BUT Cause DoubleFiles --> Requires mui optimization at the end - Not Prefered but kept maybe useful in future
+//Run,%ScriptFile%,Add_Missing_Mui_Files_Method2
+//Create List - Finish
+//-
+Echo,"Add Missing Mui Files - Finish"
+//Call,StartDocNotepad,%w%
+//Call,OpenDir,%WorkFolder%
+
+[Add_Missing_Mui_Files_Method1_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+//-
+//Debug Option - Start
+//Set,%BuildClass%,2
+//Set,%BuildClass%,3
+//Set,%t%,Open
+Set,%t%,Hide
+//Debug Option - Finish
+//-
+If,%BuildClass%,Equal,2,Begin
+System,FileRedirect,OFF
+Echo,"Add_Missing_Mui Create List - Start"
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C %wf% #$q%TargetDir%#$q #$q%MuiLangAll_SemiColon%#$q #$q%InstallSRC%#$q",%WorkFolder%
+Echo,"Add_Missing_Mui Create List - Finish"
+Echo,"Add_Missing_Mui_CMD_Copy_CMD_#9 - Start"
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C Add_Missing_Mui_CMD_Copy_CMD_#9.cmd",%WorkFolder%
+System,FileRedirect,ON
+Call,EchoFile,%WorkFolder%\Add_Missing_Mui_FileList_#9.txt
+Echo,"Add_Missing_Mui_CMD_Copy_CMD_#9 - Finish"
+End
+Else,Begin
+System,FileRedirect,OFF
+Echo,"Add_Missing_Mui Create List - Start"
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C %wf% #$q%TargetDir%#$q #$q%MuiLangAll_SemiColon%#$q",%WorkFolder%
+Echo,"Add_Missing_Mui Create List - Finish"
+System,FileRedirect,ON
+Echo,"Add_Missing_Mui_FileList_#9 - Start"
+Require,FileList,%WorkFolder%\Add_Missing_Mui_FileList_#9.txt
+Echo,"Add_Missing_Mui_FileList_#9 - Finish"
+End
+
+[Add_Missing_Mui_Files_Method2]
+//-
+//Debug Option - Start
+//Set,%BuildClass%,2
+//Set,%BuildClass%,3
+//Set,%t%,Open
+Set,%t%,Hide
+//Debug Option - Finish
+//-
+If,%BuildClass%,Equal,2,Begin
+System,FileRedirect,OFF
+Echo,"Add_Missing_Mui Create List - Start"
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C %wf% #$q%TargetDir%#$q #$q%MuiLangAll_SemiColon%#$q #$q%InstallSRC%#$q",%WorkFolder%
+Echo,"Add_Missing_Mui Create List - Finish"
+Echo,"Add_Add_Missing_Mui_CMD_Copy_CMD__ALL - Start"
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd",%WorkFolder%
+System,FileRedirect,ON
+Call,EchoFile,%WorkFolder%\Add_Missing_Mui_FileList__ALL.txt
+Echo,"Add_Missing_Mui_CMD_Copy_CMD__ALL - Finish"
+End
+Else,Begin
+System,FileRedirect,OFF
+Echo,"Add_Missing_Mui Create List - Start"
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C %wf% #$q%TargetDir%#$q #$q%MuiLangAll_SemiColon%#$q",%WorkFolder%
+Echo,"Add_Missing_Mui Create List - Finish"
+System,FileRedirect,ON
+Echo,"Add_Missing_Mui_FileList__ALL - Start"
+Require,FileList,%WorkFolder%\Add_Missing_Mui_FileList__ALL.txt
+Echo,"Add_Missing_Mui_FileList__ALL - Finish"
+End
+
+[Add_Missing_Mui_Files_CMD]
+Rem ------------------------- CMD Start HERE ----- Above Lines maybe added by another tool -- Remove if required --------
+Cls
+@Echo off
+Echo Lancelot 2019.04.01 : CMD File To Add Missing mui files with deduction (Natural Result of not copying mui files)
+Echo Special Thanks to slore Reply 44 and later http://TheOven.org/index.php?topic=2669.msg32597#msg32597
+Echo Parameters for cmd file: 1 TargetDir 2 MuiLangAll 3 Optional SourceDirInstallWim
+Echo eg. blabla.cmd "D:\B ase\Target\Win10PESE" "es-MX;es-ES;en-US"
+Echo eg. blabla.cmd "D:\B ase\Target\Win10PESE" "es-MX;es-ES;en-US" "D:\S\Win10_x64\sources\install_wim\6"
+Echo tip: You can use set at top of cmd without parameters See relevant lines at ::FOR DEBUG TESTS
+Echo Info MuiLangAll Order is important "PrimaryLanguage;SubLanguage;.......;en-US" en-US always last
+Echo Cmd have Del *.txt use under an empty folder
+Echo Cmd only Prepare FileList and CopyCMD
+Echo To get optimized Results After you use First Language with FileList OR CopyCMD run current cmd again and use FileList OR CopyCMD with next Language ....
+ECHO ___ OR run ALL FileList OR CopyCMD but later use mui optimization with Del
+Rem ---
+cd /d "%~dp0"
+Rem --- To Avoid cmd Autorun AND relevant registry settings
+Rem  https://searchwindowsserver.techtarget.com/tip/Is-Delayed-Expansion-on
+Rem  If Not %Comspec%==!Comspec! Echo Delayed Expansion is Not enabled.
+SetLocal DisableDelayedExpansion
+Set t=%ErrorLevel%
+If %t% Neq 0 Echo %t%
+If %t% Neq 0 Exit /b %t%
+If %Comspec%==!Comspec! Exit
+SetLocal EnableExtensions
+Set t=%ErrorLevel%
+If %t% Neq 0 Echo %t%
+If %t% Neq 0 Exit /b %t%
+Rem ---------------
+Rem FOR DEBUG TESTS
+Rem Set TargetDir=D:\B ase\Target\Win10PESE
+Rem  Info MuiLangAll Order is important PrimaryLanguage;SubLanguage;.......;en-US
+Rem Set MuiLangAll=en-US
+Rem Set MuiLangAll=es-MX;es-ES;en-US
+Rem Set MuiLangAll=es-MX;es-ES;el-GR;cs-CZ;da-DK;en-US
+Rem FOR DEBUG TESTS
+Rem ---------------
+If %1- Neq - Set TargetDir=%~1
+If %2- Neq - Set MuiLangAll=%~2
+If %3- Neq - Set SourceDirInstallWim=%~3
+Rem ---------------
+Rem To Avoid end user wrong usage - PreCheck Exit ---- Start
+If "%TargetDir%" Equ "" Exit
+If "%TargetDir%" Equ "." Exit
+If "%TargetDir%" Equ ".." Exit
+If "%TargetDir%" Equ "\" Exit
+If "%TargetDir%" Equ ".\" Exit
+If "%TargetDir%" Equ "..\" Exit
+Rem --
+If "%TargetDir%" Equ "%SystemDrive%" Exit
+If "%TargetDir%" Equ "%SystemDrive%\" Exit
+If "%TargetDir%" Equ "%SystemDrive%\\" Exit
+If "%TargetDir%" Equ "%SystemDrive%/" Exit
+If "%TargetDir%" Equ "%SystemDrive%//" Exit
+Rem --
+Call Set t=%%TargetDir:%SystemRoot%=Bla__%%
+If Not "%t%" Equ "%TargetDir%" Exit
+Call Set t=%%TargetDir:%WinDir%=Bla__%%
+If Not "%t%" Equ "%TargetDir%" Exit
+Rem -
+If "%TargetDir%" Equ "%SystemRoot%" Exit
+If "%TargetDir%" Equ "%SystemRoot%\" Exit
+If "%TargetDir%" Equ "%SystemRoot%\\" Exit
+If "%TargetDir%" Equ "%SystemRoot%/" Exit
+If "%TargetDir%" Equ "%SystemRoot%//" Exit
+If "%TargetDir%" Equ "%WinDir%" Exit
+If "%TargetDir%" Equ "%WinDir%\" Exit
+If "%TargetDir%" Equ "%WinDir%\\" Exit
+If "%TargetDir%" Equ "%WinDir%/" Exit
+If "%TargetDir%" Equ "%WinDir%//" Exit
+Rem To Avoid end user wrong usage - PreCheck Exit ---- Finish
+Rem ---------------
+Del /q *.txt
+Del /q Add_Missing_Mui_CMD_Copy_CMD_*.cmd
+Rem ---------------
+Set gsarexe=.\gsar_gnuwin32_M_HostOS\gsar.exe
+If Not Exist %gsarexe% Exit
+Set grepexe=.\grep_gnuwin32_M_HostOS\grep.exe
+If Not Exist %grepexe% Exit
+Rem ---------------
+Echo TargetDir:       %TargetDir%
+Echo MuiLangAll:      %MuiLangAll%
+Rem ---------------
+If Not Exist "%TargetDir%" Exit
+Rem ---------------
+Set MuiLangTotal=0
+For %%G In (%MuiLangAll%) Do (Set /a MuiLangTotal+=1)
+Echo MuiLangTotal:    %MuiLangTotal%
+Rem ---------------
+::Cls
+::@Echo off
+If %MuiLangTotal% Geq 1 (
+SetLocal EnableDelayedExpansion
+Set MuiLangOptimize=%MuiLangAll%
+Call :Start_Mui_Add \Windows\System32\ Add_Missing_Mui_TargetSys_
+Set MuiLangOptimize=%MuiLangAll%
+Call :Start_Mui_Add \Windows\System32\drivers\ Add_Missing_Mui_TargetSys-drivers_
+Set MuiLangOptimize=%MuiLangAll%
+Call :Start_Mui_Add \Windows\ Add_Missing_Mui_TargetWin_
+Set MuiLangOptimize=%MuiLangAll%
+If Exist "%TargetDir%\Windows\SysWOW64\" Call :Start_Mui_Add \Windows\SysWOW64\ Add_Missing_Mui_TargetWin-SysWOW64_
+SetLocal DisableDelayedExpansion
+)
+Rem -
+Echo.
+Echo.
+Echo.
+Echo.
+Echo.
+:: Pause
+Exit
+cmd.exe /D /V:Off /E:ON
+Exit
+Rem -
+:Start_Mui_Add
+Echo %1 %2
+Set FileHeader=%2
+Rem Step 1 - Before - Start
+dir "%TargetDir%%1*" /b /A-D>!FileHeader!_Dir_B_A-D.txt
+For %%G In (!MuiLangOptimize!) Do (
+dir "%TargetDir%%1%%G\*" /b /A-D>!FileHeader!%%G_Dir_B_A-D.txt
+Type !FileHeader!%%G_Dir_B_A-D.txt>>!FileHeader!ALL_MUI_Dir_B_A-D.txt
+)
+Rem Step 1 - Before - Finish
+Rem -
+Rem Step 2 Get Optimized List
+Copy /y !FileHeader!_Dir_B_A-D.txt !FileHeader!_Dir_B_A-D_Optimized.txt
+Rem -
+Rem Step 2 Get Optimized List - 1 Remove no mui Files - Start
+Rem https://superuser.com/questions/1070272/why-does-windows-have-a-limit-on-environment-variables-at-all
+Rem Memo .bin .dat .mfl .msc .rtf .xsl files exists at mui folders without .mui extension
+Set NoMuiForFiles=bin;cmd;cfg;conf;config;com;dat;gif;h;ime;ini;inf;json;manifest;mfl;mof;msc;nls;png;rsp;rs;rtf;sdi;sep;tbl;txt;tlb;tsp;uce;vbs;wsf;xml;xsl;xslt
+FOR %%G IN (%NoMuiForFiles%) DO (
+%grepexe% -E -i -v "\.%%G$" !FileHeader!_Dir_B_A-D_Optimized.txt>!FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+copy !FileHeader!_Dir_B_A-D_Optimized_Temp.txt !FileHeader!_Dir_B_A-D_Optimized.txt
+del /q !FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+)
+Rem Grep changes Carriage Return AND LineFeed to ONLY LineFeed -- Revert Back to CarriageReturn AND LineFeed
+%gsarexe% -o -i "-s:x0A" "-r:x0D:x0A" !FileHeader!_Dir_B_A-D_Optimized.txt
+Rem Step 2 Get Optimized List - 1 Remove no mui Files - Finish
+Rem -
+Rem Step 2 Get Optimized List - 2 Add .mui - Start
+%gsarexe% -o -i "-s:x0D:x0A" "-r.mui:x0D:x0A" !FileHeader!_Dir_B_A-D_Optimized.txt
+Rem Step 2 Get Optimized List - 2 Add .mui - Finish
+Rem -
+Rem Step 2 Get Optimized List - 3 Remove Existing .mui Files - Start
+%grepexe% -v -i -F -x -f !FileHeader!ALL_MUI_Dir_B_A-D.txt !FileHeader!_Dir_B_A-D_Optimized.txt>!FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+copy !FileHeader!_Dir_B_A-D_Optimized_Temp.txt !FileHeader!_Dir_B_A-D_Optimized.txt
+del /q !FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+Rem Grep changes Carriage Return AND LineFeed to ONLY LineFeed -- Revert Back to CarriageReturn AND LineFeed
+%gsarexe% -o -i "-s:x0A" "-r:x0D:x0A" !FileHeader!_Dir_B_A-D_Optimized.txt
+Rem Step 2 Get Optimized List - 3 Remove Existing .mui Files - Start
+Rem -
+Rem Step 3 Create FileList - Start
+Echo [Dummy_For_crlf:]>!FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+Type !FileHeader!_Dir_B_A-D_Optimized.txt>>!FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+Echo [Dummy_For_crlf:]>>!FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+For %%G In (!MuiLangOptimize!) Do (
+Copy /y !FileHeader!_Dir_B_A-D_Optimized_Temp.txt !FileHeader!_Dir_B_A-D_Optimized_%%G.txt
+%gsarexe% -o -i "-s:x0A" "-r:x0A%1%%G\\" !FileHeader!_Dir_B_A-D_Optimized_%%G.txt
+Rem Remove [Dummy_For_crlf:] at the end with replacement
+%gsarexe% -o -i "-s%1%%G\:x5BDummy_For_crlf:x3A:x5D:x0D:x0A%1%%G\\" "-r" !FileHeader!_Dir_B_A-D_Optimized_%%G.txt
+Rem Remove [Dummy_For_crlf:] from top with tail :x0D:x0A - :x0D comes from echo
+%gsarexe% -o -i "-s:x5BDummy_For_crlf:x3A:x5D:x0D:x0A" "-r" !FileHeader!_Dir_B_A-D_Optimized_%%G.txt
+Rem -
+Rem Create FileList for All MuiLang at par1 - It is not Optimum will cause double files on Target
+Type !FileHeader!_Dir_B_A-D_Optimized_%%G.txt>>!FileHeader!_Dir_B_A-D_Optimized__ALL.txt
+Rem -
+Rem Create FileList for The MuiLang at ALL par1 - For the optimum Result
+Type !FileHeader!_Dir_B_A-D_Optimized_%%G.txt>>Add_Missing_Mui_FileList_%%G.txt
+Rem -
+Rem Create FileList for ALL MuiLang - It is not Optimum will cause double files on Target
+Type !FileHeader!_Dir_B_A-D_Optimized_%%G.txt>>Add_Missing_Mui_FileList__ALL.txt
+)
+del /q !FileHeader!_Dir_B_A-D_Optimized_Temp.txt
+Rem Step 3 Create FileList - Finish
+Rem -
+Rem Step 4 Create Copy CMD - Start
+If [%SourceDirInstallWim%] Neq [] (
+For %%G In (!MuiLangOptimize!) Do (
+Copy /y !FileHeader!_Dir_B_A-D_Optimized_%%G.txt !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt
+Rem we convert colon to double colon to get gsar use
+Set t=!SourceDirInstallWim::=::!
+Rem x22 is quote
+%gsarexe% -o -i "-s%1%%G\\" "-rcopy /y :x22!t!%1%%G\\" !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt
+Rem we convert colon to double colon to get gsar use
+Set t=!TargetDir::=::!
+%gsarexe% -o -i "-s:x0D:x0A" "-r:x22 :x22!t!%1%%G\:x22:x0D:x0A" !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt
+Rem -
+If Not Exist Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd (
+Echo cd /d "%%~dp0">>Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd
+Echo Rem --->>Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd
+)
+Echo Rem Next>>Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd
+Echo ren !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.cmd>>Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd
+Echo Call !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.cmd>>Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd
+Echo ren !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.cmd !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt>>Add_Missing_Mui_CMD_Copy_CMD__ALL.cmd
+Rem -
+If Not Exist Add_Missing_Mui_CMD_Copy_CMD_%%G.cmd Echo cd /d "%%~dp0">>Add_Missing_Mui_CMD_Copy_CMD_%%G.cmd
+Echo ren !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.cmd>>Add_Missing_Mui_CMD_Copy_CMD_%%G.cmd
+Echo Call !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.cmd>>Add_Missing_Mui_CMD_Copy_CMD_%%G.cmd
+Echo ren !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.cmd !FileHeader!_Dir_B_A-D_Optimized-Copy_CMD_%%G.txt>>Add_Missing_Mui_CMD_Copy_CMD_%%G.cmd
+)
+)
+Rem Step 4 Create Copy CMD - Finish
+Goto :EOF
+
+[Add_Missing_Mun_Files_P_B]
+Run,%ScriptFile%,Add_Missing_Mun_Files_P
+
+[Add_Missing_Mun_Files_P]
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt,Run,%ScriptFile%,Create_Before_List_TargetDir_P
+Echo,"Add Missing Mun Files - Start"
+Set,%WorkFolder%,%ProjectTemp%\PrePost\Add_Missing_Mun_Files
+Call,DirDeleteMake,%WorkFolder%
+Set,%wf%,Mun_SystemResources_CMD.cmd
+Set,%w%,%WorkFolder%\%wf%
+Call,IniExtractSectionN,,Add_Missing_Mun_Files_CMD,%w%
+//-
+//cmd file support parameters but to ease testing lines added to the top
+If,%BuildClass%,Equal,2,Begin
+TxtAddLine,%w%,"Set SourceDirInstallWim=%InstallSRC%",Prepend
+End
+TxtAddLine,%w%,"Set TargetDir=%TargetDir%",Prepend
+//-
+//gsar
+If,Not,ExistFile,%ProjectTemp%\gsar_gnuwin32_M\gsar.exe,Run,%ScriptFile%,gnuwin32_gsar_Ready
+DirMake,%WorkFolder%\gsar_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\gsar_gnuwin32_M\*,%WorkFolder%\gsar_gnuwin32_M_HostOS
+//-
+//grep
+If,Not,ExistFile,%ProjectTemp%\grep_gnuwin32_M\HostOS\grep.exe,Run,%ScriptFile%,gnuwin32_grep_Ready
+DirMake,%WorkFolder%\grep_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\grep_gnuwin32_M\HostOS\*,%WorkFolder%\grep_gnuwin32_M_HostOS
+//-
+Set,%t%,Open
+Set,%t%,Hide
+If,%BuildClass%,Equal,2,Begin
+System,FileRedirect,OFF
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C %wf% #$q%TargetDir%#$q #$q%InstallSRC%#$q",%WorkFolder%
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C TargetWin_SystemResources_Copy_CMD.cmd",%WorkFolder%
+System,FileRedirect,ON
+Call,EchoFile,%WorkFolder%\TargetWin_SystemResources.txt
+End
+Else,Begin
+System,FileRedirect,OFF
+ShellExecute,%t%,cmd.exe,"/D /V:Off /E:ON /C %wf% #$q%TargetDir%#$q",%WorkFolder%
+System,FileRedirect,ON
+Require,FileList,%WorkFolder%\TargetWin_SystemResources.txt
+End
+//-
+Echo,"Add Missing Mun Files - Finish"
+//Call,StartDocNotepad,%w%
+//Call,OpenDir,%WorkFolder%
+
+[Add_Missing_Mun_Files_CMD]
+Rem ------------------------- CMD Start HERE ----- Above Lines maybe added by another tool -- Remove if required --------
+Cls
+@Echo off
+Echo Lancelot 2019.03.64 : CMD File To add missing mun files with deduction
+Echo Special Thanks to slore Reply 44 and later http://TheOven.org/index.php?topic=2669.msg32597#msg32597
+Echo Parameters for cmd file: 1 TargetDir  2 Optional SourceDirInstallWim
+Echo eg. blabla.cmd "D:\B ase\Target\Win10PESE"
+Echo eg. blabla.cmd "D:\B ase\Target\Win10PESE" "D:\S\Win10_x64\sources\install_wim\6"
+Echo tip: You can use set at top of cmd without parameters See relevant lines at ::FOR DEBUG TESTS
+Echo Cmd have Del *.txt use under an empty folder
+Rem ---
+cd /d "%~dp0"
+Rem --- To Avoid cmd Autorun AND relevant registry settings
+:: https://searchwindowsserver.techtarget.com/tip/Is-Delayed-Expansion-on
+:: If Not %Comspec%==!Comspec! Echo Delayed Expansion is Not enabled.
+SetLocal DisableDelayedExpansion
+Set t=%ErrorLevel%
+If %t% Neq 0 Echo %t%
+If %t% Neq 0 Exit /b %t%
+If %Comspec%==!Comspec! Exit
+SetLocal EnableExtensions
+Set t=%ErrorLevel%
+If %t% Neq 0 Echo %t%
+If %t% Neq 0 Exit /b %t%
+Rem ---------------
+::FOR DEBUG TESTS
+::Set TargetDir=D:\B ase\Target\Win10PESE
+::Set=D:\S\Win10_x64\sources\install_wim\6
+::FOR DEBUG TESTS
+Rem ---------------
+If %1- Neq - Set TargetDir=%~1
+If %2- Neq - Set SourceDirInstallWim=%~2
+Rem ---------------
+Rem To Avoid end user wrong usage - PreCheck Exit ---- Start
+If "%TargetDir%" Equ "" Exit
+If "%TargetDir%" Equ "." Exit
+If "%TargetDir%" Equ ".." Exit
+If "%TargetDir%" Equ "\" Exit
+If "%TargetDir%" Equ ".\" Exit
+If "%TargetDir%" Equ "..\" Exit
+Rem --
+If "%TargetDir%" Equ "%SystemDrive%" Exit
+If "%TargetDir%" Equ "%SystemDrive%\" Exit
+If "%TargetDir%" Equ "%SystemDrive%\\" Exit
+If "%TargetDir%" Equ "%SystemDrive%/" Exit
+If "%TargetDir%" Equ "%SystemDrive%//" Exit
+Rem --
+Call Set t=%%TargetDir:%SystemRoot%=Bla__%%
+If Not "%t%" Equ "%TargetDir%" Exit
+Call Set t=%%TargetDir:%WinDir%=Bla__%%
+If Not "%t%" Equ "%TargetDir%" Exit
+Rem -
+If "%TargetDir%" Equ "%SystemRoot%" Exit
+If "%TargetDir%" Equ "%SystemRoot%\" Exit
+If "%TargetDir%" Equ "%SystemRoot%\\" Exit
+If "%TargetDir%" Equ "%SystemRoot%/" Exit
+If "%TargetDir%" Equ "%SystemRoot%//" Exit
+If "%TargetDir%" Equ "%WinDir%" Exit
+If "%TargetDir%" Equ "%WinDir%\" Exit
+If "%TargetDir%" Equ "%WinDir%\\" Exit
+If "%TargetDir%" Equ "%WinDir%/" Exit
+If "%TargetDir%" Equ "%WinDir%//" Exit
+Rem To Avoid end user wrong usage - PreCheck Exit ---- Finish
+Rem ---------------
+Del /q *.txt
+Del /q TargetWin_SystemResources_Copy_CMD.cmd
+Rem ---------------
+Set grepexe=.\grep_gnuwin32_M_HostOS\grep.exe
+Set gsarexe=.\gsar_gnuwin32_M_HostOS\gsar.exe
+If Not Exist %gsarexe% Exit
+If Not Exist %grepexe% Exit
+Rem ---------------
+Echo TargetDir:       %TargetDir%
+Rem ---------------
+If Not Exist "%TargetDir%" Exit
+Rem ------
+Rem ------
+Rem ------
+Rem ------
+Rem ------
+dir "%TargetDir%\Windows\System32\*" /b /A-D>5Before_TargetSys.txt
+:: If Exist "%TargetDir%\Windows\SystemResources" Call :Mun_SystemResources_System32
+::Debug
+Call :Mun_SystemResources_System32
+Rem -
+Echo.
+Echo.
+Echo.
+Echo.
+Echo.
+::Pause
+Exit
+cmd.exe /D /V:Off /E:ON
+Exit
+Rem -
+:Mun_SystemResources_System32
+Rem SystemResources - Step 1 Get Before
+dir "%TargetDir%\Windows\SystemResources\*" /b /A-D>5Before_TargetWin_SystemResources.txt
+Rem Debug - Echo aclui.dll.mun>>5Before_TargetWin_SystemResources.txt
+Rem ------
+Rem ------
+Rem SystemResources - TargetWin_SystemResources.txt - Step 2 Get TargetSys filelist
+copy 5Before_TargetSys.txt TargetWin_SystemResources.txt
+Rem ------
+Rem ------
+Rem SystemResources - TargetWin_SystemResources.txt - Step 3 Remove none mun files from list - Start
+Set NoMunForFiles=bin;cmd;cfg;conf;config;com;dat;gif;h;ime;ini;inf;json;manifest;mfl;mof;msc;nls;png;rsp;rs;rtf;sdi;sep;tbl;txt;tlb;tsp;uce;vbs;wsf;xml;xsl;xslt
+FOR %%G IN (%NoMunForFiles%) DO (
+%grepexe% -E -i -v "\.%%G$" TargetWin_SystemResources.txt>TargetWin_SystemResources_Temp.txt
+copy TargetWin_SystemResources_Temp.txt TargetWin_SystemResources.txt
+del /q TargetWin_SystemResources_Temp.txt
+)
+::Grep changes Carriage Return AND LineFeed to ONLY LineFeed -- Revert Back to CarriageReturn AND LineFeed
+%gsarexe% -o -i "-s:x0A" "-r:x0D:x0A" TargetWin_SystemResources.txt
+Rem SystemResources - TargetWin_SystemResources.txt - Step 3 Remove none mun files from list - Finish
+Rem ------
+Rem ------
+Rem Add mun extension
+%gsarexe% -o -i "-s:x0D:x0A" "-r.mun:x0D:x0A" TargetWin_SystemResources.txt
+Rem ------
+Rem ------
+Rem Remove existing files from list --- Start
+%grepexe% -v -i -F -x -f 5Before_TargetWin_SystemResources.txt TargetWin_SystemResources.txt>TargetWin_SystemResources_Temp.txt
+copy TargetWin_SystemResources_Temp.txt TargetWin_SystemResources.txt
+del /q TargetWin_SystemResources_Temp.txt
+::Grep changes Carriage Return AND LineFeed to ONLY LineFeed -- Revert Back to CarriageReturn AND LineFeed
+%gsarexe% -o -i "-s:x0A" "-r:x0D:x0A" TargetWin_SystemResources.txt
+Rem Remove existing files from list --- Finish
+Rem ------
+Rem ------
+Rem Add line prefix to get ready --- Start
+Echo [Dummy_For_crlf:]>TargetWin_SystemResources_Temp.txt
+Type TargetWin_SystemResources.txt>>TargetWin_SystemResources_Temp.txt
+Echo [Dummy_For_crlf:]>>TargetWin_SystemResources_Temp.txt
+copy /y TargetWin_SystemResources_Temp.txt TargetWin_SystemResources.txt
+del /q TargetWin_SystemResources_Temp.txt
+Rem ------
+Rem \Windows\SystemResources\
+%gsarexe% -o -i "-s:x0A" "-r:x0A\Windows\SystemResources\\" TargetWin_SystemResources.txt
+Rem Remove [Dummy_For_crlf:] at the end with replacement
+%gsarexe% -o -i "-s\Windows\SystemResources\:x5BDummy_For_crlf:x3A:x5D:x0D:x0A\Windows\SystemResources\\" "-r" TargetWin_SystemResources.txt
+Rem Remove [Dummy_For_crlf:] from top with tail :x0D:x0A - :x0D comes from echo
+%gsarexe% -o -i "-s:x5BDummy_For_crlf:x3A:x5D:x0D:x0A" "-r" TargetWin_SystemResources.txt
+Rem Add line prefix to get ready --- Finish
+Rem ------
+Rem ------
+Rem ------
+Rem ------
+Rem Get ready CMD file to be used by Direct Copy if available - Start
+Echo ---%SourceDirInstallWim%---
+:: https://ss64.com/nt/if.html
+SetLocal EnableDelayedExpansion
+If [%SourceDirInstallWim%] Neq [] (
+Rem ---- Create TargetWin_SystemResources_Copy_CMD.txt - Start
+Rem Tip since we already remove exiting files from list we can use copy /y directly
+Rem eg. convert \Windows\SystemResources\aclui.dll.mun TO copy /y "D:\S\Windows10_InsiderPreview_Client_x64_es-mx_18343\sources\install_wim\6\Windows\SystemResources\aclui.dll.mun" "D:\B ase\Target\Win10PESE\Windows\SystemResources\"
+Rem \Windows\SystemResources\
+Copy TargetWin_SystemResources.txt TargetWin_SystemResources_Copy_CMD.txt
+Rem --
+Rem we convert colon to double colon to get gsar use
+Set t=!SourceDirInstallWim::=::!
+Rem x22 is quote
+%gsarexe% -o -i "-s\Windows\SystemResources\\" "-rcopy /y :x22!t!\Windows\SystemResources\\" TargetWin_SystemResources_Copy_CMD.txt
+Rem we convert colon to double colon to get gsar use
+Set t=!TargetDir::=::!
+%gsarexe% -o -i "-s:x0D:x0A" "-r:x22 :x22!t!\Windows\SystemResources\:x22:x0D:x0A" TargetWin_SystemResources_Copy_CMD.txt
+Rem --
+Del /q TargetWin_SystemResources_Copy_CMD.cmd
+Echo md "!TargetDir!\Windows\SystemResources">TargetWin_SystemResources_Copy_CMD.cmd
+Type TargetWin_SystemResources_Copy_CMD.txt>>TargetWin_SystemResources_Copy_CMD.cmd
+Del /q TargetWin_SystemResources_Copy_CMD.txt
+Rem ---- Create TargetWin_SystemResources_Copy_CMD.txt - Finish
+)
+SetLocal DisableDelayedExpansion
+Rem Get ready CMD file to be used by Direct Copy if available - Finish
+Goto :EOF
+
+[Optimize_Mui_Del_P_B]
+Run,%ScriptFile%,Optimize_Mui_Del_P
+
+[Optimize_Mui_Del_P]
+If,Not,ExistFile,%ProjectTemp%\PrePost\Dir_Compare\List_5_Before_TargetDir.txt,Run,%ScriptFile%,Create_Before_List_TargetDir_P
+Echo,"Optimize Mui - Delete Redundant Mui Files - Start"
+Set,%WorkFolder%,%ProjectTemp%\PrePost\Optimize_Mui_Del
+Call,DirDeleteMake,%WorkFolder%
+Set,%wf%,Optimize_Mui_Del_CMD.cmd
+Set,%w%,%WorkFolder%\%wf%
+Call,IniExtractSectionN,,Optimize_Mui_Del_CMD,%w%
+//-
+AddVariables,%ProjectDir%\script.project,MuiLang
+StrFormat,Replace,%MuiLangAll%,|,;,%MuiLangAll_SemiColon%
+//-
+//cmd file support parameters but to ease testing lines added to the top
+TxtAddLine,%w%,"Set MuiLangAll=%MuiLangAll_SemiColon%",Prepend
+TxtAddLine,%w%,"Set TargetDir=%TargetDir%",Prepend
+//-
+//gsar
+If,Not,ExistFile,%ProjectTemp%\gsar_gnuwin32_M\gsar.exe,Run,%ScriptFile%,gnuwin32_gsar_Ready
+DirMake,%WorkFolder%\gsar_gnuwin32_M_HostOS
+DirCopy,%ProjectTemp%\gsar_gnuwin32_M\*,%WorkFolder%\gsar_gnuwin32_M_HostOS
+//-
+System,FileRedirect,OFF
+Set,%t%,Open
+Set,%t%,Hide
+ShellExecute,%t%,cmd.exe,"/D /C %wf% #$q%TargetDir%#$q #$q%MuiLangAll_SemiColon%#$q",%WorkFolder%
+System,FileRedirect,ON
+//-
+Echo,"Optimize Mui - Delete Redundant Mui Files - Finish"
+//Call,StartDocNotepad,%w%
+//Call,OpenDir,%WorkFolder%
+
+[Optimize_Mui_Del_CMD]
+Rem ------------------------- CMD Start HERE ----- Above Lines maybe added by another tool -- Remove if required --------
+Cls
+@Echo off
+Echo Lancelot 2019.03.27 : CMD File To optimize mui files with deduction (Natural Result of using \??-??\ for mui files)
+Echo Special Thanks to slore Reply 44 and later http://TheOven.org/index.php?topic=2669.msg32597#msg32597
+Echo Parameters for cmd file: 1 TargetDir 2 MuiLangAll
+Echo eg. blabla.cmd "D:\B ase\Target\Win10PESE" "es-MX;es-ES;en-US"
+Echo tip: You can use set at top of cmd without parameters See relevant lines at ::FOR DEBUG TESTS
+Echo TargetDir Value important - Delete Files - Do not use for your HostOS
+Echo Info MuiLangAll Order is important "PrimaryLanguage;SubLanguage;.......;en-US" en-US always last
+Echo Cmd have Del *.txt use under an empty folder
+Echo search drymode inside cmd to test with drymode - No Delete
+Rem ---
+cd /d "%~dp0"
+Rem --- To Avoid cmd Autorun AND relevant registry settings
+:: https://searchwindowsserver.techtarget.com/tip/Is-Delayed-Expansion-on
+:: If Not %Comspec%==!Comspec! Echo Delayed Expansion is Not enabled.
+SetLocal DisableDelayedExpansion
+Set t=%ErrorLevel%
+If %t% Neq 0 Echo %t%
+If %t% Neq 0 Exit /b %t%
+If %Comspec%==!Comspec! Exit
+SetLocal EnableExtensions
+Set t=%ErrorLevel%
+If %t% Neq 0 Echo %t%
+If %t% Neq 0 Exit /b %t%
+Rem ---------------
+::FOR DEBUG TESTS
+::Set TargetDir=D:\B ase\Target\Win10PESE
+:: Info MuiLangAll Order is important PrimaryLanguage;SubLanguage;.......;en-US
+::Set MuiLangAll=en-US
+::Set MuiLangAll=es-MX;es-ES;en-US
+::Set MuiLangAll=es-MX;es-ES;el-GR;cs-CZ;da-DK;en-US
+::FOR DEBUG TESTS
+Rem ---------------
+If %1- Neq - Set TargetDir=%~1
+If %2- Neq - Set MuiLangAll=%~2
+Rem ---------------
+Rem To Avoid end user wrong usage - PreCheck Exit ---- Start
+If "%TargetDir%" Equ "" Exit
+If "%TargetDir%" Equ "." Exit
+If "%TargetDir%" Equ ".." Exit
+If "%TargetDir%" Equ "\" Exit
+If "%TargetDir%" Equ ".\" Exit
+If "%TargetDir%" Equ "..\" Exit
+Rem --
+If "%TargetDir%" Equ "%SystemDrive%" Exit
+If "%TargetDir%" Equ "%SystemDrive%\" Exit
+If "%TargetDir%" Equ "%SystemDrive%\\" Exit
+If "%TargetDir%" Equ "%SystemDrive%/" Exit
+If "%TargetDir%" Equ "%SystemDrive%//" Exit
+Rem --
+Call Set t=%%TargetDir:%SystemRoot%=Bla__%%
+If Not "%t%" Equ "%TargetDir%" Exit
+Call Set t=%%TargetDir:%WinDir%=Bla__%%
+If Not "%t%" Equ "%TargetDir%" Exit
+Rem -
+If "%TargetDir%" Equ "%SystemRoot%" Exit
+If "%TargetDir%" Equ "%SystemRoot%\" Exit
+If "%TargetDir%" Equ "%SystemRoot%\\" Exit
+If "%TargetDir%" Equ "%SystemRoot%/" Exit
+If "%TargetDir%" Equ "%SystemRoot%//" Exit
+If "%TargetDir%" Equ "%WinDir%" Exit
+If "%TargetDir%" Equ "%WinDir%\" Exit
+If "%TargetDir%" Equ "%WinDir%\\" Exit
+If "%TargetDir%" Equ "%WinDir%/" Exit
+If "%TargetDir%" Equ "%WinDir%//" Exit
+Rem To Avoid end user wrong usage - PreCheck Exit ---- Finish
+Rem ---------------
+Del *.txt
+Rem ---------------
+Set gsarexe=.\gsar_gnuwin32_M_HostOS\gsar.exe
+If Not Exist %gsarexe% Exit
+Rem ---------------
+Echo TargetDir:       %TargetDir%
+Echo MuiLangAll:      %MuiLangAll%
+Rem ---------------
+If Not Exist "%TargetDir%" Exit
+Rem ---------------
+Set MuiLangTotal=0
+For %%G In (%MuiLangAll%) Do (Set /a MuiLangTotal+=1)
+Echo MuiLangTotal:    %MuiLangTotal%
+Rem ---------------
+::Cls
+::@Echo off
+If %MuiLangTotal% Geq 1 (
+SetLocal EnableDelayedExpansion
+Set MuiLangOptimize=%MuiLangAll%
+Call :Start_Mui_Optimize \Windows\System32\ Optimize_TargetSys_Mui_
+Set MuiLangOptimize=%MuiLangAll%
+Call :Start_Mui_Optimize \Windows\System32\drivers\ Optimize_TargetSys-drivers_Mui_
+Set MuiLangOptimize=%MuiLangAll%
+Call :Start_Mui_Optimize \Windows\ Optimize_TargetWin_Mui_
+Set MuiLangOptimize=%MuiLangAll%
+If Exist "%TargetDir%\Windows\SysWOW64\" Call :Start_Mui_Optimize \Windows\SysWOW64\ Optimize_TargetWin-SysWOW64_Mui_
+SetLocal DisableDelayedExpansion
+)
+Rem -
+Echo.
+Echo.
+Echo.
+Echo.
+Echo.
+::Pause
+Exit
+cmd.exe /D /V:Off /E:ON
+Exit
+Rem -
+:Start_Mui_Optimize
+Set FileHeader=%2
+Echo Start_Mui_Optimize:MuiLangOptimize           !MuiLangOptimize!
+::-
+Set MuiLangOptimizeTotal=0
+For %%G In (!MuiLangOptimize!) Do (Set /a MuiLangOptimizeTotal+=1)
+:: Echo Start_Mui_Optimize:MuiLangOptimizeTotal:     !MuiLangOptimizeTotal!
+If !MuiLangOptimizeTotal! Gtr 1 (
+::-
+Set t=0
+For %%G In (!MuiLangOptimize!) Do (
+Set /a t+=1
+If !t! Equ 1 Set First=%%G
+If !t! Equ 1 Set MuiLangOptimize=!MuiLangOptimize:%%G;=!
+If !t! Gtr 1 (
+Rem Echo First !First!
+Rem Echo %%G
+Echo !First! %%G
+::Echo on
+Set s=1
+Echo %TargetDir%%1%!First!
+Echo %TargetDir%%1%%%G
+If Not Exist "%TargetDir%%1%!First!\*" Set s=0
+Echo !s!
+If Not Exist "%TargetDir%%1%%%G\*" Set s=0
+Echo !s!
+If !s! Equ 1 (
+If Not Exist Delete_Dir_B_A-D_!First!.txt dir "%TargetDir%%1%!First!\*" /b /A-D>!FileHeader!Delete_Dir_B_A-D_!First!.txt
+Rem -
+Echo [Dummy_For_crlf:]>!FileHeader!Delete_CMD_!First!____AT____%%G.txt
+Type !FileHeader!Delete_Dir_B_A-D_!First!.txt>>!FileHeader!Delete_CMD_!First!____AT____%%G.txt
+Echo [Dummy_For_crlf:]>>!FileHeader!Delete_CMD_!First!____AT____%%G.txt
+Rem -
+Echo !First!
+Echo %%G
+Rem -------
+Set TargetDirGsar=%TargetDir::=::%
+Echo !TargetDirGsar!
+Rem x22 is quote
+%gsarexe% -o -i "-s:x0A" "-r:x0ADel /q /f :x22!TargetDirGsar!%1%%G\\" !FileHeader!Delete_CMD_!First!____AT____%%G.txt
+Rem Remove [Dummy_For_crlf:] at the end with replacement
+%gsarexe% -o -i "-sDel /q /f :x22!TargetDirGsar!%1%%G\:x5BDummy_For_crlf:x3A:x5D:x0D:x0ADel /q /f :x22!TargetDirGsar!%1%%G\\" "-r" !FileHeader!Delete_CMD_!First!____AT____%%G.txt
+Rem Remove [Dummy_For_crlf:] from top
+%gsarexe% -o -i "-s:x5BDummy_For_crlf:x3A:x5D:x0D:x0A" "-r" !FileHeader!Delete_CMD_!First!____AT____%%G.txt
+Rem Add quote to the end
+%gsarexe% -o -i "-s:x0D:x0A" "-r:x22:x0D:x0A" !FileHeader!Delete_CMD_!First!____AT____%%G.txt
+If Exist !FileHeader!Delete_CMD_!First!____AT____%%G.cmd Del /q /f !FileHeader!Delete_CMD_!First!____AT____%%G.cmd
+Ren !FileHeader!Delete_CMD_!First!____AT____%%G.txt !FileHeader!Delete_CMD_!First!____AT____%%G.cmd
+Rem drymode when you comment out next line___
+Call !FileHeader!Delete_CMD_!First!____AT____%%G.cmd
+Ren !FileHeader!Delete_CMD_!First!____AT____%%G.cmd !FileHeader!Delete_CMD_!First!____AT____%%G.txt
+)
+)
+)
+Call :Start_Mui_Optimize %1 %2
+)
+Goto :EOF
+
+[gnuwin32_grep_Ready]
+If,ExistFile,%ProjectDir%\Utils\Utils_Tools_001.Script,Run,%ProjectDir%\Utils\Utils_Tools_001.Script,Extract_gnuwin32_grep,%ProjectDir%\Utils\Utils_Tools_001.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_001.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Extract_gnuwin32_grep,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script
+End
+If,Not,ExistFile,%ProjectTemp%\grep_gnuwin32_M\HostOS\grep.exe,Call,Echo,"Halt: Can not get grep.exe Ready.",Warn,,MessageError,,Halt
+
+[gnuwin32_gsar_Ready]
+If,ExistFile,%ProjectDir%\Utils\Utils_Tools_001.Script,Run,%ProjectDir%\Utils\Utils_Tools_001.Script,Extract_gnuwin32_gsar,%ProjectDir%\Utils\Utils_Tools_001.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_001.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Extract_gnuwin32_sed,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script
+End
+If,Not,ExistFile,%ProjectTemp%\gsar_gnuwin32_M\gsar.exe,Call,Echo,"Halt: Can not get gsar.exe Ready.",Warn,,MessageError,,Halt
+
+[OpenDir_WorkFolder_P_B]
+Call,OpenDir,%ProjectTemp%\PrePost
+
+[Delete_WorkFolder_P_B]
+Run,%ScriptFile%,Delete_WorkFolder_P
+
+[Delete_WorkFolder_P]
+Call,DirDelete,%ProjectTemp%\PrePost
+
+[AuthorEncoded]
+Double-J-Design-Diagram-Free-Settings_0_048048.ico=2843,3791
+Logo=Double-J-Design-Diagram-Free-Settings_0_048048.ico
+
+[EncodedFile-AuthorEncoded-Double-J-Design-Diagram-Free-Settings_0_048048.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+Fatcow_Farm_Fresh_Toxic_1616.bmp=796,1062
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Icons8-Windows-8-Industry-Trash_0_016016.bmp=322,430
+
+[DownloadXXX]
+IniRead,%ScriptFile%,Main,Level,%LevelBefore%
+Call,DownloadXQ
+IniWrite,%ScriptFile%,Main,Level,%LevelBefore%
+
+[UploadXXX]
+IniRead,%ScriptFile%,Main,Level,%LevelBefore%
+Run,%api%,Button_Compare_Sabatoge_P
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add To Azin
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+IniWrite,%ScriptFile%,Main,Level,%LevelBefore%
+
+[Settings_Default]
+Run,%api%,Button_Compare_Sabatoge_P
+IniWrite,%ScriptFile%,Main,Level,0
+IniWrite,%ScriptFile%,Main,Interface,Interface_EndUser
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Fatcow_Farm_Fresh_Toxic_1616.bmp]
+lines=0
+0=eJylk1lPU1EUhTHxB+g/8MkYXxyCKGnBS0VooIWCwagkvPjgBCohEAykCBGZ2lIQkIJDCxQVKJ1ub2conVBLC6ZFBAP8A/SB1MQHl6cHCpIIMfEkKze5+3x7nX3uugJxzeEUutKIThAdITpKdCjlGH3PbNf/XAD+WxsbG4jFYohGo/+kxN4Ek+RHtVo0Nz1Gy5MmKGRt6H2mxMsBFQb7+9DTpYS8vY3WGhvqUVdbg+qqSmjU6h1+YWEewYAfn8hzcTGGleUvWFtdpVpZWcbS0mfiGSX1BUTCc5jxTCMSiez6j2phs3JEFky7XQj4fQjPhTAX+ojZYADeGQ9cTgetm00mIiOGNJodfn19Df19PTAZdHA77QiHPsCkn4RSLkNbSzM0r1+Rvk6YjXqMvX0DWXsrVsnZkvyPeBwvBp6DNenhmXLhwd1bkOQLIRGLkJd7GQJeOsquXQXHmqAbH6N944RJ8vFtnmONaKx7hJwOFXJUOhTnCSG6xOCcyoUz0gFUlt+BYXJiX95us6CYePLXf+H8VyCvohbZt6txklzV8dmf4KeeJjMY9uUdNg75Odkovl4KcVUDmEED+F1aMDcrwTAMUk+fgsVsPNi/QIwrkgKUFIohrG2CoEqK3KxMMJkZ4KVfONCfzi+tR1GBCCUiIdJmv+Os9xtyL2Ygg8/Dw/sVf51/c3Nz7/2X30NhkQRZcjV4nSPIEghQVnpjz/0nmCTv9/kwqNryT/Dz4RA9Z7dCDlnrU4wMqeElmbNazNDrxqFUyOD1end4h8NOZrfCTjI4PeWmWY6QHmGSv/fBIM2f2+UkeziwZjORCRaW3fX3+9HR2kz+l168Gx2GlZwj4J2BzzMFO8dCPzEG7bCGztjdqYCUZMRHzpzkXaS325nob6P/AWdhyXfa8qGimd/KfUKJmpXjKP8bbc8gFnicU3BLLEnOL493SyzKjXcrSi3OiA/Jr8hMjjc0MzTTS8otYBgFwxmUsUDoPUzY5UPYTwUwMAEAuKQOcJPHcw8BAAAAAgAAADwAAAC8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp]
+lines=0
+0=eJztky0Og0AQhWmowZBdjVlZT1LdVGEquAMSgapGIJBIbsQVMGiO8dg3KQ0hFFa0rpt8yeT9sBMI98fz7Mm5Wi4WZdGWk2dEv7385QHwFcZxRBzH4CP3YIbZdb8sy8PuDLPrflEU4gVBgLquobVGmqYCZ2r0mGH2U18pJZ4xBm3bCpyp0fv3f9sPwxB93yOKIvnOhDM1ekd9F7b63DNJEieYXd/t2p1Z7lBVlfPuM+wsdxiGQd5R13Xi53mOpmkEztToMcPs3r+cZRl833/fxZnaVnYCtxtLZnic0/FMzs8rttANz8xLyS8v1rXQ9cxLKS0uKarUDSlKLM6IN4g3MDQDIr2k3AKGUTDcQBkLhL6JQ5496GYFAxMAem4SJP0g8REBAAAAAgAAAEUAAADZAAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

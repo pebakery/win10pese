@@ -4,16 +4,18 @@ Type=Plugin
 Author=Max_Real Qnx, Lancelot, ChrisR
 Description=MountPEMEdia - Drive Letter of Cd-Usb For x86 & x64 PE2/3/4 Projects
 Credits=QnxMaxQnx@netscape.net
-Version=026
+Version=029
 Download_Level=0
 Level=1
 Selected=True
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=346
-Date=2017.01.27
+Date=2019.02.24_15:03.57 (GMT0: -3 Hours)
 Depend=
 Disable=
+Interface=Interface
+InterfaceList=Interface,Interface_Disable
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/CDDrive_X_Y.script
 CertifiedBy=
 Certification=
@@ -46,6 +48,9 @@ History023=ChrisR - plugin and theoven in ini file > CDDrive_X_Y_ProjectName - D
 History024=Lancelot - Added Compare button - Date:2016.10.21
 History025=Lancelot Added Basic_PluginCache_Extract - Date:2016.11.01
 History026=ChrisR - Updated ReMount V1.5.1 x86/x64 - Date:2017.01.27
+History027=Lancelot update to TargetFinalDir - Date:2019.01.24
+History028=Lancelot Improve "Disable Plugin" and "Enable .. Plugin" without restarting builder (No hope for a new builder for a long while now, time to workaround) - Date:2019.01.24
+History029=Lancelot update to TargetFinalDir x2 - Date:2019.01.29 // Cosmetics - Date:2019.02.24
 
 [Variables]
 %ProgramEXE%=MountPEmedia.exe
@@ -65,7 +70,7 @@ CheckBoxDT="Desktop shortcut",1,3,294,100,105,18,False
 CheckBoxSM="Start Menu shortcut",1,3,294,118,122,18,True
 TextBoxSMF="Start Menu folder",1,0,297,153,119,21,"System Tools"
 TextBoxSCName=Name,1,0,297,191,119,21,"ReMount CdDrive Y"
-MountPEmediahtm_Button=" MountPEmedia",1,8,11,184,104,25,MountPEmediahtm,Exclamation.bmp,False,False,_MountPEmediahtm_,False
+MountPEmediahtm_Button=" MountPEmedia",1,8,11,184,104,25,MountPEmediahtm,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_MountPEmediahtm_,False
 PXE_TextLabel="* Boot from PXE-Server : 'Run all programs from RAM' is recommended.",1,1,11,245,349,18,8,Normal
 FileSystem_TextLabel="** In case of failure with UFD (Usb Flash Disk) in NTFS -> Use FAT32 on UFD **",1,1,11,224,396,18,8,Normal
 WebLabel_Plugin="Home - Support Page",1,10,272,3,102,18,http://TheOven.org/index.php?topic=346
@@ -75,13 +80,27 @@ Button_Download=,1,8,380,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown001
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
 
+[Interface_Disable]
+Enable_Button="Enable and/or Activate the Plugin",1,8,290,48,230,25,Enable_And_Reset,_Enable_And_Reset_,False
+WebLabel_Plugin="Home - Support Page",1,10,272,3,102,18,http://TheOven.org/index.php?topic=346
+Button_Download=,1,8,380,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pTextLabel1="'Plugin Disabled'",1,1,27,53,180,26,14,Bold
+pTextLabel2="With Other Words: Plugin do NOTHING during build.#$x#$xTechnically: Plugin Do same with 'Selected False'",1,1,29,132,449,67,12,Bold
+
 [Process]
 If,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Echo,"Basic PluginCache"
 If,Not,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+IniRead,%ScriptFile%,Main,Interface,%t%
+If,Not,%t%,Equal,Interface,Echo,"Info: '%ScriptTitle%' Plugin Disabled"
+//If,Not,%t%,Equal,Interface,Echo,"Info: '%ScriptTitle%' Plugin Disabled",Warn
+If,%t%,Equal,Interface,Run,%ScriptFile%,Process_Normal_Plugin_Enabled
+
+[Process_Normal_Plugin_Enabled]
 Echo,"CdDrive - X: - Y: For %ProjectName%"
-ReadENV
+IniRead,%ProjectDir%\script.project,IniVariables,BuildModel,%BuildModel%
 If,%AllRam_CheckBox%,Equal,False,Begin
 Set,%AtRam%,False,Permanent
 If,Not,%BuildModel%,Equal,Normal,Run,%ScriptFile%,DriveY
@@ -112,7 +131,9 @@ Set,%PE_Programs%,"%SystemDrive%\Program Files",Permanent
 End
 Else,Begin
 //IniWrite,%ProjectDir%\script.project,Variables,#$pPE_CFG#$p,#$pPECFGCD#$p
-Set,%Target_Prog%,%TargetDir%\Programs,Permanent
+//Set,%Target_Prog%,%TargetDir%\Programs,Permanent
+IniRead,%ProjectDir%\script.project,IniVariables,TargetFinalDir,%TargetFinalDir%
+Set,%Target_Prog%,%TargetFinalDir%\Programs,Permanent
 Set,%PE_Programs%,%CDDrive%\Programs,Permanent
 End
 
@@ -120,7 +141,9 @@ End
 Set,%CDDrive%,Y:,Permanent
 //MultiArchitektur DVD
 Set,%PE_Programs%,%CDDrive%\Programs,Permanent
-Set,%Target_Prog%,%TargetDir%\Programs,Permanent
+//Set,%Target_Prog%,%TargetDir%\Programs,Permanent
+IniRead,%ProjectDir%\script.project,IniVariables,TargetFinalDir,%TargetFinalDir%
+Set,%Target_Prog%,%TargetFinalDir%\Programs,Permanent
 If,%x86Programs_CheckBox%%SourceArch%,Equal,Truex86,Begin
 Set,%PE_Programs%,%CDDrive%\%x86ProgramsName_TextBox%,Permanent
 Set,%Target_Prog%,%TargetDir%\%x86ProgramsName_TextBox%,Permanent
@@ -135,7 +158,8 @@ Set,%SFini%,%ScriptFile%
 Set,%FileNameNoExt%,%ScriptDir%\CDDrive_X_Y
 If,ExistFile,%FileNameNoExt%_%ProjectName%.script,Set,%SFini%,%FileNameNoExt%_%ProjectName%.script
 ExtractFile,%SFini%,MountPEmedia,MountPEmedia.ini,%Target_Sys%
-FileCreateBlank,%TargetDir%\CdUsb.Y
+IniRead,%ProjectDir%\script.project,IniVariables,TargetFinalDir,%TargetFinalDir%
+FileCreateBlank,%TargetFinalDir%\CdUsb.Y
 If,Not,%ProjectName%,Equal,Win8.1SE,Begin
 If,ExistFile,%Target_Sys%\winpeshl.ini,TXTReplace,%Target_Sys%\winpeshl.ini,[LaunchApps],%ProgramEXE%
 If,ExistFile,%Target_Sys%\winpeshl.ini,TXTAddLine,%Target_Sys%\winpeshl.ini,[LaunchApps],Prepend
@@ -147,14 +171,18 @@ If,%CheckBoxSM%,Equal,True,Add_Shortcut,StartMenu,%TextBoxSMF%,%SystemRoot%\syst
 Set,%AtRam%,%AllRam_CheckBox%,Permanent
 Set,%CDDrive%,X:,Permanent
 Set,%PE_Programs%,%CDDrive%\Programs,Permanent
-Set,%Target_Prog%,%TargetDir%\Programs,Permanent
+//Set,%Target_Prog%,%TargetDir%\Programs,Permanent
+IniRead,%ProjectDir%\script.project,IniVariables,TargetFinalDir,%TargetFinalDir%
+Set,%Target_Prog%,%TargetFinalDir%\Programs,Permanent
 If,%x86Programs_CheckBox%%SourceArch%,Equal,Truex86,Begin
 Set,%PE_Programs%,%CDDrive%\%x86ProgramsName_TextBox%,Permanent
-Set,%Target_Prog%,%TargetDir%\%x86ProgramsName_TextBox%,Permanent
+//Set,%Target_Prog%,%TargetDir%\%x86ProgramsName_TextBox%,Permanent
+Set,%Target_Prog%,%TargetFinalDir%\%x86ProgramsName_TextBox%,Permanent
 End
 If,%x64Programs_CheckBox%%SourceArch%,Equal,Truex64,Begin
 Set,%PE_Programs%,%CDDrive%\%x64ProgramsName_TextBox%,Permanent
-Set,%Target_Prog%,%TargetDir%\%x64ProgramsName_TextBox%,Permanent
+//Set,%Target_Prog%,%TargetDir%\%x64ProgramsName_TextBox%,Permanent
+Set,%Target_Prog%,%TargetFinalDir%\%x64ProgramsName_TextBox%,Permanent
 End
 
 [DriveCDDrive]
@@ -163,16 +191,20 @@ Set,%CDDrive%,#$pCDDrive#$p,Permanent
 Set,%PE_Programs%,%CDDrive%\Programs,Permanent
 
 [Disable_And_Reset]
+IniWrite,%ScriptFile%,Main,Interface,Interface_Disable
 Run,%ScriptFile%,DriveCDDrive
 Set,%AtRam%,False,Permanent
 Run,%ScriptFile%,wVariablesRunFromDefault
-Iniwrite,%ScriptFile%,Main,Selected,None
-System,ReScanScripts
+//History028 Iniwrite,%ScriptFile%,Main,Selected,None
+//History028 Call,Restart
+System,RefreshInterface
 
 [Enable_And_Reset]
-Iniwrite,%ScriptFile%,Main,Selected,True
+IniWrite,%ScriptFile%,Main,Interface,Interface
+//History028 Iniwrite,%ScriptFile%,Main,Selected,True
 Run,%ScriptFile%,Process
-System,ReScanScripts
+//History028 Call,Restart
+System,RefreshInterface
 
 [MountPEmediahtm]
 If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
@@ -184,7 +216,7 @@ Call,HostDesktopDir
 Call,FileNameNoExt
 Set,%Container%,%FileNameNoExt%_%ProjectName%.script
 Set,%OK%,YES
-If,ExistFile,%HostDesktopDir%\MountPEmedia.ini,If,Not,QUESTION,"'Desktop'\MountPEmedia.ini Exists #$x#$x Do you want to OverWrite ?",Set,%OK%,NOO
+If,ExistFile,%HostDesktopDir%\MountPEmedia.ini,If,Not,Question,"'Desktop'\MountPEmedia.ini Exists #$x#$x Do you want to OverWrite ?",Set,%OK%,NOO
 If,%OK%,Equal,YES,ExtractFile,%Container%,MountPEmedia,MountPEmedia.ini,%HostDesktopDir%
 
 [Container_Encode]
@@ -194,20 +226,6 @@ If,Not,ExistFile,%HostDesktopDir%\MountPEmedia.ini,Message,"There is NO 'Desktop
 If,Not,ExistFile,%HostDesktopDir%\MountPEmedia.ini,Exit,"There is NO 'Desktop'\MountPEmedia.ini -- !!!!!!!!!"
 Set,%Container%,%FileNameNoExt%_%ProjectName%.script
 Encode,%Container%,MountPEmedia,%HostDesktopDir%\MountPEmedia.ini
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [AuthorEncoded]
 Logo.jpg=4823,6431
@@ -219,14 +237,38 @@ lines=1
 1=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
 
 [InterfaceEncoded]
-Exclamation.bmp=452,603
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
 
-[EncodedFile-InterfaceEncoded-Exclamation.bmp]
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Interface,Interface
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
-0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 MountPEmedia_x86
@@ -250,13 +292,6 @@ lines=0
 [EncodedFile-MountPEmedia-MountPEmedia.ini]
 lines=0
 0=eJy9VdtyIjcQfaeKf+jsEyQYDPi2Ts1WrbmkqLKNy+BsXEsqJWYEozBIrKQx9t+nW5fBdvKUB/MCSN2nT5++6PuMWyvk2vxZr91p9TdP7S3b8uSbkOd3o9moXrtRpbRDLZ548nhZr80402k+Lth6LAo84qZei/+c5yB7mF21H6Pl6NlyLVkxkeLg8O7wTcS2kKJeG3KzsWr3jWmJ7K7ZkheVBYTTeq1e+z4xaiJXCunjr7dAk9nUmUzlSGul0eRaSN6NDEFpQBO4nc5hhUlm8JO36B0ipUyCVBa2JAIwtGFpyo2BFdI2oFbwokoNg2Fn+PuwBYjbcphKQkaSAUlGmP3Ef58kd8oYsSw43HNm0I5AZ6oorVDSQDA/TbpNeFQlMM2hNJgsPIyH0MAAgGqbHIbCbJrADCwV8eOZYJiF3jJreQZCwu18PGt7tLPk6OjoCzwYDuOv834P9sLmDvDyC+CnAWPn6Y7cnTNrBvfzwP0i6R1IkSqeWFsY5Vk03jLGBIuozNVgCFfT6fzmt/sWrHW5PMmUOZxwm7ZjuM+e7SDn6QZsjrRszmGFPeZUByyfWWL5hIFwpyl4rIWTIkB1jz3WI134gmi+ZXiTgVXO11hmOXy6RQTkm718gsaNwhQwsIT+MRieKpmZJokLDHKmsz2lqF31Ypzuv+IgO5JIo/taCoMBG+4CCQrj5EG8PWbH8awFqctWuBxc1xnOY2+RJaYcgAscWETBzuHPuwKp6ihctxcK1e0n/fft86pKUf4WklSFkOVzKAAsS+sJYPJr0ggFWpaiyLy7xPEiMjuGLRL1posGf74EPzR/PV+ckXELFpMtW3OziOdnJzSRFdmTSPY0+RkmPvESO5QVBay02oJmW2jQPyGNyDi092LbBLGWvjwo8N7vAfi1Aj1LfolYkmMCfkxxGhxVlwTW3c9wi2qIJqoo1B5hIkZs9+5F8rUJcwq04syWrug/SqEJcZvh/KFsBTLeCyRJxd4rvYkooYuvsMPIkxjljPrCeVL5HKVq0zRGktFWwJaOZ4v5nrONicn1jgOxXje5auJ8UI1eJeaqE7r6fdH+o0DQdKtnhyUXNvqlSmPH2rcVpq5xvReJ9Hxu10pt3FiQZ8ZXrCxsiIwzsxLrUjPaaqQ/mQjptz7+EH6UG39cUntkam8Wsxdj+bbfW7gH527k55hMcQQdTFj1nbDoK136ns4997GXL7AWT9QXjv2OaxxUjIpuPiopspiVS6x8hpMU2O2Kco0/xwJtzWKAvYF7ARs2Ron92jtNBk23S1+/WCSg2fFUrF7ehXVaV3Gd5oVKvTANExa/k5E2ryppZ7hEDhn4d9lvZneSlsbihBA0gXZMlYwJz3klzlmkfZ70l/97KRySwDz9Y0gN7weJXrMY7iJpJNUOI5Nqj1WdXkG5fN4vsV4YnOHbZYknLMsgrFBSy4HSLAXHftj1M7UlaNdUlRy0tYxaWbe697lIc3KlgTM+HYrhwN2j4iRBrGCDI4wOAasTcWJct/s/8vNBcUOYXvIZl42SlmEL5tbuLjudec6nT1y2lV4Hq/7HkDn5eK3/ATcybCJ4nBPwzS/NKwlwzU1NyUzUy8zLZBgFIwkocUPouSzY5dPOdhoxMAEAJ+AI5exyXZQBAAAAAgAAACwAAACdBAAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-MountPEmedia_x86-MountPEmedia.exe]
 lines=90

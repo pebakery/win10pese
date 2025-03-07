@@ -4,14 +4,14 @@ Type=Plugin
 Author=NightMan, yahooUK, JFX, ChrisR
 Description=(Win10PESE) Win10PE SE Main Configuration Editor
 Credits=http://TheOven.org
-Version=066
+Version=072
 Download_Level=0
 Level=1
 Selected=True
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.27
+Date=2020.02.27
 Depend=
 Disable=
 Web1=http://win10se.cwcodes.net/Projects/Win10PESE/config.script
@@ -24,13 +24,13 @@ History047=ChrisR - We now use Win 8 ADK tools, faster than Win7 ADK
 History048=ChrisR - Korean Format by ied206
 History049=ied206 - Korean locale
 History051=ChrisR - Init variable EFI boot menu. Removed wpeinit run mode from interface
-History052=ChrisR - Add additional Rights on Project Temp folder. booty#1 file-permissions propagated http://theoven.org/index.php?topic=1113
+History052=ChrisR - Add additional Rights on Project Temp folder. booty#1 file-permissions propagated http://TheOven.org/index.php?topic=1113
 History053=ChrisR - Do NOT use the media creation tool to download Windows. Thanks Kyhi
-History054=Lancelot - Added Protection to Clear Temp button [Clean_Temp_Files] - KYHI Reply 18 - http://theoven.org/index.php?topic=1472.msg17402#msg17402
+History054=Lancelot - Added Protection to Clear Temp button [Clean_Temp_Files] - KYHI Reply 18 - http://TheOven.org/index.php?topic=1472.msg17402#msg17402
 History055=JFX - Added Hidden feature ("Main Configuration" + "PreConfig") Reason behind, I'm playing with different wimmount and wofadk drivers and everytime I build a project they get set to ADK 5 one.  -> IniWrite,%ProjectDir%\script.project,IniVariables,InstallWimSYSMount,1 + IniRead,%ProjectDir%\script.project,IniVariables,InstallWimSYSMount,%t% ....
 History056=Lancelot - Fixed IniVariables,OS - Date:2016.01.28
 History057=Lancelot Added NoPluginCache option - Date:2016.11.02
-History058=Lancelot Call,DirDeleteE,%ProjectTemp% // Call,DirDeleteE,%BaseDir%\Temp\Macro_Library - Date:2016.11.07
+History058=Lancelot Call,DirMakeE,%ProjectTemp% // Call,DirMakeE,%BaseDir%\Temp\Macro_Library - Date:2016.11.07
 History059=ChrisR - Multi Fallback Languages support - Date:2016.11.23
 History060=Lancelot Enable SupportLog --> Disable All PluginCache ;) - Date:2016.12.17 - Date:2017.01.11
 History062=Lancelot Add UnBlock_Tools to avoid Tools (ex: %Tools%\7z.exe) get blocked during build x2 - Date:2017.09.18 - Date:2017.09.19
@@ -38,6 +38,12 @@ History063=Lancelot Fixed typo - Thanks to ied206 PEBakery Auto Syntax Checking 
 History064=Lancelot %ISODir% deprecated - Date:2017.11.22
 History065=Lancelot When Source not found Give Instruction at Message Halt to use 'Config Source'->'Select Source' (Instead of 'Source Directory') to select Source - http://TheOven.org/index.php?topic=2305 - Date:2017.12.06
 History066=Lancelot + Reply 2 %BaseDir%\Source not supported to avoid wb harcoded path for now //When Source not found Give Instruction at Message Halt to use 'Config Source' plugin ->'Select Source' (Instead of 'Source Directory') to select Source - http://TheOven.org/index.php?topic=2305 - Date:2017.12.27
+History067=Lancelot Add TargetFinalDir adjustments - Date:2018.10.17
+History068=Lancelot update to TargetFinalDir - Date:2019.01.23
+History069=Lancelot Add Call,HostOSArch - Date:2019.01.28
+History070=Lancelot Removed old syntax - Not exists anymore - Date:2019.02.01
+History071=Lancelot Improve: SetACL_M\HostOS\SetACL - Date:2019.02.01 // Cosmetics - Date:2019.02.24
+History072=Lancelot Update Syntax with Call,DirMakeE - Date:2020.02.27
 
 [Interface]
 pTextLabel1=" Win10PE SE Main Configuration",1,1,86,12,194,18,8,Bold
@@ -53,12 +59,12 @@ pScrollB_SkinI=SunRise,0,4,102,124,150,21,Text,Face,Gentleblue,Zion,SunRise,SunS
 LaunchGFXboot_button=GFX-Boot,1,8,257,123,78,23,LaunchGFXboot,BLogo.bmp,False,_LaunchGFXboot_,False,"__Launch GFX boot customizer"
 pTextL_Locale="System Locale",1,1,8,159,89,18,8,Normal
 pScrollB_Locale="Import HostOS",1,4,102,156,150,21,"Import HostOS",Auto,"Belgian French",French,German,Greek,Hebrew,Hungarian,Italian,Korean,Portuguese,Russian,Spanish,Swedish,Turkish,"UK English"
-Locale_Info_Button=,1,8,257,156,22,22,Locale_Info,Exclamation.bmp,False,_Locale_Info_,False
+Locale_Info_Button=,1,8,257,156,22,22,Locale_Info,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,_Locale_Info_,False
 pTextL_Format=Format,1,1,8,186,89,18,8,Normal
 pScroll_Format="Import HostOS",1,4,102,183,150,21,"Import HostOS",Auto,"Belgian French",French,German,Greek,Hebrew,Hungarian,Italian,Korean,Portuguese,Russian,Spanish,Swedish,Turkish,"UK English"
 pTextL_KeyBoard=KeyBoard,1,1,8,213,89,18,8,Normal
 pScroll_KeyBoard="Import HostOS",1,4,102,210,150,21,"Import HostOS",Auto,"Belgian French",French,German,Greek,Hebrew,Hungarian,Italian,Portuguese,Russian,Spanish,Swedish,Turkish,"UK English"
-KeyBoard_Info_Button=,1,8,257,210,22,22,KeyBoard_Info,Exclamation.bmp,False,_KeyBoard_Info_,False
+KeyBoard_Info_Button=,1,8,257,210,22,22,KeyBoard_Info,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,_KeyBoard_Info_,False
 pTextL_TimeZone=TimeZone,1,1,8,240,89,18,8,Normal
 pScroll_TimeZone="Import HostOS",1,4,102,237,350,21,"Import HostOS",Auto,"(UTC-12:00) International Date Line West","(UTC-11:00) Coordinated Universal Time-11","(UTC-11:00) Samoa","(UTC-10:00) Hawaii","(UTC-09:00) Alaska","(UTC-08:00) Baja California","(UTC-08:00) Pacific Time (US & Canada)","(UTC-07:00) Arizona","(UTC-07:00) Chihuahua, La Paz, Mazatlan","(UTC-07:00) Mountain Time (US & Canada)","(UTC-06:00) Central America","(UTC-06:00) Central Time (US & Canada)","(UTC-06:00) Guadalajara, Mexico City, Monterrey","(UTC-06:00) Saskatchewan","(UTC-05:00) Bogota, Lima, Quito","(UTC-05:00) Eastern Time (US & Canada)","(UTC-05:00) Indiana (East)","(UTC-04:30) Caracas","(UTC-04:00) Asuncion","(UTC-04:00) Atlantic Time (Canada)","(UTC-04:00) Cuiaba","(UTC-04:00) Georgetown, La Paz, Manaus, San Juan","(UTC-04:00) Santiago","(UTC-03:30) Newfoundland","(UTC-03:00) Brasilia","(UTC-03:00) Buenos Aires","(UTC-03:00) Cayenne, Fortaleza","(UTC-03:00) Greenland","(UTC-03:00) Montevideo","(UTC-02:00) Coordinated Universal Time-02","(UTC-02:00) Mid-Atlantic","(UTC-01:00) Azores","(UTC-01:00) Cape Verde Is.","(UTC) Casablanca","(UTC) Coordinated Universal Time","(UTC) Dublin, Edinburgh, Lisbon, London","(UTC) Monrovia, Reykjavik","(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna","(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague","(UTC+01:00) Brussels, Copenhagen, Madrid, Paris","(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb","(UTC+01:00) West Central Africa","(UTC+01:00) Windhoek","(UTC+02:00) Amman","(UTC+02:00) Athens, Bucharest, Istanbul","(UTC+02:00) Beirut","(UTC+02:00) Cairo","(UTC+02:00) Damascus","(UTC+02:00) Harare, Pretoria","(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius","(UTC+02:00) Jerusalem","(UTC+02:00) Minsk","(UTC+03:00) Baghdad","(UTC+03:00) Kuwait, Riyadh","(UTC+03:00) Moscow, St. Petersburg, Volgograd","(UTC+03:00) Nairobi","(UTC+03:30) Tehran","(UTC+04:00) Abu Dhabi, Muscat","(UTC+04:00) Baku","(UTC+04:00) Port Louis","(UTC+04:00) Tbilisi","(UTC+04:00) Yerevan","(UTC+04:30) Kabul","(UTC+05:00) Ekaterinburg","(UTC+05:00) Islamabad, Karachi","(UTC+05:00) Tashkent","(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi","(UTC+05:30) Sri Jayawardenepura","(UTC+05:45) Kathmandu","(UTC+06:00) Astana","(UTC+06:00) Dhaka","(UTC+06:00) Novosibirsk","(UTC+06:30) Yangon (Rangoon)","(UTC+07:00) Bangkok, Hanoi, Jakarta","(UTC+07:00) Krasnoyarsk","(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi","(UTC+08:00) Irkutsk","(UTC+08:00) Kuala Lumpur, Singapore","(UTC+08:00) Perth","(UTC+08:00) Taipei","(UTC+08:00) Ulaanbaatar","(UTC+09:00) Osaka, Sapporo, Tokyo","(UTC+09:00) Seoul","(UTC+09:00) Yakutsk","(UTC+09:30) Adelaide","(UTC+09:30) Darwin","(UTC+10:00) Brisbane","(UTC+10:00) Canberra, Melbourne, Sydney","(UTC+10:00) Guam, Port Moresby","(UTC+10:00) Hobart","(UTC+10:00) Vladivostok","(UTC+11:00) Magadan","(UTC+11:00) Solomon Is., New Caledonia","(UTC+12:00) Auckland, Wellington","(UTC+12:00) Coordinated Universal Time+12","(UTC+12:00) Fiji","(UTC+12:00) Petropavlovsk-Kamchatsky - Old","(UTC+13:00) Nuku'alofa"
 pButton_Save=" Save",1,8,55,280,154,30,Process,Save.bmp,False,_Process_,False
@@ -88,7 +94,7 @@ NoPluginCache_CheckBox=,0,3,640,140,16,18,False
 NoPluginCache_Set_Enable_Button=,0,8,536,138,20,20,NoPluginCache_Set_Enable_B,unchecked.bmp,True,False,_NoPluginCache_Set_Enable_B_,True
 NoPluginCache_Set_Disable_Button=,0,8,536,138,20,20,NoPluginCache_Set_Disable_B,checked.bmp,True,False,_NoPluginCache_Set_Disable_B_,True
 NoPluginCache_TextLabel=NoPluginCache,0,1,558,142,83,18,8,Normal
-WebLabel_Homepg=HomePage,1,10,296,4,51,18,http://theoven.org/index.php?board=36.0
+WebLabel_Homepg=HomePage,1,10,296,4,51,18,http://TheOven.org/index.php?board=36.0
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,0,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,0,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
@@ -104,10 +110,16 @@ Else,Echo,"Info: UnBlock Tools Disabled",Warn
 Run,%ScriptFile%,NoMediaCreationToolISO
 IniWrite,%ProjectDir%\script.project,IniVariables,NoPluginCache,%NoPluginCache_CheckBox%
 If,ExistFile,"%ProjectDir%\Build\Revision Check.script",Run,"%ProjectDir%\Build\Revision Check.script",RevisionUpdateOnce
-Run,%ScriptFile%,HostOSInfoMini
+Call,HostOSArch
+//Run,%ScriptFile%,HostOSInfoMini
 Run,%ScriptFile%,Clean_Temp_Files_Mount
 Run,%ScriptFile%,Clean_Temp_Files_Basic
 Run,%ScriptFile%,LogSettings
+//-
+//Echo,"TargetFinalDir adjustments"
+IniWrite,%ProjectDir%\Script.Project,IniVariables,TargetFinalDir,%TargetDir%
+IniWrite,%ProjectDir%\Script.Project,VariablesOtherOS,"#$pTargetFinalDir#$p",%TargetDir%
+//-
 If,Not,ExistVar,%OS%,IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
 Run,%ScriptFile%,FindMinimumWin
 Run,%ScriptFile%,CommonSettings
@@ -165,8 +177,8 @@ IniWrite,%ProjectDir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
 If,%pScrollB_Build%,Equal,Normal,IniWrite,%ProjectDir%\script.project,IniVariables,BuildModel,Normal
 If,%pScrollB_Build%,Equal,"In RAM (boot.wim)",IniWrite,%ProjectDir%\script.project,IniVariables,BuildModel,RAM
 //--
-StrFormat,SPLIT,%pScrollB_Screen%,"x",1,%Width%
-StrFormat,SPLIT,%pScrollB_Screen%,"x",2,%Height%
+StrFormat,Split,%pScrollB_Screen%,"x",1,%Width%
+StrFormat,Split,%pScrollB_Screen%,"x",2,%Height%
 Set,%ScreenResolution%,%Width%x%Height%
 IniWrite,%ProjectDir%\script.project,IniVariables,ScreenResolution,%ScreenResolution%
 //---If,%pCheckBox1%,Equal,true,run,%ScriptFile%,CheckFileCopy
@@ -303,8 +315,8 @@ Run,%ScriptFile%,Clean_Temp_Files_Basic
 If,%TargetDir%,Equal,%BaseDir%,Call,Echo,"TargetDir=BaseDir SOMETHING REALLY WRONG - Report Log to http://TheOven.org",Warn,,MessageError,,Halt
 If,%TargetDir%,Equal,%BaseDir%,Halt,"TargetDir=BaseDir SOMETHING REALLY WRONG - Report Log to http://TheOven.org"
 //-
-StrFormat,PATH,%IsoFile%,%IsoFolder%
-StrFormat,CTRIM,%IsoFolder%,\,%IsoFolder%
+StrFormat,Path,%IsoFile%,%IsoFolder%
+StrFormat,CTrim,%IsoFolder%,\,%IsoFolder%
 If,%IsoFolder%,Equal,%BaseDir%,Call,Echo,"IsoFolder=BaseDir SOMETHING REALLY WRONG - Report Log to http://TheOven.org",Warn,,MessageError,,Halt
 If,%IsoFolder%,Equal,%BaseDir%,Halt,"IsoFolder=BaseDir SOMETHING REALLY WRONG - Report Log to http://TheOven.org"
 //-
@@ -313,22 +325,22 @@ Echo,"Delete Target, ProjectCache and ISO Files..."
 Set,%answer%,No
 If,Question,"Do you want to also clean the project cache ?#$x#$x %ProjectCache% #$x",10,False,Set,%answer%,Yes
 If,%answer%,Equal,Yes,Begin
-If,ExistDir,%ProjectCache%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectCache%#$q"
-If,ExistDir,%ProjectCache%,Echo,"Directory NOT DELETED",WARN
+If,ExistDir,%ProjectCache%,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectCache%#$q"
+If,ExistDir,%ProjectCache%,Echo,"Directory NOT DELETED",Warn
 End
 // remove dir %TargetDir% not in basic Clean_Temp_Files because button "Create New ISO" execute config.script
-//If,ExistDir,%TargetDir%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%TargetDir%#$q"
-//If,ExistDir,%TargetDir%,Echo,"Directory NOT DELETED",WARN
+//If,ExistDir,%TargetDir%,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%TargetDir%#$q"
+//If,ExistDir,%TargetDir%,Echo,"Directory NOT DELETED",Warn
 If,ExistDir,%TargetDir%,Echo,"Deleting [%TargetDir%]"
-If,ExistDir,%TargetDir%,Call,DirDeleteE,%TargetDir%
+If,ExistDir,%TargetDir%,Call,DirMakeE,%TargetDir%
 //DO NOT delete IsoFolder, there can be other project's iso files
 //it is only an 'attempt' to delete isofile - since isofile can be anyname just trying luck ;)
-If,Existfile,%ISOfile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ISOfile%#$q"
-If,ExistFile,%ISOfile%,Echo,"FILE NOT DELETED",WARN
+If,Existfile,%ISOfile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ISOfile%#$q"
+If,ExistFile,%ISOfile%,Echo,"FILE NOT DELETED",Warn
 If,ExistVar,%ISOfileVar%,Begin
 If,Not,%ISOfileVar%,Equal,"",Begin
-If,ExistFile,%ISOfileVar%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ISOfileVar%#$q"
-If,ExistFile,%ISOfileVar%,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%ISOfileVar%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ISOfileVar%#$q"
+If,ExistFile,%ISOfileVar%,Echo,"FILE NOT DELETED",Warn
 End
 End
 If,Not,ExistVar,%ISOfileVar%,Begin
@@ -336,20 +348,20 @@ Set,%ISOfileVar%,%ISOfile%
 Set,%t%,""
 IniRead,%ProjectDir%\script.project,IniVariables,ISOfileVar,%t%
 If,Not,%t%,Equal,"",Set,%ISOfileVar%,%t%
-If,ExistFile,%ISOfileVar%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ISOfileVar%#$q"
-If,ExistFile,%ISOfileVar%,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%ISOfileVar%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ISOfileVar%#$q"
+If,ExistFile,%ISOfileVar%,Echo,"FILE NOT DELETED",Warn
 End
 Call,HostTempDir
-If,ExistFile,%HostTempDir%\WimUtil.log,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%HostTempDir%\WimUtil.log#$q"
-If,ExistFile,%HostTempDir%\WimUtil.log,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%HostTempDir%\WimUtil.log,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%HostTempDir%\WimUtil.log#$q"
+If,ExistFile,%HostTempDir%\WimUtil.log,Echo,"FILE NOT DELETED",Warn
 
 [Clean_Temp_Files_Basic]
 Echo,"Delete Temporary Files..."
 //DO NOT use %CmdexeFolder% here ;)
-//If,ExistDir,%ProjectTemp%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%#$q"
-//If,ExistDir,%ProjectTemp%,Echo,"Directory NOT DELETED",WARN
-Call,DirDeleteE,%BaseDir%\Temp\Macro_Library
-Call,DirDeleteE,%ProjectTemp%
+//If,ExistDir,%ProjectTemp%,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%#$q"
+//If,ExistDir,%ProjectTemp%,Echo,"Directory NOT DELETED",Warn
+Call,DirMakeE,%BaseDir%\Temp\Macro_Library
+Call,DirMakeE,%ProjectTemp%
 
 [Clean_Temp_Files_Mount]
 IniRead,%ProjectDir%\script.project,IniVariables,BootSRC,%BootSRC%
@@ -390,27 +402,27 @@ If,%OS%,Equal,WAIK,Run,%ScriptFile%,SourceUnMountWAIK
 
 [CheckPreviousWimGapi]
 Set,%WimgapiFound%,Noo
-If,ExistFile,%Tools%\%OSArch%\wimgapi.dll,Set,%WimgapiFound%,Yes
+If,ExistFile,%Tools%\%HostOSArch%\wimgapi.dll,Set,%WimgapiFound%,Yes
 // Normally the previous version used must be present, but in case
 IniRead,%ProjectDir%\script.project,IniVariables,WIMDriver,%WIMDriver%
 If,Not,%WimgapiFound%,Equal,Yes,Begin
-If,%WIMDriver%,Equal,Wimfltr,If,ExistFile,%Tools%\%OSArch%\wimgapi6.0.dll,Begin
-FileCopy,%Tools%\%OSArch%\wimgapi6.0.dll,%Tools%\%OSArch%\wimgapi.dll
+If,%WIMDriver%,Equal,Wimfltr,If,ExistFile,%Tools%\%HostOSArch%\wimgapi6.0.dll,Begin
+FileCopy,%Tools%\%HostOSArch%\wimgapi6.0.dll,%Tools%\%HostOSArch%\wimgapi.dll
 Set,%WimgapiFound%,Yes
 End
 Else,Begin
-If,%WIMDriver%,Equal,Wimmount,If,ExistFile,%Tools%\%OSArch%\wimgapi6.2.dll,Begin
-FileCopy,%Tools%\%OSArch%\wimgapi6.2.dll,%Tools%\%OSArch%\wimgapi.dll
+If,%WIMDriver%,Equal,Wimmount,If,ExistFile,%Tools%\%HostOSArch%\wimgapi6.2.dll,Begin
+FileCopy,%Tools%\%HostOSArch%\wimgapi6.2.dll,%Tools%\%HostOSArch%\wimgapi.dll
 Set,%WimgapiFound%,Yes
 End
 End
 End
 If,%WimgapiFound%,Equal,Yes,Begin
-Retrieve,FILEVERSION,%Tools%\%OSArch%\wimgapi.dll,%WimgapiVersion%
-StrFormat,LEFT,%WimgapiVersion%,3,%WimgapiMajorVersion%
+Retrieve,FileVersion,%Tools%\%HostOSArch%\wimgapi.dll,%WimgapiVersion%
+StrFormat,Left,%WimgapiVersion%,3,%WimgapiMajorVersion%
 End
 If,Not,%WimgapiFound%,Equal,Yes,Run,%ScriptFile%,PreviousWimGapiNotFound
-If,Not,ExistFile,%Tools%\%OSArch%\wimgapi.dll,Run,%ScriptFile%,PreviousWimGapiNotFound
+If,Not,ExistFile,%Tools%\%HostOSArch%\wimgapi.dll,Run,%ScriptFile%,PreviousWimGapiNotFound
 
 [CheckPreviousImageTools]
 Set,%ImageToolsFound%,Noo
@@ -423,22 +435,22 @@ If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,FoundPrevi
 If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,FoundPreviousWimUtil
 
 [FoundPreviousImageX]
-If,ExistFile,%Tools%\%OSArch%\imagex.exe,Begin
-Set,%IMAGEX%,%Tools%\%OSArch%\imagex.exe
+If,ExistFile,%Tools%\%HostOSArch%\imagex.exe,Begin
+Set,%IMAGEX%,%Tools%\%HostOSArch%\imagex.exe
 Set,%WimTools%,ImageX
 Set,%ImageToolsFound%,Yes
 End
 Else,Begin
-If,%WIMDriver%,Equal,Wimfltr,If,ExistFile,%Tools%\%OSArch%\imagex6.0.exe,Begin
-FileCopy,%Tools%\%OSArch%\imagex6.0.exe,%Tools%\%OSArch%\imagex.exe
-Set,%IMAGEX%,%Tools%\%OSArch%\imagex.exe
+If,%WIMDriver%,Equal,Wimfltr,If,ExistFile,%Tools%\%HostOSArch%\imagex6.0.exe,Begin
+FileCopy,%Tools%\%HostOSArch%\imagex6.0.exe,%Tools%\%HostOSArch%\imagex.exe
+Set,%IMAGEX%,%Tools%\%HostOSArch%\imagex.exe
 Set,%WimTools%,ImageX
 Set,%ImageToolsFound%,Yes
 End
 Else,Begin
-If,%WIMDriver%,Equal,Wimmount,If,ExistFile,%Tools%\%OSArch%\imagex6.2.exe,Begin
-FileCopy,%Tools%\%OSArch%\imagex6.2.exe,%Tools%\%OSArch%\imagex.exe
-Set,%IMAGEX%,%Tools%\%OSArch%\imagex.exe
+If,%WIMDriver%,Equal,Wimmount,If,ExistFile,%Tools%\%HostOSArch%\imagex6.2.exe,Begin
+FileCopy,%Tools%\%HostOSArch%\imagex6.2.exe,%Tools%\%HostOSArch%\imagex.exe
+Set,%IMAGEX%,%Tools%\%HostOSArch%\imagex.exe
 Set,%WimTools%,ImageX
 Set,%ImageToolsFound%,Yes
 End
@@ -448,8 +460,8 @@ If,Not,%ImageToolsFound%,Equal,Yes,Run,%ScriptFile%,PreviousImageToolsNotFound
 If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,PreviousImageToolsNotFound
 
 [FoundPreviousWimUtil]
-If,ExistFile,%Tools%\%OSArch%\WimUtil.exe,Begin
-Set,%WIMUTIL%,%Tools%\%OSArch%\WimUtil.exe
+If,ExistFile,%Tools%\%HostOSArch%\WimUtil.exe,Begin
+Set,%WIMUTIL%,%Tools%\%HostOSArch%\WimUtil.exe
 Set,%WimTools%,WimUtil
 Set,%ImageToolsFound%,Yes
 End
@@ -469,7 +481,12 @@ End
 [TempFolderRights]
 Echo,"Add additional Rights on Project Temp folder..."
 If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
-ShellExecute,Hide,"%Tools%\%OSArch%\SetAcl.exe"," -ot #$qfile#$q -on #$q%ProjectTemp%#$q -actn ace -actn setprot -op #$qdacl:p_nc#$q  -ace #$qn:S-1-1-0;p:full;s:y#$q -silent"
+If,Not,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe,Run,%ScriptFile%,Get_SetACL
+If,Not,ExistDir,%BaseDir%\Temp\Macro_Library,DirMake,%BaseDir%\Temp\Macro_Library
+DirCopy,%ProjectTemp%\SetACL_M,%BaseDir%\Temp\Macro_Library
+ShellExecute,Hide,%BaseDir%\Temp\Macro_Library\SetACL_M\HostOS\SetAcl.exe," -ot #$qfile#$q -on #$q%ProjectTemp%#$q -actn ace -actn setprot -op #$qdacl:p_nc#$q  -ace #$qn:S-1-1-0;p:full;s:y#$q -silent"
+DirDelete,%BaseDir%\Temp\Macro_Library\SetACL_M
+ShellExecute,Hide,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe," -ot #$qfile#$q -on #$q%BaseDir%\Temp\Macro_Library#$q -actn ace -actn setprot -op #$qdacl:p_nc#$q  -ace #$qn:S-1-1-0;p:full;s:y#$q -silent"
 
 [SourceNotConfiguredExit]
 Message,"Source Type Not Configured and Images Must be UNMOUNTED First (or directory MUST be empty)!!!#$x#$xExiting...",Error
@@ -485,30 +502,30 @@ Halt,"Image Tools was not found and Images Must be UNMOUNTED First (or directory
 
 [SourceUnMountCD]
 //If 'shadow mount' creating folders with cmd will not work ;) but to avoid things in future lines added....
-Shellexecute,Hide,cmd.exe,"/C md #$q%BootSRC%#$q"
-Shellexecute,Hide,cmd.exe,"/C md #$q%InstallSRC%#$q"
+ShellExecute,Hide,cmd.exe,"/C md #$q%BootSRC%#$q"
+ShellExecute,Hide,cmd.exe,"/C md #$q%InstallSRC%#$q"
 //create mount basefolders (by creating same named folders ;)) --> this will help ummounting 'shadow mount' success
-Shellexecute,Hide,cmd.exe,"/C md #$q%BootSRC%_Tmp#$q"
-Shellexecute,Hide,cmd.exe,"/C md #$q%InstallSRC%_Tmp#$q"
+ShellExecute,Hide,cmd.exe,"/C md #$q%BootSRC%_Tmp#$q"
+ShellExecute,Hide,cmd.exe,"/C md #$q%InstallSRC%_Tmp#$q"
 If,%WimTools%,Equal,ImageX,Begin
 IniRead,%ProjectDir%\script.project,IniVariables,ShowImageX,%ShowImageX%
 Echo,"UnMountig Wim files (BootSRC) with %WimTools% ..."
-ShellExecute,%ShowImageX%,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%Tools%\%OSArch%\
+ShellExecute,%ShowImageX%,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%Tools%\%HostOSArch%\
 Echo,"%WimTools% unmount Wim files (BootSRC) return : %ExitCode%"
 //-
 Echo,"UnMountig Wim files (InstallSRC) with %WimTools% ..."
-ShellExecute,%ShowImageX%,%IMAGEX%,"/unmount #$q%InstallSRC%#$q",%Tools%\%OSArch%\
+ShellExecute,%ShowImageX%,%IMAGEX%,"/unmount #$q%InstallSRC%#$q",%Tools%\%HostOSArch%\
 Echo,"%WimTools% unmount Wim files (InstallSRC) return : %ExitCode%"
 End
 //-
 If,%WimTools%,Equal,WimUtil,Begin
 Echo,"UnMountig Wim files (BootSRC) with %WimTools% ..."
 IniRead,%ProjectDir%\script.project,IniVariables,ShowWimUtil,%ShowWimUtil%
-ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q %ShowWimUtil%",%Tools%\%OSArch%\
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q %ShowWimUtil%",%Tools%\%HostOSArch%\
 Echo,"%WimTools% unmount Wim files (BootSRC) return : %ExitCode%"
 //-
 Echo,"UnMountig Wim files (InstallSRC) with %WimTools% ..."
-ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%InstallSRC%#$q %ShowWimUtil%",%Tools%\%OSArch%\
+ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%InstallSRC%#$q %ShowWimUtil%",%Tools%\%HostOSArch%\
 Echo,"%WimTools% unmount Wim files (InstallSRC) return : %ExitCode%"
 End
 //-
@@ -520,7 +537,7 @@ Run,%ScriptFile%,CheckUnMountBootWim
 If,ExistDir,%InstallSRC%,Begin
 Retrieve,FolderSize,%InstallSRC%,%ISRCsizeFolder%
 If,%ISRCsizeFolder%,Equal,0,Begin
-If,ExistDir,%InstallSRC%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%InstallSRC%#$q"
+If,ExistDir,%InstallSRC%,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%InstallSRC%#$q"
 If,ExistDir,%InstallSRC%,Message,"%InstallSRC% Folder can not be deleted !!!#$x#$xExiting...",Error
 If,ExistDir,%InstallSRC%,Halt,"%InstallSRC% Folder can not be deleted. Exiting..."
 DirMake,%InstallSRC%
@@ -535,7 +552,7 @@ End
 If,ExistDir,%BootSRC%,Begin
 Retrieve,FolderSize,%BootSRC%,%BSRCsizeFolder%
 If,%BSRCsizeFolder%,Equal,0,Begin
-If,ExistDir,%BootSRC%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%BootSRC%#$q"
+If,ExistDir,%BootSRC%,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%BootSRC%#$q"
 If,ExistDir,%BootSRC%,Message,"%BootSRC% Folder can not be deleted !!!#$x#$xExiting...",Error
 If,ExistDir,%BootSRC%,Halt,"%BootSRC% Folder can not be deleted. Exiting..."
 DirMake,%BootSRC%
@@ -549,11 +566,11 @@ End
 [SourceUnMountWAIK]
 Echo,"UnMounting WAIK files with imagex.exe..."
 //If 'shadow mount' creating folders with cmd will not work ;) but to avoid things in future lines added....
-Shellexecute,Hide,cmd.exe,"/C md #$q%BootSRC%#$q"
+ShellExecute,Hide,cmd.exe,"/C md #$q%BootSRC%#$q"
 //create mount basefolders (by creating same named folders ;)) --> this will help ummounting 'shadow mount' success
-Shellexecute,Hide,cmd.exe,"/C md #$q%BootSRC%_Tmp#$q"
-If,%WimTools%,Equal,ImageX,ShellExecute,Hide,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%Tools%\%OSArch%\
-If,%WimTools%,Equal,WimUtil,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q",%Tools%\%OSArch%\
+ShellExecute,Hide,cmd.exe,"/C md #$q%BootSRC%_Tmp#$q"
+If,%WimTools%,Equal,ImageX,ShellExecute,Hide,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%Tools%\%HostOSArch%\
+If,%WimTools%,Equal,WimUtil,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q",%Tools%\%HostOSArch%\
 // Check that the image is well unmounted (some issues encountered sometimes with wimmount driver, who locked the folder)
 Run,%ScriptFile%,CheckUnMountBootWim
 
@@ -571,25 +588,23 @@ Echo,%msg%,Warn
 Echo,%msg%,Warn
 Halt,%msg%
 
-[HostOSInfoMini]
+[HostOSInfoMini_CANCEL]
 Echo,"Detect HostOS Info..."
 If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
-If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.ini#$q"
-If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.ini#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Echo,"FILE NOT DELETED",Warn
 Set,%w%,%ProjectTemp%\InfoHostOSMini.au3
 FileCreateBlank,%w%
 TxtAddline,%w%,"#NoTrayIcon",Append
 TxtAddline,%w%,"#RequireAdmin",Append
 TxtAddline,%w%,"IniWrite(#$qInfoHostOSMiniIni.ini#$q,#$qinfohostos#$q,#$qosarch#$q,@OSArch)",Append
-//Following MUST me x86 NOT %systype% or %OsArch% ..... ;).
+//Following MUST be x86 NOT HostOSArch ..... ;).
 ShellExecute,Hide,%Tools%\x86\AU3381.exe,"#$q%w%#$q",%ProjectTemp%
-IniRead,%ProjectTemp%\InfoHostOSMiniIni.ini,infohostos,OSArch,%SysTypeVar%
-Set,%SysType%,%SysTypeVar%,Permanent
-Set,%OSArch%,%SysTypeVar%,Permanent
-Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMini.au3#$q"
-If,ExistFile,%ProjectTemp%\InfoHostOSMini.au3,Echo,"FILE NOT DELETED",WARN
-Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.ini#$q"
-If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Echo,"FILE NOT DELETED",WARN
+IniRead,%ProjectTemp%\InfoHostOSMiniIni.ini,infohostos,OSArch,%t%
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMini.au3#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMini.au3,Echo,"FILE NOT DELETED",Warn
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\InfoHostOSMiniIni.ini#$q"
+If,ExistFile,%ProjectTemp%\InfoHostOSMiniIni.ini,Echo,"FILE NOT DELETED",Warn
 
 [Locale_Info]
 Message,"'System Locale' Info:#$x#$xIn case of problems with Locale Import HostOS, choose Auto or a Localization predefined.#$xIf mismatch with source language:   Change 'System Locale' manually only when source is en-US.#$xIf match with source:   Auto (Source) is enough.",Information
@@ -609,49 +624,6 @@ Else,Run,%ProjectDir%\Utils\GFXBoot.script,Launch_Program,%ProjectDir%\Utils\GFX
 
 [Oldies_Support]
 If,ExistVar,%ProjectInfo%,Run,%ScriptFile%,ProjectInfo_New_Write
-If,ExistSection,%ProjectDir%\script.project,VariablesReadEnv,Run,%ScriptFile%,ReadEnv_Prepare_VariablesReadEnv
-If,ExistSection,%ProjectDir%\script.project,IniVariablesReadEnv,Run,%ScriptFile%,ReadEnv_Prepare_IniVariablesReadEnv
-
-[ReadEnv_Prepare_VariablesReadEnv]
-//Will be Removed later.....
-If,%pScrollB_Build%,Equal,Normal,IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBuildModel#$p,Normal
-If,%pScrollB_Build%,Equal,"In RAM (boot.wim)",IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBuildModel#$p,RAM
-//IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pShell#$p,%pScrollBox2%
-IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pScreenResolution#$p,%ScreenResolution%
-IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pLocale#$p,%pScrollB_Locale%
-//CheckFileCopy
-//If,%pScrollB_Build%,Equal,"In RAM (boot.wim)",IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pForceAllToRam#$p,Yes
-//If,%pScrollB_Build%,Equal,"Normal",IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pForceAllToRam#$p,No
-//IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pGrubSkin#$p,%BootSkin_Selected%
-//IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBootSkin#$p,%BootSkin_Selected%
-IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pWpeinit#$p,Normal
-IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pSysType#$p,%SysType%
-If,%pScrollB_Boot%,Equal,Standard,IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBootManager#$p,Standard
-If,%pScrollB_Boot%,Equal,Auto,IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBootManager#$p,Auto
-If,%pScrollB_Boot%,Equal,"Grub4Dos (recomended)",IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBootManager#$p,Grub4Dos
-If,%pScrollB_Boot%,Equal,IsoLinux,IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBootManager#$p,IsoLinux
-If,%pScrollB_Boot%,Equal,BCDW,IniWrite,%ProjectDir%\script.project,VariablesReadEnv,#$pBootManager#$p,BCDW
-
-[ReadEnv_Prepare_IniVariablesReadEnv]
-//Will be Removed later.....
-If,%pScrollB_Build%,Equal,Normal,IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BuildModel,Normal
-If,%pScrollB_Build%,Equal,"In RAM (boot.wim)",IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BuildModel,RAM
-//IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,Shell,%pScrollBox2%
-IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,SDir,%SourceDir%
-IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,ScreenResolution,%ScreenResolution%
-IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,Locale,%pScrollB_Locale%
-//CheckFileCopy
-//If,%pScrollB_Build%,Equal,"In RAM (boot.wim)",IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,ForceAllToRam,Yes
-//If,%pScrollB_Build%,Equal,"Normal",IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,ForceAllToRam,No
-//IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,GrubSkin,%BootSkin_Selected%
-//IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BootSkin,%BootSkin_Selected%
-IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,Wpeinit,Normal
-IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,SysType,%SysType%
-If,%pScrollB_Boot%,Equal,Standard,IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BootManager,Standard
-If,%pScrollB_Boot%,Equal,Auto,IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BootManager,Auto
-If,%pScrollB_Boot%,Equal,"Grub4Dos (recomended)",IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BootManager,Grub4Dos
-If,%pScrollB_Boot%,Equal,IsoLinux,IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BootManager,IsoLinux
-If,%pScrollB_Boot%,Equal,BCDW,IniWrite,%ProjectDir%\script.project,IniVariablesReadEnv,BootManager,BCDW
 
 [ProjectInfo_New_Write]
 //Tip: ProjectInfo will be removed at a point in time - relevant functionalities already replaced with better adjustments here only for transaction period
@@ -670,7 +642,6 @@ IniWrite,%ProjectInfo%,ProjectInfo,Locale,%pScrollB_Locale%
 //If,%pScrollB_Build%,Equal,"In RAM (boot.wim)",IniWrite,%ProjectInfo%,ProjectInfo,ForceAllToRam,Yes
 //If,%pScrollB_Build%,Equal,"Normal",IniWrite,%ProjectInfo%,ProjectInfo,ForceAllToRam,No
 IniWrite,%ProjectInfo%,ProjectInfo,Wpeinit,Normal
-IniWrite,%ProjectInfo%,ProjectInfo,SysType,%SysType%
 IniWrite,%ProjectInfo%,ProjectInfo,SourceDir,%SourceDir%
 //IniWrite,%ProjectInfo%,ProjectInfo,GrubSkin,%BootSkin_Selected%
 //IniWrite,%ProjectInfo%,ProjectInfo,BootSkin,%BootSkin_Selected%
@@ -701,7 +672,6 @@ IniWrite,%ProjectInfo%,ProjectInfo,Language,""
 IniWrite,%ProjectInfo%,ProjectInfo,SourceType,Win7CD
 IniWrite,%ProjectInfo%,ProjectInfo,SourceDir,""
 IniWrite,%ProjectInfo%,ProjectInfo,SystemFiles,""
-IniWrite,%ProjectInfo%,ProjectInfo,SysType,""
 
 [ProjectInfo_New_Default]
 IniWrite,%ProjectInfo%,ProjectInfo,BuildModel,RAM
@@ -731,180 +701,180 @@ If,Not,%CheckBootMGRSuccess%,Equal,Yes,Message,"You can not use 'NORMAL' build m
 End
 
 [BootMGR_Choice]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%pScrollB_Boot%,Equal,"Grub4Dos (recomended)",Begin
-Visible,%LaunchGFXboot_button%,True,PERMANENT
-Visible,%pScrollB_SkinG%,True,PERMANENT
-Visible,%pScrollB_SkinI%,False,PERMANENT
-Visible,%pTextL_Skin%,True,PERMANENT
+Visible,%LaunchGFXboot_button%,True,Permanent
+Visible,%pScrollB_SkinG%,True,Permanent
+Visible,%pScrollB_SkinI%,False,Permanent
+Visible,%pTextL_Skin%,True,Permanent
 End
 Else,Begin
-Visible,%LaunchGFXboot_button%,False,PERMANENT
+Visible,%LaunchGFXboot_button%,False,Permanent
 If,%pScrollB_Boot%,Equal,IsoLinux,Begin
-Visible,%pScrollB_SkinG%,False,PERMANENT
-Visible,%pScrollB_SkinI%,True,PERMANENT
-Visible,%pTextL_Skin%,True,PERMANENT
+Visible,%pScrollB_SkinG%,False,Permanent
+Visible,%pScrollB_SkinI%,True,Permanent
+Visible,%pTextL_Skin%,True,Permanent
 End
 Else,Begin
-Visible,%pScrollB_SkinG%,False,PERMANENT
-Visible,%pScrollB_SkinI%,False,PERMANENT
-Visible,%pTextL_Skin%,False,PERMANENT
+Visible,%pScrollB_SkinG%,False,Permanent
+Visible,%pScrollB_SkinI%,False,Permanent
+Visible,%pTextL_Skin%,False,Permanent
 End
 End
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show_Advanced_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Set,%AdvanedGui_CheckBox%,True,Permanent
 Run,%ScriptFile%,Show-Hide-Simple_Gui,False
 Run,%ScriptFile%,Show-Hide-Advanced_Gui,True
 Run,%ScriptFile%,Show-Hide-Conditional
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show_Simple_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Set,%AdvanedGui_CheckBox%,False,Permanent
 Run,%ScriptFile%,Show-Hide-Simple_Gui,True
 Run,%ScriptFile%,Show-Hide-Advanced_Gui,False
 Run,%ScriptFile%,Show-Hide-Always_False
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show-Hide-Conditional]
 If,%NoWarnRegOverWrite_CheckBox%,Equal,True,Begin
-Visible,%NoWarnRegOverWrite_Button_T%,False,PERMANENT
-Visible,%NoWarnRegOverWrite_Button_F%,True,PERMANENT
+Visible,%NoWarnRegOverWrite_Button_T%,False,Permanent
+Visible,%NoWarnRegOverWrite_Button_F%,True,Permanent
 End
 Else,Begin
-Visible,%NoWarnRegOverWrite_Button_T%,True,PERMANENT
-Visible,%NoWarnRegOverWrite_Button_F%,False,PERMANENT
+Visible,%NoWarnRegOverWrite_Button_T%,True,Permanent
+Visible,%NoWarnRegOverWrite_Button_F%,False,Permanent
 End
 If,%NoWarnFileOverWrite_CheckBox%,Equal,True,Begin
-Visible,%NoWarnFileOverWrite_Button_T%,False,PERMANENT
-Visible,%NoWarnFileOverWrite_Button_F%,True,PERMANENT
+Visible,%NoWarnFileOverWrite_Button_T%,False,Permanent
+Visible,%NoWarnFileOverWrite_Button_F%,True,Permanent
 End
 Else,Begin
-Visible,%NoWarnFileOverWrite_Button_T%,True,PERMANENT
-Visible,%NoWarnFileOverWrite_Button_F%,False,PERMANENT
+Visible,%NoWarnFileOverWrite_Button_T%,True,Permanent
+Visible,%NoWarnFileOverWrite_Button_F%,False,Permanent
 End
 If,%SupportLogExecute_CheckBox%,Equal,True,Begin
-Visible,%SupportLogExecute_Button_T%,False,PERMANENT
-Visible,%SupportLogExecute_Button_F%,True,PERMANENT
+Visible,%SupportLogExecute_Button_T%,False,Permanent
+Visible,%SupportLogExecute_Button_F%,True,Permanent
 End
 Else,Begin
-Visible,%SupportLogExecute_Button_T%,True,PERMANENT
-Visible,%SupportLogExecute_Button_F%,False,PERMANENT
+Visible,%SupportLogExecute_Button_T%,True,Permanent
+Visible,%SupportLogExecute_Button_F%,False,Permanent
 End
 If,%NoPluginCache_CheckBox%,Equal,True,Begin
-Visible,%NoPluginCache_Set_Enable_Button%,False,PERMANENT
-Visible,%NoPluginCache_Set_Disable_Button%,True,PERMANENT
+Visible,%NoPluginCache_Set_Enable_Button%,False,Permanent
+Visible,%NoPluginCache_Set_Disable_Button%,True,Permanent
 End
 Else,Begin
-Visible,%NoPluginCache_Set_Enable_Button%,True,PERMANENT
-Visible,%NoPluginCache_Set_Disable_Button%,False,PERMANENT
+Visible,%NoPluginCache_Set_Enable_Button%,True,Permanent
+Visible,%NoPluginCache_Set_Disable_Button%,False,Permanent
 End
 
 [Show-Hide-Always_False]
-Visible,%NoWarnRegOverWrite_Button_T%,False,PERMANENT
-Visible,%NoWarnRegOverWrite_Button_F%,False,PERMANENT
-Visible,%NoWarnFileOverWrite_Button_T%,False,PERMANENT
-Visible,%NoWarnFileOverWrite_Button_F%,False,PERMANENT
-Visible,%SupportLogExecute_Button_T%,False,PERMANENT
-Visible,%SupportLogExecute_Button_F%,False,PERMANENT
-Visible,%NoPluginCache_Set_Enable_Button%,False,PERMANENT
-Visible,%NoPluginCache_Set_Disable_Button%,False,PERMANENT
+Visible,%NoWarnRegOverWrite_Button_T%,False,Permanent
+Visible,%NoWarnRegOverWrite_Button_F%,False,Permanent
+Visible,%NoWarnFileOverWrite_Button_T%,False,Permanent
+Visible,%NoWarnFileOverWrite_Button_F%,False,Permanent
+Visible,%SupportLogExecute_Button_T%,False,Permanent
+Visible,%SupportLogExecute_Button_F%,False,Permanent
+Visible,%NoPluginCache_Set_Enable_Button%,False,Permanent
+Visible,%NoPluginCache_Set_Disable_Button%,False,Permanent
 
 [Show-Hide-Simple_Gui]
-Visible,%pAdvancedOptionsButton%,#1,PERMANENT
-Visible,%NoPluginCache_TextLabel%,#1,PERMANENT
+Visible,%pAdvancedOptionsButton%,#1,Permanent
+Visible,%NoPluginCache_TextLabel%,#1,Permanent
 
 [Show-Hide-Advanced_Gui]
-Visible,%pSimpleOptionsButton%,#1,PERMANENT
-Visible,%pBevel2%,#1,PERMANENT
-Visible,%pBevel3%,#1,PERMANENT
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
-Visible,%NoPluginCache_TextLabel%,#1,PERMANENT
-Visible,%UnBlock_Tools_CheckBox%,#1,PERMANENT
-Visible,%UnBlock_Tools_Button%,#1,PERMANENT
+Visible,%pSimpleOptionsButton%,#1,Permanent
+Visible,%pBevel2%,#1,Permanent
+Visible,%pBevel3%,#1,Permanent
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
+Visible,%NoPluginCache_TextLabel%,#1,Permanent
+Visible,%UnBlock_Tools_CheckBox%,#1,Permanent
+Visible,%UnBlock_Tools_Button%,#1,Permanent
 
 [NoWarnRegOverWrite_T]
-System,CURSOR,Wait
+System,Cursor,Wait
 IniWrite,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,True
-Visible,%NoWarnRegOverWrite_Button_T%,False,PERMANENT
-Visible,%NoWarnRegOverWrite_Button_F%,True,PERMANENT
-Set,%NoWarnRegOverWrite_CheckBox%,True,PERMANENT
+Visible,%NoWarnRegOverWrite_Button_T%,False,Permanent
+Visible,%NoWarnRegOverWrite_Button_F%,True,Permanent
+Set,%NoWarnRegOverWrite_CheckBox%,True,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [NoWarnRegOverWrite_F]
-System,CURSOR,Wait
+System,Cursor,Wait
 IniWrite,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,False
-Visible,%NoWarnRegOverWrite_Button_T%,True,PERMANENT
-Visible,%NoWarnRegOverWrite_Button_F%,False,PERMANENT
-Set,%NoWarnRegOverWrite_CheckBox%,False,PERMANENT
+Visible,%NoWarnRegOverWrite_Button_T%,True,Permanent
+Visible,%NoWarnRegOverWrite_Button_F%,False,Permanent
+Set,%NoWarnRegOverWrite_CheckBox%,False,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [NoWarnFileOverWrite_T]
-System,CURSOR,Wait
+System,Cursor,Wait
 IniWrite,%ProjectDir%\script.project,IniVariables,NoWarnFileOverWrite,True
-Visible,%NoWarnFileOverWrite_Button_T%,False,PERMANENT
-Visible,%NoWarnFileOverWrite_Button_F%,True,PERMANENT
-Set,%NoWarnFileOverWrite_CheckBox%,True,PERMANENT
+Visible,%NoWarnFileOverWrite_Button_T%,False,Permanent
+Visible,%NoWarnFileOverWrite_Button_F%,True,Permanent
+Set,%NoWarnFileOverWrite_CheckBox%,True,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [NoWarnFileOverWrite_F]
-System,CURSOR,Wait
+System,Cursor,Wait
 IniWrite,%ProjectDir%\script.project,IniVariables,NoWarnFileOverWrite,False
-Visible,%NoWarnFileOverWrite_Button_T%,True,PERMANENT
-Visible,%NoWarnFileOverWrite_Button_F%,False,PERMANENT
-Set,%NoWarnFileOverWrite_CheckBox%,False,PERMANENT
+Visible,%NoWarnFileOverWrite_Button_T%,True,Permanent
+Visible,%NoWarnFileOverWrite_Button_F%,False,Permanent
+Set,%NoWarnFileOverWrite_CheckBox%,False,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [SupportLogExecute_T]
-System,CURSOR,Wait
-Visible,%SupportLogExecute_Button_T%,False,PERMANENT
-Visible,%SupportLogExecute_Button_F%,True,PERMANENT
-Set,%SupportLogExecute_CheckBox%,True,PERMANENT
+System,Cursor,Wait
+Visible,%SupportLogExecute_Button_T%,False,Permanent
+Visible,%SupportLogExecute_Button_F%,True,Permanent
+Set,%SupportLogExecute_CheckBox%,True,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [SupportLogExecute_F]
-System,CURSOR,Wait
-Visible,%SupportLogExecute_Button_T%,True,PERMANENT
-Visible,%SupportLogExecute_Button_F%,False,PERMANENT
-Set,%SupportLogExecute_CheckBox%,False,PERMANENT
+System,Cursor,Wait
+Visible,%SupportLogExecute_Button_T%,True,Permanent
+Visible,%SupportLogExecute_Button_F%,False,Permanent
+Set,%SupportLogExecute_CheckBox%,False,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Log_LogAlways_T]
-System,CURSOR,Wait
+System,Cursor,Wait
 IniWrite,%ProjectDir%\script.project,IniVariables,SaveConditionLogAlways,1
-Visible,%Log_LogAlways_Button_T%,False,PERMANENT
-Visible,%Log_LogAlways_Button_F%,True,PERMANENT
-Set,%Log_LogAlways_CheckBox%,True,PERMANENT
+Visible,%Log_LogAlways_Button_T%,False,Permanent
+Visible,%Log_LogAlways_Button_F%,True,Permanent
+Set,%Log_LogAlways_CheckBox%,True,Permanent
 //-
 Run,%ScriptFile%,NoPluginCache_Set_Enable_B
 //-
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Log_LogAlways_F]
-System,CURSOR,Wait
+System,Cursor,Wait
 IniWrite,%ProjectDir%\script.project,IniVariables,SaveConditionLogAlways,0
-Visible,%Log_LogAlways_Button_T%,True,PERMANENT
-Visible,%Log_LogAlways_Button_F%,False,PERMANENT
-Set,%Log_LogAlways_CheckBox%,False,PERMANENT
+Visible,%Log_LogAlways_Button_T%,True,Permanent
+Visible,%Log_LogAlways_Button_F%,False,Permanent
+Set,%Log_LogAlways_CheckBox%,False,Permanent
 //-
 Run,%ScriptFile%,NoPluginCache_Set_Disable_B
 //-
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Intrface_Games__Finish]
 //--------------------
@@ -927,26 +897,26 @@ And If required See
 Sections: [Show-Hide-Always_False] [Show-Hide-Conditional] [Show-Hide-Simple_Gui] [Show-Hide-Advanced_Gui]
 
 [NoPluginCache_Set_Enable_B]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%AdvanedGui_CheckBox%,Equal,True,Begin
-Visible,%NoPluginCache_Set_Enable_Button%,False,PERMANENT
-Visible,%NoPluginCache_Set_Disable_Button%,True,PERMANENT
+Visible,%NoPluginCache_Set_Enable_Button%,False,Permanent
+Visible,%NoPluginCache_Set_Disable_Button%,True,Permanent
 End
 Set,%NoPluginCache_CheckBox%,True,Permanent
 IniWrite,%ProjectDir%\script.project,IniVariables,NoPluginCache,%NoPluginCache_CheckBox%
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [NoPluginCache_Set_Disable_B]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%AdvanedGui_CheckBox%,Equal,True,Begin
-Visible,%NoPluginCache_Set_Enable_Button%,True,PERMANENT
-Visible,%NoPluginCache_Set_Disable_Button%,False,PERMANENT
+Visible,%NoPluginCache_Set_Enable_Button%,True,Permanent
+Visible,%NoPluginCache_Set_Disable_Button%,False,Permanent
 End
 Set,%NoPluginCache_CheckBox%,False,Permanent
 IniWrite,%ProjectDir%\script.project,IniVariables,NoPluginCache,%NoPluginCache_CheckBox%
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Intrface_Games__Finish2]
 //--------------------
@@ -978,12 +948,12 @@ ExtractFile,%ProjectDir%\Utils\SevenZip_920_File.Script,7z920_x86,7zG.exe,%BaseD
 ShellExecute,Hide,%BaseDir%\Temp\Macro_Library\Tools_UnBlock\7z.exe,"a -t7z #$q%BaseDir%\Temp\Macro_Library\Tools_UnBlock\Tools.7z#$q #$q.\*#$q -mx0",%Tools%
 If,%ExitCode%,Equal,0,Begin
 //Call,DirDeleteMake,%Tools% - DO NOT use - Keep Tools Junctionable
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%Tools%\*#$q&del /q /f /A:R /A:H /A:S /A:A #$q%Tools%\*#$q"
 ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%Tools%\src#$q"
 ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%Tools%\x64#$q"
 ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%Tools%\x86#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 ShellExecute,Hide,%BaseDir%\Temp\Macro_Library\Tools_UnBlock\7z.exe,"x #$q%BaseDir%\Temp\Macro_Library\Tools_UnBlock\Tools.7z#$q -y -o#$q%Tools%#$q"
 If,%ExitCode%,Equal,0,Call,DirDelete,%BaseDir%\Temp\Macro_Library\Tools_UnBlock
 Else,Echo,"UnBlcok Tools - Extract 7z Failure - ErrorLevel=%ExitCode%",Warn
@@ -991,6 +961,15 @@ End
 Else,Echo,"UnBlcok Tools - Create 7z Failure - ErrorLevel=%ExitCode%",Warn
 End
 End
+
+[Get_SetACL]
+If,ExistFile,%ProjectDir%\Utils\SetACL_M.Script,Run,%ProjectDir%\Utils\SetACL_M.Script,Extract,%ProjectDir%\Utils\SetACL_M.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,http://yomi.cwcodes.net/Yomi/UtilsY/SetACL_M.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,Extract,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script
+End
+If,Not,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe,Call,Echo,"Halt: Can not get SetACL.exe Ready.",Warn,,MessageError,,Halt
+If,Not,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.dll,Call,Echo,"Halt: Can not get SetACL.exe Ready.",Warn,,MessageError,,Halt
 
 [History-Old]
 History015=sbaeder - fix the multi-boot type entries so that they work with OtherOS and ISO building
@@ -1011,7 +990,7 @@ History028=Lancelot - NoWarnRegOverWrite NoWarnFileOverWrite buttons checkboxes 
 History028=Lancelot - AdvancedGUI - SimpleGUI adjustments made (easly expandable)
 History028=Lancelot - Winbuilder bug interface incompatibility workarounded (yes again and again... :>) (Tip: winbuilder code write method for never ending workarounds to winbuilder bugs = hold left ear with right hand :>:> SMILE :>:>)
 History029=Lancelot - Cosmetics for buttons (=less confusing for newbies and normal users ;))
-History032=Lancelot - updated following ache reports reply 29 ... http://theoven.org/index.php?topic=131.msg4124#msg4124 specially reply 32 -> empty values cause C:\.....
+History032=Lancelot - updated following ache reports reply 29 ... http://TheOven.org/index.php?topic=131.msg4124#msg4124 specially reply 32 -> empty values cause C:\.....
 History033=Lancelot - NoRootDirCheck no project installation on root implemented to prevent a set of mess on rootdir
 History034=ChrisR - Deleting WimUtil.log added to the process of the "Clean Temporary files" button
 History035=ChrisR - GFX-BootMenu added to the choice of BootSkin for Grub4Dos (instead of Iso and Copy to USB plugin). Skin choice following the selected boot manager
@@ -1026,46 +1005,6 @@ History044=ChrisR - Following AU3381 updated
 History054=Lancelot updated v054
 History056=Lancelot updated v056
 
-[InterfaceEncoded]
-Save.bmp=1016,1355
-dustr.bmp=893bytes,1Kb
-Question.bmp=704,939
-Exclamation.bmp=452,603
-checked.bmp=165,220
-unchecked.bmp=137,183
-BLogo.bmp=582,776
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-checked.bmp]
-lines=0
-0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9ugKkGaDJ+NXAH4FLDgArwqME0DU0NsqvgyvD4ixg1cJNJCh88AKKGIAAAX5gbUnic407OSE3OTk3RS8otYBgFIw48Y4TQ0TjkuS4o2DAwAQA7aQa6Hu7DCgEAAAACAAAAJgAAAFsAAAAAAAAAAQAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-unchecked.bmp]
-lines=0
-0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9uMKqGSDV4AEQNQQAAw2NaE3ic4y3NS85ITc5OTdFLyi1gGAUjDDxjhNC2OOQ7ygLuMjABAB4dCHaMBl0uAQAAAAIAAAAoAAAAPQAAAAAAAAABAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-Save.bmp]
-lines=0
-0=eJzd09tTGlccB/D2pY997p/Q19oOSm1nOm1e+9AWEJwY0rAXbjX2KS/tg5EAq0kzauJ4l1QjWsULRWOsTVM0gKAsC4MusLCkurKK3M4KmHhpV0zaB6F/QH7z/Z3Hz/zO78z5/MvCO2+VSsD3+3y/96rfLp3ntfzueb+uv9/0CjlWrAadpaXZrNc/uI2ZB3p+HuwZGep90Ns11tdvGhgYGeybwIyPbjZbdc1TLS2WmwbS5b7oDGuUFsW3k5evmOob2uVy1+Q4bl8Kep2hwPrG+rrDs7r2zN4NQV2ffXH/0qXebySdooZJfdtF5xcYdqCoD1J5II1JXLdwp3VQqzHfuJGMho4PX7DZDPMXPayA+6uq+z+pXbx6baROPq0zXnRGIcSFoF4EdaKq3jrRwzbd3Y+EfR8IKbfjOH+YLx7upnYnIWSUd2qFy1evjMvqzYZblRwfgjoQ5ZBMMtNx+6fq2s4Phavz1jTLvjwsFgq5KUQ1ViUwfSx0yXlHZjZWdEhEuQ6hEzLps3vtdwW1d6pq5nu6fAF8L8UevMwNa9X3BIL2T4X2/3WcMOpVwH+o1aaG+ufz1o2OTifWutDfjf86UwwQp8kdi1LZX13TVSNwy+WVHDOEuJWqCKJywegSjDxuvG5XNS6qG6e/a7JptMvapsdN36+hau81yI2ifgVcyRmDkady+Z9S2aJK5fjxB4/eENBjbmObw9jqwowEhq20GQjMgLfqnZjOoVFXciwQPCv5+kmrMfjUvu31pcMRQEWzfKLRdDTK0NH9GJWlQkk6nF5bXW5sMkulY0b9RWdSoZivl1Bz1tN05hRwx9ncaQ6cvA7gwBHInYJsEaQKscjvSvWISFR2Ht6ZqxdHbDMnAGR3dlIMs7/DJEvJMMx2gkkx29mt+JkTIZ+otQ/F4nHMUO5ekE0miszNvuBAPBKOhshIiAyX8pwkg2GSJje3yGAepPJUaEml4eep4MD/Opt+IoB7Az6cIHA/gZM+3OPHN3xeEvdwXCofDS+pNcNnTpn9nDlS3rEecVyGTaR32X02kSwlk0hs7SX22Z0Mu33ApQ8o8rdX85Rx+H+6IBHHrbNFkAsHgxsEseH/L0E/QfqJTQIvplNclH6kbBz9SjR7q8yeh2DFhFhM22xHhXwhl+Vvd55DDhTPHgscA1AE4ITjAElNqa8PieumjWX2c1+r6pCIV83mRCy2G4+zNH2eBE0zcXqPppMxmo3HExS15V7vVqCYpG7FMnHRecPqHxxugU94nOMITixL1UvKLWAYBSMRfGOD0BuYsct/95y2nIEJALU/BzMUl0ENAQAAAAIAAAAkAAAAsAMAAAAAAAABAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-dustr.bmp]
-lines=0
-0=eJzllGtIk1EYx+tjXywqMqlAypxRVFYaWV5TM0LNMpuG2MWUtKUV2fI63TSn5ab5Di/zmmu5ORV1rdpm2UUNM82lWUgXQxZLCiOFlfBv77H5qXuLPvTAn/flnPf5/Z/znPccL3/nWTNIOJvkYNLCL5o5w3Zq4sv8/xzxFxTwZuXgaHYZLMETyjTgSrTYzi7FclYZFsRWwypWQt6ZMad/2yOlUg3/dClWnpJhcUIT5p5SYU7CNcw7o8YS7l0w+ANwOSNDdELGL3kEcS6RPEbKDdikdsLapMXcLsJbV/QU3jI9ApVj8JEbsVrwnPSKe576rofo5jBCRV1Yk94Be14fbDMfE9H5zuJhbL1swK6rEwjRGMHUfiTPINUk1he/JzlRJ5O/y9+QP4QV50amJHhtYr4lNe688mmK2TpJuGY2Pb6j0YjNVeMkxy9OgEp58zc9XCvGybdmnlk0l66THqdF94T+zixPqRFrRaNYm3yV7HW9qvWrHhLdB7BvjREeXRfN8ZZ9IMxtignCovu0qdxAxum+rBIa4Figh1vpKNkvvyM8BEcdh+q6+pvr4GlHEFxrIDk0j853rxmb7gMjcxB0L70uDMHx7CCcUu5gN1+FINF9eGSqERYRjfhD+374PyUpX8C9YAB2Kd1gpHXBOe8RyfdMVGBrshyhyRXwz2tHSEk3Akr6ESntRQZVgRZOOKhwV5TkZf3Qo67HgB3cJngk1GILR4PAvDbsLbyN8EINIoXNYInVSBKKUciLQ12SDzo5m6CvikB3TihyIv1/+kyINE9IfQcpDRKL5Min8iE5dxLa7BDC7D5th964OSbNxhB/I0ZqYlCfyvzlc32njsJgdRxeVh/GsJiJV5QfnuW64Cl3FfrZS4hHzzErMvY7/N42JUaVHLxrPIE30sPQl++Z9tAl2kMbZQ35/kUoj3H7o3tP10LhQVEkbvGD0Z7uTfht0bbIdZ+P2N2+6LjeYJF71RwPy1jQcZyg2GMDjq8DqguyLcqf9uC5oiViGdIDnHBRyLO4h06agb4sLygP2BGPhuJci3v01WaRdSjClkJwNMzifDruVaShle37V9j/Ij4Dhd1djXic40wpLS4p0kvKLWAYBSMQmHFCaBNm7PLPZnUZMzABAOadBl6mu+loAQAAAAIAAAAlAAAANAMAAAAAAAABAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-Exclamation.bmp]
-lines=0
-0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-Question.bmp]
-lines=0
-0=eJxtkm1IU1EYx3dtmpVoCotIDVKJrK9lRH7qY2SB1Le0N9jmNpwaMZ2UELVS6IUauQ9OBVHwg/sQvVAmZBMCh0VBkzQZWepSpvPu3Hvueb2dbb4U+Of5c1743Xue85znVFXJNkNKFcKHhHOF84Ulw17DuoK5aa9LT4lTAidHgKcCW43ELGGLpLWWkTE/14C+rr61kWmJlaFmxZlHzQaWClKXCZ+eYbHZDbZzbeRYU0OD0HMcOXYSi0RsWdBVJPdepStzGyzXN6dqHH3sk30XEu0nwZPT8PV9deoDQ4q+hRiGSiQkB/3g7UPwvhN+H6VqnHO+FUsSSyuv7smd1aq3SvGeA4ONZP7bv2zOJitSW/XXwIZ8as8m9h3o7jE6OcIZ3QCk/1jZfxE5crjZIII25OP+OjYfFmVL/71Q5yklWbAsv7ituoqYJYMnyybR+lzcfgINP2DLvzhjUZ2sRvHSDFdXOdHw769gwKG2HsS2bGrJSBbakoFchTjQzKJTIT3+0gP6rfjdYxYJsfgCmg8ngl0J33nFXUrs29MHYFcRCrRAPeougY5d+Poe6j1Lhh+x2E9RPDj7WXnTobYdphaJJ98wS71ZXqlHXcXIakweZzXiO0fpl+ccKSJQeFjpqCSpTMR7J9xlJn2555LaZKLm5PfiMuRZNR310WCX1ntNu7FP7IvQmkyg94pJR9NjSnctbCxIbxORj6sYN+/Hzt3ieqLntMYC6K/B00FJdA3EkXG53wZaDmgCrMvEZgmJsGaKJXCXggE7iYwLTEo3L8aLP+CnoVh37dKt8gVn3lx93p+2I7Gey3AigBdnBCCwgP4Xd3QnhHic4wksTS0uyczP00vKLWAYBSMNKDFD6BIm7PJ3fojrMTABAFstB4h+XER9AQAAAAIAAAAoAAAAdAIAAAAAAAABAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BLogo.bmp]
-lines=0
-0=eJxdUkuLgVEYNs1yNlOzmZ3t/AI/YMpyVkij/AKslcFGSIkslBBWRNko91tyLZQ7hWxdyjUJMfP0nZnT1zx16pz3vO/zPu/l/YP3yGHAw3nDef49D5xXzh9ensj5wzeD+/2+3+8Hg8FkMkmn058MotEonjDudrvb7fbNAizBYFAul38xcDqdPp8PF41GA6Pf799ut+AkzHDudrtGo9HhcIC8XC4vFovValWtVjOZjMvlMhgMrVYLIcgCGWCGRa/XRyKRTqezXC5JdlBdr1dQWSwWOCALmEejkUKhAHM8HrdarRKJRKlUjsdjKpWEIItMJuv1erPZTKvVJpPJ9Xqdy+VEIhGXy7Xb7ewCEZLNZlEOeFKplFqtLhaLcDidTrFYTCAQwILOkAKJsFqtplKp8CuVSt1u93w+J18IaTabYrEYqo7HI02B8r1er1AohD+6R/0JW6PR4PP56BXCqb/H44FadIzoodkBaINdp9PBfj6f8YXeQn8ikaD1oij2BA+HQzgcttlsmO/lckG9oEW9tJ/tdht2tqrNZpPP5wuFQr1eh2b0s9/vgycUCmG4ZrMZQ0QWKgyq8FsqlUwmE+YVCAQwL7IPGMS/fcCUK5UKnmCGM7KTfaD7hiwQpmYAH3SP7huY4cyujuzzcDicTqfojIQBNgTPf/v8A11GVax4nON08slPz9dLyi1gGAUjEJgxQ+i/jNjl1+jfc2ZgAgAvyQZ/mT1bPgEAAAACAAAAJQAAAP0BAAAAAAAAAQAAAAAAAAAAAAAA
-
 [AuthorEncoded]
 Main.jpg=2528,3371
 Logo=Main.jpg
@@ -1073,6 +1012,18 @@ Logo=Main.jpg
 [EncodedFile-AuthorEncoded-Main.jpg]
 lines=0
 0=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
+
+[InterfaceEncoded]
+Save.bmp=1016,1355
+dustr.bmp=893bytes,1Kb
+Question.bmp=704,939
+checked.bmp=165,220
+unchecked.bmp=137,183
+BLogo.bmp=582,776
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
 
 [DownloadXXX]
 Call,DownloadXQ
@@ -1098,4 +1049,32 @@ Call,CompareEdit
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0
 0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-checked.bmp]
+lines=0
+0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9ugKkGaDJ+NXAH4FLDgArwqME0DU0NsqvgyvD4ixg1cJNJCh88AKKGIAAAX5gbUnic407OSE3OTk3RS8otYBgFIw48Y4TQ0TjkuS4o2DAwAQA7aQa6Hu7DCgEAAAACAAAAJgAAAFsAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-unchecked.bmp]
+lines=0
+0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9uMKqGSDV4AEQNQQAAw2NaE3ic4y3NS85ITc5OTdFLyi1gGAUjDDxjhNC2OOQ7ygLuMjABAB4dCHaMBl0uAQAAAAIAAAAoAAAAPQAAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Save.bmp]
+lines=0
+0=eJzd09tTGlccB/D2pY997p/Q19oOSm1nOm1e+9AWEJwY0rAXbjX2KS/tg5EAq0kzauJ4l1QjWsULRWOsTVM0gKAsC4MusLCkurKK3M4KmHhpV0zaB6F/QH7z/Z3Hz/zO78z5/MvCO2+VSsD3+3y/96rfLp3ntfzueb+uv9/0CjlWrAadpaXZrNc/uI2ZB3p+HuwZGep90Ns11tdvGhgYGeybwIyPbjZbdc1TLS2WmwbS5b7oDGuUFsW3k5evmOob2uVy1+Q4bl8Kep2hwPrG+rrDs7r2zN4NQV2ffXH/0qXebySdooZJfdtF5xcYdqCoD1J5II1JXLdwp3VQqzHfuJGMho4PX7DZDPMXPayA+6uq+z+pXbx6baROPq0zXnRGIcSFoF4EdaKq3jrRwzbd3Y+EfR8IKbfjOH+YLx7upnYnIWSUd2qFy1evjMvqzYZblRwfgjoQ5ZBMMtNx+6fq2s4Phavz1jTLvjwsFgq5KUQ1ViUwfSx0yXlHZjZWdEhEuQ6hEzLps3vtdwW1d6pq5nu6fAF8L8UevMwNa9X3BIL2T4X2/3WcMOpVwH+o1aaG+ufz1o2OTifWutDfjf86UwwQp8kdi1LZX13TVSNwy+WVHDOEuJWqCKJywegSjDxuvG5XNS6qG6e/a7JptMvapsdN36+hau81yI2ifgVcyRmDkady+Z9S2aJK5fjxB4/eENBjbmObw9jqwowEhq20GQjMgLfqnZjOoVFXciwQPCv5+kmrMfjUvu31pcMRQEWzfKLRdDTK0NH9GJWlQkk6nF5bXW5sMkulY0b9RWdSoZivl1Bz1tN05hRwx9ncaQ6cvA7gwBHInYJsEaQKscjvSvWISFR2Ht6ZqxdHbDMnAGR3dlIMs7/DJEvJMMx2gkkx29mt+JkTIZ+otQ/F4nHMUO5ekE0miszNvuBAPBKOhshIiAyX8pwkg2GSJje3yGAepPJUaEml4eep4MD/Opt+IoB7Az6cIHA/gZM+3OPHN3xeEvdwXCofDS+pNcNnTpn9nDlS3rEecVyGTaR32X02kSwlk0hs7SX22Z0Mu33ApQ8o8rdX85Rx+H+6IBHHrbNFkAsHgxsEseH/L0E/QfqJTQIvplNclH6kbBz9SjR7q8yeh2DFhFhM22xHhXwhl+Vvd55DDhTPHgscA1AE4ITjAElNqa8PieumjWX2c1+r6pCIV83mRCy2G4+zNH2eBE0zcXqPppMxmo3HExS15V7vVqCYpG7FMnHRecPqHxxugU94nOMITixL1UvKLWAYBSMRfGOD0BuYsct/95y2nIEJALU/BzMUl0ENAQAAAAIAAAAkAAAAsAMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-dustr.bmp]
+lines=0
+0=eJzllGtIk1EYx+tjXywqMqlAypxRVFYaWV5TM0LNMpuG2MWUtKUV2fI63TSn5ab5Di/zmmu5ORV1rdpm2UUNM82lWUgXQxZLCiOFlfBv77H5qXuLPvTAn/flnPf5/Z/znPccL3/nWTNIOJvkYNLCL5o5w3Zq4sv8/xzxFxTwZuXgaHYZLMETyjTgSrTYzi7FclYZFsRWwypWQt6ZMad/2yOlUg3/dClWnpJhcUIT5p5SYU7CNcw7o8YS7l0w+ANwOSNDdELGL3kEcS6RPEbKDdikdsLapMXcLsJbV/QU3jI9ApVj8JEbsVrwnPSKe576rofo5jBCRV1Yk94Be14fbDMfE9H5zuJhbL1swK6rEwjRGMHUfiTPINUk1he/JzlRJ5O/y9+QP4QV50amJHhtYr4lNe688mmK2TpJuGY2Pb6j0YjNVeMkxy9OgEp58zc9XCvGybdmnlk0l66THqdF94T+zixPqRFrRaNYm3yV7HW9qvWrHhLdB7BvjREeXRfN8ZZ9IMxtignCovu0qdxAxum+rBIa4Figh1vpKNkvvyM8BEcdh+q6+pvr4GlHEFxrIDk0j853rxmb7gMjcxB0L70uDMHx7CCcUu5gN1+FINF9eGSqERYRjfhD+374PyUpX8C9YAB2Kd1gpHXBOe8RyfdMVGBrshyhyRXwz2tHSEk3Akr6ESntRQZVgRZOOKhwV5TkZf3Qo67HgB3cJngk1GILR4PAvDbsLbyN8EINIoXNYInVSBKKUciLQ12SDzo5m6CvikB3TihyIv1/+kyINE9IfQcpDRKL5Min8iE5dxLa7BDC7D5th964OSbNxhB/I0ZqYlCfyvzlc32njsJgdRxeVh/GsJiJV5QfnuW64Cl3FfrZS4hHzzErMvY7/N42JUaVHLxrPIE30sPQl++Z9tAl2kMbZQ35/kUoj3H7o3tP10LhQVEkbvGD0Z7uTfht0bbIdZ+P2N2+6LjeYJF71RwPy1jQcZyg2GMDjq8DqguyLcqf9uC5oiViGdIDnHBRyLO4h06agb4sLygP2BGPhuJci3v01WaRdSjClkJwNMzifDruVaShle37V9j/Ij4Dhd1djXic40wpLS4p0kvKLWAYBSMQmHFCaBNm7PLPZnUZMzABAOadBl6mu+loAQAAAAIAAAAlAAAANAMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Question.bmp]
+lines=0
+0=eJxtkm1IU1EYx3dtmpVoCotIDVKJrK9lRH7qY2SB1Le0N9jmNpwaMZ2UELVS6IUauQ9OBVHwg/sQvVAmZBMCh0VBkzQZWepSpvPu3Hvueb2dbb4U+Of5c1743Xue85znVFXJNkNKFcKHhHOF84Ulw17DuoK5aa9LT4lTAidHgKcCW43ELGGLpLWWkTE/14C+rr61kWmJlaFmxZlHzQaWClKXCZ+eYbHZDbZzbeRYU0OD0HMcOXYSi0RsWdBVJPdepStzGyzXN6dqHH3sk30XEu0nwZPT8PV9deoDQ4q+hRiGSiQkB/3g7UPwvhN+H6VqnHO+FUsSSyuv7smd1aq3SvGeA4ONZP7bv2zOJitSW/XXwIZ8as8m9h3o7jE6OcIZ3QCk/1jZfxE5crjZIII25OP+OjYfFmVL/71Q5yklWbAsv7ituoqYJYMnyybR+lzcfgINP2DLvzhjUZ2sRvHSDFdXOdHw769gwKG2HsS2bGrJSBbakoFchTjQzKJTIT3+0gP6rfjdYxYJsfgCmg8ngl0J33nFXUrs29MHYFcRCrRAPeougY5d+Poe6j1Lhh+x2E9RPDj7WXnTobYdphaJJ98wS71ZXqlHXcXIakweZzXiO0fpl+ccKSJQeFjpqCSpTMR7J9xlJn2555LaZKLm5PfiMuRZNR310WCX1ntNu7FP7IvQmkyg94pJR9NjSnctbCxIbxORj6sYN+/Hzt3ieqLntMYC6K/B00FJdA3EkXG53wZaDmgCrMvEZgmJsGaKJXCXggE7iYwLTEo3L8aLP+CnoVh37dKt8gVn3lx93p+2I7Gey3AigBdnBCCwgP4Xd3QnhHic4wksTS0uyczP00vKLWAYBSMNKDFD6BIm7PJ3fojrMTABAFstB4h+XER9AQAAAAIAAAAoAAAAdAIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BLogo.bmp]
+lines=0
+0=eJxdUkuLgVEYNs1yNlOzmZ3t/AI/YMpyVkij/AKslcFGSIkslBBWRNko91tyLZQ7hWxdyjUJMfP0nZnT1zx16pz3vO/zPu/l/YP3yGHAw3nDef49D5xXzh9ensj5wzeD+/2+3+8Hg8FkMkmn058MotEonjDudrvb7fbNAizBYFAul38xcDqdPp8PF41GA6Pf799ut+AkzHDudrtGo9HhcIC8XC4vFovValWtVjOZjMvlMhgMrVYLIcgCGWCGRa/XRyKRTqezXC5JdlBdr1dQWSwWOCALmEejkUKhAHM8HrdarRKJRKlUjsdjKpWEIItMJuv1erPZTKvVJpPJ9Xqdy+VEIhGXy7Xb7ewCEZLNZlEOeFKplFqtLhaLcDidTrFYTCAQwILOkAKJsFqtplKp8CuVSt1u93w+J18IaTabYrEYqo7HI02B8r1er1AohD+6R/0JW6PR4PP56BXCqb/H44FadIzoodkBaINdp9PBfj6f8YXeQn8ikaD1oij2BA+HQzgcttlsmO/lckG9oEW9tJ/tdht2tqrNZpPP5wuFQr1eh2b0s9/vgycUCmG4ZrMZQ0QWKgyq8FsqlUwmE+YVCAQwL7IPGMS/fcCUK5UKnmCGM7KTfaD7hiwQpmYAH3SP7huY4cyujuzzcDicTqfojIQBNgTPf/v8A11GVax4nON08slPz9dLyi1gGAUjEJgxQ+i/jNjl1+jfc2ZgAgAvyQZ/mT1bPgEAAAACAAAAJQAAAP0BAAAAAAAAAQAAAAAAAAAAAAAA
 

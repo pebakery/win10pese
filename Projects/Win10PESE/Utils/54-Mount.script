@@ -4,14 +4,14 @@ Type=Plugin
 Author=yahooUK, ChrisR, Homes32, NightMan
 Description=Mount your Target and/or Source  - Ease repair your build without rebuilding your project
 Credits=http://TheOven.org
-Version=022
+Version=023
 Download_Level=0
 Level=10
 Selected=None
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.01.11_13:09.36 (GMT0: -3 Hours)
+Date=2019.01.24
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/54-Mount.script
@@ -24,9 +24,10 @@ History016=Homes32 extensive overhaul of interface and registry processes.
 History017=Lancelot plugin specialized to be used on Mount Tasks (using 00-RepairMount plugin) // Tips some macro tricks not used - to ease maintance and at some points speed.
 History018=ChrisR Mount/unmount with WimUtil in addition if configured
 History019=Lancelot IniVariables support added
-History020=ChrisR Win8CD SourceType - 2012.12.28
+History020=ChrisR Win8CD SourceType - Date:2012.12.28
 History021=Lancelot Added DU Buttons
 History022=Nikzzzz Win8.1CD and Win10CD SourceType - Date:2016.12.07 // Lancelot - Add Compare Button - Date:2017.01.11
+History023=Lancelot Removed old syntax - Date:2019.01.24
 
 [Interface]
 UnMount_Info_TextLabel="When your Mount tasks finished press 'UnMount' to save any changes you have made. ",1,1,3,27,240,30,8,Normal
@@ -82,20 +83,25 @@ Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bm
 Echo,"You can't run this plugin directly!"
 
 [TargetMount_BTN]
-If,Not,ExistVar,%RegSoftware%,If,ExistFile,%target_sys%\config\software,Set,%RegSoftware%,%target_sys%\config\software
+If,Not,ExistVar,%RegSoftware%,If,ExistFile,%Target_Sys%\config\software,Set,%RegSoftware%,%Target_Sys%\config\software
 If,Not,ExistFile,%RegSoftware%,If,ExistFile,%Mount%\Windows\System32\config\software,Set,%RegSoftware%,%Mount%\Windows\System32\config\software
 If,ExistFile,%RegSoftware%,Message,"No need to mount :>",Information,1
 If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
 If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
 If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
 If,ExistFile,%RegSoftware%,Echo,"No need to mount :>"
-Else,Run,%scriptfile%,TargetMount
+Else,Run,%ScriptFile%,TargetMount
 
 [TargetMount]
 Echo,"Starting Mount process..."
-ReadEnv
-If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
-If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+//-
+IniRead,%ProjectDir%\script.project,IniVariables,WIMTool,%WIMTool%
+If,%WIMTool%,Equal,ImageX,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%IMAGEX%
+If,%WIMTool%,Equal,WimUtil,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMUTIL%
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+//-
+If,%WIMTool%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WIMTool%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
 //--
 If,ExistFile,%BootAF%,Set,%MountF%,%BootAF%
 If,ExistFile,%BootVF%,Set,%MountF%,%BootVF%
@@ -105,12 +111,12 @@ If,Not,ExistFile,%MountF%,Message,"Wim File not found",Error
 If,Not,ExistFile,%MountF%,Halt,"Wim File not found"
 //--
 If,Not,ExistDir,%Mount%,DirMake,%Mount%
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/mountrw #$q%MountF%#$q 1 #$q%Mount%#$q",%IMAGEXPath%
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/mount #$q%MountF%#$q 1 #$q%Mount%#$q /RW",%WIMUTILPath%
 End
 //--
@@ -131,23 +137,28 @@ Message,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount/unmoun
 Halt,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount/unmount. Exiting..."
 
 [TargetUnMount_BTN]
-Run,%scriptfile%,TargetUnMount
+Run,%ScriptFile%,TargetUnMount
 
 [TargetUnMount]
 Echo,"Starting Unmount process..."
-ReadEnv
-If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
-If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+//-
+IniRead,%ProjectDir%\script.project,IniVariables,WIMTool,%WIMTool%
+If,%WIMTool%,Equal,ImageX,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%IMAGEX%
+If,%WIMTool%,Equal,WimUtil,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMUTIL%
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+//-
+If,%WIMTool%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WIMTool%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
 //--
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%Mount%#$q",%IMAGEXPath%
 //To Avoid end user mistakes unmount other mount option
 If,%Mount%,Equal,%TargetDir%,ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%BaseDir%\Mount\%ProjectName%\Target#$q",%IMAGEXPath%
 If,%Mount%,Equal,%BaseDir%\Mount\%ProjectName%\Target,ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%TargetDir%#$q",%IMAGEXPath%
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%Mount%#$q /Commit /nowarn",%WIMUTILPath%
 //To Avoid end user mistakes unmount other mount option
 If,%Mount%,Equal,%TargetDir%,ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BaseDir%\Mount\%ProjectName%\Target#$q /Commit /nowarn",%WIMUTILPath%
@@ -159,60 +170,63 @@ If,ExistFile,%Mount%\Windows\System32\config\system,Echo,"Unmount NOT successful
 If,ExistFile,%Mount%\Windows\System32\config\system,Message,"Unmount NOT successful :(",ERROR
 If,Not,ExistFile,%Mount%\Windows\System32\config\system,Echo,"Unmount Successful :)"
 If,Not,ExistFile,%Mount%\Windows\System32\config\system,Message,"Unmount Successful :)",Information,%TUnSuccess%
-//If,Not,%Mount%,EQUAL,%TargetDir%,Begin
+//If,Not,%Mount%,Equal,%TargetDir%,Begi-n
 //If,Not,ExistFile,%Mount%\bootmgr,Echo,"Unmount Successful :)"
 //If,Not,ExistFile,%Mount%\bootmgr,Message,"Unmount Successful :)",Information,1
 //If,ExistFile,%Mount%\bootmgr,Echo,"Unmount NOT successful :(",Warn
 //If,ExistFile,%Mount%\bootmgr,Message,"Unmount NOT successful :(",ERROR
-//End
+//En-d
 
 [TargetOpenMountDir]
 If,Not,ExistDir,%Mount%,Message,"No Mounted folder around",Error
 If,Not,ExistDir,%Mount%,Exit,"No Mounted folder around"
-System,FILEREDIRECT,OFF
-ShellExecuteEx,Open,explorer.exe,/e#$c#$q%Mount%#$q,%Mount%
-System,FILEREDIRECT,ON
+Call,OpenDir,%Mount%
 
 [SourceMount_BTN]
-ReadEnv
+//-
+IniRead,%ProjectDir%\script.project,IniVariables,WIMTool,%WIMTool%
+If,%WIMTool%,Equal,ImageX,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%IMAGEX%
+If,%WIMTool%,Equal,WimUtil,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMUTIL%
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+//-
 Set,%t%,""
-IniRead,%projectdir%\script.project,IniVariables,ExtractWimFolder,%t%
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%t%
 If,Not,%t%,Equal,"",Set,%ExtractWimFolder%,%t%
 // If not extracted wim folder - Mount and check that mounted successfully
 If,Not,%ExtractWimFolder%,Equal,Yes,Begin
 If,Not,ExistDir,%BootSRC%,DirMake,%BootSRC%
 If,Not,ExistDir,%InstallSRC%,DirMake,%InstallSRC%
-If,%SourceType%,Equal,"",Run,%ScriptFile%,SourceNotConfigured
-If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
-If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
-If,%SourceType%,Equal,VistaCD,Run,%ScriptFile%,SourceMountCD
-If,%SourceType%,Equal,Win7CD,Run,%ScriptFile%,SourceMountCD
-If,%SourceType%,Equal,Win8CD,Run,%ScriptFile%,SourceMountCD
-If,%SourceType%,Equal,Win8.1CD,Run,%ScriptFile%,SourceMountCD
-If,%SourceType%,Equal,Win10CD,Run,%ScriptFile%,SourceMountCD
-If,%SourceType%,Equal,WAIK,Run,%ScriptFile%,SourceMountWAIK
+If,%OS%,Equal,"",Run,%ScriptFile%,SourceNotConfigured
+If,%WIMTool%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WIMTool%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+If,%OS%,Equal,WinVista,Run,%ScriptFile%,SourceMountCD
+If,%OS%,Equal,Win7,Run,%ScriptFile%,SourceMountCD
+If,%OS%,Equal,Win8,Run,%ScriptFile%,SourceMountCD
+If,%OS%,Equal,Win8.1,Run,%ScriptFile%,SourceMountCD
+If,%OS%,Equal,Win10,Run,%ScriptFile%,SourceMountCD
+If,%OS%,Equal,Waik,Run,%ScriptFile%,SourceMountWAIK
 End
 
 [SourceMountCD]
 Echo,"Mounting Windows Source CD files with imagex.exe..."
 // Variable %WIMIndex%
 Set,%t%,""
-IniRead,%projectdir%\script.project,IniVariables,WIMIndex,%t%
+IniRead,%ProjectDir%\script.project,IniVariables,WIMIndex,%t%
 If,Not,%t%,Equal,"",Set,%WIMIndex%,%t%
 Set,%WIMIndxB%,2
 Set,%WIMIndex%,1
 Set,%WIMIndxB%,%Source_Cont_bwim_ScrollBox%
 Set,%WIMIndex%,%Source_Cont_iwim_ScrollBox%
 //--
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/mount #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q%InstallSRC%#$q",%IMAGEXPath%
 Run,%ScriptFile%,CheckMountInstallWim
 ShellExecute,Hide,%IMAGEX%,"/mount #$q%SourceDir%\sources\boot.wim#$q %WIMIndxB% #$q%BootSRC%#$q",%IMAGEXPath%
 Run,%ScriptFile%,CheckMountBootWim
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/mount #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q%InstallSRC%#$q",%WIMUTILPath%
 Run,%ScriptFile%,CheckMountInstallWim
 ShellExecute,Hide,%WIMUTIL%,"/mount #$q%SourceDir%\sources\boot.wim#$q %WIMIndxB% #$q%BootSRC%#$q",%WIMUTILPath%
@@ -237,12 +251,12 @@ Set,%WAIKArch%,%SourceArch%
 If,%SourceArch%,Equal,x64,Set,%WAIKArch%,amd64
 Set,%waikwimfile%,%Sourcedir%\Tools\PETools\%WAIKArch%\winpe.wim
 //--
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/mount #$q%waikwimfile%#$q 1 #$q%BootSRC%#$q"
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/mount #$q%waikwimfile%#$q 1 #$q%BootSRC%#$q",%WIMUTILPath%
 End
 //--
@@ -252,32 +266,37 @@ If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Error with mounting source!
 If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,Message,"Error with mounting source! (winpe.wim) return : %ExitCode% :(",ERROR
 
 [SourceUnMount_BTN]
-ReadEnv
+//-
+IniRead,%ProjectDir%\script.project,IniVariables,WIMTool,%WIMTool%
+If,%WIMTool%,Equal,ImageX,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%IMAGEX%
+If,%WIMTool%,Equal,WimUtil,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMUTIL%
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+//-
 Set,%t%,""
-IniRead,%projectdir%\script.project,IniVariables,ExtractWimFolder,%t%
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%t%
 If,Not,%t%,Equal,"",Set,%ExtractWimFolder%,%t%
 // If not extracted wim folder - UnMount and check that UnMounted successfully
 If,Not,%ExtractWimFolder%,Equal,Yes,Begin
-If,%SourceType%,Equal,"",Run,%ScriptFile%,SourceNotConfigured
-If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
-If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
-If,%SourceType%,Equal,VistaCD,Run,%ScriptFile%,SourceUnMountCD
-If,%SourceType%,Equal,Win7CD,Run,%ScriptFile%,SourceUnMountCD
-If,%SourceType%,Equal,Win8CD,Run,%ScriptFile%,SourceUnMountCD
-If,%SourceType%,Equal,Win8.1CD,Run,%ScriptFile%,SourceUnMountCD
-If,%SourceType%,Equal,Win10CD,Run,%ScriptFile%,SourceUnMountCD
-If,%SourceType%,Equal,WAIK,Run,%ScriptFile%,SourceUnMountWAIK
+If,%OS%,Equal,"",Run,%ScriptFile%,SourceNotConfigured
+If,%WIMTool%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WIMTool%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+If,%OS%,Equal,WinVista,Run,%ScriptFile%,SourceUnMountCD
+If,%OS%,Equal,Win7,Run,%ScriptFile%,SourceUnMountCD
+If,%OS%,Equal,Win8,Run,%ScriptFile%,SourceUnMountCD
+If,%OS%,Equal,Win8.1,Run,%ScriptFile%,SourceUnMountCD
+If,%OS%,Equal,Win10,Run,%ScriptFile%,SourceUnMountCD
+If,%OS%,Equal,Waik,Run,%ScriptFile%,SourceUnMountWAIK
 End
 
 [SourceUnMountCD]
 Echo,"UnMounting Windows Source CD files with imagex.exe..."
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/unmount #$q%InstallSRC%#$q",%IMAGEXPath%
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q /nowarn",%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%InstallSRC%#$q /nowarn",%WIMUTILPath%
 End
@@ -288,12 +307,12 @@ If,Not,ExistFile,%BootSRC%\Windows\regedit.exe,If,ExistFile,%InstallSRC%\Windows
 
 [SourceUnMountWAIK]
 Echo,"UnMounting WAIK files with imagex.exe..."
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/unmount #$q%BootSRC%#$q",%IMAGEXPath%
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%BootSRC%#$q /nowarn",%WIMUTILPath%
 End
 If,ExistFile,%BootSRC%\Windows\regedit.exe,Echo,"Unmount NOT successful :(",Warn
@@ -307,13 +326,11 @@ Exit,Exiting..
 
 [SourceOpenMountDir]
 If,Not,ExistDir,%BootSRC%,DirMake,%BootSRC%
-System,FILEREDIRECT,OFF
-ShellExecuteEx,Open,explorer.exe,/e#$c#$q%BootSRC%#$q
-System,FILEREDIRECT,ON
+Call,OpenDir,%BootSRC%
 
 [TargetUnMountAll_BTN]
-Run,%scriptfile%,SourceUnMount_BTN
-Run,%scriptfile%,TargetUnMount_BTN
+Run,%ScriptFile%,SourceUnMount_BTN
+Run,%ScriptFile%,TargetUnMount_BTN
 
 [InterfaceEncoded]
 unmount.bmp=2536,3382

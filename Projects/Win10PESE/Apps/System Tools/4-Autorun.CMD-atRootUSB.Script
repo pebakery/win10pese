@@ -1,0 +1,171 @@
+[Main]
+Title=Autorun.cmd at Root of USB
+Type=Plugin
+Author=Bob.Omb, laddanator, Lancelot
+Description=Autorun.cmd - Batch from laddanator to get your personal Portable tasks. Edit your persistent "Autorun.cmd" at the root of your USB following your personal changes.
+Credits=Bob.Omb, Lancelot, ChrisR, http://TheOven.org
+Version=028
+Download_Level=1
+Level=5
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=1900
+Date=2018.11.18
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/System%20Tools/4-Autorun.CMD-atRootUSB.Script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/System%20Tools/4-Autorun.CMD-atRootUSB.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Hidden Interface Tip: InterFace=InterfaceBasic --> //InterFace=InterfaceBasic ;)
+HistoryNotes02=Changed %LaddsDVD% to %LaddsStu%
+HistoryNotes03=Enabled find and execute "Autorun.cmd" at boot
+HistoryNotes04=Attached ExtractTOUSB.7z as an example
+History001=Lancelot 2012.11.05 Plugin created
+History021=Lancelot 2016.10.06 Plugin created following "Portable Finder Startup" v19 http://TheOven.org/index.php?topic=1891 ---> http://TheOven.org/index.php?topic=370 - Date:2016.10.07
+History022=Lancelot Update hiderun lines // nircmd lines - Date:2017.09.23
+History023=Lancelot Add root to instructions - Steve6375 Reply 13 - http://TheOven.org/index.php?topic=1891.msg24237#msg24237 - Date:2017.10.07
+History024=Bob.Omb 2018.09.03 Plugin Interface Modified.  Plugin name changed to Autorun.CMD, plugin now provides the CMD file and allows for editing. Easier to understand instructions added. - Date:2018.10.16 - Date:2018.10.17
+History025=Bob.Omb - Added Set "i=" to clear variable before execution - Date:2018.10.18
+History026=Lancelot Add To Yomi Server - Date:2018.10.23
+History027=Lancelot Updated BoradcastEnvChange.exe following Galapo Reply 28 - 35 http://TheOven.org/index.php?topic=2278.msg29092#msg29092 http://TheOven.org/index.php?topic=2278.msg29103#msg29103 - Date:2018.11.12
+History028=Lancelot Add Require,File,BroadcastEnvChange.exe - Date:2018.11.18
+
+[Interface]
+pTextLabel1="Plugin Adds 'Autorun.cmd' to the root of your USB (ISO)#$x#$x -Easily add Startup commands to your build#$x -Automatically Runs at end of boot#$x -Edit 'Autorun.cmd' up to your needs#$x   + Create Start Menu/Desktop shortcuts#$x   + Start Applications at the end of boot#$x   + Map Network Drives at the end of boot#$x   + Do anything you can do with .cmd ;)#$x -Enjoy!",1,1,12,291,371,164,10,Bold
+Edit_TextFile=autorun.cmd,1,6,3,1,613,245
+Button_Launch_Program="Edit Autorun.CMD",1,8,182,248,223,36,Launch_Program,_Launch_Program_,False
+pNumberBox1=pNumberBox1,1,2,563,299,40,22,20,0,30,1
+pBevel1=pBevel1,1,12,399,291,215,92
+pTextLabel2="Startup Delay (Seconds):",1,1,415,303,150,18,8,Bold
+pTextLabel3="*It is recommended that you use the default 20 second delay to give all system services and the network time to fully start.",1,1,418,323,167,53,8,Normal
+Button_Download=,1,8,499,248,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,543,248,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,521,248,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=AutoRunFinder.cmd
+%ProgramEXE%=AutoRunFinder.cmd
+%ProgramFolder%=System32
+%rall%=0
+%containerfolder%=AutorunPrep
+%SetupFile%=Autorun.cmd
+%timetowait%=%pNumberBox1%
+
+[Process]
+Echo,"Enabling Autorun at Root of CD/USB..."
+//-
+StrFormat,Mult,%timetowait%,1000
+If,Not,ExistFile,%Target_Sys%\BroadcastEnvChange.exe,Require,File,BroadcastEnvChange.exe
+If,Not,ExistFile,%Target_Sys%\HideRun.exe,Require,File,HideRun.exe
+If,Not,ExistFile,%Target_Sys%\nircmd.exe,Require,File,nircmd.exe
+//--
+If,ExistFile,%Target_Sys%\AutorunFinder.cmd,FileDelete,%Target_Sys%\AutorunFinder.cmd
+If,Not,ExistFile,%Target_Sys%\AutorunFinder.cmd,FileCreateBlank,%Target_Sys%\AutorunFinder.cmd
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"@ECHO OFF",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"CLS",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"Set #$qi=#$q",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"Set Tagfile=\autorun.cmd",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"cd /d #$p~dp0",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"nircmd.exe wait %timetowait%",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"For #$p#$pI in (C D E F G H I J K L M N O P Q R S T U V W X Y Z A B) do (dir #$p#$pI:\ 1>nul 2>nul && if /i exist #$p#$pI:#$pTagFile#$p set CDDrive=#$p#$pI:)",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"reg.exe add #$qHKCU\Environment#$q /v CDDrive /t REG_SZ /f /d #$q#$pCDDrive#$p#$q",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"BroadcastEnvChange.exe /broadcast",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"cd /d #$q#$pCDDrive#$p#$q",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"cmd.exe /c #$q#$pCDDrive#$p\autorun.cmd#$q",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,"If #$pErrorLevel#$p NEQ 0 Echo autorun.cmd_NOT_FOUND>#$pTemp#$p\autorun_Error.txt",Append
+TXTAddLine,%Target_Sys%\AutorunFinder.cmd,EXIT,Append
+//--
+//Dependencies
+Require,File,Reg.exe
+//--
+// Autorun at end of boot
+Add_Shortcut,AutoRun,,X:\Windows\system32\hiderun.exe,%ProgramTitle%,#$qX:\Windows\system32#$q,"/w #$qX:\Windows\system32\%ProgramEXE%#$q"
+//--
+// Add Autorun.CMD to root of CD/USB
+ExtractFile,%ScriptFile%,InterfaceEncoded,Autorun.cmd,%TargetDir%
+//-
+
+[Extract]
+//Extracting-BatchFile-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%containerfolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%containerfolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%containerfolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%containerfolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%containerfolder%
+ExtractFile,%ScriptFile%,InterfaceEncoded,%SetupFile%,%ProjectTemp%\TempExtractFolder\%containerfolder%\%containerfolder%
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+//Extracting-BatchFile-Finish
+//-
+
+[Launch_Program]
+Run,%ScriptFile%,Extract
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+Echo,"Close Editor. Waiting......."
+System,FILEREDIRECT,OFF
+ShellExecute,Open,notepad.exe,%ProjectTemp%\TempExtractFolder\%containerfolder%\%containerfolder%\Autorun.cmd,%ProjectTemp%\TempExtractFolder\%containerfolder%\%containerfolder%
+System,FILEREDIRECT,ON
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\%containerfolder%\%containerfolder%\Autorun.cmd
+System,RefreshInterface
+
+[AuthorEncoded]
+media-flash-usbpendrive-3.ico=1468,1958
+Logo=media-flash-usbpendrive-3.ico
+
+[InterfaceEncoded]
+autorun.cmd=760,1014
+Steps.txt=482,643
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+//Add To Yomi
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Win10PESE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[Folder]
+
+[EncodedFile-AuthorEncoded-media-flash-usbpendrive-3.ico]
+lines=0
+0=eJztlHtMU2cYxr+2XOZwCixsuOjmlqFiiGi2xDm5FTYsENAJrmLBohlkZLCJOpyIiChoOtFNiiEh6qL+4UhFRxBFAyKKXCSIgDdAA2jEAKalUHo77bP3VOdI3IjKlv0xvuaXk37n5DzPed/n/RgT0G/mTGZbx50Ze4uucwh+K4AQsKc3ndlzC8AEE/zvGbUExIyn42M3au81QvT8BL36+iv9gLlzv/jcy6vETijcTX+DhQKBm7uLy3xHe/uYp+P8NiH8N/TdJk9+Pzchob3p/HlkxsdrPadNq5gyaVJOekhI26bAwH6v6dMrRCJRFj36GTFtvD5G6zvY2bGv/PwOlx87BqPRiPZbt7AvPd2SIBYPFcXHo3r9evy2Mhrf+/mpyVelQCDYSq8IZE+OO8F49cO9vb9UbtpkGhgYAGcyofPOHdy8cQNHFQrcKj4JvcGAzgsXUJ+zC6poGVJ9fdWe7u6V7IkPP8JlPPq74uLqmpubwS/98DDaWlrx+FEv2k8UQ08+YLHY7hmoNj2NjWjMzUVx7GokLlzYN93ZuZRe9x3xMeH0KvoFycmVHU1NVq1Wi2vXr2PEoMfdc+fQV3MFuH0b6O8HBgfJgMHmgyM/fVSja8p8FMetRez8BQ/fdHpdRa9NIDwJ+5fR3y+XT8mVyVYdy8i42lRZgT7q/8DpMnBXr4K7cgXWe/eAR4+Ax48B8gi93ubDxHHoJx9N+37GUekqi8RjVgfNTh69PpRwe1H9vDVr2I/R0WxbWKj7kXXrGrQnqOdFRTCXlMBaVQUzT309zG1tsNy/D2g0gE73rB4msxm9dfVozNqJLf7+wx+4uFaRRCrhxf48R8bU3yOTsZ0rVtgfTEoqVeflAVR/tLcDly8DFy/CQhgrKjBcXo5h8qNvbYWV78vIyLN86LRDuFukgkoWg7APPbpFQqGSpCTE1LH0laTPe8hfu5blxsYuLJTLa66npcHEeyANY0sLuEuXgJoaWKkfRvKiPX0aah56Zoj6ZHrwADS84J30UWYv/pCGZO/5WjcnpzKSkxPuY+nz5BP7Vq9mCpnMIUcq3VAUF9d9/9AhmDo7oSP0DQ3P6gHStJIvI+1pzp6Fhuqira3FyM2b4MizjmjOPwCFfwA329W1niSTiXdfRH9vbCzLWbmS7YiKeid32bLDF1JTTYP03abeXozQPHC8jzNnADorQfPI94kjXR15G6qrg4nyah3U2GrRTlnaHyDGHFeXJpL99o86jKkfE8N2kf5uqZRlRUayjPDwT5SRkao6hcKs488Jfhb5uSwuBk6etPVFTXlt3bgR3QUFwMOHAHmFWm3LRRfl5if/AMxydm4gaRkx+UX1d0ZFsR3Ll7OtERF2GcHBEYVSae01pdJi4PX5nvP9IA8ceRmk89tcXQ1QNm3Z7ep6MreUz45Tp5C6YAH3hr39L6Q/52X0s0h/+9KlbFtEBNsqkQi3BAWFFERFVdRmZ49o+CzQXNp8UA5QWgrQ94L6AMqHrU49PbZ5rc7Oxkcutj4sehX9zPBwtj0sjGWGhrLNwcEOaWLxp4rQ0CPlKSnaB5RTK++FnxM+F5RH0JyCzg3QmYrubhipLmEeHi2k7z0u/ZAQliGRsC1LlrD1YjFL8vWdTV7SD0mlVZc2b1b3FBZCp1IBZWVAZSVA2eV70kEZWTRjxgHSn/JP6KeTfmpQEEsJDGQb6Pq1j49Dio+P94bFi7/ZIZEcLIyJaTuemDjwa1KS+oBc3hk9b96eSSLRc/mfYIIJ/hP+dhkJjSMd4SKCnqxi/sRUaJgIBiYg2DaO0SZj7yGTbnQxR9oUwUogk9AQVsexNH4HClmdQ3ick81NTclM1E3LSSzO0C0tTipIzUspyixL1TXWy0zOZxgFwxzsE4DQ8azY5feUf3zBwAQAJcMPNm0IIgEBAAAAAgAAADkAAABfBQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Steps.txt]
+lines=0
+0=eJxVUltrwjAYfS/0PxyEjO3Fuj0WNvDSbu6im9bdECQ2nzZQk5FG517225cWq10fQvgu55LTKVkkfL2SOV3P+dZqs1XtdCN8LxUIBNiv+Or4Xhh+c2lx1UFBqVaigNVYEoqtIfA8hzByRwXIpjDExY/vKWkcTpv2hMOu+3zP92JtwNgQUuG8jwEixLjFHYa4xwMe8YQRxnjGCyaYIsEMr3jDOz7wiS56FxAa50JWIOEclzdqm+OqOs/OIFcIJGgvC1sNMOcudu6YU27RHwxKoddl56IUE3aFQKR2r9xIvswJicaE1m7bOA+G1pUB7oZadw/92dyNSqPVhpRtIdjVgAgsJtHtYvqJYFW+W4sdOqzlSHpGc5FyJ6lB5XvHsqv2M67WVLEFy7peKQwbsWBqubF1OP9IojTTRznHRrlfxxCkKKx0YWVSCFL4ljYr7+TAHeRp6oTb/CVqjsgYbR5pRznY6e6Yhqt/BYyiF3RQ7TRgFqNxsojHs9HghiW0+TpyLKrdtt3bUnS3YTqWShZZ+RguV/sHQWLVS3ic4wwuSS0o1iupKGEYBSMQbGaC0DMZscuHn2R4wsAEAPxCBvwIflraAQAAAAIAAAAlAAAAmQEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-autorun.cmd]
+lines=0
+0=eJzdVktv00AQvkfKfxhZrQRSG1C55USbpAKJQtTkAMQ5bOxJbdXetXbHDbnw25l9JS1BVQ4lLfjgx+7MN6/Ps/N+NPjwBb5cXnY7g0+TbqfbuR5dwSlcYKVWIDQC/hB1U6EBtQSR5yWVSooKVmJtgJRdgqw1pGowhdKUteTW16rVMERzS6oBIXOYkNAEVyjbEygYO1qyGC2rCyozUVVruDofg0RaKX0LuS7v0Jw4AKsUhHUrQUCj1Y0WNQgCKthRlmEfF0pRD66xVncI1kQ0tNTsoxVc4E0pZSlvrLhdqErJ8S3YJqJ0KwYzG6eLhNB4A5mqa3bE9GBalAaWZYXAT+vM2duNGVZVLARiSaidNxYEpWk5mRxgiMnltlatJMxdeNZCDJtRjU0Xby1wqVwVkDPLPvc2NTrMFcOaKhhoFMQx/F5vUD5pSSh3EnVkqbM638qdQtIIKkhxNAl/vQoKr+1OlJKi5s0IMfLs6wesHmtu8ZLjydoQ1tec5OPUuPd3Z2mQSyD5ebRUVY66l3tDR7w28FWEMdOhoWQ/Q9/66dizzaRjx+TweMSQF0gOXC1v7umDeCmku3QuwvnnIUxiZKXn37bD7E1Ap2I1POwuEZ+Yh6FlmaN0yl3lr7Nxay7U8V9m5WPBPBc77em32w/tocF81Lb3hyNmf27uUNOy6nDEfBJOmn3K+H+Q8UWwcGd+Eg8nKMhbbecdO41s+IcErUGYDa1EhcTjyrwPszGTcA5veEv3Z/Zu6TaHWSOMYcR8vsuHgPS9D2lqCh5srErqM2VfA1oEgwh10HzBpvD33Z2gvkOdXojstm2GgkTwdaEWUK+3jj5naR9Ou6sizqjud/aDookqvs9ws6CSKtdI7p14O5Xz0kkCf/p7TeT985RpX9+6ndHXj9NfrVegrXic404sLckvKs3TS85NYRgFIw6c4IHQa5mwy5tX/SxnYAIAxfwIIrgiiVQBAAAAAgAAACcAAACtAgAAAAAAAAEAAAAAAAAAAAAAAA
+

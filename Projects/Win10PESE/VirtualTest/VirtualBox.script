@@ -1,24 +1,26 @@
 [Main]
-Title=VirtualBox Emulation
+Title=VirtualBox Virtualization
 Type=Plugin
 Class=Emulator
 Author=Fxscrpt, JFX, Kare, Lancelot
 Description=Runs your PE ISO in VirtualBox
 Credits=BlueLife, Galapo
-Version=075
+Version=086
 Download_Level=1
 Level=8
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.11.22
+Date=2020.03.15
 Depend=
 Disable=%ScriptDir%\AA_Best_Emulation.Script,%ScriptDir%\Bochs_Emu.Script,%ScriptDir%\qEmu.Script,%ScriptDir%\qEmu_X.Script,%ScriptDir%\VirtualBox.Script,%ScriptDir%\VirtualPC.Script,%ScriptDir%\VMWare.Script,%ProjectDir%\VirtualTestY\AA_Best_Emulation.Link,%ProjectDir%\VirtualTes\Bochs_Emu.Link,%ProjectDir%\VirtualTestY\qEmu.Link,%ProjectDir%\VirtualTestY\qEmu_X.Link,%ProjectDir%\VirtualTestY\VirtualBox.Link,%ProjectDir%\VirtualTestY\VirtualPC.Link,%ProjectDir%\VirtualTestY\VMWare.Link,%ProjectDir%\VirtualTest\AA_Best_Emulation.Script,%ProjectDir%\VirtualTes\Bochs_Emu.Script,%ProjectDir%\VirtualTest\qEmu.Script,%ProjectDir%\VirtualTest\qEmu_X.Script,%ProjectDir%\VirtualTest\VirtualBox.Script,%ProjectDir%\VirtualTest\VirtualPC.Script,%ProjectDir%\VirtualTest\VMWare.Script
 Web1=http://gena.cwcodes.net/Projects/Gena/VirtualTest/VirtualBox.script
+Web2=http://yomi.cwcodes.net/Yomi/VirtualTestY/VirtualBox.script
+Web3_CANCEL=http://azin.cwcodes.net/Projects/Azin/VirtualTest/VirtualBox.script
 CertifiedBy=
 Certification=
-HistoryNotes01=
+HistoryNotes01=MTP requires USB 2.0 ;)
 History016=fxscrpt added vbox detection for x64 versions / NAT-Hostnic option
 History022=fxscrpt fixed nic#n name detection for vbox 2.2.2
 History034=Lancelot fix plugin for universal basedir usage // added 2 lines to process begining to ease set up for different projects easier
@@ -66,20 +68,32 @@ History072=JFX - Reply 1445 Normally on a Windows 10 with enabled Hyper-V, Virtu
 History073=Lancelot AutoM_CheckBox SE: 1536 -> 2048 --> to be sure all apps work with NetFramework etc. ( ex: SEx64 .net etc 1536 -> Firefox Fails) - Date:2017.10.20
 History074=Lancelot %ProjectTitle% deprecated - Date:2017.11.21
 History075=Lancelot %ISODir% deprecated - Date:2017.11.22
+History075a=Bob.Omb changed default settings - Date:2018.10.21
+History076=Lancelot Add To Yomi Server - Date:2018.10.23
+History077=Nikzzzz Fix Audio - http://TheOven.org/index.php?topic=2724 - Date:2019.02.01
+History078=Lancelot Mem_NumberBox limit increased to 4 GB ( 4096 ) - Date:2019.02.02
+History079=Lancelot NT6x64 Automemory Set to 2560 ( Win10PESE Default build to get FireFox work ) - Date:2019.02.03
+History080=Lancelot USB Support default to 2.0 now - MTP requires USB 2.0 ;) - Date:2019.03.03
+History081=Lancelot USB Support default to 1.0 now - Added MTP_USB2_TextLabel AND USB2_VBoxExtensionPack_TextLabel - CyberGonzo - http://TheOven.org/index.php?topic=2980.msg35462#msg35462 - Date:2019.11.23
+History082=Lancelot Update VBoxName - Date:2019.12.30
+History083=Lancelot Add to Azin - Date:2020.01.28
+History084=Lancelot Workaround winbuilder bug with Call,SelectFile :> and bugs again and again and again ..... peh ... - Date:2020.02.23
+History085=Lancelot Improve Select Iso - Date:2020.02.25
+History086=Lancelot For now Removed From Azin Server after Fixing Select Iso - Date:2020.03.15
 
 [Interface]
 pButton_Show_Second_Gui="More Options",1,8,260,2,100,18,Second_Gui,True,True,False,_Second_Gui_,True
 pButton_Show_First_Gui="Basic Options",0,8,260,2,100,18,First_Gui,True,True,False,_First_Gui_,True
 Mem_TextLabel="Memory (MB):",1,1,11,35,69,18,8,Normal,"__Allocated Memory for Virtual Guest"
-Mem_NumberBox=Mem_NumberBox,1,2,78,33,46,22,1024,160,2048,32
+Mem_NumberBox=Mem_NumberBox,1,2,78,33,46,22,2560,160,4096,32
 AutoM_CheckBox=,1,3,124,35,16,16,True,"__Auto Memory Adjustment"
-WebLabel_HomePage=HomePage,1,10,20,3,61,18,http://www.virtualbox.org/
-WebLabel_DownloadPage="Download Page",1,10,86,3,88,18,http://www.virtualbox.org/wiki/Downloads
+WebLabel_HomePage=HomePage,1,10,434,16,51,18,http://www.virtualbox.org/
+WebLabel_DownloadPage="Download Page",1,10,414,33,74,18,http://www.virtualbox.org/wiki/Downloads
 VTXoff_CheckBox="Turn off VT-X",0,3,4,66,91,18,False
 VTXoff_TextLabel="Turn off VT-X: Vbox >3.2.x may require this for grub4dos boot",0,1,98,64,186,30,8,Normal
 Audio_Bevel=Audio_Bevel,1,12,5,99,207,42
-AudioAC97_RadioB="Add Audio ICH AC97",1,11,11,101,124,20,True
-AudioHDA_RadioB="Add Intel Audio HD",1,11,11,119,124,20,False
+AudioAC97_RadioB="Add Audio ICH AC97",1,11,11,101,124,20,False
+AudioHDA_RadioB="Add Intel Audio HD",1,11,11,119,124,20,True
 AudioNone_RadioB="No Audio",1,11,136,111,73,20,False
 //--
 Start_LastVbox_Button="Use Last VBox",0,8,305,78,80,25,Start_LastVbox,"__Start Last Vbox"
@@ -107,8 +121,8 @@ Video_2D_CheckBox="Accelerate 2D",0,3,249,178,90,16,False
 Video_3D_CheckBox="Accelerate 3D",0,3,249,195,90,16,False
 Video_Bevel=Bevel,0,12,245,154,147,60
 Video_WebLabel1=Info,0,10,352,190,22,18,http://www.virtualbox.org/manual/ch04.html#guestadd-video
-SelectISO_Button="Select Iso",1,8,385,18,93,36,SelectISO_Process,MesCD2424.bmp,False,False,_SelectISO_Process_,False,"__Select an ISO to boot from"
-VirtualOS_ScrollBox=Auto,1,4,386,54,128,21,Auto,Windows10,Windows10_64,Windows81,Windows81_64,Windows8,Windows8_64,Windows7,Windows7_64,WindowsVista,WindowsVista_64,Windows2003,Windows2003_64,WindowsXP,WindowsXP_64
+SelectISO_Button="Select Iso",1,8,420,67,93,36,SelectISO_Process,MesCD2424.bmp,False,False,_SelectISO_Process_,False,"__Select an ISO to boot from"
+VirtualOS_ScrollBox=Auto,1,4,420,106,128,21,Auto,Windows10,Windows10_64,Windows81,Windows81_64,Windows8,Windows8_64,Windows7,Windows7_64,WindowsVista,WindowsVista_64,Windows2003,Windows2003_64,WindowsXP,WindowsXP_64
 APIC_TextLabel="I/O APIC is required for 64-bit guest OS and  Win10x86",0,1,185,247,316,18,8,Bold
 I_O_APIC_ScrollBox="On Always",0,4,185,261,93,21,"On for x64","On Always","Off Always","__Use I/O APIC"
 Pointing_CheckBox="Absolute Pointing Device",0,3,185,287,153,18,True,"__No need to press Right-Ctrl key"
@@ -117,6 +131,8 @@ WebLabel_Plugin="Plugin Page",1,10,430,0,55,18,http://TheOven.org/index.php?boar
 Button_Download=,1,8,488,20,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__Download (Update) Plugin"
 Button_Upload=,0,8,488,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__Upload Plugin (Admins Only)"
 Button_CompareEdit=,0,8,511,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+MTP_USB2_TextLabel="MTP requires USB 2.0",0,1,417,197,127,18,8,Bold
+USB2_VBoxExtensionPack_TextLabel="USB 2.0 requires 'VirtualBox Extension Pack'",0,1,411,178,259,18,8,Bold
 
 [Variables]
 %VBoxManage%=
@@ -130,59 +146,61 @@ Button_CompareEdit=,0,8,511,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bm
 %DebugCmd%=%WorkDir%\1Debug.cmd
 
 [Second_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-First_Gui,False
 Run,%ScriptFile%,Show-Hide-Second_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [First_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-Second_Gui,False
 Run,%ScriptFile%,Show-Hide-First_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show-Hide-Second_Gui]
-Visible,%VTXoff_CheckBox%,#1,PERMANENT
-Visible,%VTXoff_TextLabel%,#1,PERMANENT
-Visible,%Start_LastVbox_Button%,#1,PERMANENT
-Visible,%OpenDir_WorkDir_Button%,#1,PERMANENT
-Visible,%USB_RadioGroup%,#1,PERMANENT
-Visible,%Net_RadioGroup%,#1,PERMANENT
-Visible,%Net_Nic_NumberBox%,#1,PERMANENT
-Visible,%ListNetwork_Button%,#1,PERMANENT
-Visible,%HDD_VDI_Bevel%,#1,PERMANENT
-Visible,%HDD_VDI_CheckBox%,#1,PERMANENT
-Visible,%HDD_VDI_TextLabel%,#1,PERMANENT
-Visible,%HDD_VDI_Reset_CheckBox%,#1,PERMANENT
-Visible,%HDD_VDI_Reset_TextLabel%,#1,PERMANENT
-Visible,%HDD_VMDK_Bevel%,#1,PERMANENT
-Visible,%HDD_VMDK_CheckBox%,#1,PERMANENT
-Visible,%HDD_VMDK_TextLabel%,#1,PERMANENT
-Visible,%HDD_VMDK_Reset_CheckBox%,#1,PERMANENT
-Visible,%HDD_VMDK_Reset_TextLabel%,#1,PERMANENT
-Visible,%HDD_External_Bevel%,#1,PERMANENT
-Visible,%HDD_External_CheckBox%,#1,PERMANENT
-Visible,%HDD_External_FileBox%,#1,PERMANENT
-Visible,%Video_Memory_CheckBox%,#1,PERMANENT
-Visible,%Video_Memory_NumberBox%,#1,PERMANENT
-Visible,%Video_2D_CheckBox%,#1,PERMANENT
-Visible,%Video_3D_CheckBox%,#1,PERMANENT
-Visible,%Video_Bevel%,#1,PERMANENT
-Visible,%Video_WebLabel1%,#1,PERMANENT
-Visible,%I_O_APIC_ScrollBox%,#1,PERMANENT
-Visible,%APIC_TextLabel%,#1,PERMANENT
-Visible,%Pointing_CheckBox%,#1,PERMANENT
-Visible,%ClipboardBiDirectional_CheckBox%,#1,PERMANENT
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
+Visible,%VTXoff_CheckBox%,#1,Permanent
+Visible,%VTXoff_TextLabel%,#1,Permanent
+Visible,%Start_LastVbox_Button%,#1,Permanent
+Visible,%OpenDir_WorkDir_Button%,#1,Permanent
+Visible,%USB_RadioGroup%,#1,Permanent
+Visible,%Net_RadioGroup%,#1,Permanent
+Visible,%Net_Nic_NumberBox%,#1,Permanent
+Visible,%ListNetwork_Button%,#1,Permanent
+Visible,%HDD_VDI_Bevel%,#1,Permanent
+Visible,%HDD_VDI_CheckBox%,#1,Permanent
+Visible,%HDD_VDI_TextLabel%,#1,Permanent
+Visible,%HDD_VDI_Reset_CheckBox%,#1,Permanent
+Visible,%HDD_VDI_Reset_TextLabel%,#1,Permanent
+Visible,%HDD_VMDK_Bevel%,#1,Permanent
+Visible,%HDD_VMDK_CheckBox%,#1,Permanent
+Visible,%HDD_VMDK_TextLabel%,#1,Permanent
+Visible,%HDD_VMDK_Reset_CheckBox%,#1,Permanent
+Visible,%HDD_VMDK_Reset_TextLabel%,#1,Permanent
+Visible,%HDD_External_Bevel%,#1,Permanent
+Visible,%HDD_External_CheckBox%,#1,Permanent
+Visible,%HDD_External_FileBox%,#1,Permanent
+Visible,%Video_Memory_CheckBox%,#1,Permanent
+Visible,%Video_Memory_NumberBox%,#1,Permanent
+Visible,%Video_2D_CheckBox%,#1,Permanent
+Visible,%Video_3D_CheckBox%,#1,Permanent
+Visible,%Video_Bevel%,#1,Permanent
+Visible,%Video_WebLabel1%,#1,Permanent
+Visible,%I_O_APIC_ScrollBox%,#1,Permanent
+Visible,%APIC_TextLabel%,#1,Permanent
+Visible,%Pointing_CheckBox%,#1,Permanent
+Visible,%ClipboardBiDirectional_CheckBox%,#1,Permanent
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
+Visible,%MTP_USB2_TextLabel%,#1,Permanent
+Visible,%USB2_VBoxExtensionPack_TextLabel%,#1,Permanent
 //--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+Visible,%pButton_Show_First_Gui%,#1,Permanent
 
 [Show-Hide-First_Gui]
 //--
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
 
 [Process]
 If,Not,ExistVar,%ISOfileVar%,Begin
@@ -196,13 +214,15 @@ If,Not,ExistFile,%ISOfileVar%,Exit,"There is no ISO file to boot"
 //--
 IniRead,%ProjectDir%\script.project,Main,Title,%ProjectTitleV%
 Set,%VBoxNameFull%,%ProjectTitleV%_Box
+IniRead,%ProjectDir%\Script.Project,IniVariables,SelectedProject,%SelectedProject%
+If,Not,%SelectedProject%-,Equal,-,Set,%VBoxNameFull%,%SelectedProject%_%ProjectTitleV%_Box
 //--
 //JFX: Reply 1445 Normally on a Windows 10 with enabled Hyper-V, Virtualbox and VMWare notice this and don't start any VM.
 //HYPERVISORLAUNCHTYPE=AUTO
 IniRead,%ScriptFile%,Main,Title,%t%
 Set,%SystemStartOptions%,-
 If,ExistRegKey,HKLM,System\CurrentControlSet\Control,SystemStartOptions,RegRead,HKLM,System\CurrentControlSet\Control,SystemStartOptions,%SystemStartOptions%
-StrFormat,REPLACE,%SystemStartOptions%,HYPERVISORLAUNCHTYPE=AUTO,-,%SystemStartOptionsTEST%
+StrFormat,Replace,%SystemStartOptions%,HYPERVISORLAUNCHTYPE=AUTO,-,%SystemStartOptionsTEST%
 If,Not,%SystemStartOptions%,Equal,%SystemStartOptionsTEST%,Exit,"%t% DO NOT support 'Enabled Hyper-V'"
 //--
 //FindVirtualBox
@@ -211,31 +231,31 @@ If,%VBPath%,Equal,--,Begin
 If,ExistRegKey,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,RegRead,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,%VBPath%
 End
 If,%VBPath%,Equal,--,Begin
-System,REGREDIRECT,64
+System,RegRedirect,64
 If,ExistRegKey,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,RegRead,HKLM,"SOFTWARE\Sun\xVM VirtualBox",InstallDir,%VBPath%
-System,REGREDIRECT,OFF
+System,RegRedirect,OFF
 End
 If,%VBPath%,Equal,--,Begin
-System,REGREDIRECT,64
+System,RegRedirect,64
 If,ExistRegKey,HKLM,SOFTWARE\Sun\VirtualBox,InstallDir,RegRead,HKLM,SOFTWARE\Sun\VirtualBox,InstallDir,%VBPath%
-System,REGREDIRECT,OFF
+System,RegRedirect,OFF
 End
 If,%VBPath%,Equal,--,Begin
-System,REGREDIRECT,64
+System,RegRedirect,64
 If,ExistRegKey,HKLM,SOFTWARE\Oracle\VirtualBox,InstallDir,RegRead,HKLM,SOFTWARE\Oracle\VirtualBox,InstallDir,%VBPath%
-System,REGREDIRECT,OFF
+System,RegRedirect,OFF
 End
 If,%VBPath%,Equal,--,Begin
 If,ExistFile,"C:\Program Files\Oracle\VirtualBox\VBoxManage.exe",Set,%VBPath%,"C:\Program Files\Oracle\VirtualBox\"
 End
 If,%VBPath%,Equal,--,Begin
-System,REGREDIRECT,64
+System,RegRedirect,64
 If,ExistRegKey,HKLM,"SOFTWARE\VMLite\VMLite Workstation",InstallDir,RegRead,HKLM,"SOFTWARE\VMLite\VMLite Workstation",InstallDir,%VBPath%
-System,REGREDIRECT,OFF
+System,RegRedirect,OFF
 End
 //-
-StrFormat,PATH,%VBPath%,%t%
-StrFormat,CTRIM,%t%,\,%VBPath_T%
+StrFormat,Path,%VBPath%,%t%
+StrFormat,CTrim,%t%,\,%VBPath_T%
 //-
 Set,%VBoxManage%,%VBPath_T%\VBoxManage.exe
 If,Not,ExistFile,%VBoxManage%,Run,%ScriptFile%,NotFound
@@ -295,8 +315,8 @@ TxtAddLine,%WorkDir%\Cmd_VBoxManage.cmd,"cmd.exe",Append
 [CheckVersion]
 //Check if version 3.1 or not -- If 3.1 add /3 to vboxmanage switches ;)
 Set,%verchecktxt%,%WorkDir%\info.txt
-If,ExistFile,%verchecktxt%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%verchecktxt%#$q"
-If,ExistFile,%verchecktxt%,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%verchecktxt%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%verchecktxt%#$q"
+If,ExistFile,%verchecktxt%,Echo,"FILE NOT DELETED",Warn
 ShellExecute,Hide,cmd.exe,"/C %VBoxManage% -v > #$q%verchecktxt%#$q"
 If,ExistFile,%verchecktxt%,Begin
 TXTAddLine,%verchecktxt%,[Version],Prepend
@@ -313,8 +333,8 @@ Set,%vboxxml%,%HostUserProfileDir%\.VirtualBox\VirtualBox.xml
 Set,%vboxxmlt%,%HostUserProfileDir%\.VirtualBox\VirtualBox_Temp.xml
 //-
 If,Not,ExistDir,%WorkDir%,DirMake,%WorkDir%
-If,ExistFile,%DebugCmd%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%DebugCmd%#$q"
-If,ExistFile,%DebugCmd%,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%DebugCmd%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%DebugCmd%#$q"
+If,ExistFile,%DebugCmd%,Echo,"FILE NOT DELETED",Warn
 FileCreateBlank,%DebugCmd%
 //If,ExistFile,%vboxxml%,Run,%ScriptFile%,Process_VirtualBox_XML
 StrFormat,Left,%VBPath%,2,%t%
@@ -350,9 +370,9 @@ If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%",Call,FileDelete,"%
 //If,ExistDir,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%",Call,DirDelete,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%"
 //-
 //After VBox 5.14 You can not delete sub folder \Logs\ --> only delete .vbox .vbox-prev is enough ;)
-System,FILEREDIRECT,OFF
-If,ExistDir,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%",Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%HostUserProfileDir%\VirtualBox VMs\%VBoxName%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,OFF
+If,ExistDir,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%",ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%HostUserProfileDir%\VirtualBox VMs\%VBoxName%#$q"
+System,FileRedirect,ON
 If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%\%VBoxName%.vbox",Call,FileDelete,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%\%VBoxName%.vbox"
 If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%\%VBoxName%.vbox-prev",Call,FileDelete,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%\%VBoxName%.vbox-prev"
 //-
@@ -371,9 +391,9 @@ IniRead,%WorkDir%\VboxDMF.ini,vbox,DefaultMachineFolder,%DMF%
 If,ExistFile,%DMF%\%VBoxName%,Call,FileDelete,%DMF%\%VBoxName%
 //If,ExistDir,%DMF%\%VBoxName%,Call,DirDelete,%DMF%\%VBoxName%
 //After VBox 5.14 You can not delete sub folder \Logs\ --> only delete .vbox .vbox-prev is enough ;)
-System,FILEREDIRECT,OFF
-If,ExistDir,"%DMF%\%VBoxName%\%VBoxName%",Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%DMF%\%VBoxName%\%VBoxName%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,OFF
+If,ExistDir,"%DMF%\%VBoxName%\%VBoxName%",ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%DMF%\%VBoxName%\%VBoxName%#$q"
+System,FileRedirect,ON
 If,ExistFile,"%DMF%\%VBoxName%\%VBoxName%.vbox",Call,FileDelete,"%DMF%\%VBoxName%\%VBoxName%.vbox"
 If,ExistFile,"%DMF%\%VBoxName%\%VBoxName%.vbox-prev",Call,FileDelete,"%DMF%\%VBoxName%\%VBoxName%.vbox-prev"
 //-
@@ -477,8 +497,10 @@ If,%Video_3D_CheckBox%,Equal,True,ShellExecute,Hide,%VBoxManage%,"modifyvm %VBox
 //--
 Set,%MemoryV%,%Mem_NumberBox%
 If,%AutoM_CheckBox%,Equal,True,Begin
-If,%OSFamily%%SourceArch%,Equal,NT6x86,Set,%MemoryV%,1024
-If,%OSFamily%%SourceArch%,Equal,NT6x64,Set,%MemoryV%,2048
+//If,%OSFamily%%SourceArch%,Equal,NT6x86,Set,%MemoryV%,1024
+If,%OSFamily%%SourceArch%,Equal,NT6x86,Set,%MemoryV%,2048
+//If,%OSFamily%%SourceArch%,Equal,NT6x64,Set,%MemoryV%,2048
+If,%OSFamily%%SourceArch%,Equal,NT6x64,Set,%MemoryV%,2560
 ChangeInterface,Write,Value,,,Mem_NumberBox,%MemoryV%
 End
 //--
@@ -503,8 +525,8 @@ Set,%HDDreset%,#2
 Set,%LocalUUID%,#3
 Set,%Device%,#4
 If,%HDDreset%,Equal,True,Begin
-If,ExistFile,%WorkDir%\%ImageName%.%ext%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%WorkDir%\%ImageName%.%ext%#$q"
-If,ExistFile,%WorkDir%\%ImageName%.%ext%,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%WorkDir%\%ImageName%.%ext%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%WorkDir%\%ImageName%.%ext%#$q"
+If,ExistFile,%WorkDir%\%ImageName%.%ext%,Echo,"FILE NOT DELETED",Warn
 TxtAddLine,%DebugCmd%,"if exist #$q%WorkDir%\%ImageName%.%ext%#$q del /q /f #$q%WorkDir%\%ImageName%.%ext%#$q",Append
 End
 If,Not,ExistFile,%WorkDir%\%ImageName%.%ext%,ExtractFile,%ScriptFile%,Folder,%ImageName%.%ext%,%WorkDir%
@@ -524,7 +546,7 @@ Echo,"Add %ext% Loop #c"
 //Check If uuid exists
 ShellExecute,Hide,%VBoxManage%,"showhdinfo #$q%WorkDir%\%ImageName%.%ext%#$q"
 Set,%xit%,%ExitCode%
-If,%xit%,Equal,0,Loop,BREAK
+If,%xit%,Equal,0,Loop,Break
 If,Not,%xit%,Equal,0,Run,%ScriptFile%,Add_Hdd_Check_Pre
 ShellExecute,Hide,%VBoxManage%,"storageattach %VBoxName% --storagectl #$qIDE Controller#$q --port 1 --device %Device% --type hdd --medium #$q%WorkDir%\%ImageName%.%ext%#$q"
 TxtAddLine,%DebugCmd%,"VBoxManage.exe storageattach %VBoxName% --storagectl #$qIDE Controller#$q --port 1 --device %Device% --type hdd --medium #$q%WorkDir%\%ImageName%.%ext%#$q",Append
@@ -535,17 +557,17 @@ TxtAddLine,%DebugCmd%,"Echo Error #$pErrorlevel#$p",Append
 //Since we have uuid in which VBox Session ?
 Set,%t%,""
 Set,%tb%,""
-If,ExistFile,%WorkDir%\HddCheck.txt,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%WorkDir%\HddCheck.txt#$q"
-If,ExistFile,%WorkDir%\HddCheck.txt,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%WorkDir%\HddCheck.txt,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%WorkDir%\HddCheck.txt#$q"
+If,ExistFile,%WorkDir%\HddCheck.txt,Echo,"FILE NOT DELETED",Warn
 FileCreateBlank,%WorkDir%\HddCheck.txt
 IniAddSection,%WorkDir%\HddCheck.txt,VboxHddInfo
 TxtAddLine,%DebugCmd%,"Echo [VboxHddInfo]>#$q%WorkDir%\HddCheck.txt#$q",Append
-Shellexecute,Hide,Cmd.exe,"/c vboxmanage showhdinfo %LocalUUID% >> #$q%WorkDir%\HddCheck.txt#$q",%VBPath%
+ShellExecute,Hide,Cmd.exe,"/c vboxmanage showhdinfo %LocalUUID% >> #$q%WorkDir%\HddCheck.txt#$q",%VBPath%
 TxtAddLine,%DebugCmd%,"vboxmanage showhdinfo %LocalUUID% >> #$q%WorkDir%\HddCheck.txt#$q",Append
 TXTReplace,%WorkDir%\HddCheck.txt,:,=
 IniRead,%WorkDir%\HddCheck.txt,VboxHddInfo,"In use by VMs",%t%
 If,%t%,Equal,"",IniRead,%WorkDir%\HddCheck.txt,VboxHddInfo,"UUID",%t%
-StrFormat,SPLIT,%t%,#$s,1,%tb%
+StrFormat,Split,%t%,#$s,1,%tb%
 //--
 //tip: VirtualBox-3.1.6-59338-Win can not unregistervm when there is medium (since mediums saved in mainlist xml (VirtualBox.xml) in Sun version)
 ShellExecute,Hide,%VBoxManage%,"unregistervm %tb%"
@@ -556,21 +578,21 @@ Run,%ScriptFile%,VirtualBox_XML,%LocalUUID%
 //Run,%ScriptFile%,VirtualBox_XML,%tb%\%tb%
 //VirtualBox-3.1.6-59338-Win read all xml sessions
 If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%tb%\%tb%.xml",Begin
-Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#$pUSERPROFILE#$p\VirtualBox VMs\%tb%#$q"
+ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#$pUSERPROFILE#$p\VirtualBox VMs\%tb%#$q"
 TxtAddLine,%DebugCmd%,"rd /s /q #$q#$pUSERPROFILE#$p\VirtualBox VMs\%tb%#$q",Append
-If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%tb%\%tb%.xml",Echo,"FILE NOT DELETED",WARN
+If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%tb%\%tb%.xml",Echo,"FILE NOT DELETED",Warn
 End
 If,ExistFile,"%HostUserProfileDir%\.VirtualBox\Machines\%tb%\%tb%.xml",Begin
-Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#$pUSERPROFILE#$p\.VirtualBox\Machines\%tb%#$q"
+ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#$pUSERPROFILE#$p\.VirtualBox\Machines\%tb%#$q"
 TxtAddLine,%DebugCmd%,"rd /s /q #$q#$pUSERPROFILE#$p\.VirtualBox\Machines\%tb%#$q",Append
-If,ExistFile,"%HostUserProfileDir%\.VirtualBox\Machines\%tb%\%tb%.xml",Echo,"FILE NOT DELETED",WARN
+If,ExistFile,"%HostUserProfileDir%\.VirtualBox\Machines\%tb%\%tb%.xml",Echo,"FILE NOT DELETED",Warn
 End
 //--
 //---not required by vbox4 since it successfully unregistervm
 //---If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%tb%\%tb%.vbox",Begi-n
-//---Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#$pUSERPROFILE#$p\VirtualBox VMs\%tb%#$q"
+//---ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#$pUSERPROFILE#$p\VirtualBox VMs\%tb%#$q"
 //---TxtAddLine,%DebugCmd%,"rd /s /q #$q#$pUSERPROFILE#$p\VirtualBox VMs\%tb%#$q",Append
-//---If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%tb%\%tb%.vbox",Echo,"FILE NOT DELETED",WARN
+//---If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%tb%\%tb%.vbox",Echo,"FILE NOT DELETED",Warn
 //---En-d
 
 [Process_Net]
@@ -657,6 +679,10 @@ If,%AudioNone_RadioB%,Equal,True,Begin
 ShellExecute,Hide,%VBoxManage%,"modifyvm %VBoxName% --audio none"
 TxtAddLine,%DebugCmd%,"VBoxManage.exe modifyvm %VBoxName% --audio none",Append
 End
+Else,Begin
+ShellExecute,Hide,%VBoxManage%,"modifyvm %VBoxName% --audioout on"
+TxtAddLine,%DebugCmd%,"VBoxManage.exe modifyvm %VBoxName%  --audioout on",Append
+End
 
 [Process_Mouse]
 // Absolute Pointing Device by Voltaire
@@ -693,16 +719,16 @@ If,Not,%VBoxName%,Equal,%VBoxNameFull%,Run,%ScriptFile%,VirtualBox_XML,%ISOFileS
 TxtAddLine,%DebugCmd%,"",Append
 
 [VirtualBox_XML]
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Hide,%WorkDir%\bltxtrline.exe,"#$q%vboxxml%#$q #$q%vboxxmlt%#$q #$q#1#$q",%WorkDir%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 TxtAddLine,%DebugCmd%,"bltxtrline.exe #$q#$pUSERPROFILE#$p\.VirtualBox\VirtualBox.xml#$q #$q#$pUSERPROFILE#$p\.VirtualBox\VirtualBox_Temp.xml#$q #$q#1#$q",Append
 Run,%ScriptFile%,Process_VirtualBox_XML_Loop
 
 [Process_VirtualBox_XML_Loop]
-Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%vboxxml%#$q"
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%vboxxml%#$q"
 TxtAddLine,%DebugCmd%,"del /q /f #$q#$pUSERPROFILE#$p\.VirtualBox\VirtualBox.xml#$q",Append
-If,ExistFile,%vboxxml%,Echo,"FILE NOT DELETED",WARN
+If,ExistFile,%vboxxml%,Echo,"FILE NOT DELETED",Warn
 FileRename,%vboxxmlt%,%vboxxml%
 TxtAddLine,%DebugCmd%,"ren #$q#$pUSERPROFILE#$p\.VirtualBox\VirtualBox_Temp.xml#$q VirtualBox.xml",Append
 
@@ -715,19 +741,21 @@ Call,HostUserProfileDir
 //--
 IniRead,%ProjectDir%\script.project,Main,Title,%ProjectTitleV%
 Set,%VBoxNameFull%,%ProjectTitleV%_Box
+IniRead,%ProjectDir%\Script.Project,IniVariables,SelectedProject,%SelectedProject%
+If,Not,%SelectedProject%-,Equal,-,Set,%VBoxNameFull%,%SelectedProject%_%ProjectTitleV%_Box
 //--
 StrFormat,Replace,%VBoxNameFull%,#$s,_,%VBoxName%
 If,ExistFile,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%\%VBoxName%.vbox",Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,%VBoxName%.vbox,,"%HostUserProfileDir%\VirtualBox VMs\%VBoxName%"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 Else,Begin
 If,ExistFile,%WorkDir%\VboxDMF.ini,IniRead,%WorkDir%\VboxDMF.ini,vbox,DefaultMachineFolder,%DMF%
 If,ExistFile,%DMF%\%VBoxName%\%VBoxName%.vbox,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,%VBoxName%.vbox,,%DMF%\%VBoxName%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 End
 
@@ -743,7 +771,18 @@ ShellExecute,Open,ListNetwork.exe,,%WorkDir%
 Call,StartDoc,%WorkDir%\ListNetwork.ini
 
 [SelectISO_Process]
-//Workaround NOT Work - winbuilder .Link Bug with Retrieve,FILE, * malfunction plugin variables - but after plugin executes bug continues with not working plugin
+Echo,"Select Image File"
+Set,%t%,""
+If,ExistVar,%IsoDir%,Begin
+If,ExistDir,%IsoDir%,Set,%t%,%IsoDir%
+End
+Call,SelectFile,ISOfileVar,%t%\*.iso,"Open ISO File",LastFolder
+If,%ISOfileVar%-,Equal,-,Echo,"No File Selected"
+If,Not,%ISOfileVar%-,Equal,-,Echo,"Image File Selected: %ISOfileVar%"
+If,Not,%ISOfileVar%-,Equal,-,Run,%ScriptFile%,Process
+
+[SelectISO_Process_CANCEL]
+//Workaround NOT Work - winbuilder .Link Bug with Retrieve,File, * malfunction plugin variables - but after plugin executes bug continues with not working plugin
 //for not Halt to avoid builder overall failure
 If,Not,ExistFile,%ScriptFile%,Exit,"%ScriptFile% NOT FOUND"
 Call,LinkType,LinkTypeV,%ScriptFile%,%ProjectDir%
@@ -752,7 +791,7 @@ If,Not,%LinkTypeV%,Equal,PluginFile,Call,Echo,"SelectISO DO NOT work with linked
 If,Not,ExistVar,%IsoFolder%,Set,%IsoFolder%,%BaseDir%\ISO
 If,-%IsoFolder%,Equal,-,Set,%IsoFolder%,%BaseDir%\ISO
 If,Not,ExistDir,%IsoFolder%,DirMake,%IsoFolder%
-Retrieve,FILE,%IsoFolder%\*.ISO,%IsoSelect%
+******* Retrieve,File, Cause severe failure - Breaks Memory Database - NEVER USE -- Workaround use Call,SelectFile Retrieve,File,%IsoFolder%\*.ISO,%IsoSelect%
 If,ExistFile,%IsoSelect%,Set,%ISOfileVar%,%IsoSelect%
 If,ExistFile,%ISOfileVar%,Run,%ScriptFile%,Process
 
@@ -763,14 +802,14 @@ If,%ScriptSel%,Equal,True,Begin
 IniRead,%VerificationInfo%,Explorer_Main,Selected,%Sel%
 If,%Sel%,Equal,True,Begin
 IniRead,%VerificationInfo%,"%ScriptTitle%_Interface",Mem_NumberBox,%Int%
-If,%Int%,SMALLER,176,Begin
+If,%Int%,Smaller,176,Begin
 Message,"Verification error: Explorer with less than about 176 MB RAM for VirtualBox brings boot problems",ERROR
 Halt,"Verification error: Explorer with less than about 176 MB RAM for VirtualBox brings boot problems"
 End
 IniRead,%VerificationInfo%,BootDI_Main,Selected,%Sel%
 If,%Sel%,Equal,True,Begin
 IniRead,%VerificationInfo%,"%ScriptTitle%_Interface",Mem_NumberBox,%Int%
-If,%Int%,SMALLER,192,Begin
+If,%Int%,Smaller,192,Begin
 Message,"Verification error: BootDI with Explorer having less than about 192 MB RAM for VirtualBox brings boot problems",ERROR
 Halt,"Verification error: BootDI with Explorer having less than about 192 MB RAM for VirtualBox brings boot problems"
 End
@@ -793,6 +832,35 @@ DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
 
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+//Add To Azin
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2|Web3
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+Run,%ScriptFile%,First_Gui
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
 [EncodedFile-InterfaceEncoded-MesCD2424.bmp]
 lines=0
 0=eJylVW1sU1UYBqLxI5j4Q0X5IZKIH9EYAxE1Go1EfxizgPEL+SExKkwxgRjRCPKDhCwgoGQgjA3YB46RhcFgo7T7gpVtbKO0tGtve7ve9t7e3ra3a7t2bdfetvd9PacUchmIGG/y5D333Hue932f877nLKtY+sCs0rOU4DmCx8uYPeupax/K37UPIt410qnUYy67fbPlypVhh8MxJQhC0e12xzmOOy+K4veKosz9N47JjPLwmg5fc0op3vQv67BVMgZd0tvfD5zdjrzXC4FAAGVZxng8DqlUCicmJiSCijvxG72xtx/dbYZXj/IOZyz3Ap0zOU27jaZTYOs8CtyZNvCNDIPg8YAUCADhB8qfTqchl8sByaFIfFT+E//+kcCGeX9YYG61G+fXeDJ1Rqb5pLkfWyzHsauvFm2nDoO3V48C4wBJFDESidyIP5vNYj6fp34KZG7Z7fjX6TwN86qtMK+GwwU1bmzrckOTzooH+gx45HwT6jv2w8iJejR168FiMiHLshgMBiGZTGImk6E+KD+GQiGXqqr3zORf1uy0zq9xwZN1LKxrZ8F4kYe2Di/UnbRB9elu2NdSCxe62kHkfUB0KOnD8zxIkkR90DxKWlEbDoeXa7mz+eL9iw4xyoJ6Hyw8wmDrMIsMw8PoqIDnenx4qPUytur66Tq6r0C1icViODk5CT6fD+k8HScSCWrR6/XWavmvhlNLFjVy+PwxPyxsdKLFxaHfL5K1AWScIuq7zciO8zRmZMWQOJ3Nbo5GozzVn2iEHo+H1hCQOaQg2g1q+Y85I1+9eNwPi09IsKiZBY/gB6IjQZjkHwKz2Up4QiVdGmxhaOXSZimaMBKu8neG1Gy49D/JBRiGsWr5N10K7FvaHsI3zoRgcbsfx0jcdC3VgMZDegmpziReFOUo9HMRlMKRUsxXbRzqDA60jQWB44IkbwlJD/Zp+T/qFgbfOivju/oIvKOX8aw7iHTPpqamqC3pSzQt+aOaUEu4kffzUHfKgPUn7dhpCMDQpSDZtwC6XO5d17lVgDmvdAip93uiWNEXBQLcZpFxenoaCEq1R2ucxk/OAyTnAYiCgKxlFDvaa6FWdxhre89jU6cTTutEHBoSiU7y69f5vVPKs68ZQvDJxTh8OnANKwdi4JtMA+0Z0pfUD82lpO242w12sxms3TqwnKmH7r6D0GJugWOmC9A56IILRmuvVpseOfvZe/1RXD2SpICyxa3WOOTyBSwUCkj7htY2rT+6L2FSM0GGQX/fOXDoGrFvtAnPjndCj20oPplIPK3lbxCz21cQ3rXm1C3Y75qE6ZxSOl/K/LQGQSZ5BElvBU2XQTR0gNPYDoNXDfFwNPzmzL79TcjpV5lTuH4sQwFle2O8nUmgM5Kge3AjftoHQUnCINEqMDKCPYOjaJYiX8zkBoDZG/lC+BvC87NrmgLK9uaxM4N7XHFoG5fxIieBcdyPBtaPp1wi7GWjWCXkcbdf6ZrJH8+r8zfwKqxns7DFk7srbCR+K81J+Hw4Dl/aM/CrUIBdUgE2EevPwUtafiLBBz8JKlS6FdzsVXAbnwcCLEM71r6X7E4u03HQHtvxoV6MrbqSwC2BIjRMFOtvOtdUeGggqa7d6S+YvmVzsNatwC9k7XaxgDsCBSBADUBr/5ILf5buTnLfNY9NfFfRNu5aMTiRJZo8cbvz35spLmkUpg+ssSQSNG+yL7BDKsLvoVtRReZ10cIP2vWqCnOiaeWRvKree6d7MltUH+wOpFf/OCwbPx6MquvGc1gVUrFaVoEA9xC70avEYsrt4/wv4JPKM3vNctXKLtG1fCCS/9qazG51p3o9qcLL/5d7JnKF4n354p1z1+JvDhtHs3ic4/VNLXZ2MTIxMtFLyi1gGAUjDJhxQugSVuzym9/wszEwAQCBiAZhcew1gAEAAAACAAAAKQAAAHQFAAAAAAAAAQAAAAAAAAAAAAAA
@@ -807,20 +875,12 @@ vboxhdd.vmdk=2221,2962
 Explore_.VirtualBox.cmd=128,171
 Explore_VirtualBox VMs.cmd=134,179
 
-[EncodedFile-Lancelot-bltxtremovepatternline.au3]
-lines=0
-0=eJy1VtFu4kYUfU6k/MPUCytYsQgIykvWq4A9pNYaXBk2tGpXyNgDme0w446HLJGi/k//sndsYxwgK6JteRnbc++555x7PebNSExk8OiEgl+cX/+N3vjkrzWVpBetKDyB2yUVHF2/gx+yYSNU9IEkKJQkUCRC80fUWyvhqMupDOKYyNntZwfpaEje29FFTJfOZSAf/5gzsglClRD5QGSThuIw3lurBWXEnDO1UZKsxAOJA6WI5Ixy0iQbcphjiVUsSZIAabObKdqL8Emio1aEKxNrCsgW3zgTQUQkWgiJppTP15Tp21iKr6A40TL7bE2QSxdHimpImyShpLHShQ3jeMwA1IDalFy72W62mq3jgS5ZBswS8aOky3tl/oM6rXYrZaAJoB6PkBvwkDChXqpEWGTqeqNgRZ5e4+Au3YlI8HRKnXGqHE0lBeinLc3vZaShaEKBWzWCQaqiqoKb6vdyso2narbeEamjMY9+ZESdBapYQ9t1Rvj31hf0AV2iyT2BwT+zBE8EIynRmoF93/N/MuqwgTcUzIC6zuLiPEXgQiFtNewkKqkVgO0v9VPRWAJ2nQHWWEnKlw6HtaYxb4nqKXg2fwbbMGyjwH4ZPEc/y8m+Bt/P8VNh42NBDeO9r6uUnTjmQmfnwmn1O/+zvs4p+jqH+uAsGSbLvtjUrroNw2iUvEBv0U0o2QLWchmddcvEPGCoMnBcPPNxz0YmSg8CnwTRzIXX8JmpxfWlTk8DZ5nwMrUdGgQ9t8f7lHpzcT5Y8/CgkvcLHs10cqPi46F3h2caslHp29h1hkCtrX11Ragp93UgPNMYXkx4OR216pCVJ0+8Sc/N/C+S3rdf37/pPVRCbb2TYefFtYCMf4qepkKtGyIlnNdFLaThXCHifH+nqpUemQVmWXvBUtNUlMPZlSNsWZWhPnzMscpztvWhhFo/ATb3Db01t8xgiizfHWgnCI9g0eItJpKycp+oteSocB3wdKuft3w7M6V+T31ngmd3vQzllBZ36v9BTzVyTqafwe4xOaJxX9L4t/EED/Wmj23Hx9akVpl606vu6POwj31gZniDgZHTvfHGPRne66e/XnWNgnIuOU2cWT9j6xOE2IxZAWM140/4KBJ22WlGjBkNZFCu9DIV3666Nk0C+L+SXg8Sn0TZR0ZwHREr+c7Q70M+KiP4GuSTWcyANnGf8MjIhrLER58kMGE7l8/OfpxfFpi+19Ac+NAcIwPuvcSm9Vo2mJ9KZvsmbC/yNW8/QujaND8eNv9fXRIrEHick0rKKakoKUrNzS9LLUgsKUktysvJzEvVSyw1ZhgFwx9s4YLQu5mxy+cwrxNjYAIAruUNZagfq2cBAAAAAgAAADYAAAC7AwAAAAAAAAEAAAAAAAAAAAAAAA
-
 [Lancelot]
 bltxtremovepatternline.au3=1045,1394
 bltxtremovepatternline_Test.cmd=284,379
 bltxtrline.exe=276729,368972
 VboxDMF.exe=296558,395411
 ListNetwork.exe=306095,408127
-
-[EncodedFile-Lancelot-bltxtremovepatternline_Test.cmd]
-lines=0
-0=eJylkD0LwjAQhvdC/0MoFHQJqIPg5kdHQVR0CZTYXm0wHyW5lPx8IwouKorbHfdw99xbVK0h+5briyNoyEl6KKVogDTGxg4DWlCmh44jgtVSaEiTNHk9oRCAZLl3YDtrGiEhZ/QgLHouFyawZ0mDktl36PjBrnnVxhuOHYWebsFVHjZFOejpaDIsI5fdvKLSG+u723LGVqbyCjQ6wnVNdoAo9Nmxea2EFg4tR2M/W/+35Kd/0qTjMaMrNomYqXick0/KKakoKUrNzS9LLUgsKUktysvJzEuND0ktLtFLzk1hGAXDGixjhND7cMjz70vzZGACACBCD8ZU2OQmAQAAAAIAAAA6AAAAvgAAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-Folder-vboxhdd.vdi]
 lines=1
@@ -838,6 +898,14 @@ lines=0
 [EncodedFile-Folder-Explore_VirtualBox VMs.cmd]
 lines=0
 0=ZXhwbG9yZXIuZXhlIC9uLC9lLCIlVVNFUlBST0ZJTEUlXFZpcnR1YWxCb3ggVk1zInick3KtKMjJL0qND8ssKilNzHHKr1AI8y3WS85NYRgFwx8YEpBfYs61iZEBAAyRC8oLhlHxAQAAAAIAAAAxAAAAMQAAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Lancelot-bltxtremovepatternline.au3]
+lines=0
+0=eJy1VtFu4kYUfU6k/MPUCytYsQgIykvWq4A9pNYaXBk2tGpXyNgDme0w446HLJGi/k//sndsYxwgK6JteRnbc++555x7PebNSExk8OiEgl+cX/+N3vjkrzWVpBetKDyB2yUVHF2/gx+yYSNU9IEkKJQkUCRC80fUWyvhqMupDOKYyNntZwfpaEje29FFTJfOZSAf/5gzsglClRD5QGSThuIw3lurBWXEnDO1UZKsxAOJA6WI5Ixy0iQbcphjiVUsSZIAabObKdqL8Emio1aEKxNrCsgW3zgTQUQkWgiJppTP15Tp21iKr6A40TL7bE2QSxdHimpImyShpLHShQ3jeMwA1IDalFy72W62mq3jgS5ZBswS8aOky3tl/oM6rXYrZaAJoB6PkBvwkDChXqpEWGTqeqNgRZ5e4+Au3YlI8HRKnXGqHE0lBeinLc3vZaShaEKBWzWCQaqiqoKb6vdyso2narbeEamjMY9+ZESdBapYQ9t1Rvj31hf0AV2iyT2BwT+zBE8EIynRmoF93/N/MuqwgTcUzIC6zuLiPEXgQiFtNewkKqkVgO0v9VPRWAJ2nQHWWEnKlw6HtaYxb4nqKXg2fwbbMGyjwH4ZPEc/y8m+Bt/P8VNh42NBDeO9r6uUnTjmQmfnwmn1O/+zvs4p+jqH+uAsGSbLvtjUrroNw2iUvEBv0U0o2QLWchmddcvEPGCoMnBcPPNxz0YmSg8CnwTRzIXX8JmpxfWlTk8DZ5nwMrUdGgQ9t8f7lHpzcT5Y8/CgkvcLHs10cqPi46F3h2caslHp29h1hkCtrX11Ragp93UgPNMYXkx4OR216pCVJ0+8Sc/N/C+S3rdf37/pPVRCbb2TYefFtYCMf4qepkKtGyIlnNdFLaThXCHifH+nqpUemQVmWXvBUtNUlMPZlSNsWZWhPnzMscpztvWhhFo/ATb3Db01t8xgiizfHWgnCI9g0eItJpKycp+oteSocB3wdKuft3w7M6V+T31ngmd3vQzllBZ36v9BTzVyTqafwe4xOaJxX9L4t/EED/Wmj23Hx9akVpl606vu6POwj31gZniDgZHTvfHGPRne66e/XnWNgnIuOU2cWT9j6xOE2IxZAWM140/4KBJ22WlGjBkNZFCu9DIV3666Nk0C+L+SXg8Sn0TZR0ZwHREr+c7Q70M+KiP4GuSTWcyANnGf8MjIhrLER58kMGE7l8/OfpxfFpi+19Ac+NAcIwPuvcSm9Vo2mJ9KZvsmbC/yNW8/QujaND8eNv9fXRIrEHick0rKKakoKUrNzS9LLUgsKUktysvJzEvVSyw1ZhgFwx9s4YLQu5mxy+cwrxNjYAIAruUNZagfq2cBAAAAAgAAADYAAAC7AwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Lancelot-bltxtremovepatternline_Test.cmd]
+lines=0
+0=eJylkD0LwjAQhvdC/0MoFHQJqIPg5kdHQVR0CZTYXm0wHyW5lPx8IwouKorbHfdw99xbVK0h+5briyNoyEl6KKVogDTGxg4DWlCmh44jgtVSaEiTNHk9oRCAZLl3YDtrGiEhZ/QgLHouFyawZ0mDktl36PjBrnnVxhuOHYWebsFVHjZFOejpaDIsI5fdvKLSG+u723LGVqbyCjQ6wnVNdoAo9Nmxea2EFg4tR2M/W/+35Kd/0qTjMaMrNomYqXick0/KKakoKUrNzS9LLUgsKUktysvJzEuND0ktLtFLzk1hGAXDGixjhND7cMjz70vzZGACACBCD8ZU2OQmAQAAAAIAAAA6AAAAvgAAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-Lancelot-bltxtrline.exe]
 lines=90
@@ -1135,28 +1203,4 @@ lines=99
 97=Zl8DOG0d5Ny3h/Kq3DprlE1VxAp0qeZ5TE1Rr0KY7q4amm1P5UizFZ9QmNxcrT4EdMq7xmcqEVJqRg4ol2tv/J29xTzwcs3YG/T8MoQ/M+P8549JAu+RH+GJPjfV5apLCTMSN9mtqxjyGedKXPDuFCADMwZRCLp/AJXr8pf42lUBVeHjGj4yO9HLThdYp/Xc+Rbb3lF70dSScUEZzZJp0fcx5UFlzQCb9nv4rPhbXtxSJ1jTSxH842axsF2IjMgowdkNfqZCkucPTzXGuRTtDNf1t9f4RuJOFbiM7Dwd4VDLWnJIfFeqz3XXtZmc8DYrmsAYv7bLDyFXaV5nNWPV7ILblKVGrxvIqB20w+MlWt5+zls0ESJas1IJ2ncKNV4VUFFl+v3HBbVFIPz8sxjTODYGEMXbZvkYhiIavzRcuD9P2bQybSY989X9h2CiJYdXzUUqbU5Wz9oBTF4FTyneJ+BvYJrdt3iTXcl+SZfdTnotBeDXGyGZLRjoD9oVlEZl+Wce2XhQS2RGR7/kKFghQfq0dCAYar7lnvq61h4MqaefS/Z1YTWjOvHW7zs4gKefZTkdhP/JqB5oJ3EriZbZ/ZT46J68FglsYKxzgbtDTcf6QmgoKq8mJh1wTmQe4aWv15LJ8p7kMjM+cfZaVqLBCPtF3faVwMGp5PO79/VtelxN0u20y8rZUAMkLY/4aE+I8BtmPN4iF0fvgjLuM4A84sh1sC5fLWdkuqJjYKqGPMSIJ6esdCjB9okclowbVFzfa1AnhyzbxMPSEMa5HnSC/jAbqY8BBGwvkOQQOmPP6yiOiBlGaFooyfF62C85faW+mvsc0nU2nGfxZwlrdcfJvGWkiPDgzgc2Qun+qDYKAd9aGbaw3Id5chJhcjrC4slJZjO7HudjuCbuV1KB3OpY2c7+IaDlif7iDJG683QOA2WYo1xIUm/gxD++b9ZWA9AbDlEi+6BBLf0AiHLXClTF7lShkmT4CjuDxr2M48kwilNp1o3xh2JqGx3ev8nMI0fNVrJIYh30YfGPL0QTfCOi+S5tXuokb5tdn23Sj7y/Mc2+BmrzGANnrQp1BDlabc4MNJKk2yncUAl6T2vVnwEKQda2XOmlXMt9Ak1TBpTSd3c5GTMszjE8gzn9u7ySOZEV/aCc7ZOWX7x/JTiJjAI5ID//Wv/9nWkp1BDPEaRJpI36ONNA35gJAg3gBKVzP2fQKhLHufkUiaqzUBlR8qXatWt+djO8iXcCkfwGpMYBJ3PGy9693szO4dMrSBYY+orGI8543ufhi8+/61q7t2UwrrhqOHxMeiH/YAiDXbXYZugi0vL/5lbUgjotT/Q0i/ewUGcNfUjv97mvEM2zqCIoxbcc2JPtR1typNL7Q50C+64dcTzdfye8bA+0NoSfg/60VaMN192TjnuzMz9ZvKhRNLKNXKIEEUTMzuwv9cHBEjlcfxb9Xw8hAKEFEKtMHpoSICdXMNWsK5nM6j0IqmExwVyyLSOhfKiv4GbiJMARDHB3swAyhgvZtaLmHKfLQmZgcLp6z++1mYsZefq9fYimMA8H8KSRswlKOWM+2L8SFpVg7D7Vv3o4E4YBtTB2aHgqgfl+vXqu9OJBfVe8uSGGKtSHJZ+bONmbz35sjLat6LzFEV1Rz7gBxxu1M2ZqruZwT1AnvJy59VPn4lzQI0tMpVM7ckbcE8ZJhLPPrMnR9E8XDXEf8rBxjaWjcCfYMOs2LGlg94HxmV8pq8O03Vc8/fXQJ/5fXulIDX8QkzNmd6fj3Q6Jv90YRsC17apuSVb0cKaD6VMzMaPlz+Zvuj+2n9GV3OtwdhxOS0WezTYsq70Si/YSKC3zfdYsQpDjucKeDd6ONc6Aq+WL84/jHsd9BNn8o3OXdlxKEInY5SuvZ3rKaEGgocLBjAVqU9hVKUSvM6iSSgr+kuNK+2U9LI4Yjh2MjgyyhI88XlW9l1SMNmj8uPP8g9dFlwsOfC48kSp4hrmkoGBl4/8FMERH9om18VTAhlWrUTqVzVsuKY3Rsidn9D+l2ZAwQASLkyl3jP2mWAza5YkJDOlFwH+xVYSc6GcY5GHvEeTZdX2p98DdnRjPmT60DLe8JBbC8JyYHNMk2x34qlsaUO9+MBpb8k3hyjX4NzR9MiIwrCy86bfuKXnqNFCOpKZcLNpyyAeQ8k93Fjv+wLSx0gqYvty/Qwpxe52dgJdVOP2vD13QaormAhLfgSHR/Q8U3wWi/2430ksXDNAWKM3Fl9HAVZgXdORy/5B5Ftj4OLqnXbqeYrSYcI6FWBa3FAHemwH6MDWIiWVClFZKRa0OscTwLV9Gm4Q3Js+sonDkcVMnmHBJcE30I0QRne58nASKeAVjFUhfudAacWbIeFzRV+vtBjzIPpCmuAcCejRIxVGORZwqEcQ5aihLm4AJ7swSKHY6iIpyCFkyhY/omY2HINTu4S4wGf3AkfdB8rVzJ+9+hXbwpPl7bDa2dnK349Hvx+B9S731psjBxipI0oFs/dvmRzTMGOJo9BL+ELepqZWGetEnTFGjkeYi56U4wbo72ivJ9zEU8K6bcyfD4GFUojSukKLltWCy6jV9g+XCPNFRhhaIdMc3kxTx61RldY56y9AUqJX6C6z0aSitIQ5v+oUWnjjzkE1mScXJ3D4QvBoso0nB7XyCiNYXk239WBWEHN/iJCuGjgBao+fOv7VOLrrfT6ljLba7b940sjZb9FNReKvO+0Vh6O56KY9zFKbgNPPZNhpccDskczqkfggELobplmJeTmSbS/DDKLR7dEKNDEez8q+CABJDj8D3R2hR3teCcYFhsBvmrCR8Dqrl89+/aXXrgtJ7UJu/MWYpywNs6J1ldRL9a9FsGbx2A5pbeZve0sVZlxqYzQif8vWOZuw9awh+0hZRGIetZYMmF5/uwVFLxv31o1AD6exTMD4SKQIGKt+hCBrov4KonvTHl6blJfmMnt2jw8OQlvsI7dQCyQGSEuKBB2Qe7BeQ/6Ishoo01NmLIMkCOaIAJj6qAFjLWL4fErAlYewDFEdxv/eZ423VdOSHDjBS0vU9Jt6Yn1YAWJ2KaxgX9Fk9pvMBZqsub/A0aVaoti0+R1yso8hOOJf57HHRUGgxnL601Vd33/vVycIPozmHSQLsTrFJDXX5wKtT9n7I+Iy/5WTsC3bHP19PEe/IuGmyjGJBDtpZMSSj5V6eGStvhRxgRU5TsW0wk47WAdGgugvGHZRCUSdcEkhl3NKVF7+R81d6uRTwhNTO+16pjr2YlVg5nlwAEuor/BQ0UcfQkRc5jE985mXLmSa0y5SwgNugqeXAc/8Sxe7hR2E4T6c3P9lO8uaXgR292vblNLXVzR5IQ2hw0cJLoTOX0xHFLIDvOyxcd+utvQlVsOyHN73NJ6ee2nY7LM88g88SpkKblfzJNmRR0qLie5fc1pKK748VnGygNQjwwLbrWuXJA2G0BVTj3fGxFpbFDkgkMBjWqo7qBlioQBVMaOpTgg2JrUh/wWqSlVLq0lUk5wSufYNPIVSxdHiH0OpMq7c6gne8+MfL48wdN5FB9O3GcGykMq3rjFJKOEsC2HcAF6WXn6myy3neIiBGZgpI6SUt0ETicwWCDGOPmVAyk2DB6bQguCi9j55QN1RvaxWiSIu5WhPt4ATQD7KT0LBdFvlu8gwVi3V/0c2HK6/fkopph53S8VkZqxHQTZx7CKM8GtoTCYoU6yCm7jVqlyw6PL3IpwZ0V9GAFy2LymX54kCDM+28cOD4u4e5FuH03l+gf7Jf29E0FgzlNze8uzKRCRHHpnJj4SKxbFOrw+Gj+ietzJffUu0RFlVAxypldKrRX5PWahEcE2iewHFDb+oeZKCv6g4FLN1+5eWtI7301vqeKzOArW2tfvg2S1GSlAaPDB0YiFC+XwKfS3iLC5uNU1g3ULY8MhZ/05WHPlUPNg5bCBWhbq9+sE8V09sOuetCmY7t5vTBhWf5t48AsogaQ2OYlq6fU9o+g3d1iZUSKiXgfDQy079mppEcXPOGSq1f5xBO2i6WoQYYchfbvS97E3f1+bn4JqOfquJVtL7mm1xyv08C00BRU4sQcrtbY5iB+Z
 98=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
 99=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
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
-
-[Settings_Default]
-Run,%ScriptFile%,First_Gui
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

@@ -4,14 +4,14 @@ Type=Plugin
 Author=Lancelot
 Description=Configure 'Source' (ex: Source Folder - iso file etc.) Location
 Credits=http://TheOven.org
-Version=030
+Version=036
 Download_Level=2
 Level=1
 Selected=True
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2018.01.08
+Date=2020.03.14
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Config%20SourceCD.Script
@@ -50,6 +50,12 @@ History028=Lancelot Change Title=Config Source Folder to Title=Config Source  (S
 History029a=Lancelot Add Set_Source_Button After Momie0 Reply 109 http://TheOven.org/index.php?topic=2271.msg24933#msg24933 - Date:2017.12.10
 History029=Lancelot Updated Interface_Multi default paths - Date:2017.12.12
 History030=Lancelot winbuilder bug workaround again..... - Date:2018.01.08
+History031=Lancelot improved [Interface_SE] to provide 2 source folders to support different mounted iso - simplified - SE_Button_Download_Web hidden - Latest Win10 do not have download link. - Date:2018.11.14
+History032=Lancelot Select Source Box Default (SF_FileBox) if no source-folder selected to avoid end user common mistake (Like 'Azin Configure' Plugin) - Date:2020.02.04
+History033=Lancelot Add Open (Selected) source folder buttons - Date:2020.03.07
+History034=Lancelot Fix: No empty Title with "cmd.exe Start" - even HDM6 with Start QuoteQuote can crash see Malok Reply-8 Topic: http://TheOven.org/index.php?topic=3088.0 Malok Reply 8: http://TheOven.org/index.php?topic=3088.msg36827#msg36827 - Date:2020.03.09
+History035=Lancelot With Empty SourceFolder opening  Select Source Box (History032) Gena-PrePE can not autodownload so Gena-PrepPE autodownload option also here following setting at Gena-PrepPE - Date:2020.03.14
+History036=Lancelot Fix for 082015 Compatibility winbuilder Bug - Date:2020.03.14
 
 [NOTES]
 Interface_SE working link and md5:
@@ -65,72 +71,94 @@ Dub_Button="Save Personal",1,8,348,48,76,25,Dub_Personal,,False,_Dub_Personal_,F
 Dub_TextBox=,1,0,350,73,72,21,,__Author
 Button_Int_Multi="Interface Multi --->",1,8,201,2,124,25,P_Interface_Multi,0,False,False,_P_Interface_Multi_,False
 Button_Int_MultiFile="Interface Multi VHD -->",0,8,201,26,124,25,P_Interface_Multi_File,0,False,False,_P_Interface_Multi_File_,False
-Button_Int_SE="Interface SE --->",1,8,201,50,104,25,P_Interface_SE,0,False,False,_P_Interface_SE_,False
+Button_Int_SE="  Interface SE --->",1,8,201,50,104,25,P_Interface_SE,0,False,False,_P_Interface_SE_,False
 Button_Int_Gena="Interface Gena --->",1,8,201,74,124,25,P_Interface_Gena,0,False,False,_P_Interface_Gena_,False
 WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://TheOven.org/index.php?board=9
 WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+SF_OpenDir_Button=,1,8,422,105,20,20,SF_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_SF_OpenDir_P_B_,False,"__Open Selected Source Folder"
 SF_FileBox=,1,13,31,104,303,20,dir
 SelS_TextLabel="Select Source:",1,1,31,82,141,18,12,Bold
 pBevel1=pBevel1,1,12,199,-3,253,104
-pTextLabel1=1,1,1,6,88,20,33,18,Bold
-pTextLabel4="Click 'Big Blue Play' button at Top-Right of builder",1,1,34,220,134,31,8,Normal
-pImage1=BigBluePlay.gif,1,5,190,213,32,59,
-pTextLabel5=2,1,1,6,147,21,27,18,Bold
-pImage3=2017-09-17_051820.gif,1,5,189,130,210,67,
-pTextLabel7=3,1,1,6,217,26,32,18,Bold
-pTextLabel8="Select 'Project'",1,1,36,155,79,18,8,Normal
-pBevel2=pBevel2,1,12,3,129,418,74
-pBevel4=pBevel4,1,12,3,201,418,79
-pImage4=PEBakery_Build_2017-11-26_153047.gif,1,5,277,207,39,70,
-pTextLabel9=OR,1,1,243,229,25,18,8,Bold
+pTextLabel1=1,1,1,6,98,20,33,18,Bold
+pTextLabel4="Click 'Big Blue Play' button at Top-Right of builder",1,1,34,250,134,31,8,Normal
+pImage1=BigBluePlay.gif,1,5,190,243,32,59,
+pTextLabel5=2,1,1,6,177,21,27,18,Bold
+pImage3=2017-09-17_051820.gif,1,5,189,160,210,67,
+pTextLabel7=3,1,1,6,249,26,32,18,Bold
+pTextLabel8="Select 'Project'",1,1,36,185,79,18,8,Normal
+pBevel2=pBevel2,1,12,3,159,418,74
+pBevel4=pBevel4,1,12,3,231,418,79
+pImage4=PEBakery_Build_2017-11-26_153047.gif,1,5,277,237,39,70,
+pTextLabel9=OR,1,1,243,259,25,18,8,Bold
 Set_Source_Button="Set Source",1,8,334,105,88,18,Set_Source_B,Sekkyumu-Developpers-Play_2424.bmp,False,False,_Set_Source_B_,False
+Gena_SCD_Check_DL_Bevel=pBevel5,1,12,160,135,261,23
+Gena_SCD_Check_DL_CheckBox="Gena: PrepPE 'Check and Download SourceCD'",1,3,168,139,246,16,True
+
+[SF_OpenDir_P_B]
+Set,%t%,%SF_FileBox%
+If,%t%-,Equal,-,Message,"Source Folder Box Empty",Error,5
+If,%t%-,Equal,-,Echo,,"Source Folder Box Empty",Warn,5
+If,Not,%t%-,Equal,-,Run,%ScriptFile%,SF_OpenDir_P
+
+[SF_OpenDir_P]
+If,ExistDir,%t%,Call,OpenDir,%t%
+Else,Message,"Source Folder not Found",Information,5
 
 [Interface_SE]
 TEST_VAR_TESTTEST_CheckBox="Test VAR Checkbox",0,3,586,-2,119,18,True
 Button_Int="<-- Interface",1,8,445,-3,108,29,P_Interface,0,False,False,_P_Interface_,False
 Select_Arch_RadioGroup=,1,14,127,2,58,48,x64,x86,0
-x64_DL_TextLabel=x64,1,1,42,100,35,18,8,Normal
-x64_DL_TextBox=,1,0,85,95,426,21,Win10_1709_English_x64.iso
-x64_md5_TextLabel="x64 md5:",1,1,105,123,57,18,8,Normal
-x64_md5_TextBox=,1,0,166,119,205,21,
-x86_DL_TextLabel=x86,1,1,43,151,25,18,8,Normal
-x86_DL_TextBox=,1,0,85,147,426,21,Win10_1709_English_x86.iso
-x86_md5_TextLabel="x86 md5:",1,1,105,170,57,18,8,Normal
-x86_md5_TextBox=,1,0,166,170,205,21,
-SF_TextBox="Source- Base-Folder (\x86\ \x64\ will be used during build)",1,0,42,208,359,21,%BaseDir%\S\W10
-SE_SF_Opendir_2_Button="Put your iso here",1,8,334,69,126,24,SE_SF_OpenDir_P_B,opendir.bmp,False,False,_SE_SF_OpenDir_P_B_,False,"__Source Base Folder Folder"
-SE_SF_Opendir_Button=,1,8,8,204,25,20,SE_SF_OpenDir_P_B,opendir.bmp,False,False,_SE_SF_OpenDir_P_B_,False,"__Source Base Folder Folder"
-SE_Button_Download_Web="   Download",1,8,39,68,120,25,SE_Download_P_B,Web.bmp,False,_SE_Download_P_B_,False
+x64_DL_TextLabel=x64,1,1,17,266,35,18,8,Normal
+x64_DL_TextBox=,1,0,54,263,426,21,Win10_1809_English_x64.iso
+x64_md5_TextLabel="x64 md5:",0,1,501,268,57,18,8,Normal
+x64_md5_TextBox=,0,0,568,265,205,21,
+x86_DL_TextLabel=x86,1,1,17,297,25,18,8,Normal
+x86_DL_TextBox=,1,0,54,296,426,21,Win10_1809_English_x86.iso
+x86_md5_TextLabel="x86 md5:",0,1,500,301,57,18,8,Normal
+x86_md5_TextBox=,0,0,568,291,205,21,
+SF_x64_TextBox="Source Folder x64",1,0,43,117,359,21,%BaseDir%\S\W10_x64
+SF_x86_TextBox="Source Folder x86",1,0,43,159,359,21,%BaseDir%\S\W10_x86
+SE_SF_Opendir_2_Button="Put your iso here:",1,8,270,233,126,24,SE_SF_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_SE_SF_OpenDir_P_B_,False,"__Source Base Folder Folder"
+SE_SF_x64_Opendir_Button=,1,8,10,115,25,20,SE_SF_OpenDir_x64_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_SE_SF_OpenDir_x64_P_B_,False,"__x64 Source Base Folder Folder"
+SE_SF_x86_Opendir_Button=,1,8,11,157,25,20,SE_SF_OpenDir_x86_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_SE_SF_OpenDir_x86_P_B_,False,"__x86 Source Base Folder Folder"
+SE_Button_Download_Web="   Download",0,8,658,211,120,25,SE_Download_P_B,Web.bmp,False,_SE_Download_P_B_,False
 Select_TextLabel="SELECT :",1,1,45,18,75,18,12,Bold
-SE_DL_CheckMD5_CheckBox="Check MD5 after Download",0,3,164,73,164,18,False
-Manual_Bevel=pBevel1,1,12,34,243,447,101
-Manual_Tip_TextLabel="Tip:#$xWithout downloading or providing iso#$xYou also can extract your iso to#$xSource-Base-Folder\x64\#$xSource-Base-Folder\x86\",1,1,38,255,264,83,10,Bold
-SE_SF_Opendir_x64_Button="Copy your x64 CD here",1,8,307,278,160,27,SE_SF_OpenDir_x64_P_B,opendir.bmp,False,False,_SE_SF_OpenDir_x64_P_B_,False,"__Source x64 Folder"
-SE_SF_Opendir_x86_Button="Copy your x86 CD here",1,8,307,306,160,27,SE_SF_OpenDir_x86_P_B,opendir.bmp,False,False,_SE_SF_OpenDir_x86_P_B_,False,"__Source x86 Folder"
-SE_SF_Delete_x64_Button="Delete \x64\ Folder",1,8,406,192,123,25,SE_SF_DeleteF_x64_P_B,trash.bmp,False,False,_SE_SF_DeleteF_x64_P_B_,False
-SE_SF_Delete_x86_Button="Delete \x86\ Folder",1,8,406,216,123,25,SE_SF_DeleteF_x86_P_B,trash.bmp,False,False,_SE_SF_DeleteF_x86_P_B_,False
+SE_DL_CheckMD5_CheckBox="Check MD5 after Download",0,3,661,245,164,18,False
+Manual_Bevel=pBevel1,1,12,4,68,542,128
+SE_SF_Delete_x64_Button="Delete 'x64' Folder",1,8,420,116,123,25,SE_SF_DeleteF_x64_P_B,trash.bmp,False,False,_SE_SF_DeleteF_x64_P_B_,False
+SE_SF_Delete_x86_Button="Delete 'x86' Folder",1,8,420,156,123,25,SE_SF_DeleteF_x86_P_B,trash.bmp,False,False,_SE_SF_DeleteF_x86_P_B_,False
 WebLabel_WinISO=Downloader.exe,1,10,344,38,79,18,https://www.heidoc.net/joomla/technology-science/microsoft/67-microsoft-windows-iso-download-tool,"__Microsoft Windows and Office ISO Download Tool"
-WebLabel_windowsiso=windowsiso.net,1,10,328,2,74,18,http://windowsiso.net/windows-10-iso/windows-10-creators-update-1703-download-build-15063/windows-10-creators-update-1703-iso-download-standard/
+WebLabel_windowsiso=windowsiso.net,0,10,328,2,74,18,http://windowsiso.net/windows-10-iso/windows-10-creators-update-1703-download-build-15063/windows-10-creators-update-1703-iso-download-standard/
 WebLabel_tbrgadguard=tb.rg-adguard.net,1,10,336,20,88,18,https://tb.rg-adguard.net/,"__Windows Final + Win10 Version 1709 - RedStone - Windows 10 English"
-Set_Source_Button="Set Source",1,8,456,46,88,18,Set_Source_B,Sekkyumu-Developpers-Play_2424.bmp,False,False,_Set_Source_B_,False
+Set_Source_Button="Set Source",0,8,456,46,88,18,Set_Source_B,Sekkyumu-Developpers-Play_2424.bmp,False,False,_Set_Source_B_,False
+SF_TextBox="Source ISO Folder",0,0,335,369,134,21,%BaseDir%\S\Win_ISO
+pTextLabel1="A) Provide Folder Info of your SourceCD:",1,1,25,75,381,20,10,Bold
+pTextLabel2=OR,1,1,44,204,43,27,16,Bold
+pTextLabel3="B) Provide your ISO file and FileName.",1,1,28,237,255,18,10,Bold
+pBevel1=pBevel1,1,12,4,231,484,96
 
 [Process_Interface_SE]
-If,%Select_Arch_RadioGroup%,Equal,0,Set,%SF%,%SF_TextBox%\x64
-If,%Select_Arch_RadioGroup%,Equal,1,Set,%SF%,%SF_TextBox%\x86
+If,%Select_Arch_RadioGroup%,Equal,0,Set,%SF%,%SF_x64_TextBox%
+If,%Select_Arch_RadioGroup%,Equal,1,Set,%SF%,%SF_x86_TextBox%
 If,%Select_Arch_RadioGroup%,Equal,0,Set,%Select_Web_ISO%,%x64_DL_TextBox%
 If,%Select_Arch_RadioGroup%,Equal,1,Set,%Select_Web_ISO%,%x86_DL_TextBox%
 If,%Select_Arch_RadioGroup%,Equal,0,Set,%Web_ISO_md5%,%x64_md5_TextBox%
 If,%Select_Arch_RadioGroup%,Equal,1,Set,%Web_ISO_md5%,%x86_md5_TextBox%
 //--
-If,Not,ExistDir,%SF_TextBox%\x64,DirMake,%SF_TextBox%\x64
-If,Not,ExistDir,%SF_TextBox%\x86,DirMake,%SF_TextBox%\x86
-//-
 StrFormat,FileName,%Select_Web_ISO%,%t%
 StrFormat,Replace,%t%,#$p20," ",%Select_Web_ISO_FileName%
 //-
+//SF also used to extract iso
+If,%SF%,Equal,-,Call,Echo,"Halt: SourceFolder Info Missing",Warn,,MessageError,,Halt
+If,Not,ExistDir,%SF%,DirMake,%SF%
+//-
+Set,%t%,1
+Set,%t%,0
+//AutoDownload cancelled - There is no ready link for win10 iso files anymore (can be used later for other SE)
+If,%t%,Equal,1,Begin
 If,Not,ExistFile,%SF_TextBox%\%Select_Web_ISO_FileName%,Begin
 If,Not,%Select_Web_ISO%-,Equal,-,Begin
 Echo,"Wait Patiently - Downloading Select_Web_ISO_FileName% from %Select_Web_ISO% - Start"
@@ -141,6 +169,7 @@ Run,%ScriptFile%,SE_Download_CheckMD5
 //-
 End
 //-
+End
 End
 //-
 If,Not,ExistFile,%SF%\setup.exe,Begin
@@ -217,38 +246,67 @@ End
 End
 
 [SE_SF_OpenDir_P_B]
-Run,%ScriptFile%,SE_SF_Command_Files
+//Run,%ScriptFile%,SE_SF_Command_Files
 Call,OpenDir,%SF_TextBox%
 
 [SE_SF_OpenDir_x64_P_B]
-Run,%ScriptFile%,SE_SF_Command_Files
-Call,OpenDir,%SF_TextBox%\x64
+//Run,%ScriptFile%,SE_SF_Command_Files
+If,Not,%SF_x64_TextBox%-,Equal,-,Call,OpenDir,%SF_x64_TextBox%
 
 [SE_SF_OpenDir_x86_P_B]
-Run,%ScriptFile%,SE_SF_Command_Files
-Call,OpenDir,%SF_TextBox%\x86
+//Run,%ScriptFile%,SE_SF_Command_Files
+If,Not,%SF_x86_TextBox%-,Equal,-,Call,OpenDir,%SF_x86_TextBox%
 
 [SE_SF_DeleteF_x64_P_B]
-System,FILEREDIRECT,OFF
-If,ExistDir,%SF_TextBox%\x64,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%SF_TextBox%\x64#$q"
-If,ExistDir,%SF_TextBox%\x64,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%SF_TextBox%\x64#$q"
-If,ExistDir,%SF_TextBox%\x64,ShellExecute,Hide,cmd.exe,"/C takeown /f \#$q%SF_TextBox%\x64#$q /r /d y && icacls \#$q%SF_TextBox%\x64#$q /grant administrators:F /t"
-If,ExistDir,%SF_TextBox%\x64,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%SF_TextBox%\x64#$q"
-System,FILEREDIRECT,OFF
-If,ExistDir,%SF_TextBox%\x64,Call,DirDelete,%SF_TextBox%\x64
-If,ExistDir,%SF_TextBox%\x64,Message,"Delete Folder Error#$x#$x#$xSomething wrong deleting folder:#$x#$x#$x%SF_TextBox%\x64",Error
+Run,%ScriptFile%,SE_SF_DeleteF_P,%SF_x64_TextBox%
 
 [SE_SF_DeleteF_x86_P_B]
-System,FILEREDIRECT,OFF
-If,ExistDir,%SF_TextBox%\x86,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%SF_TextBox%\x86#$q"
-If,ExistDir,%SF_TextBox%\x86,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%SF_TextBox%\x86#$q"
-If,ExistDir,%SF_TextBox%\x86,ShellExecute,Hide,cmd.exe,"/C takeown /f \#$q%SF_TextBox%\x86#$q /r /d y && icacls \#$q%SF_TextBox%\x86#$q /grant administrators:F /t"
-If,ExistDir,%SF_TextBox%\x86,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%SF_TextBox%\x86#$q"
-System,FILEREDIRECT,OFF
-If,ExistDir,%SF_TextBox%\x86,Call,DirDelete,%SF_TextBox%\x86
-If,ExistDir,%SF_TextBox%\x86,Message,"Delete Folder Error#$x#$x#$xSomething wrong deleting folder:#$x#$x#$x%SF_TextBox%\x86",Error
+Run,%ScriptFile%,SE_SF_DeleteF_P,%SF_x86_TextBox%
 
-[SE_SF_Command_Files]
+[SE_SF_DeleteF_P]
+If,Not,#1-,Equal,-,Run,%ScriptFile%,SE_SF_DeleteF_P_Auto_Checkfolder,#1
+
+[SE_SF_DeleteF_P_Auto_Checkfolder]
+If,Not,ExistDir,#1,Message,"Folder Not Found#$x#$x#1",Information,5
+If,ExistDir,#1,Run,%ScriptFile%,SE_SF_DeleteF_P_Auto_Question,#1
+
+[SE_SF_DeleteF_P_Auto_Question]
+Set,%Answer%,No
+Echo,"Are you sure You want to Delete Folder ?#$x#$x#1"
+If,Question,"Are you sure You want to Delete Folder ?#$x#$x#1",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Run,%ScriptFile%,SE_SF_DeleteF_P_Auto_Check_Root,#1
+
+[SE_SF_DeleteF_P_Auto_Check_Root]
+//Do not delete RootFolder - Dangerous
+Set,%t%,1
+StrFormat,Split,#1,\,0,#8
+//C: #8=1 , C:\ #8=1 , C:\1 C: #8=2
+If,#8,Equal,1,Set,%t%,0
+If,%t%,Equal,0,Message,"Root Folders not deleted by Plugin:#$x#$x#1#$x#$x#$xDelete Manually.....",Information,5
+If,%t%,Equal,1,Run,%ScriptFile%,SE_SF_DeleteF_P_Auto_Check_Writable,#1
+
+[SE_SF_DeleteF_P_Auto_Check_Writable]
+StrFormat,DATE,#9,yyyymmddhhnnss
+Set,%t%,0
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C Echo Test>#$q#1\DummyFileForWritableTest_DummyDummyDummyDummyDummyDummyDummyDummyDummy_#9.txt#$q"
+If,ExistFile,#1\DummyFileForWritableTest_DummyDummyDummyDummyDummyDummyDummyDummyDummy_#9.txt,Set,%t%,1
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q#1\DummyFileForWritableTest_DummyDummyDummyDummyDummyDummyDummyDummyDummy_#9.txt#$q&del /q /f /A:R /A:H /A:S /A:A #$q#1\DummyFileForWritableTest_DummyDummyDummyDummyDummyDummyDummyDummyDummy_#9.txt#$q"
+System,FileRedirect,ON
+If,%t%,Equal,1,Run,%ScriptFile%,SE_SF_DeleteF_P_Auto_Delete,#1
+
+[SE_SF_DeleteF_P_Auto_Delete]
+System,FileRedirect,OFF
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C takeown /f \#$q#1#$q /r /d y && icacls \#$q#1#$q /grant administrators:F /t"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+System,FileRedirect,ON
+If,ExistDir,#1,Call,DirDelete,#1
+If,ExistDir,#1,Message,"Delete Folder Error#$x#$x#$xSomething wrong deleting folder:#$x#$x#$x#1",Error
+
+[SE_SF_Command_Files_CANCEL]
+//Current section NOT USED ANYMORE for now - Files can be on mounted iso
 If,Not,ExistDir,%SF_TextBox%,DirMake,%SF_TextBox%
 Set,%w%,%SF_TextBox%\1RemoveDirectory_x64.cmd
 Call,FileCreateBlank,%w%,OverWrite
@@ -331,9 +389,10 @@ Gena_FileBox3=D:\S\NT5\WXPx86_SP3_Pro_Turkish\,1,13,355,368,260,20,dir
 Gena_RadioButton4=,1,11,335,392,20,20,False
 Gena_FileBox4=D:\S\NT5\WXPx86_SP3_Pro_English\,1,13,355,392,260,20,dir
 Delete_ALL_GKnown_Button="Delete All Extracted Folders",1,8,356,292,186,25,Delete_Extract_Folders,trash.bmp,False,False,_Delete_Extract_Folders_,False
-Opendir_D_S_NT5_Button=,1,8,553,296,20,20,Opendir_D_S_NT5_P_B,opendir.bmp,False,False,_Opendir_D_S_NT5_P_B_,False,"__Open Folder D:\S\NT5"
-Opendir_GT_NT5_CD_Button=,1,8,585,296,20,20,Opendir_GT_NT5_CD_P_B,opendir.bmp,False,False,_Opendir_GT_NT5_CD_P_B_,False,"__Open Folder - GlobalTemplates\NT5_CD"
+Opendir_D_S_NT5_Button=,1,8,553,296,20,20,Opendir_D_S_NT5_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_Opendir_D_S_NT5_P_B_,False,"__Open Folder D:\S\NT5"
+Opendir_GT_NT5_CD_Button=,1,8,585,296,20,20,Opendir_GT_NT5_CD_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_Opendir_GT_NT5_CD_P_B_,False,"__Open Folder - GlobalTemplates\NT5_CD"
 Set_Source_Button="Set Source",1,8,318,29,88,18,Set_Source_B,Sekkyumu-Developpers-Play_2424.bmp,False,False,_Set_Source_B_,False
+OpenDir_SourceDir_Button=,1,8,408,29,20,20,OpenDir_SourceDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_SourceDir_P_B_,False,"__Open Source Folder (First Click 'Set Source')"
 
 [Interface_Multi]
 TEST_VAR_TESTTEST_CheckBox="Test VAR Checkbox",0,3,586,-2,119,18,True
@@ -341,7 +400,7 @@ Optimum_Bevel=Optimum_Bevel,1,12,-2,-2,566,330
 Button_Int="<-- Interface",1,8,445,-3,108,29,P_Interface,0,False,False,_P_Interface_,False
 SelS_TextLabel="Select Source:",1,1,31,32,141,18,12,Bold
 pRadioButton1=,1,11,20,60,20,20,True
-pFileBox1=U:\,1,13,44,60,370,20,dir
+pFileBox1=F:\,1,13,44,60,370,20,dir
 pRadioButton2=,1,11,20,84,20,20,False
 pFileBox2=D:\S\Win10_x64\,1,13,44,84,370,20,dir
 pRadioButton3=,1,11,20,108,20,20,False
@@ -363,6 +422,11 @@ pFileBox10=D:\S\NT5\W2003x86Ent\,1,13,44,276,370,20,dir
 pRadioButton11=,1,11,20,300,20,20,False
 pFileBox11=D:\S\NT5\X13-13873\,1,13,44,300,370,20,dir
 Set_Source_Button="Set Source",1,8,326,32,88,18,Set_Source_B,Sekkyumu-Developpers-Play_2424.bmp,False,False,_Set_Source_B_,False
+OpenDir_SourceDir_Button=,1,8,417,32,20,20,OpenDir_SourceDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_SourceDir_P_B_,False,"__Open Source Folder (First Click 'Set Source')"
+
+[OpenDir_SourceDir_P_B]
+If,ExistDir,%SourceDir%,Call,OpenDir,%SourceDir%
+Else,Message,"Source Folder not Found",Information,5
 
 [Interface_Multi_File]
 TEST_VAR_TESTTEST_CheckBox="Test VAR Checkbox",0,3,586,-2,119,18,True
@@ -371,7 +435,7 @@ pTextLabel1="Select Mount Drive Letter:",1,1,31,9,221,18,12,Bold
 Drive_ScrollBox=U:,1,4,253,7,42,21,A:,B:,C:,D:,E:,F:,G:,H:,I:,J:,K:,L:,M:,N:,O:,P:,Q:,R:,S:,T:,U:,V:,W:,X:,Y:,Z:
 Button_Int="<-- Interface",1,8,445,-3,108,29,P_Interface,0,False,False,_P_Interface_,False
 SelS_TextLabel="Select Source File:",1,1,31,32,162,26,12,Bold
-Opendir_Button=ISO2VHDwimboot,1,8,423,44,120,20,OpenDir_P_B,opendir.bmp,False,False,_OpenDir_P_B_,False,"__Extract ISO2VHDwimboot Folder"
+Opendir_Button=ISO2VHDwimboot,1,8,423,44,120,20,OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_P_B_,False,"__Extract ISO2VHDwimboot Folder"
 Exp_Temp_Button=Temp,1,8,471,93,81,25,Open_Folder_ProjectTemp,explorer.bmp,False,False,_Open_Folder_ProjectTemp_,False
 MFile_RadioButton1=,1,11,20,60,20,20,True
 MFile_FileBox1=S:\S\Win10_1703_English_x64.vhd,1,13,44,60,370,20,file
@@ -398,27 +462,27 @@ MFile_FileBox11=,1,13,44,300,370,20,file
 Set_Source_Button="Set Source",1,8,326,37,88,18,Set_Source_B,Sekkyumu-Developpers-Play_2424.bmp,False,False,_Set_Source_B_,False
 
 [R_Interface]
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [P_Interface]
 IniWrite,%ScriptFile%,Main,Interface,Interface
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [P_Interface_SE]
 IniWrite,%ScriptFile%,Main,Interface,Interface_SE
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [P_Interface_Gena]
 IniWrite,%ScriptFile%,Main,Interface,Interface_Gena
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [P_Interface_Multi]
 IniWrite,%ScriptFile%,Main,Interface,Interface_Multi
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [P_Interface_Multi_File]
 IniWrite,%ScriptFile%,Main,Interface,Interface_Multi_File
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [Check_Tools_P]
 //-
@@ -464,7 +528,48 @@ Run,%ScriptFile%,Process_%t%
 //Halt,-
 
 [Process_InterFace]
-Call,SourceDirSet,%SF_FileBox%
+Set,%SF_FileBoxV%,%SF_FileBox%
+If,%SF_FileBoxV%-,Equal,-,Begin
+StrFormat,Split,%ProjectDir%,\,0,%t%
+StrFormat,Split,%ProjectDir%,\,%t%,%ProjectFolderName%
+If,%ProjectFolderName%-%Gena_SCD_Check_DL_CheckBox%,Equal,Gena-True,Run,%ScriptFile%,Process_InterFace_SF_FileBox_Empty_Gena
+End
+If,%SF_FileBoxV%-,Equal,-,Run,%ScriptFile%,Process_InterFace_SF_FileBox
+Call,SourceDirSet,%SF_FileBoxV%
+
+[Process_InterFace_SF_FileBox_Empty_Gena]
+If,ExistFile,"%ProjectDir%\Basic\1 PrepPE.script",Begin
+IniRead,"%ProjectDir%\Basic\1 PrepPE.script",Interface,SCD_Check_DL_CheckBox,%t%
+If,Not,%t%-,Equal,-,Begin
+Call,ReadInterfaceValue,"%ProjectDir%\Basic\1 PrepPE.script",Interface,SCD_Check_DL_CheckBox,t
+If,%t%,Equal,True,Call,ExecCall,"%ProjectDir%\Basic\1 PrepPE.script",SCD_Check_DL
+If,%Version%,Smaller,080,Begin
+IniRead,%ProjectDir%\script.project,Variables,"##$pSourceDir##$p",%t%
+End
+Else,Begin
+IniRead,%ProjectDir%\script.project,Variables,"#$pSourceDir#$p",%t%
+End
+If,Not,%t%-,Equal,-,Begin
+StrFormat,Right,%t%,1,#9
+If,#9,Equal,\,StrFormat,RTrim,%t%,1,%t%
+If,Not,%t%,Equal,%BaseDir%\Source,Begin
+//Set,%SF_FileBox%,%t%,Permanent - May cause error 77rc2
+Call,WriteInterfaceValue,,,SF_FileBox,%t%
+Set,%SF_FileBoxV%,%t%
+End
+End
+End
+End
+
+[Process_InterFace_SF_FileBox]
+Set,%TmpSource%,DUMMYDUMMYDUMMY
+Set,%InitSource%,""
+Echo,"Choose Source Folder"
+System,ErrorOff
+Retrieve,Dir,%InitSource%,%TmpSource%
+If,%TmpSource%,Equal,DUMMYDUMMYDUMMY,Call,Echo,"No Folder Selected.",Warn,,MessageInformation,,Halt
+Call,WriteInterfaceValue,,,SF_FileBox,%TmpSource%
+Set,%SF_FileBoxV%,%TmpSource%
 
 [Process_InterFace_Gena]
 If,Not,%OSFamily%,Equal,NT5,Call,Echo,"Options only For Gena - Halt - Exit",Warn,,MessageError,,Halt
@@ -744,8 +849,8 @@ If,ExistFile,%MFile_FileBox10%,Run,%ScriptFile%,VHD_Detach,%MFile_FileBox10%
 If,ExistFile,%MFile_FileBox11%,Run,%ScriptFile%,VHD_Detach,%MFile_FileBox11%
 
 [VHD_Attach]
-StrFormat,LEFT,#2,1,#2
-StrFormat,FILENAME,#1,#8
+StrFormat,Left,#2,1,#2
+StrFormat,FileName,#1,#8
 Call,FileNameNoExt,#8,t_FileName
 //-
 Set,#9,"%ProjectTemp%\VHD_Detach_%t_FileName% RunAsAdmin.cmd"
@@ -785,12 +890,12 @@ TxtAddLine,#9,"list vdisk",Append
 //TxtAddline,#9,"automount enable",Append
 TxtAddLine,#9,"exit",Append
 //-
-System,FILEREDIRECT,OFF
-ShellExecuteex,Hide,cmd.exe,"/C Start #$q#$q /Wait /Min #$qVHD_Attach_%t_FileName% RunAsAdmin.cmd#$q",%ProjectTemp%
-System,FILEREDIRECT,ON
+System,FileRedirect,OFF
+ShellExecuteex,Hide,cmd.exe,"/C Start #$qVHD_Attach#$q /Wait /Min #$qVHD_Attach_%t_FileName% RunAsAdmin.cmd#$q",%ProjectTemp%
+System,FileRedirect,ON
 
 [VHD_Detach]
-StrFormat,FILENAME,#1,#8
+StrFormat,FileName,#1,#8
 Call,FileNameNoExt,#8,t_FileName
 //-
 Set,#9,"%ProjectTemp%\VHD_Detach_%t_FileName% RunAsAdmin.cmd"
@@ -807,9 +912,9 @@ TxtAddLine,#9,"list vdisk",Append
 TxtAddLine,#9,"detach vdisk",Append
 TxtAddLine,#9,"exit",Append
 //-
-System,FILEREDIRECT,OFF
-ShellExecuteex,Hide,cmd.exe,"/C Start #$q#$q /Wait /Min #$qVHD_Detach_%t_FileName% RunAsAdmin.cmd#$q",%ProjectTemp%
-System,FILEREDIRECT,ON
+System,FileRedirect,OFF
+ShellExecuteex,Hide,cmd.exe,"/C Start #$qVHD_Detach#$q /Wait /Min #$qVHD_Detach_%t_FileName% RunAsAdmin.cmd#$q",%ProjectTemp%
+System,FileRedirect,ON
 
 [Test_Builder_InterfaceVariables]
 //Test not required with 'Config Source Folder' -- builder do not fail here -- Still it is ok to have a test also here ;)
@@ -1047,7 +1152,6 @@ If,%t%,Equal,1,IniWrite,%Tar%,Main,HistoryNotes01,""
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
-opendir.bmp=571,762
 explorer.bmp=828,1104
 trash.bmp=867,1156
 Web.bmp=676,902
@@ -1055,6 +1159,7 @@ BigBluePlay.gif=1445,1927
 2017-09-17_051820.gif=5028,6704
 PEBakery_Build_2017-11-26_153047.gif=717,956
 Sekkyumu-Developpers-Play_2424.bmp=716,955
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
 
 [OpenDir_P_B]
 Run,%ScriptFile%,Check_Tools_P
@@ -1096,7 +1201,7 @@ ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x64_md5_TextBox,%x64_md5_T
 ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_DL_TextBox,%x86_DL_TextBox_BackUP%
 ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_md5_TextBox,%x86_md5_TextBox_BackUP%
 //-
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [UploadXXX]
 //IniRead,%ScriptFile%,Main,Selected,%Selected_Backup%
@@ -1121,7 +1226,7 @@ ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x64_md5_TextBox,%x64_md5_T
 ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_DL_TextBox,%x86_DL_TextBox_BackUP%
 ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_md5_TextBox,%x86_md5_TextBox_BackUP%
 //-
-System,REFRESHINTERFACE
+System,RefreshInterface
 
 [Settings_Default]
 //IniWrite,%ScriptFile%,Main,Selected,False
@@ -1175,9 +1280,9 @@ ChangeInterface,Write,Value,%ScriptFile%,InterFace_Gena,Gena_RadioButton4,False
 End
 //Check InterFace_Gena Default Value - Finish
 //-
-ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x64_DL_TextBox,Win10_1709_English_x64.iso
+ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x64_DL_TextBox,Win10_1809_English_x64.iso
 ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x64_md5_TextBox,""
-ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_DL_TextBox,Win10_1709_English_x86.iso
+ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_DL_TextBox,Win10_1809_English_x86.iso
 ChangeInterface,Write,Value,%ScriptFile%,Interface_SE,x86_md5_TextBox,""
 
 [Settings_Default_Gena]
@@ -1201,10 +1306,6 @@ Call,CompareEdit
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0
 0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-opendir.bmp]
-lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-explorer.bmp]
 lines=0
@@ -1230,6 +1331,10 @@ lines=0
 [EncodedFile-InterfaceEncoded-Sekkyumu-Developpers-Play_2424.bmp]
 lines=0
 0=eJztlN1Lk2EYxu2wP0BJOumwA+lEKz/LjD4w/MiDMiq0IunTQIgghE4SE8qQ1EwtF1OmTdsyxTTLTUdOnVMTMducSrOtdJJa6NTt17OXog86mM46yQd+PPC8cN33db83V0xc4Xo/6WwTbBZsEAQK1vltkt5Tv33/+QBr/Ge43W7mnU7mnPMsuVystr5Ht7hOQbbiLm+GTVItT83V0v/omCQo7wxbVNmEFKSTXVVM30A/018+43L77mfcbiMgL5WILgVR7XKClVkcKMnktrIM05hFmpsvfqy29/jnnyJELxM8JNJQyc72csLVN4ktuEJ5o5rxD3YWl5ZWVMNqs+FffI7Qzgq26uUS2zvKiTbWsNeoIkjMLeZBJhVNtVhsVuYXF5blx6MfUHaJcEMVoWJGYYLvd5RRyZ6+WnZ1VBKsyuGo7AayBhVTM9Ne75rVM3/5ZXb0PCayu5pIY/Uvd5TwEd2rZl9/Pbs7HxGqvsVZeS72qUmvfHj0A5XXSBjSED/U8kcS32o4YtaRYmojrq+e/bX5aF934/LCg6Svvk6iqZUEk1bw404yt3Lc8ooLY12cGHhO/EsZKapCnupaxP7Oej2fwLockoZ1HDS3SSSJXo+N6Ml418N5k44wbSmpT+5RpWnEPDqCcxn/WNJvzOXQaDvJo3pOjxlIF6SJmcQ2lXKyphDtQA/TszMryo9xu52NL+6QJnr19Jvc30CiRs7FmhKae7twCN1F18p238OEw0FIcxGHB5uJ0NznaoOCNkMnEzOfhK7v+TAn8qxI94yspmoGLWaf8+B3pHxeWJBy82/k8xr/jq9eNBSweJxTCk7Nzq4szS3VdUktS83JLyhILSrWDchJrIw3MjEy0UvKLWAYBcMXTOOE0FlM2OXP3T5jy8AEAGW4EFERCc2oAQAAAAIAAAA+AAAAagIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Folder

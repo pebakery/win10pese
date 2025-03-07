@@ -1,0 +1,1062 @@
+[Main]
+Title=Proxy Settings
+Type=Plugin
+Author=Lancelot
+Description=Add Proxy Settings to projects so plugins can download files from internet following proxy settings.
+Credits=http://TheOven.org
+Version=012
+Download_Level=2
+Level=10
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=2673
+Date=2020.02.21
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Proxy%20Settings%20-%20Setup.Script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/Proxy%20Settings%20-%20Setup.Script
+WebHardLink=True
+CertifiedBy=
+Certification=
+HistoryNotes01=BypassLocal_CheckBox not operational for now (hidden) - Requires detecing localIP and add to NoProxy_TextBox if required. (for onw one can manually add NoProxy_TextBox )
+HistoryNotes02a=If there is problem with none Ascii/Ansi username or password:
+HistoryNotes02=After 'Save'  button one can open aria2.cfg and wgetcfg files (Edit buttons on right top) and edit them accordingly (Aria2 or Wget support to UTF8 or Unicode ... not known not tested....)
+HistoryNotes03=Wget do not support seperate pw for seperate protocols for now - If required can be added via ML later....
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2018.12.06 Plugin created
+History002=Lancelot Add to servers. - Date:2018.12.09
+History003=Lancelot Add 'Import Proxy Settings From Internet Explorer' and Default options buttons. - Date:2018.12.09
+History004=Lancelot update 'Import Proxy Settings From Internet Explorer' icon (better different from other Proxy button icon since they are different with functions. Current on plugin get IE settings to Plugin - Other Add IE settings to HostOS WinHTTP) - Date:2018.12.10 // Add "Plugin Page" - Date:2018.12.17
+History005=Lancelot Added another information button to avoid confusion about Save button -> Slore Reply 24 http://TheOven.org/index.php?topic=2660.msg30020#msg30020 - Date:2018.12.17
+History006=Lancelot Add current "Enable Proxy" status to new information button following Slore posts - Date:2018.12.17
+History007=Lancelot Added "Check_Enable_Proxy_Button" button following Slore Reply 30 http://TheOven.org/index.php?topic=2660.msg30040#msg30040 - Date:2018.12.17
+History008a=Lancelot "Proxy_Info_Projects_Button" -> To provide Proxy info about Proxy requirements. - Date:2018.01.12
+History008b=Lancelot "Disable_Download_Button" -> To disable download with a special fake ProxyName: DisableDownload - Date:2018.01.12
+History008=Lancelot Improve: "Read_IE_Proxy_Reg_Button" with "Read_IE_Proxy_Reg_Plus_SaveProxy_CheckBox" --> New user can only use "Import Proxy Settings From Internet Explorer" to get Proxy operational. - Date:2019.01.12
+History009=Lancelot Simplify plugins UI (Advanced Basic UI) // more and better information buttons // Reset Proxy button to disable and delete all proxy settings // Proxy status checked with all green play buttons + "Save Proxy Settings (Apply)" button // cosmetic better time ui // fixed Read_IE_Proxy_Reg ProxyEnable and Disabled "Use the same proxy server for all protocols:" - Date:2019.01.14
+History010=Lancelot Simplify plugins UI following slore Reply 69 - http://TheOven.org/index.php?topic=2660.msg31275#msg31275 - Date:2019.02.01 // Cosmetics - Date:2019.02.24
+History011=Lancelot Syntax Update - Date:2020.02.13
+History012=Lancelot Add "Disable DownloadX" and "Enable DownloadX" Buttons --> eg. If server offline use "Disable DownloadX" --> This will change behaviour of "DOWNLOAD Plugin" and "DOWNLOAD and Compare with an Editor" Buttons to Offline mode ;) - Date:2020.02.21
+
+[InterFace]
+Read_IE_Proxy_Reg_Button="Import Proxy Settings From Internet Explorer         ",1,8,4,48,280,35,Read_IE_Proxy_Reg_P_B,arrow_medium_down_splashyIcons.bmp,False,False,_Read_IE_Proxy_Reg_P_B_,False
+Read_IE_Proxy_Reg_Plus_SaveProxy_CheckBox="+Save Proxy Settings (Apply)",1,3,38,84,168,18,True
+Read_IE_Proxy_Reg_Bevel=pBevel1,1,12,1,46,288,60
+Edit_ProxySettings_Button=,0,8,475,0,20,20,Edit_ProxySettings_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Edit_ProxySettings_P_B_,False,__ProxySettings.ini
+Edit_aria2_conf_Button=,0,8,495,0,20,20,Edit_aria2_conf_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Edit_aria2_conf_P_B_,False,__aria2.conf
+Edit_wgetrc_Button=,0,8,515,0,20,20,Edit_wgetrc_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Edit_wgetrc_P_B_,False,__wgetrc
+Opendir_Button=,0,8,535,0,20,20,OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_P_B_,False,"__Open Folder"
+Proxy_Ini_Save_Bevel=pBevel3,1,12,-2,-2,326,46
+Proxy_Ini_Save_Button="Save Proxy Settings (Apply)",1,8,23,3,187,39,Proxy_Ini_Save_P_B,Oxygen-Icons.org-Oxygen-Actions-media-record032032.bmp,False,False,_Proxy_Ini_Save_P_B_,False
+ProxyEnable_CheckBox="Enable Proxy",1,3,213,2,82,16,False,"__Use a proxy server for your LAN"
+Proxy_Info_ProxyEnable_Button=,1,8,294,-1,27,25,Proxy_Info_ProxyEnable_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Proxy_Info_ProxyEnable_P_B_,False
+Proxy_Info_Projects_Button=,1,8,363,-1,27,25,Proxy_Info_Projects_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Proxy_Info_Projects_P_B_,False,"__ALL Projects Proxy Info"
+Settings_TextLabel="Proxy Settings:",1,1,9,113,97,18,8,Bold
+Proxy_TextBox="Proxy: ([http://][:user:pw@]Host:Port)",1,0,8,147,272,21,
+Proxy_Info_Button=,1,8,238,117,27,25,Proxy_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Proxy_Info_P_B_,False
+BypassLocal_CheckBox="Bypass proxy server for local addresses",0,3,8,390,222,18,True
+NoProxy_Bevel=pBevel1,1,12,4,171,279,63
+NoProxy_TextBox="Do not use proxy server for addresses begining with:",1,0,8,192,272,21,
+NoProxy_TextLabel_02="Use semicolons ( ; ) to separate entries.",1,1,9,216,198,18,8,Normal
+Proxy_All_Same_CheckBox="Use the same proxy server for all protocols:",0,3,601,199,245,18,True
+Proxy_All_Same_TextLabel="Use the same proxy server for all protocols:",0,1,330,200,218,18,8,Normal
+Proxy_All_Same_Set_Enable_Button=,0,8,309,196,20,20,Proxy_All_Same_Set_Enable_B,unchecked.bmp,True,False,_Proxy_All_Same_Set_Enable_B_,True
+Proxy_All_Same_Set_Disable_Button=,0,8,309,197,20,20,Proxy_All_Same_Set_Disable_B,checked.bmp,True,False,_Proxy_All_Same_Set_Disable_B_,True
+Proxy_Http_TextBox=Http:,0,0,307,233,290,21,
+Proxy_Https_TextBox="Https: (Secure)",0,0,307,269,290,21,
+Proxy_Ftp_TextBox=FTP:,0,0,307,306,290,21,
+UNPW_ALL_CheckBox="Add UserName and Password Seperately (ALL protocols)",0,3,1,349,295,18,False
+UNPW_ALL_Set_Enable_Button=,0,8,1,239,20,20,UNPW_ALL_Set_Enable_B,unchecked.bmp,True,False,_UNPW_ALL_Set_Enable_B_,True
+UNPW_ALL_Set_Disable_Button=,0,8,0,238,20,20,UNPW_ALL_Set_Disable_B,checked.bmp,True,False,_UNPW_ALL_Set_Disable_B_,True
+UNPW_ALL_TextLabel="Add UserName and Password Seperately (ALL protocols)",0,1,23,242,275,18,8,Normal
+UserName_All_TextBox="UserName (ALL Protocols):",0,0,5,278,200,21,
+Password_All_TextBox="Password  (ALL Protocols):",0,0,5,322,200,21,
+UNPW_Each_CheckBox="Add UserName and Password Seperately For each protocol",0,3,644,408,322,18,False
+UNPW_Each_TextLabel="Add UserName and Password Seperately For each protocol",0,1,333,336,301,18,8,Normal
+UNPW_Each_Set_Enable_Button=,0,8,304,332,20,20,UNPW_Each_Set_Enable_B,unchecked.bmp,True,False,_UNPW_Each_Set_Enable_B_,True
+UNPW_Each_Set_Disable_Button=,0,8,303,331,20,20,UNPW_Each_Set_Disable_B,checked.bmp,True,False,_UNPW_Each_Set_Disable_B_,True
+Proxy_Http_User_TextBox="UserName Http:",0,0,312,371,200,21,
+Proxy_Http_Password_TextBox="Password Http:",0,0,312,407,200,21,
+Proxy_Https_User_TextBox="UserName Https:",0,0,312,444,200,21,
+Proxy_Https_Password_TextBox="Password Https:",0,0,312,480,200,21,
+Proxy_Ftp_User_TextBox="UserName Ftp:",0,0,312,517,200,21,
+Proxy_Ftp_Password_TextBox="Password Ftp:",0,0,312,553,200,21,
+WebLabel_Plugin="Plugin Page",1,10,338,28,55,18,http://TheOven.org/index.php?topic=2673
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Settings_Default_Button=d,0,8,576,2,14,14,Default_Plugin_P_B,0,False,False,_Default_Plugin_P_B_,False,"__Plugin Default (Clears all Values)"
+Check_Enable_Proxy_Button="Check: Enable Proxy=",0,8,439,26,196,25,Check_Enable_Proxy_P_B,Graphicloads-100-Flat-2-Arrow-refresh-3_016016.bmp,False,False,_Check_Enable_Proxy_P_B_,False,"__Check to see If proxy enabled by project"
+Check_Enable_Proxy_TextLabel="Last Check Time: ",0,1,444,51,195,18,8,Normal
+Check_Enable_Proxy_Bevel=pBevel1,0,12,436,23,207,47
+Disable_Download_Button="Disable Download  ",0,8,438,113,123,21,Disable_Download_P_B,Icon8.com_Icons8-Windows-8-Media-Controls-Play_CTT1_Red_0_016_016.bmp,False,False,_Disable_Download_P_B_,False,"__Disable 'Download' buttons"
+En_able_Download_Button="Enable  Download  ",0,8,563,113,123,21,En_able_Download_P_B,Sekkyumu-Developpers-Play_CTT_1_0_016_016.bmp,False,False,_En_able_Download_P_B_,False,"__Enable  'Download' buttons (Disable Proxy)"
+Disable_Download_Info_Button=,0,8,691,113,25,21,Disable_Download_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Disable_Download_Info_P_B_,False
+Disable_Download_Bevel=pBevel1,0,12,436,111,283,26
+Disable_Enable_DownloadX_Bevel=pBevel1,0,12,436,135,283,25
+En_able_DownloadX_Button="Enable  DownloadX",0,8,563,137,123,21,En_able_DownloadX_P_B,Sekkyumu-Developpers-Play_CTT_1_0_016_016.bmp,False,False,_En_able_DownloadX_P_B_,False,"__Enable  'DownloadX' buttons"
+Disable_DownloadX_Button="Disable DownloadX",0,8,438,137,123,21,Disable_DownloadX_P_B,Icon8.com_Icons8-Windows-8-Media-Controls-Play_CTT1_Red_0_016_016.bmp,False,False,_Disable_DownloadX_P_B_,False,"__Disable 'DownloadX' buttons"
+Disable_Enable_DownloadX_Info_Button=,0,8,691,137,25,21,Disable_Enable_DownloadX_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Disable_Enable_DownloadX_Info_P_B_,False
+Reset_Proxy_Button="reset proxy",0,8,438,73,88,20,Reset_Proxy_P_B,Sekkyumu-Developpers-Play_CTT_1_0_016_016.bmp,False,False,_Reset_Proxy_P_B_,False
+pImage1=Sekkyumu-Developpers-Play_0_016_016.ico,1,5,11,86,25,25,
+Reset_Proxy_Delete_ConfigFiles_CheckBox="+ Delete all configuration files",0,3,439,93,170,14,True
+Reset_Proxy_Bevel=pBevel2,0,12,436,71,184,39
+UI_Advanced_Button="Advanced UI --->",1,8,439,165,159,25,UI_Advanced_B,0,False,False,_UI_Advanced_B_,False
+UI_Advanced_CheckBox="Advanced UI",0,3,632,169,88,18,False
+UI_Simple_Button="<--- Basic UI",0,8,455,165,158,25,UI_Simple_B,0,False,False,_UI_Simple_B_,False
+UI_Bevel=pBevel2,1,12,436,162,184,31
+pBevel1=pBevel1,1,12,1,106,288,131
+
+[Reset_Proxy_P_B]
+Run,%ScriptFile%,Reset_Proxy_P
+Run,%ScriptFile%,Check_Enable_Proxy_P
+
+[Reset_Proxy_P]
+Run,%ScriptFile%,Default_Plugin_P_B
+If,%Reset_Proxy_Delete_ConfigFiles_CheckBox%,Equal,True,Call,DirDelete,%ProvideFiles%
+
+[UI_Advanced_B]
+Run,%ScriptFile%,Show-Hide-UI_Advanced_Simple,True
+Visible,%UI_Advanced_Button%,False,Permanent
+Visible,%UI_Simple_Button%,True,Permanent
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[UI_Simple_B]
+Run,%ScriptFile%,Show-Hide-UI_Advanced_Simple,False
+Visible,%UI_Advanced_Button%,True,Permanent
+Visible,%UI_Simple_Button%,False,Permanent
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show-Hide-UI_Advanced_Simple]
+Set,%UI_Advanced_CheckBox%,#1,Permanent
+Visible,%Edit_ProxySettings_Button%,#1,Permanent
+Visible,%Edit_aria2_conf_Button%,#1,Permanent
+Visible,%Edit_wgetrc_Button%,#1,Permanent
+Visible,%Opendir_Button%,#1,Permanent
+Visible,%Settings_Default_Button%,#1,Permanent
+If,%Proxy_All_Same_CheckBox%,Equal,True,Begin
+Visible,%Proxy_All_Same_TextLabel%,#1,Permanent
+//Proxy_All_Same_Set_Enable_Button
+Visible,%Proxy_All_Same_Set_Disable_Button%,#1,Permanent
+End
+If,%UNPW_ALL_CheckBox%,Equal,False,Begin
+Visible,%UNPW_ALL_TextLabel%,#1,Permanent
+Visible,%UNPW_ALL_Set_Enable_Button%,#1,Permanent
+//UNPW_ALL_Set_Disable_Button
+End
+If,%UNPW_Each_CheckBox%,Equal,False,Begin
+Visible,%UNPW_Each_TextLabel%,#1,Permanent
+Visible,%UNPW_Each_Set_Enable_Button%,#1,Permanent
+//UNPW_Each_Set_Disable_Button
+End
+//-
+Visible,%Check_Enable_Proxy_Bevel%,#1,Permanent
+Visible,%Check_Enable_Proxy_Button%,#1,Permanent
+Visible,%Check_Enable_Proxy_TextLabel%,#1,Permanent
+Visible,%Reset_Proxy_Bevel%,#1,Permanent
+Visible,%Reset_Proxy_Button%,#1,Permanent
+Visible,%Reset_Proxy_Delete_ConfigFiles_CheckBox%,#1,Permanent
+Visible,%Disable_Download_Bevel%,#1,Permanent
+Visible,%Disable_Download_Button%,#1,Permanent
+Visible,%En_able_Download_Button%,#1,Permanent
+Visible,%Disable_Download_Info_Button%,#1,Permanent
+Visible,%Disable_Enable_DownloadX_Bevel%,#1,Permanent
+Visible,%En_able_DownloadX_Button%,#1,Permanent
+Visible,%Disable_DownloadX_Button%,#1,Permanent
+Visible,%Disable_Enable_DownloadX_Info_Button%,#1,Permanent
+
+[UNPW_Each_Set_Enable_B]
+Run,%ScriptFile%,UNPW_ALL_Set_Disable_B
+//-
+Visible,%UNPW_Each_Set_Enable_Button%,False,Permanent
+Visible,%UNPW_Each_Set_Disable_Button%,True,Permanent
+Visible,%Proxy_Http_User_TextBox%,True,Permanent
+Visible,%Proxy_Http_Password_TextBox%,True,Permanent
+Visible,%Proxy_Https_User_TextBox%,True,Permanent
+Visible,%Proxy_Https_Password_TextBox%,True,Permanent
+Visible,%Proxy_Ftp_User_TextBox%,True,Permanent
+Visible,%Proxy_Ftp_Password_TextBox%,True,Permanent
+Set,%UNPW_Each_CheckBox%,True,Permanent
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[UNPW_Each_Set_Disable_B]
+Visible,%UNPW_Each_Set_Enable_Button%,True,Permanent
+Visible,%UNPW_Each_Set_Disable_Button%,False,Permanent
+Visible,%Proxy_Http_User_TextBox%,False,Permanent
+Visible,%Proxy_Http_Password_TextBox%,False,Permanent
+Visible,%Proxy_Https_User_TextBox%,False,Permanent
+Visible,%Proxy_Https_Password_TextBox%,False,Permanent
+Visible,%Proxy_Ftp_User_TextBox%,False,Permanent
+Visible,%Proxy_Ftp_Password_TextBox%,False,Permanent
+Set,%UNPW_Each_CheckBox%,False,Permanent
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[UNPW_ALL_Set_Enable_B]
+Run,%ScriptFile%,UNPW_Each_Set_Disable_B
+//--
+Visible,%UNPW_ALL_Set_Enable_Button%,False,Permanent
+Visible,%UNPW_ALL_Set_Disable_Button%,True,Permanent
+Set,%UNPW_ALL_CheckBox%,True,Permanent
+Visible,%UserName_All_TextBox%,True,Permanent
+Visible,%Password_All_TextBox%,True,Permanent
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[UNPW_ALL_Set_Disable_B]
+Visible,%UNPW_ALL_Set_Enable_Button%,True,Permanent
+Visible,%UNPW_ALL_Set_Disable_Button%,False,Permanent
+Set,%UNPW_ALL_CheckBox%,False,Permanent
+Visible,%UserName_All_TextBox%,False,Permanent
+Visible,%Password_All_TextBox%,False,Permanent
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[Proxy_All_Same_Set_Enable_B]
+If,%UI_Advanced_CheckBox%,Equal,True,Begin
+Visible,%Proxy_All_Same_Set_Enable_Button%,False,Permanent
+Visible,%Proxy_All_Same_Set_Disable_Button%,True,Permanent
+Visible,%Proxy_All_Same_TextLabel%,True,Permanent
+End
+Else,Begin
+Visible,%Proxy_All_Same_Set_Enable_Button%,False,Permanent
+Visible,%Proxy_All_Same_Set_Disable_Button%,False,Permanent
+Visible,%Proxy_All_Same_TextLabel%,False,Permanent
+End
+//-
+Set,%Proxy_All_Same_CheckBox%,True,Permanent
+Visible,%Proxy_TextBox%,True,Permanent
+Visible,%Proxy_Http_TextBox%,False,Permanent
+Visible,%Proxy_Https_TextBox%,False,Permanent
+Visible,%Proxy_Ftp_TextBox%,False,Permanent
+//-
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[Proxy_All_Same_Set_Disable_B]
+Visible,%Proxy_All_Same_Set_Enable_Button%,True,Permanent
+Visible,%Proxy_All_Same_Set_Disable_Button%,False,Permanent
+Visible,%Proxy_All_Same_TextLabel%,True,Permanent
+//-
+Set,%Proxy_All_Same_CheckBox%,False,Permanent
+Visible,%Proxy_TextBox%,False,Permanent
+Visible,%Proxy_Http_TextBox%,True,Permanent
+Visible,%Proxy_Https_TextBox%,True,Permanent
+Visible,%Proxy_Ftp_TextBox%,True,Permanent
+//-
+System,Cursor,Wait
+System,RefreshInterface
+System,Cursor,Normal
+
+[Variables]
+%ProvideFiles%=%GlobalTemplates%\Download_1ProxySettings
+%ProxyIni%=%ProvideFiles%\ProxySettings.ini
+
+[Process]
+Echo,"There is no spoon"
+
+[Proxy_Ini_Save_P_B]
+Run,%ScriptFile%,Proxy_Ini_Save_P
+Run,%ScriptFile%,Check_Enable_Proxy_P
+
+[Proxy_Ini_Save_P]
+If,Not,ExistFile,%ProxyIni%,Run,%ScriptFile%,Proxy_Ini_New
+//-
+IniWrite,%ProxyIni%,ProxyInfo,ProxyEnabled,%ProxyEnable_CheckBox%
+//-
+IniWrite,%ProxyIni%,ProxyInfo,Address,%Proxy_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,UNPW_ALL,%UNPW_ALL_CheckBox%
+IniWrite,%ProxyIni%,ProxyInfo,UserName_All,%UserName_All_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Password_All,%Password_All_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,BypassLocal,%BypassLocal_CheckBox%
+IniWrite,%ProxyIni%,ProxyInfo,NoProxy_addresses_begining_with,%NoProxy_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Use_Same_Proxy_For_All_Protocols,%Proxy_All_Same_CheckBox%
+IniWrite,%ProxyIni%,ProxyInfo,UNPW_Each,%UNPW_Each_CheckBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Http,%Proxy_Http_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Http_User,%Proxy_Http_User_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Http_Password,%Proxy_Http_Password_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Https,%Proxy_Https_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Https_User,%Proxy_Https_User_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Https_Password,%Proxy_Https_Password_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Ftp,%Proxy_Ftp_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Ftp_User,%Proxy_Ftp_User_TextBox%
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Ftp_Password,%Proxy_Ftp_Password_TextBox%
+//-
+Set,%a%,%ProvideFiles%\aria2.conf
+FileCreateBlank,%a%
+Set,%w%,%ProvideFiles%\wgetrc
+FileCreateBlank,%w%
+//---
+If,%Proxy_All_Same_CheckBox%,Equal,True,Begin
+TxtAddLine,%a%,"all-proxy=%Proxy_TextBox%",Append
+//-
+TxtAddLine,%w%,"http_proxy=%Proxy_TextBox%",Append
+TxtAddLine,%w%,"https_proxy=%Proxy_TextBox%",Append
+TxtAddLine,%w%,"ftp_proxy=%Proxy_TextBox%",Append
+End
+Else,Begin
+TxtAddLine,%a%,"http_proxy=%Proxy_Http_TextBox%",Append
+TxtAddLine,%a%,"https_proxy=%Proxy_Https_TextBox%",Append
+TxtAddLine,%a%,"ftp_proxy=%Proxy_Ftp_TextBox%",Append
+//-
+TxtAddLine,%w%,"http_proxy=%Proxy_Http_TextBox%",Append
+TxtAddLine,%w%,"https_proxy=%Proxy_Https_TextBox%",Append
+TxtAddLine,%w%,"ftp_proxy=%Proxy_Ftp_TextBox%",Append
+End
+//---
+If,%UNPW_ALL_CheckBox%,Equal,True,Begin
+TxtAddLine,%a%,"all-proxy-user=%UserName_All_TextBox%",Append
+TxtAddLine,%a%,"all-proxy-passwd=%Password_All_TextBox%",Append
+//-
+TxtAddLine,%w%,"proxy-user=%UserName_All_TextBox%",Append
+TxtAddLine,%w%,"proxy-password=%Password_All_TextBox%",Append
+End
+//---
+If,%UNPW_Each_CheckBox%,Equal,True,Begin
+TxtAddLine,%a%,"http-proxy-user=%Proxy_Http_TextBox%",Append
+TxtAddLine,%a%,"http-proxy-passwd=%Proxy_Http_User_TextBox%",Append
+TxtAddLine,%a%,"https-proxy-user=%Proxy_Https_User_TextBox%",Append
+TxtAddLine,%a%,"https-proxy-passwd=%Proxy_Https_Password_TextBox%",Append
+TxtAddLine,%a%,"ftp-proxy-user=%Proxy_Ftp_User_TextBox%",Append
+TxtAddLine,%a%,"ftp-proxy-passwd=%Proxy_Ftp_Password_TextBox%",Append
+//-
+//wget does not support different passwords for different protocols !
+//so for now we get only http proxy protocol un/pw for wget
+//we can use different pw for https and ftp via Macro Library Wget commandline when required.
+TxtAddLine,%w%,"proxy-user=%Proxy_Http_TextBox%",Append
+TxtAddLine,%w%,"proxy-password=%Proxy_Http_User_TextBox%",Append
+//-
+//so better be ready to use different pw for https and ftp via Macro Library Wget commandline when required ;).
+TxtAddLine,%w%,"http-proxy-user=%Proxy_Http_TextBox%",Append
+TxtAddLine,%w%,"http-proxy-passwd=%Proxy_Http_User_TextBox%",Append
+TxtAddLine,%w%,"https-proxy-user=%Proxy_Https_User_TextBox%",Append
+TxtAddLine,%w%,"https-proxy-passwd=%Proxy_Https_Password_TextBox%",Append
+TxtAddLine,%w%,"ftp-proxy-user=%Proxy_Ftp_User_TextBox%",Append
+TxtAddLine,%w%,"ftp-proxy-passwd=%Proxy_Ftp_Password_TextBox%",Append
+End
+//-
+//aria2 true case sensitive here (True wrong)
+TxtAddLine,%a%,"http-no-cache=true",Append
+//could not get no-cache work with wget config file ->  --no-cache used with Macro Library when Proxy used.
+//TxtAddLine,%w%,"no-cache=true",Append
+//TxtAddLine,%w%,"no-cache",Append
+//-
+If,Not,%NoProxy_TextBox%-,Equal,-,Begin
+Set,%t%,%NoProxy_TextBox%
+StrFormat,Replace,%t%,;,",",%t%
+TxtAddLine,%a%,"no_proxy=%t%",Append
+End
+
+[Proxy_Ini_New]
+If,Not,ExistDir,%ProvideFiles%,DirMake,%ProvideFiles%
+FileCreateBlank,%ProxyIni%
+IniWrite,%ProxyIni%,ProxyInfo,ProxyEnabled,False
+//-
+IniWrite,%ProxyIni%,ProxyInfo,Address,
+IniWrite,%ProxyIni%,ProxyInfo,UNPW_ALL,
+IniWrite,%ProxyIni%,ProxyInfo,UserName_All,
+IniWrite,%ProxyIni%,ProxyInfo,Password_All,
+IniWrite,%ProxyIni%,ProxyInfo,BypassLocal,
+IniWrite,%ProxyIni%,ProxyInfo,NoProxy_addresses_begining_with,
+IniWrite,%ProxyIni%,ProxyInfo,Use_Same_Proxy_For_All_Protocols,
+IniWrite,%ProxyIni%,ProxyInfo,UNPW_Each,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Http,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Http_User,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Http_Password,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Https,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Https_User,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Https_Password,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Ftp,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Ftp_User,
+IniWrite,%ProxyIni%,ProxyInfo,Proxy_Ftp_Password,
+
+[Edit_ProxySettings_P_B]
+If,Not,ExistFile,%ProxyIni%,Run,%ScriptFile%,Proxy_Ini_New
+Call,StartDocNotePad,%ProxyIni%
+
+[Edit_aria2_conf_P_B]
+If,ExistFile,%ProvideFiles%\aria2.conf,Call,StartDocNotePad,%ProvideFiles%\aria2.conf
+Else,Message,"aria2.conf file not found#$x#$x#$x#$xFirst use 'Save' button'",Information
+
+[Edit_wgetrc_P_B]
+If,ExistFile,%ProvideFiles%\wgetrc,Call,StartDocNotePad,%ProvideFiles%\wgetrc
+Else,Message,"wgetrc file not found#$x#$x#$x#$xFirst use 'Save' button'",Information
+
+[OpenDir_P_B]
+Call,OpenDir,%ProvideFiles%
+
+[Proxy_Info_P_B]
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+Set,%w%,"%ProjectTemp%\Read_ME_Proxy_Info.txt"
+Call,IniExtractSectionN,,Proxy_Info_Txt,%w%
+//TxtReplace,%w%,"DummyDummyDummy#$x",""
+TxtReplace,%w%,"#$x|","#$x"
+//TxtReplace,%w%,"#$x::=,","#$x"
+Call,StartDocNotePad,%w%
+
+[Proxy_Info_Txt]
+Simple:
+If you are using proxy with IE do following:
+1) Click 'Import Proxy Settings From Internet Explorer' - (With Enabled "+Save Proxy Settings (Apply)" Checkbox)
+|
+|
+OR
+1) Click 'Import Proxy Settings From Internet Explorer' - (With Disabled "+Save Proxy Settings (Apply)" Checkbox)
+2) Be sure you Enable checkbox with name 'Enable Proxy'
+3) click 'Save Proxy Settings (Apply)' Button
+|
+Notes:
+*
+'Save Proxy Settings (Apply)' Button only saves configuration files for projects
+with other words:
+'Save Proxy Settings (Apply)' do not write to HostOS.
+*
+'Import Proxy Settings From Internet Explorer' Button only gets settings to current plugin.
+with other words:
+'Import Proxy Settings From Internet Explorer' do not write to HostOS.
+|
+|
+|
+|
+|
+|
+Some Examples for Proxy Address:
+|
+ps: You can write username and password with Proxy Address (optional)
+|
+http://proxy.server.address:port/
+http://proxy.yoyodyne.com:18023/
+192.168.211.138:8082
+http://username:password@proxy.server.address:port/
+http://hniksic:mypassword@proxy.company.com:8001/
+|
+|
+More Info on Password:
+Proxy: [http://][:user:pw@]Host:Port
+--->
+Proxy Address can be:
+Address:Port
+OR optional with password:
+Address:UserName:Password@Port
+*
+If you specify UserName and Password on but also add UserName and Password with seperate box
+UserName and Password with seperate box will override UserName and Password at Address.
+eg aria2:
+--http-proxy="http://user:pass@proxy" --http-proxy-user="myname" --http-proxy-passwd="mypass"
+then you'd get HTTP proxy http://proxy with user myname and password mypass
+|
+|
+|
+|
+|
+|
+|
+History_Useful_Links:
+https://www.gnu.org/software/wget/manual/wget.html
+https://eternallybored.org/misc/wget/
+http://www.interlog.com/~tcharron/wgetwin.html
+https://superuser.com/questions/526710/how-to-set-http-proxy-address-for-wget-under-windows
+https://www.gnu.org/software/wget/manual/html_node/Proxies.html
+ftp://ftp.gnu.org/pub/old-gnu/Manuals/wget-1.8.1/html_chapter/wget_6.html
+
+[Default_Plugin_P_B]
+Set,%Answer%,No
+If,Question,"Are you Sure ?#$x#$x#$xPlugin will revert back to Default Plugin Settings#$x#$xAll Values will be Empty#$x'Enable Proxy' will be deselected (Selected:False)",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Run,%ScriptFile%,Default_Plugin_P
+System,RefreshInterface
+
+[Default_Plugin_P]
+Set,%ProxyEnable_CheckBox%,False,Permanent
+Run,%ScriptFile%,Set_All_Values_Empty
+Run,%ScriptFile%,UNPW_Each_Set_Disable_B
+Run,%ScriptFile%,UNPW_ALL_Set_Disable_B
+Run,%ScriptFile%,Proxy_All_Same_Set_Enable_B
+Run,%ScriptFile%,Check_Enable_Proxy_P,Default
+Run,%ScriptFile%,UI_Simple_B
+
+[Set_All_Values_Empty]
+Set,%Proxy_TextBox%,"",Permanent
+Set,%NoProxy_TextBox%,"",Permanent
+Set,%UserName_All_TextBox%,"",Permanent
+Set,%Password_All_TextBox%,"",Permanent
+Set,%Proxy_Http_TextBox%,"",Permanent
+Set,%Proxy_Https_TextBox%,"",Permanent
+Set,%Proxy_Ftp_TextBox%,"",Permanent
+Set,%Proxy_Http_User_TextBox%,"",Permanent
+Set,%Proxy_Http_Password_TextBox%,"",Permanent
+Set,%Proxy_Https_User_TextBox%,"",Permanent
+Set,%Proxy_Https_Password_TextBox%,"",Permanent
+Set,%Proxy_Ftp_User_TextBox%,"",Permanent
+Set,%Proxy_Ftp_Password_TextBox%,"",Permanent
+
+[Read_IE_Proxy_Reg_P_B]
+//"IE Settings" Default GUI:
+//"IE Settings" do not have option for UserName Password seperately:
+//Run,%ScriptFile%,UNPW_Each_Set_Disable_B
+//"IE Settings" do not have option for ALL UserName Password seperately:
+//Run,%ScriptFile%,UNPW_ALL_Set_Disable_B
+//--
+//Better set back to default settings when importing from IE
+Run,%ScriptFile%,Default_Plugin_P
+//--
+Set,%t%,""
+If,ExistRegKey,HKCU,"Software\Microsoft\Windows\CurrentVersion\Internet Settings",ProxyEnable,Begin
+RegRead,HKCU,"Software\Microsoft\Windows\CurrentVersion\Internet Settings",ProxyEnable,%t%
+If,%t%,Equal,1,Set,%ProxyEnable_CheckBox%,True,Permanent
+Else,Set,%ProxyEnable_CheckBox%,False,Permanent
+End
+Else,Set,%ProxyEnable_CheckBox%,False,Permanent
+//--
+Set,%t%,""
+If,ExistRegKey,HKCU,"Software\Microsoft\Windows\CurrentVersion\Internet Settings",ProxyServer,Begin
+RegRead,HKCU,"Software\Microsoft\Windows\CurrentVersion\Internet Settings",ProxyServer,%t%
+If,Not,%t%-,Equal,-,Begin
+//If there is equal sign inside value It means "Use the same proxy server for all protocols" Disabled -> different proxy server for different protocols.
+//eg. http=192.168.211.131:8082;https=192.168.211.132:8082;ftp=192.168.211.133:8082;socks=192.168.211.134
+//all values splitted with ";"
+//maximum 4 values
+StrFormat,Replace,%t%,=,|,%t2%
+If,%t%,Equal,%t2%,Begin
+Set,%Proxy_TextBox%,%t%,Permanent
+Run,%ScriptFile%,Proxy_All_Same_Set_Enable_B
+End
+Else,Begin
+//--
+//Disable "Use the same proxy server for all protocols:"
+Run,%ScriptFile%,Proxy_All_Same_Set_Disable_B
+//--
+StrFormat,Split,%t%,;,0,%TotalValues%
+Echo,%TotalValues%
+//-
+If,0,Smaller,%TotalValues%,Begin
+StrFormat,Split,%t%,;,1,%t2%
+If,Not,%t2%-,Equal,-,Begin
+StrFormat,Split,%t2%,=,1,%t3%
+StrFormat,Split,%t2%,=,2,%t4%
+If,Not,%t4%-,Equal,-,Begin
+If,%t3%,Equal,http,Set,%Proxy_Http_TextBox%,%t4%,Permanent
+If,%t3%,Equal,https,Set,%Proxy_Https_TextBox%,%t4%,Permanent
+If,%t3%,Equal,ftp,Set,%Proxy_Ftp_TextBox%,%t4%,Permanent
+//If,%t3%,Equal,socks,For now no socks support ? Requires FeedBack
+End
+End
+End
+//-
+If,1,Smaller,%TotalValues%,Begin
+StrFormat,Split,%t%,;,2,%t2%
+If,Not,%t2%-,Equal,-,Begin
+StrFormat,Split,%t2%,=,1,%t3%
+StrFormat,Split,%t2%,=,2,%t4%
+If,Not,%t4%-,Equal,-,Begin
+If,%t3%,Equal,http,Set,%Proxy_Http_TextBox%,%t4%,Permanent
+If,%t3%,Equal,https,Set,%Proxy_Https_TextBox%,%t4%,Permanent
+If,%t3%,Equal,ftp,Set,%Proxy_Ftp_TextBox%,%t4%,Permanent
+//If,%t3%,Equal,socks,For now no socks support ? Requires FeedBack
+End
+End
+End
+//-
+If,2,Smaller,%TotalValues%,Begin
+StrFormat,Split,%t%,;,3,%t2%
+If,Not,%t2%-,Equal,-,Begin
+StrFormat,Split,%t2%,=,1,%t3%
+StrFormat,Split,%t2%,=,2,%t4%
+If,Not,%t4%-,Equal,-,Begin
+If,%t3%,Equal,http,Set,%Proxy_Http_TextBox%,%t4%,Permanent
+If,%t3%,Equal,https,Set,%Proxy_Https_TextBox%,%t4%,Permanent
+If,%t3%,Equal,ftp,Set,%Proxy_Ftp_TextBox%,%t4%,Permanent
+//If,%t3%,Equal,socks,For now no socks support ? Requires FeedBack
+End
+End
+End
+//-
+If,3,Smaller,%TotalValues%,Begin
+StrFormat,Split,%t%,;,4,%t2%
+If,Not,%t2%-,Equal,-,Begin
+StrFormat,Split,%t2%,=,1,%t3%
+StrFormat,Split,%t2%,=,2,%t4%
+If,Not,%t4%-,Equal,-,Begin
+If,%t3%,Equal,http,Set,%Proxy_Http_TextBox%,%t4%,Permanent
+If,%t3%,Equal,https,Set,%Proxy_Https_TextBox%,%t4%,Permanent
+If,%t3%,Equal,ftp,Set,%Proxy_Ftp_TextBox%,%t4%,Permanent
+//If,%t3%,Equal,socks,For now no socks support ? Requires FeedBack
+End
+End
+End
+//-
+End
+End
+End
+//-
+//When "Bypass proxy server for local addresses" enabled ProxyOverride exists with value: <local>
+//When "Do not use proxy server for addresses begining with:" box filled with values, values added to ProxyOverride (seperated by ;)
+//<local> always last value
+//eg.
+//ProxyOverride
+//blabla;oboobo;<local>
+//
+//For now we do not know how to add <local> setting to aria2 or wget so we delete <local>
+Set,%t%,""
+If,ExistRegKey,HKCU,"Software\Microsoft\Windows\CurrentVersion\Internet Settings",ProxyOverride,Begin
+RegRead,HKCU,"Software\Microsoft\Windows\CurrentVersion\Internet Settings",ProxyOverride,%t%
+If,Not,%t%-,Equal,-,Begin
+StrFormat,Replace,%t%,;<local>,,%t2%
+If,Not,%t2%,Equal,<local>,Begin
+Set,%NoProxy_TextBox%,%t2%,Permanent
+End
+End
+End
+//--
+If,%Read_IE_Proxy_Reg_Plus_SaveProxy_CheckBox%,Equal,True,Run,%ScriptFile%,Proxy_Ini_Save_P_B
+Run,%ScriptFile%,Check_Enable_Proxy_P
+System,RefreshInterface
+
+[Call_Download_Proxy_Settings_CANCEL]
+//Lines Removed from MacroLibrary - Instead config files used for wget and aria2
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,UNPW_ALL,#6
+If,#6,Equal,True,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,UserName_All,#6
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --all-proxy-user=#$q#6#$q"
+Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% --proxy-user=#$q#6#$q"
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Password_All,#6
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --all-proxy-passwd=#$q#6#$q"
+Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% --proxy-password=#$q#6#$q"
+End
+//-
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Use_Same_Proxy_For_All_Protocols,#6
+If,#6,Equal,True,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Address,#6
+//Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --all-proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% -e http_proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% -e https_proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% -e ftp_proxy=#6"
+//wget and aria2 use http_proxy https_proxy ftp_proxy environment variables
+TxtAddLine,#7,"Set http_proxy=#6",Append
+TxtAddLine,#7,"Set https_proxy=#6",Append
+TxtAddLine,#7,"Set ftp_proxy=#6",Append
+//aria2 also use all_proxy environment variable which override http_proxy https_proxy ftp_proxy
+//using --all_proxy with aria2 override all_proxy environment variable.
+TxtAddLine,#7,"Set all_proxy=#6",Append
+End
+Else,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Http,#6
+//Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --http-proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% -e http_proxy=#6"
+TxtAddLine,#7,"Set http_proxy=#6",Append
+//-
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Https,#6
+//Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --https-proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% -e https_proxy=#6"
+TxtAddLine,#7,"Set https_proxy=#6",Append
+//-
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Ftp,#6
+//Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --ftp-proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% -e ftp_proxy=#6"
+TxtAddLine,#7,"Set ftp_proxy=#6",Append
+//--
+IniRead,%ProxyIni%,ProxyInfo,UNPW_Each,#6
+If,#6,Equal,True,Begin
+//-
+//wget does not support different passwords for different protocols !
+//so for now we get only http proxy protocol un/pw for wget
+//--
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Http_User,#6
+If,Not,#6-,Equal,#6,Begin
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --http-proxy-user=#$q#6#$q"
+Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% --proxy-user=#$q#6#$q"
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Http_Password,#6
+If,Not,#6-,Equal,#6,Begin
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --http-proxy-passwd=#$q#6#$q"
+Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% --proxy-password=#$q#6#$q"
+End
+End
+//-
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Https_User,#6
+If,Not,#6-,Equal,#6,Begin
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --https-proxy-user=#$q#6#$q"
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Https_Password,#6
+If,Not,#6-,Equal,#6,Begin
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --https-proxy-passwd=#$q#6#$q"
+End
+End
+//-
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Ftp_User,#6
+If,Not,#6-,Equal,#6,Begin
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --ftp-proxy-user=#$q#6#$q"
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Proxy_Http_Password,#6
+If,Not,#6-,Equal,#6,Begin
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --ftp-proxy-passwd=#$q#6#$q"
+End
+End
+//-
+End
+End
+//-
+Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --http-no-cache=True"
+Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% --no-cache=True"
+//-
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,NoProxy_TextBox,#6
+If,Not,#6-,Equal,#6,Begin
+StrFormat,Replace,#6,;,",",#6
+//Set,%_ML_Proxy_aria2_CallC_Download%,"%_ML_Proxy_aria2_CallC_Download% --no-proxy=#6"
+//Set,%_ML_Proxy_wget_CallC_Download%,"%_ML_Proxy_wget_CallC_Download% no_proxy=#6"
+//Both wget and aria2 use same Environment Variable for no proxy:
+TxtAddLine,#7,"Set no_proxy=#6",Append
+End
+
+[Proxy_Info_ProxyEnable_P_B]
+Set,%t%,False
+If,ExistFile,%ProxyIni%,Begin
+IniRead,%ProxyIni%,ProxyInfo,ProxyEnabled,%t%
+End
+If,Not,%t%,Equal,False,Begin
+If,Not,%t%,Equal,True,Begin
+Set,%t%,False
+End
+End
+//-
+Echo,"Message Information - Click 'Save Proxy Settings (Apply)' Button after you make any changes on current plugin."
+Message,"New User:#$x#$x Only Click 'Import Proxy Settings From Internet Explorer' button#$x   with default plugin settings#$x    to quicly get proxy settings on projects.#$x#$x#$x#$xMore:#$xClick 'Save Proxy Settings (Apply)' Button#$x#$x  After you make any changes on current plugin.#$x#$x#$x#$xeg.#$xAfter Disable or Enable [Enable Proxy]#$xClick 'Save Proxy Settings (Apply)' Button#$x#$xAdditional Info:#$xCurrent Setting:#$xEnable Proxy=%t%",Information
+
+[Check_Enable_Proxy_P_B]
+Run,%ScriptFile%,Check_Enable_Proxy_P
+
+[Check_Enable_Proxy_P]
+//par1 : Default -> to go back to default settings
+Set,%t%,False
+If,ExistFile,%ProxyIni%,Begin
+IniRead,%ProxyIni%,ProxyInfo,ProxyEnabled,%t%
+End
+If,Not,%t%,Equal,False,Begin
+If,Not,%t%,Equal,True,Begin
+Set,%t%,False
+End
+End
+//-
+Set,%MyDate%,""
+If,Not,#1,Equal,Default,StrFormat,Date,%MyDate%,"yyyy.mm.dd_hh:nn_ss"
+//-
+If,#1,Equal,Default,Set,%t%,""
+Set,%Check_Enable_Proxy_TextLabel%,"Last Check Time: %MyDate%",Permanent
+Call,IniWriteCSVQ,,,Check_Enable_Proxy_Button,1,"Check: Enable Proxy=%t%"
+System,RefreshInterface
+
+[En_able_Download_P_B]
+Run,%ScriptFile%,En_able_Download_P
+
+[En_able_Download_P]
+//Run,%ScriptFile%,Default_Plugin_P
+If,%Proxy_TextBox%,Equal,DisableDownload,Set,%Proxy_TextBox%,,Permanent
+Set,%ProxyEnable_CheckBox%,False,Permanent
+If,ExistFile,%ProxyIni%,Begin
+If,ExistSection,%ProxyIni%,ProxyInfo,Begin
+IniWrite,%ProxyIni%,ProxyInfo,ProxyEnabled,False
+End
+End
+Run,%ScriptFile%,Check_Enable_Proxy_P
+Run,%ScriptFile%,Proxy_Ini_Save_P
+System,RefreshInterface
+
+[Disable_Download_P_B]
+Run,%ScriptFile%,Disable_Download_P
+Run,%ScriptFile%,Check_Enable_Proxy_P
+
+[Disable_Download_P]
+Run,%ScriptFile%,Default_Plugin_P
+Set,%Proxy_TextBox%,"DisableDownload",Permanent
+Set,%ProxyEnable_CheckBox%,True,Permanent
+Run,%ScriptFile%,Proxy_Ini_Save_P
+System,RefreshInterface
+
+[Proxy_Info_Projects_P_B]
+//If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+//Set,%w%,"%ProjectTemp%\Proxy_Info_Projects_Info.txt"
+//Call,IniExtractSectionN,,Proxy_Info_Projects_Info,%w%
+//Call,StartDocNotePad,%w%
+Call,IniReadSectionVar,|Proxy_Info_Projects_Info
+Echo,"Read Information"
+Message,%IniReadSectionVar%,Information
+
+[Proxy_Info_Projects_Info]
+________   Information:
+|
+|  There are 3 proxy settings required with Projects:
+|
+|  1) IE proxy settings
+|  -> used by Utils\"Update XXX (Exact and Secure)" plugin
+|  -------> Majority proxy users already use IE proxy settings on HostOS so no trouble here
+|
+|  2) WinHTTP proxy settings
+|  -> GetWaikTools, WinNTSetup etc. (JFX tools) requires this to download once (~4 MB files) from internet.
+|  --> Proxy users miss this proxy setting on HostOS
+|  -------> Utils\"Proxy Settings - WinHTTP" plugin available to easily get this setting on HostOS
+|
+|  3) Download buttons on plugins
+|  wget, aria2 requires manual proxy settings
+|  -------> Utils\"Proxy Settings"
+
+[Disable_Download_Info_P_B]
+Run,%ScriptFile%,Disable_Download_Info_P
+
+[Disable_Download_Info_P]
+Set,%t%,True
+Set,%ServerOnline%,-
+If,ExistFile,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,IniRead,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,Settings,ServerOnline,%t%
+If,%t%,Equal,True,Set,%ServerOnline%,True
+If,%t%,Equal,False,Set,%ServerOnline%,False
+If,%ServerOnline%,Equal,-,Set,%ServerOnline%,True
+//-
+Set,%DisableDownload%,False
+If,ExistFile,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Begin
+If,ExistSection,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,Address,#9
+If,#9,Equal,DisableDownload,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,ProxyEnabled,#9
+If,#9,Equal,True,Begin
+Set,%DisableDownload%,True
+End
+End
+End
+End
+//-
+Set,%ProxyEnabled%,False
+If,ExistFile,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Begin
+If,ExistSection,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,ProxyEnabled,#9
+If,#9,Equal,True,Set,%ProxyEnabled%,True
+End
+End
+//-
+Call,IniReadSectionVar,|Disable_Download_Info_Txt
+Echo,"Read Information"
+Message,%IniReadSectionVar%,Information
+
+[Disable_Download_Info_Txt]
+________   Current Settings:
+|
+| DisableDownload=%DisableDownload% (Download Setting) (False : PC Online)
+|
+| ServerOnline=%ServerOnline% (DownloadX Setting) (True : Server Online)
+|
+| ProxyEnabled=%ProxyEnabled% (Current Proxy Setting)
+|
+________   Information:
+|__________________________________________________________________________________
+| Adds all Projects Special fake Proxy: DisableDownload
+| -->
+| + This will Disable All Download buttons on plugins.
+| (Call,Download and Call,DownloadX disabled)
+| eg. Downloading apps with Download app buttons on plugins will not work.
+|
+| + Special: "DownloadX" and "Compare" buttons on plugins:
+| "DownloadX" button --> Very quickly Revert back to default plugin without checking internet.
+| "Compare" buttons ---> Very quickly Compare plugin with default plugin without checking internet.
+|
+| With other words:
+| "DownloadX" and "Compare" buttons are operational and fast when you are using offline pc
+| AND
+| Even on online pc, you can use same setting to work on plugins on an offline mode.
+|
+| Reminding:
+| When you use "DownloadX" and "Compare" buttons on offline pc without this setting,
+| You have to first wait for a while for download failure (slow)
+|__________________________________________________________________________________
+
+[En_able_DownloadX_P_B]
+If,ExistFile,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,Begin
+IniWrite,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,Settings,ServerOnline,True
+End
+
+[Disable_DownloadX_P_B]
+If,Not,ExistDir,%GlobalTemplates%\Download_1X_Settings,DirMake,%GlobalTemplates%\Download_1X_Settings
+If,Not,ExistFile,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,FileCreateBlank,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini
+IniWrite,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,Settings,ServerOnline,False
+
+[Disable_Enable_DownloadX_Info_P_B]
+Run,%ScriptFile%,Disable_Enable_DownloadX_Info_P
+
+[Disable_Enable_DownloadX_Info_P]
+Set,%t%,True
+Set,%ServerOnline%,-
+If,ExistFile,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,IniRead,%GlobalTemplates%\Download_1X_Settings\X_Settings.ini,Settings,ServerOnline,%t%
+If,%t%,Equal,True,Set,%ServerOnline%,True
+If,%t%,Equal,False,Set,%ServerOnline%,False
+If,%ServerOnline%,Equal,-,Set,%ServerOnline%,True
+//-
+Set,%DisableDownload%,False
+If,ExistFile,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Begin
+If,ExistSection,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,Address,#9
+If,#9,Equal,DisableDownload,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,ProxyEnabled,#9
+If,#9,Equal,True,Begin
+Set,%DisableDownload%,True
+End
+End
+End
+End
+//-
+Set,%ProxyEnabled%,False
+If,ExistFile,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,Begin
+If,ExistSection,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,Begin
+IniRead,%GlobalTemplates%\Download_1ProxySettings\ProxySettings.ini,ProxyInfo,ProxyEnabled,#9
+If,#9,Equal,True,Set,%ProxyEnabled%,True
+End
+End
+//-
+Call,IniReadSectionVar,|Disable_Enable_DownloadX_Info_Txt
+Echo,"Read Information"
+Message,%IniReadSectionVar%,Information
+
+[Disable_Enable_DownloadX_Info_Txt]
+________   Current Settings:
+|
+| ServerOnline=%ServerOnline% (DownloadX Setting) (True : Server Online)
+|
+| DisableDownload=%DisableDownload% (Download Setting) (False : PC Online)
+|
+| ProxyEnabled=%ProxyEnabled% (Current Proxy Setting)
+|
+________   Information:
+|__________________________________________________________________________________
+|
+| 'Disable DownloadX' & 'Enable DownloadX' Button do NOT change any Proxy Setting
+| They change ServerOnline=Setting
+|
+| If Project Server(s) go offline get ServerOnline=False Setting
+|
+| This way:
+|   'Download Plugin' Buttons (Call,DownloadX) on Plugins will only revert back to Default Settings
+|   Also
+|   'Compare' Buttons (Call,CompareEdit) on Plugin will only compare Plugin with Backup
+|
+| Other Download buttons on plugins (Call,Download) continue working
+|
+| Info:
+|  'Disable Download' is superior setting
+|       which also disable Download buttons on plugins (Call,Download)
+|
+___________________________________________________________________________________
+| DisableDownload=True
+| ---------> Call,DownloadX + Call,CompareEdit --> Work OffLine Mode
+| ---------> Call,Download --> Do not work
+|___________________________________________________________________
+| DisableDownload=False + ServerOnline=False
+| ---------> Call,DownloadX + Call,CompareEdit --> Work OffLine Mode
+| ---------> Call,Download --> Work
+|___________________________________________________________________
+| DisableDownload=False + ServerOnline=True
+| ---------> Call,DownloadX + Call,CompareEdit --> Work Online Mode
+| ---------> Call,Download --> Work
+|__________________________________________________________________________________
+
+[AuthorEncoded]
+Everaldo-Crystal-Clear-App-internet-connection-tools_0_048048.ico=4271,5695
+Logo=Everaldo-Crystal-Clear-App-internet-connection-tools_0_048048.ico
+
+[EncodedFile-AuthorEncoded-Everaldo-Crystal-Clear-App-internet-connection-tools_0_048048.ico]
+lines=1
+0=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
+1=V2tvrL8lebyY2keEwd5G6l+CmmeznCo8hAzA/zh3g7IzqXBGCK0B7i7hhiiMF5dNPRAvMfNND7xhkM1jsHIfrnMMrqKnY21kv507mmpayYalQBn++1WWlYmSKGYlEIxptfx0RrA3Dau6Lfbqes3MvyZ2IoN1GXxc2tTfMh4ZYBFMeGQ+xtA0h0toI8siHJ/RaIrK8TrkG0jQ7E2OpBpNU1CLW4yt9jYPcaHucDs6G9uhJaKIaaix9BQ2EusP2ims5sj2PCIJNiKN70Gliu+aRKoCz37lDwN1P4eAHbT0TUpxWFBmBlcgLkhviQz+3ofHsfE5ws8IGjOTAtdrFCsas1P37+PkOqtwN0NTVgZ10NtlaUAl+r2BoU5LA14Otvnr8QAzUPgYXCjDtDwX1QDJdOSGD8Wa2ozU6D+rws9r1Ql5eJOWRLspc9ED/G8d+OKzMeIoshlseNxJ3ZXyIWYUFUENRmpfL7se2m+T2uhxUXDiV/we4lqxz3yPWw/bKJzuSsfpDvgOVhPcVATqgvZIV4/0dUZibzNagmNx0q0hKhOiuVRz35gvkjyvACWKz92Fl7aP5e9ZOw+diaRuidQ9YbtFWW8TnIdHtVBTIbqrJTsDQ5Dh/FhUFRfBgyFMaG/mxcS+vF8reptIj26FKkPGCxhM2ljykHktBm02cN3ucOThlK7oPio7l3rNW62amFtNZtleXYVlUOHbVV2FlfQ6iD1qoybC4rwrrCHChPS0SGstSEn41r8jKwrbocO+probO+ls+FDrKH5UOkyYUet4Nfb3sV3AfF6eCG6Tc3zi0uT4kHnkNDHQ/KS+hubuTH9VRnaguzX4j22ir+2daaCuhi9ZTGHXU1kObj0ON9Zrfaq+Q+KF6nd37qtH9VSunDGMaZfFmDT9paoaejHbtb6DxVRXss+Zih+blxS3UFdDbVS5+pLuff7Wysw8x7Lt3+WvtV/8z/d4sMT4+jdbB7YG/I8+/t7oLerk582t6GXS1NwHRPZzs/7m5tRgb+fkcbPmlvxe62FmihHjXM6Gyhv/aRIfv7zu8VP81d8g575WJjb994VpOfDj3dndD3rBf66QzOwMaD6H/2DBjvkqRoCDXQqBaqb74gstR++3VxH5T7ZmYjA7WPLnY5IG8l2Lssx09rf2uU5cW+BIEBPrDTB4YIk/Nd/loq1U7KK/x8tZRVHlgbjH/dvF8kQiUlGdFNnWlxAl3ZBDsjuQRHI7l4Z+OlcQ7Gc0VCy1fia/5/bci0eEAPk+p+biqv27iRvC7jhvE6muOWDuip0s+5kXJSLVNKuofjhrVKNcfPx/EbCNIEHHuOvSgnfZ+bynHsMXbdxkmf6x/QeHlA0wfvavPfL72Ofu5zlOphyA9/0jLPXcNL6l/Ne/nXeuSAP96R+uknv/CaDNRmGqS+IMhIdRnv3/8Bv1WsNnicc3QtSy1KzEnJ13UuqiwuSczRdc5JTSzSdSwo0M3MK0ktykst0U3Oz8tLTS7JzM/TLcnPzymON4g3MLEAIr3M5HyGUTCEwT5VCG0ggF3eXdTXm4EJAFNvGd5JYaliAQAAAAIAAABbAAAAMBAAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp=737,983
+checked.bmp=165,220
+unchecked.bmp=137,183
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-media-record032032.bmp=1790,2387
+arrow_medium_down_splashyIcons.bmp=267,356
+Graphicloads-100-Flat-2-Arrow-refresh-3_016016.bmp=605,807
+Sekkyumu-Developpers-Play_CTT_1_0_016_016.bmp=292,390
+Sekkyumu-Developpers-Play_0_016_016.ico=485,647
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Icon8.com_Icons8-Windows-8-Media-Controls-Play_CTT1_Red_0_016_016.bmp=201,268
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+
+[Settings_Default]
+Run,%ScriptFile%,Default_Plugin_P
+Set,%Read_IE_Proxy_Reg_Plus_SaveProxy_CheckBox%,True,Permanent
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-checked.bmp]
+lines=0
+0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9ugKkGaDJ+NXAH4FLDgArwqME0DU0NsqvgyvD4ixg1cJNJCh88AKKGIAAAX5gbUnic407OSE3OTk3RS8otYBgFIw48Y4TQ0TjkuS4o2DAwAQA7aQa6Hu7DCgEAAAACAAAAJgAAAFsAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-unchecked.bmp]
+lines=0
+0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9uMKqGSDV4AEQNQQAAw2NaE3ic4y3NS85ITc5OTdFLyi1gGAUjDDxjhNC2OOQ7ygLuMjABAB4dCHaMBl0uAQAAAAIAAAAoAAAAPQAAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nLPyr6hMT83T9UzOzyvWyy9K14UKOCaXZAKFdFPyk0tzU/NKdFNTMkviDeINDM2ASC8pt4BhFAx9UMYCofOZsMvvyvLyYWACAL7jF4igD6oXAQAAAAIAAABOAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-media-record032032.bmp]
+lines=0
+0=eJzVl2tszXcYx222uYxELGSXbC5DhE5so0yraKm1KaUt6hqhVKVRGrfR0IgXCJEsmtqrWhAhlr2Qboh3vHKdptXL2tPL6elFrxqXXrTfnc9jfzmaOlT2Zv/kSX/9/Z7n+31uv8sJXfDHkD72BXplvFdGemWUV96zUZ8+6f+u+36S/hfy7Nkz3bhxQydPntTu3bu1bt06xcfHmzBmjjV00P2veKurqw131apViouLU2xsrGJiYrR48WItWrTIhDFzrKGDLjbYvitvW1ubzp49qxUrVmjJkiWGHx0drcjISIWHhyssLEyhoaEmjJljDR10scEWDLB6w11TU6Ndu3Zp2bJlFs/ChQsNf+nSpdq/f79OnTqly5cv6/r16yaMmWMNHXSxwRYMsMB8G+6ysjJt2rTJ6ko+IyIitGbNGp0+fVq3bt1Sbm6uCgsLVVJSIpfLZcKYOdbQQRcbbMEAC0yw3xT35s2btXz5cssh+Tx69KhhFhQUmL3H47FY6urqVF9fb8KYOdbQQRcbbMEAC0ywX5cHarRnzx6tXLnyZc6pXU5OjsVYVVVlXM3NzWppadHjx4/15MkTE8bMsYYOuthgC4ZTC7Dh6Kkfzp8/bzmjXlFRUWZHPsvLy1VbW2vY8LS2tqq9vV0dHR16/vy5CWPmWEMHXWywBQMsMMGGA67ueV+/fr3tG3w9duyY+Y49uSU29rTD2dnZqa6urleEOccXdLHBFgywwAQbDrh865CVlaW1a9eaf6xRO/JHDOAQF7gO7+s+xw90scEWDLDABBsOuOB0zrWkpCTLC3v3zJkz1j/UkDw6cTtxtrZ2KuPnWgVPK9DQwX+ZMGaONUfPyQMYYIEJNhxwwcn6zZs3lZCQYHlhHj/pYfqIWvrGXelu09TJD9Tv/fvq1zdX/fvmmTBmjjV0fPMABlhggg0HXHDCzV5lzB49ePCg9Qv7CL/JITV14n7BnaP+H+RrwIdFGvBR8QvxjpljDR0nD9iCARaYYMMBF5xwHz582MbsD/7nHKE3qB09TRx85JcYjdvLObBfmT7u7zZhzNwLH+6bLh+2YIAFJthwwAUn3Dt37tSGDRvsjLhy5YqdZfStk3un36gxeSZW4x5QpUEDH5owNh+8a+ig6/SjUwMwwYYDLjjh3rp1q425w7g76VXqxbni5J6PPqPWxEnM8A4e3GRiPnjnLAdeHXQdfjDAAhNsOOCCE+5t27YpMTHRzml//BPG5mlyQLFmTHMrJLhWs0IaFRzUosCpLQqYWK/RI6v02TCXhgzK17Ah9/3ywwUn3JyH7AXuLX/5T/vJo9joci2I9Gj+vBqFzq5X8IxGTZ3SoEkBtRo3plIjvnBp+Cf5mjur0G/+4YIT7uPHjys5OdnOZvYnPYIue9M3/j+zmxUTXaqoiAqFz/VoTki1gqbXaMp3NfpmgkdjR5fpq8//1vChufol8+Fr+4+zGC444b5w4YJSUlLsDXXo0CEVFRXp0aNHevr06St7v729S6kpbkX9WKrw0HLNnunWD4FufT+5QgHjyzRmVLG+/PSB5sws9Lv/4IALTrjv3bun1NRUu583btyou3fvqrGx0XLGPeXkAKmv61ByUoXmzSlWSJBL06e49O2kEk0cV6SvRzzQ/LAiVXn8nz9wwAUn3PhHHfBn9erVOnfunCoqKl7mwDkDHB/Iw++/NSoxodwba5GCAgsUH+fSr1n1anvD+Qs2HHDBCTd3wMWLF7V9+3briS1btujOnTvms3PvdffhXe8fsOGAC07n/qPf9u7dazmhNidOnFB+fr4aGhoMgzw4tejp7n2b+xdMsOGAizXfNwBvSN7wnAncj7wR6EXyQC3Yw04ufN8e3d8f6HV/f4AFJthwwNX9/YM9PrJOfbirsSMPYNGT+OG8u/DFEfLDPOvkjHd/aWmpxQ0GWGCCDQdcPb0BsWV/0Bv4il1GRob1A3j4QT7wpampyeLkL3bkE156l31OvbEFAywwwUa3J25HwDhy5IjS0tKsTzgnqRlx4AfY7CW32217urKy0vJcXFysvLw83b5923SxwRYMsMB8299D+JiZmWm/J/Cbc5p9S//yjmMfXb161c5yhDFzrKGDrnO2gwHWm+LuLvTUtWvX7L0ABj27Y8cOqyN7iPuLfkYYM8caOuhigy0YYPWGu3suLl26ZLU7cOCA0tPTtW/fPsuprzDHGjroYtPbmP0J+5/6Zmdn29uVuwMehDFzrKHTm9+b/wCs4XqHeJwz86+oTE/N0/VMzs8r1ssvSteFCjgml2QChXRzU1MyE3WLUpPzi1IMjI2ASC8pt4BhFAwPsE0AQk9gwy4f+TN3AQMTAOzpFyLJIAxSAQAAAAIAAABKAAAAkAYAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Sekkyumu-Developpers-Play_CTT_1_0_016_016.bmp]
+lines=0
+0=eJxz8k1jZgADMyDWAGIBIBYEYkYGCbC4AVQeGfwfwUBnQbnJ8saKhX1EqldYWmF6YpH9qeXmy5ubVswgqF5pdb3ZySVAZHNmpdPp1RYrW7vXzsejXmVju/XZ1XDkdHGjy9l1Fqs7cLp/zzS/WwfgKOjWwbT7J33PrM/fPA+ret2DcwLvHAaisLtHcx6dCb+4JWojPl/oHV8U/eBk/uPzwZe2JG2cTdC/9idWBJ3flLsRnx+HOgAAb13yoHic0w1Ozc6uLM0t1XVJLUvNyS8oSC0q1g3ISayMdw4JiTeMN4g3MDQDYb2k3AKGUTDMQBozhN6NQ34W3yR2BiYAxv4SLgHNWKABAAAAAgAAAEUAAAC7AAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Sekkyumu-Developpers-Play_0_016_016.ico]
+lines=0
+0=eJxjYGAEQgEBBiCpwJDBwsAgxsDAoAHEQCGgCEQcBBxYGIY10C1LYFH2tYjVCnbW1ytNINm3BskhQipzi75qL67+LJvkPEMn1E3NqC2fmVj9hmkRYgpLK/6bnlj03/7U8v9ai6rfyya69OiHe8uZd5QwEdJvnBklprS6/r/ZySVgbHNm5X+n06v/ay6ueSOX6NZsmhMnajGrkRGXfpPsWDGVje3/rc+uRsFOFzf+dzm77r/aktqXKiFOcaa9pVjdYpqXIKazZ9p/v1sHUHDQrYP/0+6f/O97Zv1/2Y70RSalyaxY9ecmiOkenPM/8M5hMA67e/R/zqMz/8MvbvmvMavysEqoa6BJaiQnLvebAfXrHV/0P/rByf/5j8//D7605b/q5JLtWgWxLhb5STj1wYB5bqKQxbGlX33Pbfiu1JW3QjczytJ+ejM7IX0wYN1VwaKQFhyrlxpuYNtbg9WPww38/4/AD4H4QT0QywMxMNQeMEMxO1SsHqIGWQ8Ayh6yP3icUw9Ozc6uLM0t1XVJLUvNyS8oSC0q1g3ISayMN4g3MDQDYb3M5HyGUTAsQR0LhG5kxC5/66ZDJgMTAAXgEUUpoMjLAQAAAAIAAABAAAAAgQEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-arrow_medium_down_splashyIcons.bmp]
+lines=0
+0=eJxz8i1jYQADMyDWAGIBIBYEYkYGBbC4A1QeGfz//38U48CMmyX+gzDZevcrQjCJZoDUM1w3+s943ACMwWwizQDrveMBxoznHMAYzidgBljvw3gEvhYMwUhiuMwA631WhorvpEMwmjg2M3xPxf6HhTfYrNd9/xme1EEwkI0sB1JL0B8flv5neDUNgoFsUuIArP/L7v8MH9dDMJBNqn5seKDTMy0wAKrF7sx4nFNKLCrKL4/PTU3JLM2NT8kvz4svLshJLM6o9EzOzyvWS8otYBgFwxeUsUDoVTjkH9rqFzEwAQB4uRD2/kANvAEAAAACAAAAPQAAAKoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Graphicloads-100-Flat-2-Arrow-refresh-3_016016.bmp]
+lines=0
+0=eJxz8i1jYQADMyDWAGIBIBYEYkYGBbC4A1QeGfz//5+q+MntM/93zU79P6dQ+X9zGMv/Ym+W/y2Jyv9XTEj5f//G6f+49P34/vX/jllJ/3ujGf/3RDH8rw9i+F/oiY4Z/y/vS/wPUouud3mDNVAvA1hvtT82vQg8scgKxQyIvRC9lX4M//vyTP5fPbnl//cvH8AYxAaJIZsBcgfMvyA3g/SD8NpOr/+/fnz9v29N9/++fFMwBrF/AsVm1Xqh+OUBMDxAYQXTOyGB4/+nd8//r5yYiuFmkNhHoFypPwdcDBSmoHCG293l+f/960dgs7GF3ftXj/7PrPWEi4HipS+WBa5/Q1/A/xsnVv4v98UebncvHwL7G8YHxS2yfhhuD4fIVyCZUxHA9v/rxzf/J5fawcVKgPqR3Y+MOyIY/jeGsv3fMr/yf5kf2/9jG7r+v3x09X+RFxPEbi+G/9PylFHCDxUz/r94eMX/P39+/797af//rx9e/p9bpgvWW+bD8L8TaD5I75M7qPEHw5OSuP9/+fDi/89vH/+f3Nj2f3qmGDx9dEdBzH8G1IucftDx4mrj/5/fPvk/KZkHLtYTBaFBerClX2IwSO1PtDzwEyn/4NbLCFaDrhcZP72DyL+guAVhEBskBvMvMgYAC0aQRXicM3IvSizIyEzOyU9MKdY1NDDQdctJLNE10nUsKsov1y1KTStKLc7QNY43MDQDIr2k3AKGUTB8QBkLhH7LiF3+6n+hxQxMACZrFHZT/698AQAAAAIAAABMAAAA7QEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Icon8.com_Icons8-Windows-8-Media-Controls-Play_CTT1_Red_0_016_016.bmp]
+lines=0
+0=eJxz8k1jZgADMyDWAGIBIBYEYkYGCbC4AVQeGfwfLkBF5i0EkaqeSF1o6gnqwqoejy486rFqoaJ6WvgXj0o09QRVDioAAEGZs3J4nHP1TM7Ps9BLzs+NB7GKLXTDM/NS8suLdS10fVNTMhN1nfPzSoryc4p1A3ISK+OdQ0IM44NSU+IN4g0MzUBYLym3gGEUDFGQxgyhvXDIz69Z6srABAD00BpsEEZ1RQEAAAACAAAAWwAAAEoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

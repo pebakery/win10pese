@@ -4,17 +4,18 @@ Type=Plugin
 Author=ChrisR
 Description=PStart is a simple tray tool to start user defined applications. Designed to run portable applications, you can start anything runnable from USB key devices or removable disks.
 Credits=http://TheOven.org
-Version=019
+Version=021
 Download_Level=1
 Level=5
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.11.22
+Date=2019.02.24
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Portable/Pstart.script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/Portable/Pstart.script
 CertifiedBy=
 Certification=
 HistoryNotes01=
@@ -25,13 +26,15 @@ History015=ChrisR - Open source folder, Extract Pstart and Explorer ++. Purge ca
 History017=Lancelot - Added DU buttons
 History018=Lancelot - Syntax updated - Date:2016.01.27 // Lancelot - Add Compare Button - Date:2017.01.12
 History019=Lancelot %ISODir% deprecated - Date:2017.11.22
+History020=Lancelot Add To Yomi Server - Date:2018.10.23
+History021=Lancelot Fix pTextBox254 UI + cosmetics - Date:2019.02.24
 
 [Interface]
 ScrollBox_RunFromWhere="Run from Normal",1,4,5,5,130,21,"Run from Normal","Run from RAM","Run from CD","Run From ISOboot",_RunFrom_Choice_,True
 SrcFolder_Bevel=SrcFolder_Bevel,1,12,5,35,225,60
 PStart_FileBox=%GlobalTemplates%\PStart,0,13,15,119,206,21,dir
 SrcFolder_TextLabel="Source folder",0,1,15,105,77,18,8,Bold
-PurgeCache_Button="Purge Cache",1,8,15,41,92,25,Purge_Cache,trash.bmp,True,_Purge_Cache_,True,"__Click here to clear your cached. Any customizations will also be lost."
+PurgeCache_Button="Purge Cache",1,8,15,41,92,25,Purge_Cache,Icons8-Windows-8-Industry-Trash_0_016016.bmp,True,_Purge_Cache_,True,"__Click here to clear your cached. Any customizations will also be lost."
 OpenSourceFolder_Button="Open Source Folder",1,8,115,41,107,25,OpenSourceFolder,True,True,True,"__Open your source folder."
 Startup_CheckBox="Run PStart at startup",1,3,15,73,128,18,True
 Shortcut_Bevel=Shortcut_Bevel,1,12,250,5,188,135
@@ -207,7 +210,7 @@ pTextBox251=,1,0,10,690,160,21,
 pTextBox252=,1,0,179,690,160,21,
 pCheckBox251=,1,3,365,690,20,18,False
 pTextBox253=,1,0,414,690,160,21,
-pTextBox254=,1,0,585,590,160,21,
+pTextBox254=,1,0,585,690,160,21,
 pCheckBox252=,1,3,768,690,20,18,False
 pTextBox261=,1,0,10,710,160,21,
 pTextBox262=,1,0,179,710,160,21,
@@ -631,7 +634,7 @@ lines=0
 0=eJyd0Xs403scB/Dfb78tsxnGhnSZa4tUkkuhDV1MKnIbnhBFpJrSkMZSbiUpHHSRiAqpnIZIzTXUo8RQCCMtZmwp1ontTM+5/HP+OOe8v5//Pp/v9/m8nq/0nXQYUN65w2EHAIIAAMoOIO0HtgIQDLZYssBlhUAiEHA4AiUntwSpgFJQQKPQaIyiijJGEauIRiurKWNVcXg8XkFJXUMNp6GCw+MWHwEh2R04Qh6BkMdh0Bjcf460DsAiAWPAGAJ1ABgWhLCgtAkgyPZEgD8D/BEQJttxiRxSHoWWDVQoAzAQgmBwaHFrWTdG1gfgWISK9gbbJap7/eV0juNM4q7kI3XtyuvxLm+FehsDTpyVR6mpayzV1F9FXG1gaGpmbrFps+XWbdt32FMcdrq6uXtQPb28DxwMDDoUHHI4/CQ9IjLqVPS5+ITEpOTzF9IzMn/Jys65eq3gdmHRnbv3ikt+fcyqqKx6Ul3T0NjU/KKlte1lZxenu6f33fs+7sjox7FPvM/jE6IvM1+/zc6Jv/+26AIBCPwz/+jCylwwOByCyy26QFjk4gAWjtDesETFdq+c/3FVHZM4JM7uSn55vbzuRhchPuDEW5SanilXX7RI+yn7d7Cz/0v2F+xvVx+gAIGyz4OwABlYIImoF1hp8KgIKeDTS+N2fk1BXuy1iMRU6NoOSIGk6O8FTsl5qlIguNr6jcI+R+FT7sDdBYL7aXoMzS35a7oeo6zE+KO6C09r2IPWXHaEES3mkxOKaGQuL26lgdkal3C14tJHg1coliY2RcuLX/skRlNLP19r8q9rBcKAzwjg1JfY5iHFCm1eVBaG+sKi7NUHcZr7zSl70hMjXAwszo0mBQ4ogSGGx6wNVhYP938cW8fYUuIUPBEbdyEv35WqtcAirfRm0HtjcaFzfO4b5RABqm9gqLU4NObTtnSE/SaUFCCZV+0LO01l+R6+vH2pVf1ozxkSvVw8JiLOHueoKS1zIjYxgdsBPv5a8vdDynlX9bc1DNxanl5COBsWyqehxKUUETvp5MJpW452t2mKOH62N0JQrbe1I00o8DOfd605OzW4a//N0JdSIJBwfq2QNsqc11LddUDolNLncPIJOnZ6D6duUKT1udgk6YjSqCvfBscOGlLOteeyZyfLamaavFM/VYTxSq27ygnp8QRb3+bA4ty6JJ3nnmJCaRt3BYwp/4FgON1YkzCYYXqoJOfOfrKZIVNzboWFrxeeEhZuQ8hmC52XJT5ZuF8bYkA8/oNAnuXj6ezHzHncmhdkeW6lUAqkEKtFTvFdyMQdmFPBz8gRvOl7Ej4hH18vGeiKKZ3NE4VfiozJlgIOBWXsM37lvmzR6n4+yWCm1oKbZZVpDJsYZ75znbOVzCjdMgV/I+bPewl5zWnoB1Xcdu8te9pa2lkjlJyLAvpE2WQoLy11pUFGo7plxLNjY+tYu116XRNa3IOLXJhmA2TNbz7EBslSsROXPEnDjHeMZ1HY5q99PaBpK3rQnNnM3aas7BaJfmft+iBrfi7NtbLrti3ne/o98uW2+dXQOK2/ivsgX2g/0ji/q1MwIN7YvMq0+5qZlREdv8yD2gIGOp8jirMHqJhhmblybq8Oi39DaeQhJ09N7GgvGkr8hoH8uoa7T8bY6SLacxumHJRnyaN9bONYErN+k0SLYcQ5VpEW/8UiZd6gutBHxatywtyRo6M2EgjFpS+7tBAMKSol+iI5zw0Ox5K7/Xcf8ny6ISfgqXNH32SqM9610eLVjZtXR54puYjGWNgM3nqo57lZD0kr6npd5O7AkS26VOFC34oyxaJAPSI5uX4eQ+1i0EeYyeqOgdx2XWrvVKHVNsujmRnLfwg0CKnAab+mhylhLfB7GYpJ4tK37OHrQ/D1EiOGBzNFs7v0YQLD8mAKJcRZUPtcN5RS+M0z81GrZNWsWe4PMrPelBEpcnSr6JGs3SzMSzhnlFpgby6wE0Vnnqi1KwwLcwzvL4stFDs2eJPjrC3uipk2XcOdrKMkbURFbo2A0hFBGOV0yEnf/w7aaegKeJzjKiguSSwq0csqSGcYBSMP9LFB6F+s2OU1Da4tZGACAPFKB31R0NHeAQAAAAIAAAAmAAAA+gUAAAAAAAABAAAAAAAAAAAAAAA
 
 [InterfaceEncoded]
-trash.bmp=867,1156
+Icons8-Windows-8-Industry-Trash_0_016016.bmp=322,430
 PStartISOboot.txt=351,468
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
@@ -641,7 +644,9 @@ AmperossQetto2Move0016016.bmp=893,1191
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
 
 [Settings_Default]
 IniWrite,%ScriptFile%,Main,Selected,True
@@ -652,9 +657,12 @@ IniWrite,%ScriptFile%,Main,Selected,False
 [Settings_Default_Win10PESE]
 IniWrite,%ScriptFile%,Main,Selected,False
 
-[EncodedFile-InterfaceEncoded-trash.bmp]
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp]
 lines=0
-0=eJxtlNtTEnEUx2umtx5qtKb+hN7MyUxCELxfkBRvjToTXkYTu3i3tJdq8sHeLEfNLBJSQcVLKCy7wCIsKyiwKOEFZyjxkoOvNl7GqRMk4yBnvmdn9/c7n99v95zf2fjMmgvnfBYNfgM8HDwM/Py5677xuzAfdtHvJ/bnxA4PD+fnLQa9ISA9XA2EwW96g81GHR8fB+JPs4gSmSXJr2KxqF8klUjFItHQ4CA8SoaGxCKxuF9ktVhQFXqWXV5edq2ucjOzxmSytjdtly+Fl5WWYyjKyci8euVa5/vOT31997hZjkWHx+MJYmdnTdNT8iePnxoNxNLS0s2IyMmJSSNBdHd1M+gMi8UyZzYX3i9UIciCfSGIJY3klFxeW1OrVCitVuvtqGjZqAxBkK6uLjYrXq/XazQa/gM+qlLZKXswS84qpqcb6uoh3mazxdyJGZONQeSHnp7EhETIFK7FS/il8BUhWUSpbGpsUiEqirLRafSJ8XFgP/b2piQlQ65xHC8vK9eoMSoUC9/yvPkZsHaKYjKY3yYnIauQovTUNIIw6HC8sqJCq1GH3BdDVS9aWxUKBUVRbBZbLpdD1YSfhVxOJlRaq9FWCwS4VhtyXzWGtba0WC3WNZeLHcdSKpWwyBehkJOe7nA4FhcWH1ZWzujws6zJZNLP6JITk2CFdx0dkRERjQ0NpJEo4fOjbkUJhULZ6AgzNhZGHI7vQSyKYktOZ052dg6Pl8vLKS4qys/Ny8nmFeTnFxcW5fJ4MFWQl+daXcEw9WkWjvGGZ10qkQyDpFLQiE/DJ5LCGZUMSeCMDgysrbnMJnOAJUlya2uzuqqKHhMTx2CAWMw4dtx/sZhM/yCdRnskEKyurECDBNj9/X14591db0N9HWSGm8FJT01N8yslBe65nH8jr1+93N7ehsLt7f0O6iMdroM1obhbm5vNTY0MOj0pIT6WRnvb3r65sWG32ZxOp5EwhuxBsJ1fO263G0Ox9fWfkFJoSWiHDY9HrVa73T+8Xu/p4CDWbwcHB2bzHEEYYRfCQEATHR0dnQ3z/Tn+Ah/33RZ4nOMsKUosztBLyi1gGAUjEBSwQGgpZuzyyx1fajMwAQDHowYo0vtiWAEAAAACAAAAJQAAABoDAAAAAAAAAQAAAAAAAAAAAAAA
+0=eJztky0Og0AQhWmowZBdjVlZT1LdVGEquAMSgapGIJBIbsQVMGiO8dg3KQ0hFFa0rpt8yeT9sBMI98fz7Mm5Wi4WZdGWk2dEv7385QHwFcZxRBzH4CP3YIbZdb8sy8PuDLPrflEU4gVBgLquobVGmqYCZ2r0mGH2U18pJZ4xBm3bCpyp0fv3f9sPwxB93yOKIvnOhDM1ekd9F7b63DNJEieYXd/t2p1Z7lBVlfPuM+wsdxiGQd5R13Xi53mOpmkEztToMcPs3r+cZRl833/fxZnaVnYCtxtLZnic0/FMzs8rttANz8xLyS8v1rXQ9cxLKS0uKarUDSlKLM6IN4g3MDQDIr2k3AKGUTDcQBkLhL6JQ5496GYFAxMAem4SJP0g8REBAAAAAgAAAEUAAADZAAAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0

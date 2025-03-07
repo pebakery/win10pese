@@ -4,14 +4,14 @@ Type=Plugin
 Author=ChrisR
 Description=(Win10PESE - Win8.1SE - Win8PESE) Add original NET drivers for WinPE
 Credits=http://TheOven.org
-Version=014
+Version=018
 Download_Level=1
 Level=6
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.01.10_16:17.12 (GMT0: -3 Hours)
+Date=2020.03.07_00:08.15 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w8pese.cwcodes.net/Projects/Win8PESE/Drivers/Net%20drivers.script
@@ -32,10 +32,10 @@ History010=ChrisR - The registry for netwew02.inf was missing for Win8.1 (probab
 History011=ChrisR - Added Qualcomm Atheros QCA61x4/QCA9377 Wireless Network Adapter netathr10.inf(x86) netathr10x.inf(amd64) new in win10 1511 build 10586 - 2015.11.20
 History012=Lancelot - Added DU Buttons
 History014=ChrisR - Added Intel Wireless WiFi Link Adapters netwtn04.inf(x86) netwtw04.inf(amd64) new in win10 1607 build 14393 - Date:2016.09.08 // Lancelot - Add Compare Button - Date:2017.01.10
-
-[Variables]
-%CmdexeFolder%=
-%RegeditexeFolder%=
+History015=ChrisR - netwlan92de.inf does not exist in Win10 1803 10.0.17134.1 - Date:2018.05.04
+History016=Bob.Omb - Added Intel Netwtw02 and Netwtw06 in Win10 v1809 - Date:2018.10.13
+History017=Lancelot - Add Call,HostOSArch - Date:2019.01.27
+History018=Lancelot - Add BuildClass 3 support - Date:2020.03.06 - Date:2020.03.07
 
 [Interface]
 Add_TextLabel="Add original NET drivers",1,1,13,10,146,18,8,Bold
@@ -44,8 +44,8 @@ Atheros_CheckBoxSel="Atheros drivers",1,3,13,30,135,18,True
 Broadcom_CheckBoxSel="Broadcom drivers",1,3,13,55,135,18,True
 Intel_CheckBoxSel="Intel drivers",1,3,13,80,135,18,True
 Realtek_CheckBoxSel="Realtek drivers",1,3,13,105,135,18,True
-Ralink_CheckBoxSel="Ralink drivers",1,3,13,130,135,18,False
-Marvell_CheckBoxSel="Marvell drivers",1,3,13,155,135,18,False
+Ralink_CheckBoxSel="Ralink drivers",1,3,13,130,135,18,True
+Marvell_CheckBoxSel="Marvell drivers",1,3,13,155,135,18,True
 pWebLabel2="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
@@ -86,15 +86,46 @@ Ralink_TextBoxSCN=,1,0,248,190,170,21,"Install Ralink Net drivers"
 Ralink_CheckBoxLoad=,1,3,453,190,20,18,False
 TimeSpace_TextLabel="(Takes times and spaces)",1,1,403,219,124,18,8,Normal
 
+[Variables]
+%CmdexeFolder%=
+%RegeditexeFolder%=
+InstallCopyInf=Run,%ScriptFile%,PInstall_CopyInf_%BuildClass%
+InstallCopyDirFileRepository=Run,%ScriptFile%,PInstall_DirFileRepository_%BuildClass%
+%PInstall%=%ProjectTemp%\PInstall.txt
+
+[PInstall_CopyInf_3]
+TxtAddLine,%PInstall%,"\Windows\Inf\#1",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,Not,ExistFile,#$q%Target_Win%\Inf\#1#$q,Halt,#$qFile Not Found: %Target_Win%\Inf\#1#$q"
+
+[PInstall_CopyInf_2]
+FileCopy,%Source_Win%\inf\#1,%Target_Win%\inf
+
+[PInstall_DirFileRepository_3]
+TxtAddLine,%PInstall%,"\Windows\System32\DriverStore\FileRepository\#1",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,Not,ExistDir,#$q%Target_Sys%\DriverStore\FileRepository\#1#$q,Halt,#$qFolder Not Found: %Target_Sys%\DriverStore\FileRepository\#1#$q"
+
+[PInstall_DirFileRepository_2]
+DirCopy,%Source_Sys%\DriverStore\FileRepository\#1,%Target_Sys%\DriverStore\FileRepository\
+
 [Process]
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
 IniRead,%projectdir%\script.project,IniVariables,DriversHive,%DriversHive%
 IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
 //-
-Call,TargetVersion,ver
-Call,CompareVersions,%ver%,6.3.9600.00000,BiggerWin8Source
+If,%BuildClass%,Equal,3,Begin
+Call,FileCreateBlank,%PInstall%,OverWrite
+Call,FileCreateBlank,%PInstall%.ini,OverWrite
+TxtAddLine,%PInstall%.ini,"[Process]",Append
+TxtAddLine,%PInstall%.ini,"//Process .txt.ini Finish",Append
+End
+//-
+Call,TargetVersion
+Call,CompareVersions,%TargetVersion%,6.2.9200.16384,Win8_9200
+Call,CompareVersions,%TargetVersion%,10.0.17134.1,Win10_1803
+Call,CompareVersions,%TargetVersion%,10.0.17763.1,Win10_1809
 //-
 Call,DirDeleteMake,%ProjectTemp%\OriginalNet
 ExtractFile,%ScriptFile%,Reg,OriginalNet_%OS%.7z,%ProjectTemp%\OriginalNet
@@ -105,7 +136,8 @@ RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
 If,Not,%DriversHive%,Equal,Install.wim,Begin
 If,ExistFile,%RegistryCache%\PreparedHive.Done,RegHiveLoad,Tmp_Install_Drivers,%RegistryCache%\install_wim\DRIVERS
 Else,Begin
-FileCopy,%Source_Sys%\config\DRIVERS,%ProjectTemp%\OriginalNet
+If,%BuildClass%,Equal,2,FileCopy,%Source_Sys%\config\DRIVERS,%ProjectTemp%\OriginalNet
+If,%BuildClass%,Equal,3,FileCopy,%ProjectTemp%\Install.hives\DRIVERS,%ProjectTemp%\OriginalNet
 RegHiveLoad,Tmp_Install_Drivers,%ProjectTemp%\OriginalNet\DRIVERS
 End
 End
@@ -127,6 +159,14 @@ If,Not,%DriversHive%,Equal,Install.wim,RegHiveunLoad,Tmp_Install_Drivers
 RegHiveUnLoad,Tmp_Drivers
 //-
 DirDelete,%ProjectTemp%\OriginalNet
+//-
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,%PInstall%
+Call,FileDelete,%PInstall%
+Run,%PInstall%.ini,Process
+//Call,StartDoc,%PInstall%.ini
+Call,FileDelete,%PInstall%.ini
+End
 
 [Atheros_Drivers]
 Echo,"Copy Atheros Drivers"
@@ -134,68 +174,106 @@ Echo,"Copy Atheros Drivers"
 // Copy DriverStore and inf/dll/sys/... files, need DirCopy in %ProjectTemp%\NetDrivers
 //Call,DirDeleteMake,%ProjectTemp%\NetDrivers
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netathr.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netathr.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netathr.inf_*
+InstallCopyInf,netathr.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathr.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathr.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netathr.inf",%ProjectTemp%\OriginalNet
 End
-If,%BiggerWin8Source%,Equal,Bigger,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\athw8.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\athw8.inf,%Target_Win%\inf
+If,%Win8_9200%,Equal,Bigger,Begin
+InstallCopyDirFileRepository,athw8.inf_*
+InstallCopyInf,athw8.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\athw8.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\athw8.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd athw8.inf",%ProjectTemp%\OriginalNet
 End
+//-
 // new in win10 1511 build 10586 netathr10.inf_x86_* netathr10x.inf_amd64_*
-If,Existfile,%Source_Win%\inf\netathr10.inf,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netathr10.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netathr10.inf,%Target_Win%\inf
+Set,%t%,0
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,netathr10_inf_FileList
+If,Existfile,%Target_Win%\inf\netathr10.inf,Set,%t%,1
+End
+If,%BuildClass%,Equal,2,Begin
+If,Existfile,%Source_Win%\inf\netathr10.inf,Set,%t%,1
+End
+If,%t%,Equal,1,Begin
+InstallCopyDirFileRepository,netathr10.inf_*
+If,%BuildClass%,Equal,2,InstallCopyInf,netathr10.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathr10.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathr10.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netathr10.inf",%ProjectTemp%\OriginalNet
 End
 End
+//-
 End
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netathrx.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netathrx.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netathrx.inf_*
+InstallCopyInf,netathrx.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathrx.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathrx.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netathrx.inf",%ProjectTemp%\OriginalNet
 End
-If,%BiggerWin8Source%,Equal,Bigger,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\athw8x.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\athw8x.inf,%Target_Win%\inf
+If,%Win8_9200%,Equal,Bigger,Begin
+InstallCopyDirFileRepository,athw8x.inf_*
+InstallCopyInf,athw8x.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\athw8x.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\athw8x.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd athw8x.inf",%ProjectTemp%\OriginalNet
 End
+//-
 // new in win10 1511 build 10586 netathr10.inf_x86_* netathr10x.inf_amd64_*
-If,Existfile,%Source_Win%\inf\netathr10x.inf,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netathr10x.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netathr10x.inf,%Target_Win%\inf
+Set,%t%,0
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,netathr10x_inf_FileList
+If,Existfile,%Target_Win%\inf\netathr10x.inf,Set,%t%,1
+End
+If,%BuildClass%,Equal,2,Begin
+If,Existfile,%Source_Win%\inf\netathr10x.inf,Set,%t%,1
+End
+If,%t%,Equal,1,Begin
+InstallCopyDirFileRepository,netathr10x.inf_*
+If,%BuildClass%,Equal,2,InstallCopyInf,netathr10x.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathr10x.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netathr10x.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netathr10x.inf",%ProjectTemp%\OriginalNet
 End
 End
+//-
 End
 End
 //- No longer used, copy inf file in Windows\inf folder is enough
 //Run,%ScriptFile%,CopyDrivers,Atheros
 
+[netathr10_inf_FileList]
+\Windows\Inf\netathr10.inf
+
+[netathr10x_inf_FileList]
+\Windows\Inf\netathr10x.inf
+
 [Atheros_Drivers_SaveForHistory]
 // Load Atheros driver at startup
-If,%Atheros_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-If,%SourceArch%,Equal,x86,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\athw8.inf #$pSystemRoot#$p\inf\netathr.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\athw8x.inf #$pSystemRoot#$p\inf\netathrx.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//-
+If,%Atheros_CheckBoxLoad%,Equal,True,Begin
+If,%SourceArch%,Equal,x86,Add,StartupBeforeShellCMD,Original_NET_drivers_Atheros,,"drvload.exe  #$pSystemRoot#$p\inf\athw8.inf #$pSystemRoot#$p\inf\netathr.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Atheros,,"drvload.exe  #$pSystemRoot#$p\inf\athw8x.inf #$pSystemRoot#$p\inf\netathrx.inf >nul"
+End
+//-
+Set,%t%,0
+//Set,%t%,1
+If,%t%,Equal,1,Begin
+If,%Atheros_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+If,%SourceArch%,Equal,x86,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\athw8.inf #$pSystemRoot#$p\inf\netathr.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\athw8x.inf #$pSystemRoot#$p\inf\netathrx.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+End
 End
 // Shorcut Atheros driver
-If,%Atheros_CheckBoxSM%,Equal,true,Begin
+If,%Atheros_CheckBoxSM%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Atheros_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\athw8.inf #$pSystemRoot#$p\inf\netathr.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 Else,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Atheros_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\athw8x.inf #$pSystemRoot#$p\inf\netathrx.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
@@ -206,33 +284,33 @@ Echo,"Copy Broadcom Drivers"
 // Copy DriverStore and inf/dll/sys/... files, need DirCopy in %ProjectTemp%\NetDrivers
 //Call,DirDeleteMake,%ProjectTemp%\NetDrivers
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netbc63.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netbc63.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netbc63.inf_*
+InstallCopyInf,netbc63.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc63.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc63.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netbc63.inf",%ProjectTemp%\OriginalNet
 End
-If,%BiggerWin8Source%,Equal,Bigger,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netbc64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netbc64.inf,%Target_Win%\inf
+If,%Win8_9200%,Equal,Bigger,Begin
+InstallCopyDirFileRepository,netbc64.inf_*
+InstallCopyInf,netbc64.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc64_%SourceArch%.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc64_%SourceArch%.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netbc64.inf",%ProjectTemp%\OriginalNet
 End
 End
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netbc63a.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netbc63a.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netbc63a.inf_*
+InstallCopyInf,netbc63a.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc63a.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc63a.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netbc63a.inf",%ProjectTemp%\OriginalNet
 End
-If,%BiggerWin8Source%,Equal,Bigger,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netbc64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netbc64.inf,%Target_Win%\inf
+If,%Win8_9200%,Equal,Bigger,Begin
+InstallCopyDirFileRepository,netbc64.inf_*
+InstallCopyInf,netbc64.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc64_%SourceArch%.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netbc64_%SourceArch%.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netbc64.inf",%ProjectTemp%\OriginalNet
 End
 End
@@ -243,20 +321,38 @@ End
 
 [Broadcom_Drivers_SaveForHistory]
 // Load Broadcom driver at startup
-If,%Broadcom_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
+//-
+If,%Broadcom_CheckBoxLoad%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Begin
-If,%OS%,Equal,Win8.1,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63.inf #$pSystemRoot#$p\inf\netbc64.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63.inf >nul",Append
+If,%OS%,Equal,Win8.1,Add,StartupBeforeShellCMD,Original_NET_drivers_Broadcom,,"drvload.exe #$pSystemRoot#$p\inf\netbc63.inf #$pSystemRoot#$p\inf\netbc64.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Broadcom,,"drvload.exe #$pSystemRoot#$p\inf\netbc63.inf >nul"
 End
 Else,Begin
-If,%OS%,Equal,Win8.1,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf #$pSystemRoot#$p\inf\netbc64.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf >nul",Append
+If,%OS%,Equal,Win8.1,Add,StartupBeforeShellCMD,Original_NET_drivers_Broadcom,,"drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf #$pSystemRoot#$p\inf\netbc64.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Broadcom,,"drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf >nul"
 End
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+End
+//-
+Set,%t%,0
+//Set,%t%,1
+If,%t%,Equal,1,Begin
+If,%Broadcom_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+If,%SourceArch%,Equal,x86,Begin
+If,%OS%,Equal,Win8.1,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63.inf #$pSystemRoot#$p\inf\netbc64.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63.inf >nul",Append
+End
+Else,Begin
+If,%OS%,Equal,Win8.1,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf #$pSystemRoot#$p\inf\netbc64.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf >nul",Append
+End
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+End
 End
 // Shorcut Broadcom driver
-If,%Broadcom_CheckBoxSM%,Equal,true,Begin
+If,%Broadcom_CheckBoxSM%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Broadcom_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netbc63.inf #$pSystemRoot#$p\inf\netbc64.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 Else,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Broadcom_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netbc63a.inf #$pSystemRoot#$p\inf\netbc64.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
@@ -267,111 +363,143 @@ Echo,"Copy Intel Drivers"
 // Copy DriverStore and inf/dll/sys/... files, need DirCopy in %ProjectTemp%\NetDrivers
 //Call,DirDeleteMake,%ProjectTemp%\NetDrivers
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwlv32.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwlv32.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwlv32.inf_*
+InstallCopyInf,netwlv32.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwlv32.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwlv32.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwlv32.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwns32.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwns32.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwns32.inf_*
+InstallCopyInf,netwns32.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwns32.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwns32.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwns32.inf",%ProjectTemp%\OriginalNet
 End
-If,%BiggerWin8Source%,Equal,Bigger,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwen00.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwen00.inf,%Target_Win%\inf
+If,%Win8_9200%,Equal,Bigger,Begin
+InstallCopyDirFileRepository,netwen00.inf_*
+InstallCopyInf,netwen00.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwen00.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwen00.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwen00.inf",%ProjectTemp%\OriginalNet
 End
 If,%OS%,Equal,Win10,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwen01.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwen01.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwen01.inf_*
+InstallCopyInf,netwen01.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwen01.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwen01.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwen01.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwbn02.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwbn02.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwbn02.inf_*
+InstallCopyInf,netwbn02.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwbn02.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwbn02.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwbn02.inf",%ProjectTemp%\OriginalNet
 End
+//-
 // new in win10 1607 build 14393 netwtn04.inf_x86_* netwtw04.inf_amd64_*
-If,Existfile,%Source_Win%\inf\netwtn04.inf,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwtn04.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwtn04.inf,%Target_Win%\inf
+Set,%t%,0
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,netwtw04_inf_FileList
+If,Existfile,%Target_Win%\inf\netwtw04.inf,Set,%t%,1
+End
+If,%BuildClass%,Equal,2,Begin
+If,Existfile,%Source_Win%\inf\netwtw04.inf,Set,%t%,1
+End
+If,%t%,Equal,1,Begin
+InstallCopyDirFileRepository,netwtn04.inf_*
+If,%BuildClass%,Equal,2,InstallCopyInf,netwtn04.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwtn04.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwtn04.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwtn04.inf",%ProjectTemp%\OriginalNet
 End
 End
+//-
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwsn00.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwsn00.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwsn00.inf_*
+InstallCopyInf,netwsn00.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwsn00.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwsn00.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwsn00.inf",%ProjectTemp%\OriginalNet
 End
 End
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwlv64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwlv64.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwlv64.inf_*
+InstallCopyInf,netwlv64.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwlv64.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwlv64.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwlv64.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwns64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwns64.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwns64.inf_*
+InstallCopyInf,netwns64.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwns64.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwns64.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwns64.inf",%ProjectTemp%\OriginalNet
 End
-If,%BiggerWin8Source%,Equal,Bigger,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwew00.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwew00.inf,%Target_Win%\inf
+If,%Win8_9200%,Equal,Bigger,Begin
+InstallCopyDirFileRepository,netwew00.inf_*
+InstallCopyInf,netwew00.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwew00.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwew00.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwew00.inf",%ProjectTemp%\OriginalNet
 End
 If,%OS%,Equal,Win8.1,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwew02.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwew02.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwew02.inf_*
+InstallCopyInf,netwew02.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwew02.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwew02.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwew02.inf",%ProjectTemp%\OriginalNet
 End
 End
 If,%OS%,Equal,Win10,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwew01.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwew01.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwew01.inf_*
+InstallCopyInf,netwew01.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwew01.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwew01.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwew01.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwbw02.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwbw02.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netwbw02.inf_*
+InstallCopyInf,netwbw02.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwbw02.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwbw02.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwbw02.inf",%ProjectTemp%\OriginalNet
 End
+//-
 // new in win10 1607 build 14393 netwtn04.inf_x86_* netwtw04.inf_amd64_*
-If,Existfile,%Source_Win%\inf\netwtw04.inf,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwtw04.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwtw04.inf,%Target_Win%\inf
+Set,%t%,0
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,netwtw04_inf_FileList
+If,Existfile,%Target_Win%\inf\netwtw04.inf,Set,%t%,1
+End
+If,%BuildClass%,Equal,2,Begin
+If,Existfile,%Source_Win%\inf\netwtw04.inf,Set,%t%,1
+End
+If,%t%,Equal,1,Begin
+InstallCopyDirFileRepository,netwtw04.inf_*
+If,%BuildClass%,Equal,2,InstallCopyInf,netwtw04.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwtw04.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwtw04.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwtw04.inf",%ProjectTemp%\OriginalNet
 End
 End
-End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwsw00.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwsw00.inf,%Target_Win%\inf
+//-
+// 1809 Additions
+If,Not,%Win10_1809%,Equal,Smaller,Begin
+InstallCopyDirFileRepository,netwtw02.inf_*
+InstallCopyInf,netwtw02.inf
+InstallCopyDirFileRepository,netwtw06.inf_*
+InstallCopyInf,netwtw06.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwsw00.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwtw1809.reg#$q"
+ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwtw02.inf",%ProjectTemp%\OriginalNet
+ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwtw06.inf",%ProjectTemp%\OriginalNet
+End
+End
+End
+InstallCopyDirFileRepository,netwsw00.inf_*
+InstallCopyInf,netwsw00.inf
+If,Not,%DriversHive%,Equal,Install.wim,Begin
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwsw00.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwsw00.inf",%ProjectTemp%\OriginalNet
 End
 End
@@ -380,16 +508,31 @@ End
 //- No longer used, copy inf file in Windows\inf folder is enough
 //Run,%ScriptFile%,CopyDrivers,Intel
 
+[netwtw04_inf_FileList]
+\Windows\Inf\netwtw04.inf
+
 [Intel_Drivers_SaveForHistory]
 // Load Intel driver at startup
-If,%Intel_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-If,%SourceArch%,Equal,x86,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netwen00.inf #$pSystemRoot#$p\inf\netwlv32.inf #$pSystemRoot#$p\inf\netwns32.inf #$pSystemRoot#$p\inf\netwsn00.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netwew00.inf #$pSystemRoot#$p\inf\netwew02.inf #$pSystemRoot#$p\inf\netwlv64.inf #$pSystemRoot#$p\inf\netwns64.inf #$pSystemRoot#$p\inf\netwsw00.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+If,%Intel_CheckBoxLoad%,Equal,True,Begin
+If,%SourceArch%,Equal,x86,Add,StartupBeforeShellCMD,Original_NET_drivers_Intel_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\netwen00.inf #$pSystemRoot#$p\inf\netwlv32.inf #$pSystemRoot#$p\inf\netwns32.inf #$pSystemRoot#$p\inf\netwsn00.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Intel_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\netwew00.inf #$pSystemRoot#$p\inf\netwew02.inf #$pSystemRoot#$p\inf\netwlv64.inf #$pSystemRoot#$p\inf\netwns64.inf #$pSystemRoot#$p\inf\netwsw00.inf >nul"
 End
+//-
+Set,%t%,0
+//Set,%t%,1
+If,%t%,Equal,1,Begin
+If,%Intel_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+If,%SourceArch%,Equal,x86,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netwen00.inf #$pSystemRoot#$p\inf\netwlv32.inf #$pSystemRoot#$p\inf\netwns32.inf #$pSystemRoot#$p\inf\netwsn00.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netwew00.inf #$pSystemRoot#$p\inf\netwew02.inf #$pSystemRoot#$p\inf\netwlv64.inf #$pSystemRoot#$p\inf\netwns64.inf #$pSystemRoot#$p\inf\netwsw00.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+End
+End
+//-
 // Shorcut Intel driver
-If,%Intel_CheckBoxSM%,Equal,true,Begin
+If,%Intel_CheckBoxSM%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Intel_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netwen00.inf #$pSystemRoot#$p\inf\netwlv32.inf #$pSystemRoot#$p\inf\netwns32.inf #$pSystemRoot#$p\inf\netwsn00.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 Else,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Intel_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netwew00.inf #$pSystemRoot#$p\inf\netwew02.inf #$pSystemRoot#$p\inf\netwlv64.inf #$pSystemRoot#$p\inf\netwns64.inf #$pSystemRoot#$p\inf\netwsw00.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
@@ -399,49 +542,51 @@ Echo,"Copy Realtek Drivers"
 //-
 // Copy DriverStore and inf/dll/sys/... files, need DirCopy in %ProjectTemp%\NetDrivers
 //Call,DirDeleteMake,%ProjectTemp%\NetDrivers
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netrtwlane.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netrtwlane.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netrtwlane.inf_*
+InstallCopyInf,netrtwlane.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrtwlane_%SourceArch%.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrtwlane_%SourceArch%.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netrtwlane.inf",%ProjectTemp%\OriginalNet
 End
 If,%OS%,Equal,Win10,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netrtwlane_13.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netrtwlane_13.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netrtwlane_13.inf_*
+InstallCopyInf,netrtwlane_13.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrtwlane_13.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrtwlane_13.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netrtwlane_13.inf",%ProjectTemp%\OriginalNet
 End
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netrtwlanu.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netrtwlanu.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netrtwlanu.inf_*
+InstallCopyInf,netrtwlanu.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrtwlanu_%SourceArch%.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrtwlanu_%SourceArch%.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netrtwlanu.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netwlan92de.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netwlan92de.inf,%Target_Win%\inf
+If,%Win10_1803%,Equal,Smaller,Begin
+InstallCopyDirFileRepository,netwlan92de.inf_*
+InstallCopyInf,netwlan92de.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwlan92de.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netwlan92de.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netwlan92de.inf",%ProjectTemp%\OriginalNet
+End
 End
 Set,%netrt630%,False
 If,%OS%,Equal,Win8,Set,%netrt630%,True
 If,%OS%,Equal,Win8.1,Set,%netrt630%,True
 If,%netrt630%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netrt630x86.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netrt630x86.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netrt630x86.inf_*
+InstallCopyInf,netrt630x86.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrt630_x86.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrt630_x86.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netrt630x86.inf",%ProjectTemp%\OriginalNet
 End
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netrt630x64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netrt630x64.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netrt630x64.inf_*
+InstallCopyInf,netrt630x64.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrt630_x64.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netrt630_x64.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netrt630x64.inf",%ProjectTemp%\OriginalNet
 End
 End
@@ -452,14 +597,27 @@ End
 
 [Realtek_Drivers_SaveForHistory]
 // Load Realtek driver at startup
-If,%Realtek_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-If,%SourceArch%,Equal,x86,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x86.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x64.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//-
+If,%Realtek_CheckBoxLoad%,Equal,True,Begin
+If,%SourceArch%,Equal,x86,Add,StartupBeforeShellCMD,Original_NET_drivers_Realtek_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x86.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Realtek_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x64.inf >nul"
 End
+//-
+Set,%t%,0
+//Set,%t%,1
+If,%t%,Equal,1,Begin
+If,%Realtek_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+If,%SourceArch%,Equal,x86,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x86.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x64.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+End
+End
+//-
 // Shorcut Realtek driver
-If,%Realtek_CheckBoxSM%,Equal,true,Begin
+If,%Realtek_CheckBoxSM%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Realtek_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x86.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 Else,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Realtek_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netrtwlane.inf #$pSystemRoot#$p\inf\netrtwlanu.inf #$pSystemRoot#$p\inf\netrt630x64.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
@@ -470,27 +628,27 @@ Echo,"Copy Realtek Others Drivers"
 // Copy DriverStore and inf/dll/sys/... files, need DirCopy in %ProjectTemp%\NetDrivers
 // Registry NOT DONE for Realtek_Others_Drivers
 //Call,DirDeleteMake,%ProjectTemp%\NetDrivers
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8185.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8185.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,net8185.inf_*
+InstallCopyInf,net8185.inf
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8187bv32.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8187bv32.inf,%Target_Win%\inf
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8187se86.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8187se86.inf,%Target_Win%\inf
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8192se32.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8192se32.inf,%Target_Win%\inf
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8192su32.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8192su32.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,net8187bv32.inf_*
+InstallCopyInf,net8187bv32.inf
+InstallCopyDirFileRepository,net8187se86.inf_*
+InstallCopyInf,net8187se86.inf
+InstallCopyDirFileRepository,net8192se32.inf_*
+InstallCopyInf,net8192se32.inf
+InstallCopyDirFileRepository,net8192su32.inf_*
+InstallCopyInf,net8192su32.inf
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8187bv64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8187bv64.inf,%Target_Win%\inf
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8187se64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8187se64.inf,%Target_Win%\inf
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8192se64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8192se64.inf,%Target_Win%\inf
-DirCopy,%Source_Sys%\DriverStore\FileRepository\net8192su64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\net8192su64.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,net8187bv64.inf_*
+InstallCopyInf,net8187bv64.inf
+InstallCopyDirFileRepository,net8187se64.inf_*
+InstallCopyInf,net8187se64.inf
+InstallCopyDirFileRepository,net8192se64.inf_*
+InstallCopyInf,net8192se64.inf
+InstallCopyDirFileRepository,net8192su64.inf_*
+InstallCopyInf,net8192su64.inf
 End
 //-
 //- No longer used, copy inf file in Windows\inf folder is enough
@@ -498,14 +656,27 @@ End
 
 [Realtek_Others_Drivers_SaveForHistory]
 // Load Realtek Others driver at startup
-If,%Realtek_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-If,%SourceArch%,Equal,x86,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv32.inf #$pSystemRoot#$p\inf\net8187se86.inf #$pSystemRoot#$p\inf\net8192se32.inf #$pSystemRoot#$p\inf\net8192su32.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv64.inf #$pSystemRoot#$p\inf\net8187se64.inf #$pSystemRoot#$p\inf\net8192se64.inf #$pSystemRoot#$p\inf\net8192su64.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//-
+If,%Realtek_CheckBoxLoad%,Equal,True,Begin
+If,%SourceArch%,Equal,x86,Add,StartupBeforeShellCMD,Original_NET_drivers_Realtek_Others_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv32.inf #$pSystemRoot#$p\inf\net8187se86.inf #$pSystemRoot#$p\inf\net8192se32.inf #$pSystemRoot#$p\inf\net8192su32.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Realtek_Others_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv64.inf #$pSystemRoot#$p\inf\net8187se64.inf #$pSystemRoot#$p\inf\net8192se64.inf #$pSystemRoot#$p\inf\net8192su64.inf >nul"
 End
+//-
+Set,%t%,0
+//Set,%t%,1
+If,%t%,Equal,1,Begin
+If,%Realtek_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+If,%SourceArch%,Equal,x86,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv32.inf #$pSystemRoot#$p\inf\net8187se86.inf #$pSystemRoot#$p\inf\net8192se32.inf #$pSystemRoot#$p\inf\net8192su32.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv64.inf #$pSystemRoot#$p\inf\net8187se64.inf #$pSystemRoot#$p\inf\net8192se64.inf #$pSystemRoot#$p\inf\net8192su64.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+End
+End
+//-
 // Shorcut Realtek Others driver
-If,%Realtek_CheckBoxSM%,Equal,true,Begin
+If,%Realtek_CheckBoxSM%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Realtek_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv32.inf #$pSystemRoot#$p\inf\net8187se86.inf #$pSystemRoot#$p\inf\net8192se32.inf #$pSystemRoot#$p\inf\net8192su32.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 Else,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Realtek_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\net8185.inf #$pSystemRoot#$p\inf\net819xp.inf #$pSystemRoot#$p\inf\net8187bv64.inf #$pSystemRoot#$p\inf\net8187se64.inf #$pSystemRoot#$p\inf\net8192se64.inf #$pSystemRoot#$p\inf\net8192su64.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
@@ -516,42 +687,42 @@ Echo,"Copy Ralink Drivers"
 // Copy DriverStore and inf/dll/sys/... files, need DirCopy in %ProjectTemp%\NetDrivers
 //Call,DirDeleteMake,%ProjectTemp%\NetDrivers
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netr28.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netr28.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netr28.inf_*
+InstallCopyInf,netr28.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netr28.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netr28u.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netr28u.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netr28u.inf_*
+InstallCopyInf,netr28u.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28u.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28u.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netr28u.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netr73.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netr73.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netr73.inf_*
+InstallCopyInf,netr73.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr73.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr73.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netr73.inf",%ProjectTemp%\OriginalNet
 End
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netr28x.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netr28x.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netr28x.inf_*
+InstallCopyInf,netr28x.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28x.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28x.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netr28x.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netr28ux.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netr28ux.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netr28ux.inf_*
+InstallCopyInf,netr28ux.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28ux.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr28ux.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netr28ux.inf",%ProjectTemp%\OriginalNet
 End
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netr7364.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netr7364.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netr7364.inf_*
+InstallCopyInf,netr7364.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr7364.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netr7364.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netr7364.inf",%ProjectTemp%\OriginalNet
 End
 End
@@ -561,14 +732,27 @@ End
 
 [Ralink_Drivers_SaveForHistory]
 // Load Ralink driver at startup
-If,%Ralink_CheckBoxLoad%,Equal,True,If,ExistFile,%target_sys%\autorun.cmd,Begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-If,%SourceArch%,Equal,x86,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netr28.inf #$pSystemRoot#$p\inf\netr28u.inf #$pSystemRoot#$p\inf\netr73.inf >nul",Append
-Else,TXTAddLine,%target_sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netr28x.inf #$pSystemRoot#$p\inf\netr28ux.inf #$pSystemRoot#$p\inf\netr7364.inf >nul",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//-
+If,%Ralink_CheckBoxLoad%,Equal,True,Begin
+If,%SourceArch%,Equal,x86,Add,StartupBeforeShellCMD,Original_NET_drivers_Ralink_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\netr28.inf #$pSystemRoot#$p\inf\netr28u.inf #$pSystemRoot#$p\inf\netr73.inf >nul"
+Else,Add,StartupBeforeShellCMD,Original_NET_drivers_Ralink_Drivers,,"drvload.exe #$pSystemRoot#$p\inf\netr28x.inf #$pSystemRoot#$p\inf\netr28ux.inf #$pSystemRoot#$p\inf\netr7364.inf >nul"
 End
+//-
+Set,%t%,0
+//Set,%t%,1
+If,%t%,Equal,1,Begin
+If,%Ralink_CheckBoxLoad%,Equal,True,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TXTDelLine,%Target_Sys%\autorun.cmd,exit
+If,%SourceArch%,Equal,x86,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netr28.inf #$pSystemRoot#$p\inf\netr28u.inf #$pSystemRoot#$p\inf\netr73.inf >nul",Append
+Else,TxtAddLine,%Target_Sys%\autorun.cmd,"drvload.exe #$pSystemRoot#$p\inf\netr28x.inf #$pSystemRoot#$p\inf\netr28ux.inf #$pSystemRoot#$p\inf\netr7364.inf >nul",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
+End
+End
+End
+//-
 // Shorcut Ralink driver
-If,%Ralink_CheckBoxSM%,Equal,true,Begin
+If,%Ralink_CheckBoxSM%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Ralink_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netr28.inf #$pSystemRoot#$p\inf\netr28u.inf #$pSystemRoot#$p\inf\netr73.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 Else,Add_Shortcut,StartMenu,%SMF_TextBox%,#$pSystemRoot#$p\system32\cmd.exe,%Ralink_TextBoxSCN%,#$pSystemRoot#$p\system32,"/c drvload.exe #$pSystemRoot#$p\inf\netr28x.inf #$pSystemRoot#$p\inf\netr28ux.inf #$pSystemRoot#$p\inf\netr7364.inf & <nul (set/p z=#) & >nul ping 127.0.0.1 -n 2",#$pSystemRoot#$p\system32\hdwwiz.exe
 End
@@ -583,27 +767,27 @@ If,%OS%,Equal,Win8,Set,%netmyk32%,True
 If,%OS%,Equal,Win8.1,Set,%netmyk32%,True
 If,%netmyk32%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netmyk32.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netmyk32.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netmyk32.inf_*
+InstallCopyInf,netmyk32.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netmyk32.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netmyk32.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netmyk32.inf",%ProjectTemp%\OriginalNet
 End
 End
 Else,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\netmyk64.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\netmyk64.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,netmyk64.inf_*
+InstallCopyInf,netmyk64.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netmyk64.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\netmyk64.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd netmyk64.inf",%ProjectTemp%\OriginalNet
 End
 End
 End
 If,%OS%,Equal,Win10,Begin
-DirCopy,%Source_Sys%\DriverStore\FileRepository\mrvlpcie8897.inf_*,%Target_Sys%\DriverStore\FileRepository\
-FileCopy,%Source_Win%\inf\mrvlpcie8897.inf,%Target_Win%\inf
+InstallCopyDirFileRepository,mrvlpcie8897.inf_*
+InstallCopyInf,mrvlpcie8897.inf
 If,Not,%DriversHive%,Equal,Install.wim,Begin
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\mrvlpcie8897.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\OriginalNet\mrvlpcie8897.reg#$q"
 ShellExecute,Hide,cmd.exe,"/C UpdDriverDatabase.cmd mrvlpcie8897.inf",%ProjectTemp%\OriginalNet
 End
 End
@@ -612,14 +796,14 @@ End
 //Run,%ScriptFile%,CopyDrivers,Marvell
 
 [CopyDrivers]
-Filecopy,%ProjectTemp%\NetDrivers\*,%target_sys%\DriverStore\FileRepository
+Filecopy,%ProjectTemp%\NetDrivers\*,%Target_Sys%\DriverStore\FileRepository
 //-
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\NetDrivers#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\NetDrivers#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.inf') do copy #$q#$pa#$q #$q%Target_Win%\inf#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle% #1: Error executing dos command ....",Warn
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\NetDrivers#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\NetDrivers#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.sys') do copy #$q#$pa#$q #$q%Target_Sys%\Drivers#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle% #1: Error executing dos command....",Warn
 // Others
-Shellexecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\NetDrivers#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C cd /D #$q%ProjectTemp%\NetDrivers#$q && For /f #$qDelims=#$q #$pa in ('dir /a-d /b /s *.dll') do copy #$q#$pa#$q #$q%Target_Sys%#$q"
 If,Not,%ExitCode%,Equal,0,Echo,"%ScriptTitle% #1: Error executing dos command...."
 //-
 DirDelete,%ProjectTemp%\NetDrivers
@@ -632,6 +816,32 @@ Logo=NetDriver.jpg
 lines=1
 0=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
 1=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Reg
@@ -676,25 +886,6 @@ lines=14
 13=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
 14=+fROegxSVQU3t9wDGS3iNZbDbNw72Yt0vCu2uCh4vn+5gdEd+uWI5e2qCQuDif+0BC3BvIhBgeYB8p/e9rjmGP9Knu3tWxIijYR9LsPErJ13W3HutkPIMeaqSQyMoGDV5UM2INWfwyQ59iYN9SGE9T1EjWowqUwgqtkBFkANLj7DN9IQQQUknnUg7LgI/MxEBN8zUwXIH/CuoDtKlT7SH29tmpQ9eFbjKfcrjCHvYzA/54iRmUw/YD+JU1O04PSHyzISTha/sHhsFwMmIBz9uPihTxVCLCkJeLMpvKgIwfes4vPGeZhJm4o/oZyMizJlyje8gmKRvo99LFGGO67EI8MbYf/HrRx7+tihZl+UieMbPxLfoS3BmJoJqvoITrVjFnbFJYpDe82YPQEBlvG4YzYqbHE1IYvF73R/tzFLLIMMYQdUMHYkq9sDegdNQs/dlcmaWSZrLYtPY+32NLf+ej1pnlaoAFjTFGkj3X6sZFPqu7p5Ao7DF32sekoMwJ3zRlJmrDSmN3IJL0+qaJ+wXg6KWhjt1lCMhscpEAFdPPXOeCGH9ahf3oDkPbpqVCeQjheftLLu65f3Gy5cj0lJrS0ZwhEmPbnkygCO5BjsFr8ep86tFvZRByWdgJ8WYo1OYhxPUWSTl9IRwnO4Brq/LwTZQ40K/d6QQGZ86HT+ngrxFSZB0UoloSy6bOG3TEF/ueK9d/BgjSXGrzG/obPT2dSKh1X1IwCkHS+TpTVdOGBppE3piTf9VDCdTCrEFWUtguXxkATfK/Eh8yVlLA3aF1efROrGwYAjd1CYaljZ97MZGm+MxW1FN9NSigoblUQR1pv9C+fwlG+lFqFtQuHaPAtmrFW5Gb995oTUKEdbIatelZYydCWgEAffVe8ATTmAjJRlclcHA90gbhSuyxofGrgZXQKv76y4KJO5ZqeCHBsYGwqn9hNRnliZg6yD3Kbgd/I9EfrY2uKKqOuZMb0NN24eBGC2GchGW1MCGG+Z0EuJhfy9qv3a9Ygs/54PAdZV2ni5wkTNTBrXFVClL2TP8HlImoaOf00cpSu7c4AxyoM4MLQ6m2ZXeSftwt5kFgmgfCER84nYL/7EtiH8AhQa91APYjDXdIh9Z9JKAzjDbeVykXBXpbx5j+81jw7A3dTL+xd51Q8sFsHt9OlxlJQ1wIwq/+g8PCVAwF1gIZ5FQqPBBrgIfHknT14Rjs3R3XfTGzg7cagPQVd77++NUKJQYgIQTFSv+2mLzq2n4dMD9SgDxQ/XDUb+JfFlwS6qOv4T7B6rHprkKJxfcKyj2bKIpbL+SujvNMpujHLJFpgvCgvUbJBE3FaTFHm8cJGOb821oEigmQY1OLIarvJ18Mrqh2mBX+nneu6uWp7LxUUNLTQyO9sdDLY4TkAFc0N5hBI9b2hLsUrJhoZH479lr6NwDiiVRimULp1g9eC1le9PWrtF6ihsi/lsxU6RnhbDTXiTZVk8QySsAyrF7XFDfb/D05TRN2ab9PUkdt4F6N11FuakgPUDB1/ysQy7pmriKvUUDH9X3bDFHrKHoh3UvZBoS+cPIEbTcpNQRO6RvUcoeBnbij0E8vj0XC04+pym9CpNa50TUyeXlK3709mOCr+pGKvv3/iNqskCqxa9qPa2nOLQ1AkXmHS51aP3nwafwjfU+KJ9+5jfCS/3jTdTja+3HUwfIGW6ye9LDYC8GNnA3UC0I/nlgIYAAACBMweuD9fwrGDfy+Zp0Zwm3ZA0Vc+FqVEukg6KHBlyk4LGEIz38wCWwk36xkdlL45TityNvEA+3gBfJYHkI1pEPVXMpGyIvuXRYLgy9SKBOy68P+UU+JaPV/qg0opQDdqPMSaaJGqSpmMH/+JsmVhTjNIvxo6gWtvJeT6tTk+I1UXGU3HwpvAkNqoTZrrU1Led4WanMycosUZ1fW6S0SF6r/1HyLQ9UAcq0CCD/RVB0VzMWreC+RiBxxB0mQLaBxi9b/+cveR/1/wljgnfkTC5sraX0FmXfibcT08LEYMiXM7jPH4o2F0pKXREXG9kWYuBRB+wgSkFzZfNIdypd2PtZrDfbCoFPajouLKQLcppsy6SnHjkNBaJ3w6fFptV1tdsIARQnTwu/Xyfr3BiB6rHdD8P88/DSE/vght1583N31N3KmAoREwt8zE8zvCZAYZSKWk+QL6PRHnd8lnLpukD+A1X9KS6A7ogH3n+kKuexbYJrvye0V9NLJdDM/kUU6pYFzW67EwL2V27yQQP2v3yjUIpU3I7JYHdEquorHjwLqcfscnN4s4HB10om7WtKt0JDAbX4b7+ai//jPMmurlDhT+FJcwnuOdSmm5/aVp/BUcrPY04RkLxfpQ7eSIbx8ULU6VY+IkwWsM2lFvgrxQnv0OVT3dwtFujq8xqy+IP9G/iwHU4SE1dtuFs1q++1XW0s9BxmI8KyLORcbr7lCJf10CHJRJ7KFwxrWwS084QF1gP5kZP4n2zoIV4nP7p0pGm9XVlB/Lqr4JGk1lINjm9se0YrRXxZhWkHJA8UfgQLSl2d/P3IwG5Bg2MQL0kJQeU50sfUiGusikcE4pW3RPXDTAX0F3VRhyKxMI1NsZHD60iDrvBkhv37UV2r2Jsh8K2UDUk5gZdHyaR/h9Wlt61JtnrvcUgF4KalV53PuSrVwlE3SeM7hDgWKOOCoQEe6PKk69OtXf2cSB6LkuBCXjHFwbAqKwBCYLiAAcLAQABIwMBAQVdABAAAAyGvgoBYdtL/QAAeJwT9S/KTM/MS8zxSy2JD8/Ms9Az1DOvYhgFIwScW49fPtwr7BYjAwD6XQrE+oqs5QEAAAACAAAALQAAAM6vAAAAAAAAAQAAAAAAAAAAAAAA
 
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
 [EncodedFile-Reg-OriginalNet_Win10.7z]
 lines=6
 0=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
@@ -704,11 +895,4 @@ lines=6
 4=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
 5=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
 6=v7QO+kniFj5uUKU+Y6hYgtkJadn3+3/wRZVydW5AAD2JzlyQCkje/tpOMpDrzdYfn5qCBF3iPea4h8jW6eEI2j2m1I8Z+6oJQiBsdRY+tUFoWtJy5L/vNn7p2h+gh7Mq5ljPm1RiY7fWHDrXoPAjiY7iWMiJd95msojkUYmG261zXcM8WWQB6druj5nk4hy4Jv7mXaDpW2BaSgUAFwbANEUBCYMtAAcLAQABIwMBAQVdABAAAAyHkgoBprl7yAAAeJwT8S/KTM/MS8zxSy2JD8/MMzTQM69iGAUjBSz1wC8f/pvhKSMDAHYXCmNYHoR2AQAAAAIAAAAsAAAApUgAAAAAAAABAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

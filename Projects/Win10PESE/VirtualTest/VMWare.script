@@ -1,21 +1,24 @@
 [Main]
-Title=VMware Emulation
+Title=VMware Virtualization
 Class=Emulator
 Type=Plugin
 Author=booty#1, TheOven Chefs (Galapo, Lancelot)
-Description=Runs your ISO in VMware Player 2 & 3  - Workstation 5 & 6 & 7 - Server
+Description=Runs your ISO in VMware Player 2 & 3 ...  - Workstation 5 & 6 & 7 ... 15 - Server
 Credits=Flip Hasa, cdob, http://TheOven.org
-Version=071
+Version=084
 Download_Level=1
 Level=8
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.11.28
+Date=2020.03.15
 Depend=
 Disable=%ScriptDir%\AA_Best_Emulation.Script,%ScriptDir%\Bochs_Emu.Script,%ScriptDir%\qEmu.Script,%ScriptDir%\qEmu_X.Script,%ScriptDir%\VirtualBox.Script,%ScriptDir%\VirtualPC.Script,%ScriptDir%\VMWare.Script,%ProjectDir%\VirtualTestY\AA_Best_Emulation.Link,%ProjectDir%\VirtualTes\Bochs_Emu.Link,%ProjectDir%\VirtualTestY\qEmu.Link,%ProjectDir%\VirtualTestY\qEmu_X.Link,%ProjectDir%\VirtualTestY\VirtualBox.Link,%ProjectDir%\VirtualTestY\VirtualPC.Link,%ProjectDir%\VirtualTestY\VMWare.Link,%ProjectDir%\VirtualTest\AA_Best_Emulation.Script,%ProjectDir%\VirtualTes\Bochs_Emu.Script,%ProjectDir%\VirtualTest\qEmu.Script,%ProjectDir%\VirtualTest\qEmu_X.Script,%ProjectDir%\VirtualTest\VirtualBox.Script,%ProjectDir%\VirtualTest\VirtualPC.Script,%ProjectDir%\VirtualTest\VMWare.Script
 Web1=http://gena.cwcodes.net/Projects/Gena/VirtualTest/VMWare.script
+Web2=http://yomi.cwcodes.net/Yomi/VirtualTestY/VMWare.script
+Web3_Cancel=http://azin.cwcodes.net/Projects/Azin/VirtualTest/VMWare.script
+WebHardLink=True
 CertifiedBy=
 Certification=
 HistoryNotes01=Based on booty#1 initial plugin highly developed by Galapo and Lancelot along with numerous user supports some written history notes
@@ -79,11 +82,24 @@ History068=Lancelot Update to get PEBakery compatible (Remove ShellExecute%Ex% )
 History069=Lancelot %ProjectTitle% deprecated - Date:2017.11.21
 History070=Lancelot %ISODir% deprecated - Date:2017.11.22
 History071=Lancelot Removed double if - Date:2017.11.28
+History072=Lancelot Add To Yomi Server - Date:2018.10.23
+History073=Lancelot Add Audio Options - Date:2018.11.02 // Cosmetics - Date:2019.01.27
+History074=Lancelot NT6x64 Automemory Set to 2560 ( Win10PESE Default build to get FireFox work ) - Date:2019.02.03 // Cosmetics - Date:2019.02.24
+History075=Lancelot Add virtualHW.version options (Default Auto) // "Show all USB input devices:" // USB2.0 (Default True) // USB3.0 - Date:2019.03.01
+History076=Lancelot workaround virtualHW.version idiot developers stupid winbuilder sabotage bug - Date:2019.03.01
+History077=Lancelot Update DisplayName - Date:2019.12.29
+History078=Lancelot Workaround Retrieve,FileVersion winbuilder Bug - (Kare Win7 Host x64 ) can not read version on hostx64 at c:\program files\vmware\vmware player\vmplayer.exe - Date:2020.01.25
+History079=Lancelot Code Improvments // Suppport VMware Server - Date:2020.01.26
+History080=Lancelot Add to Azin - Date:2020.01.28
+History081=Lancelot Workaround winbuilder bug with Call,SelectFile :> and bugs again and again and again ..... peh ... - Date:2020.02.22
+History082=Lancelot Improve Select Iso - Date:2020.02.25
+History083=Lancelot Add More options to VirtualOS_ScrollBox // Add VirtualOS_Info_Button to get plugin work more generic eg. TCCBOOT Fabrice Bellard  TinyCC Boot Loader ( tccboot.iso )  --> other24linux // More can be added later when required - Full List on VMware\Virtual Settings\Options\ but better have a list with VMware version differences ... - Date:2020.03.02
+History084=Lancelot For now Removed From Azin Server after Fixing Select Iso - Date:2020.03.15
 
 [Interface]
 pTextLabel2="Memory (MB):",1,1,3,21,68,20,8,Normal,"__Allocated Memory for Virtual Guest"
 pWebLabel2="Download VMware player",1,10,3,2,146,18,http://www.vmware.com/download/player/
-Mem_NumberBox=Mem_NumberBox,1,2,71,20,47,24,768,160,4096,16
+Mem_NumberBox=Mem_NumberBox,1,2,71,20,47,24,2560,160,4096,32
 AutoM_CheckBox=,1,3,119,23,16,16,True,"__Auto Memory Adjustment"
 pBevel3=pBevel3,0,12,353,176,189,70
 pTextLabel5="Number of processors",0,1,357,179,123,18,8,Bold
@@ -109,7 +125,7 @@ ShareFolderModeScrollBox="enabled read and write",0,4,104,190,147,21,"enabled re
 ShareFolderHostTextLabel="Share folder on host:",0,1,7,213,105,18,8,Normal
 ShareFolderScrollBox=Desktop,0,4,113,212,80,21,Desktop,Folder
 ShareFolderHostFileBox=C:\Temp,0,13,130,234,110,30,dir
-ShareFolderHostButton=,0,8,242,233,24,24,ShareFolderHostOpenDir,opendir.bmp,False,False,"__Open Folder"
+ShareFolderHostButton=,0,8,242,233,24,24,ShareFolderHostOpenDir,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,"__Open Folder"
 Pl_Prior_CheckBox="Priority Vmware Player",1,3,10,65,133,18,False
 pButton_Show_Second_Gui="More Options",1,8,260,6,100,18,Second_Gui,True,True,False,_Second_Gui_,True
 pButton_Show_First_Gui="Basic Options",0,8,260,6,100,18,First_Gui,True,True,False,_First_Gui_,True
@@ -128,9 +144,10 @@ Ethernet0_vd_ScrollBox=Auto,0,4,211,113,60,21,Default,Auto,vlance,vmxnet,e1000
 SelectISO_Button="Select Iso",1,8,392,8,93,36,SelectISO_Process,MesCD2424.bmp,False,False,_SelectISO_Process_,False
 VM_Workaround_ScrollBox="WorkAround Auto",0,4,6,310,119,21,"WorkAround Auto","WorkAround Force","WorkAround No","__WorkAround in case VMware fails"
 vmnetcfg_Button=,0,8,14,134,25,25,Launch_vmnetcfg,vmnetcfg1616.bmp,False,_Launch_vmnetcfg_,False,__VMnetcfg
-VM_Info_Button=,0,8,39,134,25,25,VM_Information,Exclamation.bmp,False,False,_VM_Information_,False,"__Vmware Information (Bridged Failure)"
+VM_Info_Button=,0,8,39,134,25,25,VM_Information,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_VM_Information_,False,"__Vmware Information (Bridged Failure)"
 pWebLabel3="Plugin Page",1,10,160,2,200,18,http://TheOven.org/index.php?board=9
-VirtualOS_ScrollBox=Auto,1,4,393,44,128,21,Auto,winvista,winvista-64,winxppro,winnetstandard,winme,win98
+VirtualOS_ScrollBox=Auto,1,4,393,44,128,21,Auto,winvista,winvista-64,winxppro,winnetstandard,winme,win98,dos,other,other-64,ubuntu-64,ubuntu,rhel8-64,rhel4-64,rhel3-64,redhat,rhel6,rhel4,rhel3,rhel2,freebsd12-64,freebsd11-64,freeBSD-64,freebsd12,freebsd11,freeBSD,vmware-photon-64,other5xlinux-64,other4xlinux-64,other3xlinux-64,other26xlinux-64,other24xlinux-64,otherlinux-64,other5xlinux,other4xlinux,other3xlinux,other26xlinux,other24xlinux,linux
+VirtualOS_Info_Button=,1,8,523,43,22,22,VirtualOS_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_VirtualOS_Info_P_B_,False
 Button_Download=,1,8,488,20,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__Download (Update) Plugin"
 Button_Upload=,0,8,488,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__Upload Plugin (Admins Only)"
 Button_CompareEdit=,0,8,512,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
@@ -139,72 +156,14 @@ firmware_ScrollBox=efi,0,4,182,351,37,21,efi
 bios_bootdelay_CheckBox="bios.bootdelay= (ms)",0,3,12,380,124,18,False,"__In addition, order to be able to select network boot, it is advisable to add a boot delay to the startup of the virtual machine."
 bios_bootdelay_TextBox=,0,0,136,379,45,21,5000
 Button_VMHDD_vmdk="Open VMHDD.vmdk",0,8,346,335,100,25,VMHDD_vmdk_P_B,0,False,False,_VMHDD_vmdk_P_B_,False
-Button_OpenDir_VMXDir="Open VMXDir",0,8,347,360,91,25,OpenDir_VMXDir_P_B,opendir.bmp,False,False,_OpenDir_VMXDir_P_B_,False,"__Open Folder"
-
-[Second_Gui]
-System,CURSOR,Wait
-Run,%ScriptFile%,Show-Hide-First_Gui,False
-Run,%ScriptFile%,Show-Hide-Second_Gui,True
-System,RefreshInterface
-System,CURSOR,Normal
-
-[First_Gui]
-System,CURSOR,Wait
-Run,%ScriptFile%,Show-Hide-Second_Gui,False
-Run,%ScriptFile%,Show-Hide-First_Gui,True
-System,RefreshInterface
-System,CURSOR,Normal
-
-[Show-Hide-Second_Gui]
-Visible,%Start_LastVMware_Button%,#1,PERMANENT
-Visible,%pRadioGroup1%,#1,PERMANENT
-Visible,%Ethernet0_Bevel%,#1,PERMANENT
-Visible,%Ethernet0_md_TextLabel%,#1,PERMANENT
-Visible,%Ethernet0_md_ScrollBox%,#1,PERMANENT
-Visible,%Ethernet0_vd_TextLabel%,#1,PERMANENT
-Visible,%Ethernet0_vd_ScrollBox%,#1,PERMANENT
-Visible,%vmnetcfg_Button%,#1,PERMANENT
-Visible,%VM_Info_Button%,#1,PERMANENT
-Visible,%pFileBox1%,#1,PERMANENT
-Visible,%pFileBox2%,#1,PERMANENT
-Visible,%pTextLabel5%,#1,PERMANENT
-Visible,%pRadioButton1%,#1,PERMANENT
-Visible,%pNumberBox2%,#1,PERMANENT
-Visible,%pRadioButton2%,#1,PERMANENT
-Visible,%pBevel3%,#1,PERMANENT
-Visible,%pBevel1%,#1,PERMANENT
-Visible,%pCheckBox2%,#1,PERMANENT
-Visible,%pTextLabel6%,#1,PERMANENT
-Visible,%pCheckBox3%,#1,PERMANENT
-Visible,%pTextLabel7%,#1,PERMANENT
-Visible,%pTextLabel8%,#1,PERMANENT
-Visible,%ShareFolderBevel%,#1,PERMANENT
-Visible,%ShareFolderModeTextLabel%,#1,PERMANENT
-Visible,%ShareFolderModeScrollBox%,#1,PERMANENT
-Visible,%ShareFolderHostTextLabel%,#1,PERMANENT
-Visible,%ShareFolderScrollBox%,#1,PERMANENT
-Visible,%ShareFolderHostFileBox%,#1,PERMANENT
-Visible,%ShareFolderHostButton%,#1,PERMANENT
-Visible,%pTextBox1%,#1,PERMANENT
-Visible,%AutoStart_CheckBox%,#1,PERMANENT
-Visible,%HideControls_CheckBox%,#1,PERMANENT
-Visible,%PowerStart_CheckBox%,#1,PERMANENT
-Visible,%PowerClose_CheckBox%,#1,PERMANENT
-Visible,%VM_Workaround_ScrollBox%,#1,PERMANENT
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
-Visible,%firmware_CheckBox%,#1,PERMANENT
-Visible,%firmware_ScrollBox%,#1,PERMANENT
-Visible,%bios_bootdelay_CheckBox%,#1,PERMANENT
-Visible,%bios_bootdelay_TextBox%,#1,PERMANENT
-Visible,%Button_VMHDD_vmdk%,#1,PERMANENT
-Visible,%Button_OpenDir_VMXDir%,#1,PERMANENT
-//--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
-
-[Show-Hide-First_Gui]
-//--
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+Button_OpenDir_VMXDir="Open VMXDir",0,8,347,360,91,25,OpenDir_VMXDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_VMXDir_P_B_,False,"__Open Folder"
+Audio_CheckBox=Audio:,0,3,13,416,52,18,True
+Audio_ScrollBox=HDAudio,0,4,79,414,150,21,Auto,HDAudio,"Creative ES1371"
+virtualHW_version_TextLabel="VirtualHW Version:",0,1,16,451,96,18,8,Normal
+virtualHW_version_ScrollBox=Auto,0,4,111,447,48,21,Auto,4,5,6,7,8,9,10,11,12,13,14,15
+USB_2_0_CheckBox="Add USB 2.0 Support",0,3,17,477,130,18,True
+USB_3_0_CheckBox="Add USB 3.0 Support (EXPERIMENTAL -  not working for now)",0,3,17,495,316,18,False
+usb_generic_allowHID_CheckBox="Show all USB input devices",0,3,17,512,200,18,False
 
 [Variables]
 %VMXDir%=%ProjectTemp%\VMware_booty
@@ -229,59 +188,76 @@ End
 If,Not,ExistFile,%ISOfileVar%,Message,"There is no ISO file to boot",Error,5
 If,Not,ExistFile,%ISOfileVar%,Exit,"There is no ISO file to boot"
 //--
+Call,TargetVersion,,4x
+//--
 //JFX: Reply 1445 Normally on a Windows 10 with enabled Hyper-V, Virtualbox and VMWare notice this and don't start any VM.
 //HYPERVISORLAUNCHTYPE=AUTO
 IniRead,%ScriptFile%,Main,Title,%t%
 Set,%SystemStartOptions%,-
 If,ExistRegKey,HKLM,System\CurrentControlSet\Control,SystemStartOptions,RegRead,HKLM,System\CurrentControlSet\Control,SystemStartOptions,%SystemStartOptions%
-StrFormat,REPLACE,%SystemStartOptions%,HYPERVISORLAUNCHTYPE=AUTO,-,%SystemStartOptionsTEST%
+StrFormat,Replace,%SystemStartOptions%,HYPERVISORLAUNCHTYPE=AUTO,-,%SystemStartOptionsTEST%
 If,Not,%SystemStartOptions%,Equal,%SystemStartOptionsTEST%,Exit,"%t% DO NOT support 'Enabled Hyper-V'"
 //--
 Run,%ScriptFile%,HuntVMware
 //--
-StrFormat,PATH,%WS%,%t%
-StrFormat,CTRIM,%t%,\,%WSPath%
-//---
+//WS: VMware Workstation - vmware.exe
+//PL: VMware Player - vmplayer.exe
+//SV: VMware Server - vmware.exe or vmplayer.exe
+If,Not,%PL%,Equal,--,Set,%WM_Exe%,%PL%
+If,Not,%SV%,Equal,--,Set,%WM_Exe%,%SV%
+If,Not,%WS%,Equal,--,Set,%WM_Exe%,%WS%
+If,%Pl_Prior_CheckBox%,Equal,True,Begin
+If,Not,%PL%,Equal,--,Set,%WM_Exe%,%PL%
+End
+StrFormat,Path,%WM_Exe%,%WM_Path%
+StrFormat,Right,%WM_Path%,1,%t%
+If,%t%,Equal,\,StrFormat,RTrim,%WM_Path%,1,%WM_Path%
+//--
+//Retrieve,FileVersion,%WM_Exe%,%VMw_Version% winbuilder Bug - DO NOT USE - Kare Win7 Host x64 ) can not read version on hostx64 at c:\program files\vmware\vmware player\vmplayer.exe
+Call,Version,%WM_Exe%,VMw_Version
+Echo,%VMw_Version%
+StrFormat,Split,%VMw_Version%,.,1,%VMw_Version1%
+//--
 //----------Rock'n Roll Time
 //Delete files created/used by vmware on previous session - fxscrpt added
 //--
 //Both %VMXDir%\nvram and %VMXFile% are critical
-System,FILEREDIRECT,OFF
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+System,FileRedirect,OFF
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
 If,ExistFile,%VMXDir%\nvram,Begin
 If,ExistFile,%VMXFile%,Begin
 //If,ExistFile,%VMXFile%,Begi-n
-//If,ExistFile,%WSPath%\vmrun.exe,Shellexecute,Hide,cmd.exe,"/C vmrun.exe stop #$q%VMXFile%#$q",%WSPath%
+//If,ExistFile,%WM_Path%\vmrun.exe,ShellExecute,Hide,cmd.exe,"/C vmrun.exe stop #$q%VMXFile%#$q",%WM_Path%
 //En-d
-//If,ExistFile,%WSPath%\vmrun.exe,Shellexecute,Open,cmd.exe,"/K vmrun.exe stop #$q%VMXFile%#$q",%WSPath%
-If,ExistFile,%WSPath%\vmrun.exe,Shellexecute,Hide,vmrun.exe,"stop #$q%VMXFile%#$q",%WSPath%
+//If,ExistFile,%WM_Path%\vmrun.exe,ShellExecute,Open,cmd.exe,"/K vmrun.exe stop #$q%VMXFile%#$q",%WM_Path%
+If,ExistFile,%WM_Path%\vmrun.exe,ShellExecute,Hide,vmrun.exe,"stop #$q%VMXFile%#$q",%WM_Path%
 End
 End
 //vmrun.exe send shutdown command and exits before virtual machine shut down (better than nothing ;) )
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
 If,ExistFile,%VMXDir%\nvram,Message,"1/2 %VMXName% being used by another process #$x(Probably Vmware forgotten Open)#$xClose handling and Hit OK #$x#$x Or Just Click OK If Closed Automatically",Warning
 If,ExistFile,%VMXFile%,Message,"1b/2 %VMXName% being used by another process #$x(Probably Vmware forgotten Open)#$xClose handling and Hit OK #$x#$x Or Just Click OK If Closed Automatically",Warning
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
 If,ExistFile,%VMXDir%\nvram,Message,"2/2 %VMXName% still being used by another process #$x(Probably Vmware forgotten Open)#$xYour Last Chance to Close handling and Hit OK",Warning
 If,ExistFile,%VMXFile%,Message,"2b/2 %VMXName% still being used by another process #$x(Probably Vmware forgotten Open)#$xYour Last Chance to Close handling and Hit OK",Warning
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-System,FILEREDIRECT,ON
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+If,ExistFile,%VMXFile%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
+System,FileRedirect,ON
 If,ExistFile,%VMXDir%\nvram,Call,Echo,"YOU MUST Close %VMXName% handling #$x %ScriptTitle% Exit Now",Warn,,MessageError,,Exit
 If,ExistFile,%VMXFile%,Call,Echo,"YOU MUST Close %VMXName% handling #$x %ScriptTitle% Exit Now",Warn,,MessageError,,Exit
 //--
@@ -295,26 +271,34 @@ ExtractFile,%ScriptFile%,Folder,%VMXName%,%VMXDir%
 //--
 Set,%w%,%VMXDir%\VMware_Info.ini
 FileCreateBlank,%w%
-IniWrite,%w%,VMwareInfo,vmware.exe,%WS%
-IniWrite,%w%,VMwareInfo,Folder,%WSPath%
+IniWrite,%w%,VMwareInfo,vmware.exe,%WM_Exe%
+IniWrite,%w%,VMwareInfo,Folder,%WM_Path%
+//--
+Set,%w%,"%VMXDir%\vmxfile Notepad.cmd"
+FileCreateBlank,%w%
+TxtAddLine,%w%,"cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,%w%,"Start notepad.exe vmxfile.vmx",Append
+TxtAddLine,%w%,"::cmd",Append
+TxtAddLine,%w%,"::pause",Append
+TxtAddLine,%w%,"exit",Append
 //--
 //To debug a copy taken
 FileCopy,%VMXDir%\%VMXName%,%VMXDir%\%VMXName%.txt
 //--
-StrFormat,filename,%VMXFile%,%tmp%
-StrFormat,REPLACE,%tmp%,.vmx,"",%tmp%
-If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
+StrFormat,FileName,%VMXFile%,%tmp%
+StrFormat,Replace,%tmp%,.vmx,"",%tmp%
+If,ExistFile,%VMXDir%\nvram,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
 If,ExistFile,%VMXDir%\nvram,FileDelete,%VMXDir%\nvram
-If,ExistFile,%VMXDir%\%tmp%.vmsd,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmsd#$q"
+If,ExistFile,%VMXDir%\%tmp%.vmsd,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmsd#$q"
 If,ExistFile,%VMXDir%\%tmp%.vmsd,FileDelete,%VMXDir%\%tmp%.vmsd
-If,ExistFile,%VMXDir%\%tmp%.vmxf,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmxf#$q"
+If,ExistFile,%VMXDir%\%tmp%.vmxf,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmxf#$q"
 If,ExistFile,%VMXDir%\%tmp%.vmxf,FileDelete,%VMXDir%\%tmp%.vmxf
-If,ExistFile,%VMXDir%\%tmp%.vmem,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmem#$q"
+If,ExistFile,%VMXDir%\%tmp%.vmem,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmem#$q"
 If,ExistFile,%VMXDir%\%tmp%.vmem,FileDelete,%VMXDir%\%tmp%.vmem
-If,ExistFile,%VMXDir%\%tmp%.vmss,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmss#$q"
+If,ExistFile,%VMXDir%\%tmp%.vmss,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmss#$q"
 If,ExistFile,%VMXDir%\%tmp%.vmss,FileDelete,%VMXDir%\%tmp%.vmss
 //Delete More files
-If,ExistFile,%VMXDir%\%tmp%.vmem,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmem#$q"
+If,ExistFile,%VMXDir%\%tmp%.vmem,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\%tmp%.vmem#$q"
 If,ExistFile,%VMXDir%\%tmp%.vmem,FileDelete,%VMXDir%\%tmp%.vmem
 //--
 Set,%MemoryV%,%Mem_NumberBox%
@@ -322,14 +306,15 @@ If,%AutoM_CheckBox%,Equal,True,Begin
 If,%OSFamily%%SourceArch%,Equal,NT5x86,Set,%MemoryV%,768
 If,%OSFamily%%SourceArch%,Equal,NT5x64,Set,%MemoryV%,1024
 If,%OSFamily%%SourceArch%,Equal,NT6x86,Set,%MemoryV%,2048
-If,%OSFamily%%SourceArch%,Equal,NT6x64,Set,%MemoryV%,2048
+If,%OSFamily%%SourceArch%,Equal,NT6x64,Set,%MemoryV%,2560
 ChangeInterface,Write,Value,,,Mem_NumberBox,%MemoryV%
 End
 //-
-TXTReplace,%VMXFile%,$MEMORY$,%MemoryV%
-TXTReplace,%VMXFile%,$ISOFILE$,%ISOfileVar%
+TxtReplace,%VMXFile%,$MEMORY$,%MemoryV%
+TxtReplace,%VMXFile%,$ISOFILE$,%ISOfileVar%
 //--
 //guestOS
+//https://www.petri.com/virtual_vmware_vmx_configuration_files_guestos
 //?????????,Set,%guestOSv%,win31
 If,%VirtualOS_ScrollBox%,Equal,Auto,Begin
 Set,%guestOSv%,-
@@ -350,41 +335,37 @@ If,%guestOSv%,Equal,-,Set,%guestOSv%,longhorn
 End
 Else,Set,%guestOSv%,%VirtualOS_ScrollBox%
 Echo,%guestOSv%
-TXTReplace,%VMXFile%,$OS$,%guestOSv%
+TxtReplace,%VMXFile%,$OS$,%guestOSv%
 //--
 //displayName
-If,%pTextBox1%,EQUAL,,Begin
-IniRead,%ProjectDir%\script.project,IniVariables,BuildType,%BuildType%
+If,%pTextBox1%,Equal,,Begin
 IniRead,%ProjectDir%\script.project,Main,Title,%ProjectTitleV%
-Set,%DisplayName%,"%ProjectTitleV% (%SourceArch% %BuildType% Mem:%MemoryV%)"
+IniRead,%ProjectDir%\Script.Project,IniVariables,SelectedProject,%SelectedProject%
+If,%SelectedProject%-,Equal,-,Set,%ProjectTitleV2%,%ProjectTitleV%
+Else,Set,%ProjectTitleV2%,"%SelectedProject% (%ProjectTitleV%)"
+StrFormat,FileName,%ISOfileVar%,%ISOfileVarName%
+StrFormat,Path,%ISOfileVar%,%ISOfileVarPath%
+StrFormat,Replace,%ISOfileVarPath%,%BaseDir%,"",%ISOfileVarSubPath%
+Set,%DisplayName%,"%ProjectTitleV2% (%SourceArch% Mem:%MemoryV%) - %ISOfileVarName% - %ISOfileVarSubPath%"
 End
 Else,Set,%DisplayName%,%pTextBox1%
-//StrFormat,POS,%DisplayName%,#$s,%Pos%
-//If,%Pos%,EQUAL,0,TXTReplace,%VMXFile%,$DISPLAY$,%DisplayName%
-//Else,TXTReplace,%VMXFile%,$DISPLAY$,#$q%DisplayName%#$q
-TXTReplace,%VMXFile%,$DISPLAY$,#$q%DisplayName%#$q
-//--
-If,Not,%PL%,Equal,--,Set,%execute%,%PL%
-If,Not,%WS%,Equal,--,Set,%execute%,%WS%
-If,%Pl_Prior_CheckBox%,Equal,True,Begin
-If,Not,%PL%,Equal,--,Set,%execute%,%PL%
-End
+//StrFormat,Pos,%DisplayName%,#$s,%Pos%
+//If,%Pos%,Equal,0,TxtReplace,%VMXFile%,$DISPLAY$,%DisplayName%
+//Else,TxtReplace,%VMXFile%,$DISPLAY$,#$q%DisplayName%#$q
+TxtReplace,%VMXFile%,$DISPLAY$,#$q%DisplayName%#$q
 //--
 // Switches + Start VM automatically
 //VM Player Switches: None
-If,%execute%,Equal,%PL%,Set,%Switches%,
+If,%WM_Exe%,Equal,%PL%,Set,%Switches%,
 //-
 //VM Server Switches (?!?!?!):
-If,%execute%,Equal,%SV%,Begin
+If,%WM_Exe%,Equal,%SV%,Begin
 If,%AutoStart_CheckBox%,Equal,True,Set,%switches%,-x#$s-q
 Else,Set,%switches%,-q
 End
 //--
-Retrieve,FILEVERSION,%WS%,%vmver%
-StrFormat,SPLIT,%vmver%,.,1,%vmver1%
-//--
 //VMWare Workstation 8 ... Support UEFI environment (Secure boot not yet)
-If,%vmver1%,Bigger,7,Begin
+If,%VMw_Version1%,Bigger,7,Begin
 If,%firmware_CheckBox%,Equal,True,Begin
 Set,%firmware_CheckBoxV%,%firmware_CheckBox%
 If,%OSFamily%,Equal,NT5,Set,%firmware_CheckBoxV%,False
@@ -400,18 +381,58 @@ Set,%t%,%bios_bootdelay_TextBox%
 If,Not,%t%-,Equal,-,TxtAddLine,%VMXFile%,"bios.bootdelay=#$q%t%#$q",Append
 End
 //--
+//Initial Plugin Designed for VMware v4 ;)
+Set,%virtualHW_version%,4
+If,Not,%virtualHW_version_ScrollBox%,Equal,4,Begin
+If,%virtualHW_version_ScrollBox%,Equal,Auto,Set,%virtualHW_version%,%VMw_Version1%
+Else,Set,%virtualHW_version%,%virtualHW_version_ScrollBox%
+TxtReplace,%VMXFile%,"virtualHW.version#$s=#$s#$q4#$q","virtualHW.version#$s=#$s#$q%virtualHW_version%#$q"
+End
+//--
+//USB 2 Support exists starting with VMware 6
+If,%USB_2_0_CheckBox%,Equal,True,Begin
+If,%virtualHW_version%,Bigger,5,Begin
+TxtAddLine,%VMXFile%,"ehci.present=#$qTRUE#$q",Append
+End
+End
+//--
+//Show all USB input devices:
+If,%usb_generic_allowHID_CheckBox%,Equal,True,Begin
+//Requires ehci.present
+If,%USB_2_0_CheckBox%,Equal,False,Begin
+TxtAddLine,%VMXFile%,"ehci.present=#$qTRUE#$q",Append
+End
+TxtAddLine,%VMXFile%,"usb.generic.allowHID=#$qTRUE#$q",Append
+End
+//--
+//USB 3 Support exists starting with VMware 8
+//VMware Warning: Using USB devices with a USB 3.0 controller may require additional drivers to be installed in the guest.
+//VMware Boot Error: No PCIe slot available for usb_xhci. Remove usb_xhci and try again.
+If,%USB_3_0_CheckBox%,Equal,True,Begin
+If,%virtualHW_version%,Bigger,7,Begin
+TxtAddLine,%VMXFile%,"usb_xhci.present=#$qTRUE#$q",Append
+End
+End
+//--
+//tools.syncTime not added for now (not required)
+//https://kb.vmware.com/s/article/1189
+//In GSX, VMware Fusion, VMware Player and VMware Workstation, you must use "FALSE" instead of "0".
+//ESXi or ESX use 0
+//TxtAddLine,%VMXFile%,"tools.syncTime=#$qFALSE#$q",Append
+//TxtAddLine,%VMXFile%,"tools.syncTime=#$qTRUE#$q",Append
+//--
 //VM Workstation Switches:
 //AutoStart_CheckBox Start Automatically
-If,%execute%,Equal,%WS%,Begin
+If,%WM_Exe%,Equal,%WS%,Begin
 IF,%HideControls_CheckBox%,Equal,True,Set,%B%,"-B "
 Else,Set,%B%,
 Set,%Switches%,--
-If,%vmver1%,Equal,5,Begin
+If,%VMw_Version1%,Equal,5,Begin
 If,%AutoStart_CheckBox%,Equal,True,Set,%switches%,-x#$s-q
 Else,Set,%switches%,-q
 End
 //VMware-workstation-full-7.1.3-324285.exe -q swith creates error (tested on 2k3x64) "The exception unknown software exception (0xc000000d) occurred..."
-If,%vmver1%,Equal,7,Begin
+If,%VMw_Version1%,Equal,7,Begin
 If,%AutoStart_CheckBox%,Equal,True,Set,%switches%,%B%-n#$s-x
 Else,Set,%switches%,%B%-n
 End
@@ -422,33 +443,33 @@ End
 End
 //--
 //Number Of Processors
-set,%number_of_processors%,
-If,%pRadioButton1%,Equal,True,set,%number_of_processors%,%pNumberBox2%
-If,%pRadioButton2%,Equal,True,System,GETENV,"NUMBER_OF_PROCESSORS",%number_of_processors%
+Set,%number_of_processors%,
+If,%pRadioButton1%,Equal,True,Set,%number_of_processors%,%pNumberBox2%
+If,%pRadioButton2%,Equal,True,System,GetEnv,"NUMBER_OF_PROCESSORS",%number_of_processors%
 If,Not,%number_of_processors%,Equal,,Echo,"NUMBER_OF_PROCESSORS %NUMBER_OF_PROCESSORS%"
-If,Not,%number_of_processors%,Equal,,TXTAddLine,%VMXFile%,numvcpus=#$q%number_of_processors%#$q,Append
+If,Not,%number_of_processors%,Equal,,TxtAddLine,%VMXFile%,numvcpus=#$q%number_of_processors%#$q,Append
 //--
 //Add Hdd (pCheckBox2) - Reset Hdd (pCheckBox3)
 If,%pCheckBox2%,Equal,True,Begin
 Set,%UseDisk%,VMHDD.vmdk
 If,%pCheckBox3%,Equal,True,ExtractFile,%ScriptFile%,Folder,%UseDisk%,%VMXDir%
 If,Not,ExistFile,%VMXDir%\%UseDisk%,ExtractFile,%ScriptFile%,Folder,%UseDisk%,%VMXDir%
-TXTreplace,%VMXFile%,$HDD$,%VMXDir%\%UseDisk%
-//TXTreplace,%VMXFile%,$HDD$,%UseDisk%
+TxtReplace,%VMXFile%,$HDD$,%VMXDir%\%UseDisk%
+//TxtReplace,%VMXFile%,$HDD$,%UseDisk%
 End
 Else,Begin
 TXTDelLine,%VMXFile%,ide0:1.
 End
 //--
 //Add Device
-If,Not,%pRadioGroup1%,EQUAL,0,Run,%ScriptFile%,DefineCD
+If,Not,%pRadioGroup1%,Equal,0,Run,%ScriptFile%,DefineCD
 //--
 // PowerON booting - PowerOFF close (ps: when toolbar not enabled behaviour naturally poweron and off even without these values)
-TXTReplace,%VMXFile%,$POWERON$,%PowerStart_CheckBox%
-TXTReplace,%VMXFile%,$POWEROFF$,%PowerClose_CheckBox%
+TxtReplace,%VMXFile%,$POWERON$,%PowerStart_CheckBox%
+TxtReplace,%VMXFile%,$POWEROFF$,%PowerClose_CheckBox%
 //--
 // Max Resolution limits
-If,Not,%Max_Res_ScrollBox%,Equal,unlimited,Run,%scriptfile%,MaxResolution
+If,Not,%Max_Res_ScrollBox%,Equal,unlimited,Run,%ScriptFile%,MaxResolution
 //--
 // Ethernet0 mode (ps: I guess when not selected it is automatic ;))
 If,Not,%Ethernet0_md_ScrollBox%,Equal,Disabled,Run,%ScriptFile%,Ethernet0
@@ -470,9 +491,37 @@ Set,%VMXSharedFolder%,Yes
 Set,%ShareFTarget%,%ShareFolderHostFileBox%
 End
 End
-If,Not,ExistDir,%ShareFolderHostFileBox%,Echo,"Shared FOLDER can not be created - Shared Feature NOT ADDED",WARN
+If,Not,ExistDir,%ShareFolderHostFileBox%,Echo,"Shared FOLDER can not be created - Shared Feature NOT ADDED",Warn
 End
-If,%VMXSharedFolder%,Equal,Yes,Run,%scriptfile%,SharedFolder
+If,%VMXSharedFolder%,Equal,Yes,Run,%ScriptFile%,SharedFolder
+End
+// Audio:
+//-
+//Default VMX file:
+//sound.present="TRUE"
+//sound.fileName="-1"
+//sound.virtualDev="es1371"
+//sound.autodetect="TRUE"
+//-
+//sound.virtualDev="es1371"
+//sound.virtualDev="hdaudio"
+//es1371 for Gena
+//hdaudio Vista and later
+If,%Audio_CheckBox%,Equal,True,Begin
+Set,%Audio_ScrollBoxV%,%Audio_ScrollBox%
+If,%Audio_ScrollBox%,Equal,Auto,Begin
+If,%TargetVersion1%,Smaller,6,Set,%Audio_ScrollBox%,"Creative ES1371"
+Else,Set,%Audio_ScrollBox%,HDAudio
+End
+If,%Audio_ScrollBox%,Equal,HDAudio,Begin
+TxtReplace,%VMXFile%,"sound.virtualDev=#$qes1371#$q","sound.virtualDev = #$qhdaudio#$q"
+End
+End
+Else,Begin
+TxtReplace,%VMXFile%,"sound.present=#$qTRUE#$q#$x",""
+TxtReplace,%VMXFile%,"sound.fileName=#$q-1#$q#$x",""
+TxtReplace,%VMXFile%,"sound.virtualDev=#$qes1371#$q#$x",""
+TxtReplace,%VMXFile%,"sound.autodetect=#$qTRUE#$q#$x",""
 End
 //--
 //nvram for boot order
@@ -480,52 +529,51 @@ ExtractFile,%ScriptFile%,Folder,nvram,%VMXDir%
 //Run VMware
 If,Not,%pCheckBox_Pause%,Equal,True,Set,%Ex%,Ex
 If,Not,%pCheckBox_Pause%,Equal,True,Set,%Wait%,"/Wait#$s"
-Retrieve,FILEVERSION,%execute%,%VMwVer%
-Run,%scriptfile%,VMWare-StartServices
+//-
+Run,%ScriptFile%,VMWare-StartServices
 //VMware-workstation-full-7.0.0-203739.exe
 //VMware-workstation-full-7.1.1-282343.exe
 //VMware-workstation-full-7.1.3-324285.exe
 //VMware-workstation-full-7.1.4-385536.exe requires workaround with 80
 //If,10.0.0.1295980,Bigger,7.1,Message,Big,Information
 Set,%VMwWorkaround%,No
-Echo,%VMwVer%
 //-
-//If,%VMwVer%,Bigger,7.1,Begi-n
+//If,%VMw_Version%,Bigger,7.1,Begi-n
 //If,%version%,Smaller,80,Set,%VMwWorkaround%,Yes
 //En-d
-//If,%VMwVer%,Bigger,7.1.4,Set,%VMwWorkaround%,Yes
+//If,%VMw_Version%,Bigger,7.1.4,Set,%VMwWorkaround%,Yes
 Set,%var%,""
-Call,CompareVersions,%VMwVer%,7.1,var
+Call,CompareVersions,%VMw_Version%,7.1,var
 Echo,%var%
 If,%var%,Equal,Bigger,Begin
 If,%version%,Smaller,80,Set,%VMwWorkaround%,Yes
 End
 //-
-//System,FILEREDIRECT,OFF
-//Shellexecute,open,cmd.exe,"/k net stop VMwareHostd"
-//Shellexecute,open,cmd.exe,"/k net stop VMAuthdService"
-//Shellexecute,open,cmd.exe,"/k net start VMAuthdService"
-//Shellexecute,open,cmd.exe,"/k net start VMwareHostd"
-//Shellexecute,open,cmd.exe,"/c net stop VMwareHostd"
-//Shellexecute,open,cmd.exe,"/c net stop VMAuthdService"
-//Shellexecute,open,cmd.exe,"/c net start VMAuthdService"
-//Shellexecute,open,cmd.exe,"/c net start VMwareHostd"
-//System,FILEREDIRECT,ON
+//System,FileRedirect,OFF
+//ShellExecute,Open,cmd.exe,"/k net stop VMwareHostd"
+//ShellExecute,Open,cmd.exe,"/k net stop VMAuthdService"
+//ShellExecute,Open,cmd.exe,"/k net start VMAuthdService"
+//ShellExecute,Open,cmd.exe,"/k net start VMwareHostd"
+//ShellExecute,Open,cmd.exe,"/c net stop VMwareHostd"
+//ShellExecute,Open,cmd.exe,"/c net stop VMAuthdService"
+//ShellExecute,Open,cmd.exe,"/c net start VMAuthdService"
+//ShellExecute,Open,cmd.exe,"/c net start VMwareHostd"
+//System,FileRedirect,ON
 //-
 If,%VM_Workaround_ScrollBox%,Equal,"WorkAround Force",Set,%VMwWorkaround%,Yes
 If,%VM_Workaround_ScrollBox%,Equal,"WorkAround No",Set,%VMwWorkaround%,No
-If,%VMwWorkaround%,Equal,Yes,Run,%scriptfile%,VMWare_WB_BUG_Workaround
+If,%VMwWorkaround%,Equal,Yes,Run,%ScriptFile%,VMWare_WB_BUG_Workaround
 Else,Begin
 Retrieve,FileSize,%ISOfileVar%,%sizeISO%
 StrFormat,Bytes,%sizeISO%
 Echo,"Running %ISOfileVar% %sizeISO% MB in VMWare.."
-System,FILEREDIRECT,OFF
-If,%Ex%--,Equal,--,ShellExecute,Open,%execute%,%switches%#$s#$s#$q%VMXFile%#$q
-If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%execute%,%switches%#$s#$s#$q%VMXFile%#$q
+System,FileRedirect,OFF
+If,%Ex%--,Equal,--,ShellExecute,Open,%WM_Exe%,%switches%#$s#$s#$q%VMXFile%#$q
+If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%WM_Exe%,%switches%#$s#$s#$q%VMXFile%#$q
 Echo,ExitCode_%ExitCode%
 //ExitCode always 2
 //Message,ExitCode_%ExitCode%,Information
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 //--
 If,%VmwareFailed%,Equal,1,Begin
@@ -559,10 +607,10 @@ Echo,"Starting VMWare services (VMUSBArbService)"
 ShellExecute,Hide,net.exe,"start VMUSBArbService"
 Echo,"Enabling VMWare networking"
 Call,HostSystemDir
-If,EXISTFILE,%HostSystemDir%\devcon.exe,ShellExecute,Hide,devcon.exe,"enable @*vmware*"
+If,ExistFile,%HostSystemDir%\devcon.exe,ShellExecute,Hide,devcon.exe,"enable @*vmware*"
 
 [VMWare-StartServices-Question]
-If,QUESTION,"VMWare Services were detected as not started.#$x#$xDo you want these Services to be started (Plugin will exit if 'no' selected)?",10,True,Set,%StartVMWareServices%,1
+If,Question,"VMWare Services were detected as not started.#$x#$xDo you want these Services to be started (Plugin will exit if 'no' selected)?",10,True,Set,%StartVMWareServices%,1
 Else,Exit,"VMWare Plugin exited as services not started"
 
 [VMWare_WB_BUG_Workaround]
@@ -572,8 +620,8 @@ Else,Exit,"VMWare Plugin exited as services not started"
 //If,Not,%pCheckBox_Pause%,Equal,True,Set,%d%,"-d "
 //Else,Set,%d%,""
 ////use Open to accept Eula
-////ShellExecute,Open,%Tools%\PsExec.exe,"-s -i -d #$q%execute%#$q %switches%#$s#$s#$q%VMXFile%#$q"
-//ShellExecute,Open,%Tools%\PsExec.exe,"-l -i %d%#$q%execute%#$q %switches%#$s#$s#$q%VMXFile%#$q"
+////ShellExecute,Open,%Tools%\PsExec.exe,"-s -i -d #$q%WM_Exe%#$q %switches%#$s#$s#$q%VMXFile%#$q"
+//ShellExecute,Open,%Tools%\PsExec.exe,"-l -i %d%#$q%WM_Exe%#$q %switches%#$s#$s#$q%VMXFile%#$q"
 ////
 // Cancelled --
 //if enabled Since vmware-tray.exe (workstation) populated with this method better kill them - if enabled it comes back again with next vmware run ;)
@@ -589,9 +637,9 @@ Else,Exit,"VMWare Plugin exited as services not started"
 Retrieve,FileSize,%ISOfileVar%,%sizeISO%
 StrFormat,Bytes,%sizeISO%
 Echo,"Running %ISOfileVar% %sizeISO% MB in VMWare.."
-System,FILEREDIRECT,OFF
-//If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%Tools%\%hostarch%\AU3361.exe,"#$q%VMXDir%\RunLimited.au3#$q #$q%execute%#$q %switches%#$s#$s#$q%VMXFile%#$q"
-//If,%Ex%--,Equal,--,ShellExecute,Open,%Tools%\%hostarch%\AU3361.exe,"#$q%VMXDir%\RunLimited.au3#$q #$q%execute%#$q %switches%#$s#$s#$q%VMXFile%#$q"
+System,FileRedirect,OFF
+//If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%Tools%\%hostarch%\AU3361.exe,"#$q%VMXDir%\RunLimited.au3#$q #$q%WM_Exe%#$q %switches%#$s#$s#$q%VMXFile%#$q"
+//If,%Ex%--,Equal,--,ShellExecute,Open,%Tools%\%hostarch%\AU3361.exe,"#$q%VMXDir%\RunLimited.au3#$q #$q%WM_Exe%#$q %switches%#$s#$s#$q%VMXFile%#$q"
 If,%version%,Smaller,80,Begin
 Set,%BuilderStarterEXE%,"%BaseDir%\WinBuilder077rc2 Starter.exe"
 If,ExistFile,%BuilderStarterEXE%,Begin
@@ -602,8 +650,8 @@ If,ExistFile,%BuilderStarterEXE%,Begin
 //----
 //----
 //----
-//If,%Ex%--,Equal,--,ShellExecute,Open,%BuilderStarterEXE%,"%Wait%#$q%execute%#$q %switches%#$s#$s#$q%VMXFile%#$q"
-//If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%BuilderStarterEXE%,"%Wait%#$q%execute%#$q %switches%#$s#$s#$q%VMXFile%#$q"
+//If,%Ex%--,Equal,--,ShellExecute,Open,%BuilderStarterEXE%,"%Wait%#$q%WM_Exe%#$q %switches%#$s#$s#$q%VMXFile%#$q"
+//If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%BuilderStarterEXE%,"%Wait%#$q%WM_Exe%#$q %switches%#$s#$s#$q%VMXFile%#$q"
 //Echo,ExitCode_%ExitCode%
 //----
 //----
@@ -617,19 +665,19 @@ If,ExistFile,%BuilderStarterEXE%,Begin
 End
 End
 Else,Begin
-If,%Ex%--,Equal,--,ShellExecute,Open,%execute%,%switches%#$s#$s#$q%VMXFile%#$q
-If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%execute%,%switches%#$s#$s#$q%VMXFile%#$q
+If,%Ex%--,Equal,--,ShellExecute,Open,%WM_Exe%,%switches%#$s#$s#$q%VMXFile%#$q
+If,%Ex%,Equal,Ex,ShellExecuteEx,Open,%WM_Exe%,%switches%#$s#$s#$q%VMXFile%#$q
 Echo,ExitCode_%ExitCode%
 //ExitCode always 2
 //Message,ExitCode_%ExitCode%,Information
 End
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //--
 Wait,10
 If,%pCheckBox2%,Equal,True,Begin
-Shellexecute,Hide,cmd.exe,"/C ren #$q%VMXDir%\%UseDisk%#$q %UseDisk%.tmp"
+ShellExecute,Hide,cmd.exe,"/C ren #$q%VMXDir%\%UseDisk%#$q %UseDisk%.tmp"
 If,ExistFile,%VMXDir%\%UseDisk%.tmp,Set,%VmwareFailed%,1
-Shellexecute,Hide,cmd.exe,"/C ren #$q%VMXDir%\%UseDisk%.tmp#$q %UseDisk%"
+ShellExecute,Hide,cmd.exe,"/C ren #$q%VMXDir%\%UseDisk%.tmp#$q %UseDisk%"
 End
 
 [PSExecDownload]
@@ -659,27 +707,28 @@ End
 //--
 Set,%w%,%ProjectTemp%\1Test.au3
 FileCreateBlank,%w%
-TxtAddline,%w%,"#NoTrayIcon",Append
-TxtAddline,%w%,"#RequireAdmin",Append
-TxtAddline,%w%,"ShellExecute(#$qC:\Program Files (x86)\VMware\VMware Workstation\vmware.exe#$q,' -t #$q%VMXFile%#$q')",Append
-//ShellExecute,Hide,%Tools%\%SysType%\AU3361.exe,"#$q%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3#$q"
+TxtAddLine,%w%,"#NoTrayIcon",Append
+TxtAddLine,%w%,"#RequireAdmin",Append
+TxtAddLine,%w%,"ShellExecute(#$qC:\Program Files (x86)\VMware\VMware Workstation\vmware.exe#$q,' -t #$q%VMXFile%#$q')",Append
+//Call,HostOSArch
+//ShellExecute,Hide,%Tools%\%HostOSArch%\AU3361.exe,"#$q%ProjectTemp%\HostOSTools\1HostOSCopyCMD.au3#$q"
 ShellExecute,Hide,%Tools%\x86\AU3361.exe,%w%
-//ShellExecuteEx,Open,%Tools%\%SysType%\AU3361.exe,%w%
+//ShellExecuteEx,Open,%Tools%\%HostOSArch%\AU3361.exe,%w%
 
 [HuntVMware]
 //Hunt VMware :>
 //since builder 32bit without some x64 compatibility  - automatically redirected to Wow6432Node and first HuntVM will hunt it if in forest
-Run,%scriptfile%,HuntVM
+Run,%ScriptFile%,HuntVM
 //maybe oneday .... :> - try hunt without redirect
-If,%WS%%PL%,Equal,----,Begin
+If,%WS%%PL%%SV%,Equal,------,Begin
 Set,%registrysub%,Wow6432Node\
-Run,%scriptfile%,HuntVM
+Run,%ScriptFile%,HuntVM
 End
 //----
-If,%WS%%PL%,Equal,----,Beep,Error
-If,%WS%%PL%,Equal,----,Message,"VMWare Player OR Workstation is either not installed or was not detected correctly",Error
-If,%WS%%PL%,Equal,----,Call,Echo,"VMWare Player OR Workstation is either not installed or was not detected correctly",Warn
-If,%WS%%PL%,Equal,----,Exit,"VMWare Player OR Workstation is either not installed or was not detected correctly"
+If,%WS%%PL%%SV%,Equal,------,Beep,Error
+If,%WS%%PL%%SV%,Equal,------,Message,"VMWare Player OR Workstation OR Server is either not installed or was not detected correctly",Error
+If,%WS%%PL%%SV%,Equal,------,Call,Echo,"VMWare Player OR Workstation OR Server is either not installed or was not detected correctly",Warn
+If,%WS%%PL%%SV%,Equal,------,Exit,"VMWare Player OR Workstation OR Server is either not installed or was not detected correctly"
 
 [HuntVM]
 If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",InstallPath,Begin
@@ -687,8 +736,8 @@ Set,%t%,--
 Set,%tmp%,--
 If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",ProductVersion,RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",ProductVersion,%t%
 RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Workstation",InstallPath,%tmp%
-StrFormat,REPLACE,%tmp%,#$q,,%tmp%
-StrFormat,CTRIM,%tmp%,\,%tmp%
+StrFormat,Replace,%tmp%,#$q,,%tmp%
+StrFormat,CTrim,%tmp%,\,%tmp%
 If,ExistFile,%tmp%\vmware.exe,Set,%WS%,%tmp%\vmware.exe
 End
 //-
@@ -697,51 +746,51 @@ Set,%t%,--
 Set,%tmp%,--
 If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",ProductVersion,RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",ProductVersion,%t%
 RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Player",InstallPath,%tmp%
-StrFormat,REPLACE,%tmp%,#$q,,%tmp%
-StrFormat,CTRIM,%tmp%,\,%tmp%
+StrFormat,Replace,%tmp%,#$q,,%tmp%
+StrFormat,CTrim,%tmp%,\,%tmp%
 If,ExistFile,%tmp%\vmplayer.exe,Set,%PL%,%tmp%\vmplayer.exe
 End
 //-
 If,ExistRegKey,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Server",InstallPath,Begin
 Set,%tmp%,--
 RegRead,HKLM,"SOFTWARE\%registrysub%VMware#$c Inc.\VMware Server",InstallPath,%tmp%
-StrFormat,REPLACE,%tmp%,#$q,,%tmp%
-StrFormat,CTRIM,%tmp%,\,%tmp%
-If,ExistFile,%tmp%\vmware.exe,Set,%PL%,%tmp%\vmware.exe
-If,ExistFile,%tmp%\vmplayer.exe,Set,%PL%,%tmp%\vmplayer.exe
+StrFormat,Replace,%tmp%,#$q,,%tmp%
+StrFormat,CTrim,%tmp%,\,%tmp%
+If,ExistFile,%tmp%\vmware.exe,Set,%SV%,%tmp%\vmware.exe
+If,ExistFile,%tmp%\vmplayer.exe,Set,%SV%,%tmp%\vmplayer.exe
 End
 
 [DefineCD]
-TXTAddLine,%VMXFile%,ide1:0.present#$s=#$s#$qTRUE#$q,Append
-If,%pRadioGroup1%,EQUAL,1,Begin
-TXTAddLine,%VMXFile%,ide1:0.autodetect#$s=#$s#$qFALSE#$q,Append
-TXTAddLine,%VMXFile%,ide1:0.deviceType#$s=#$s#$qcdrom-raw#$q,Append
-StrFormat,LEFT,%pFileBox2%,2,%tmp%
-TXTAddLine,%VMXFile%,ide1:0.fileName#$s=#$s#$q%tmp%#$q,Append
+TxtAddLine,%VMXFile%,ide1:0.present#$s=#$s#$qTRUE#$q,Append
+If,%pRadioGroup1%,Equal,1,Begin
+TxtAddLine,%VMXFile%,ide1:0.autodetect#$s=#$s#$qFALSE#$q,Append
+TxtAddLine,%VMXFile%,ide1:0.deviceType#$s=#$s#$qcdrom-raw#$q,Append
+StrFormat,Left,%pFileBox2%,2,%tmp%
+TxtAddLine,%VMXFile%,ide1:0.fileName#$s=#$s#$q%tmp%#$q,Append
 End
-If,%pRadioGroup1%,EQUAL,2,Begin
-TXTAddLine,%VMXFile%,ide1:0.autodetect#$s=#$s#$qTRUE#$q,Append
-TXTAddLine,%VMXFile%,ide1:0.deviceType#$s=#$s#$qcdrom-raw#$q,Append
+If,%pRadioGroup1%,Equal,2,Begin
+TxtAddLine,%VMXFile%,ide1:0.autodetect#$s=#$s#$qTRUE#$q,Append
+TxtAddLine,%VMXFile%,ide1:0.deviceType#$s=#$s#$qcdrom-raw#$q,Append
 End
-If,%pRadioGroup1%,EQUAL,3,Begin
-TXTAddLine,%VMXFile%,ide1:0.autodetect#$s=#$s#$qFALSE#$q,Append
-TXTAddLine,%VMXFile%,ide1:0.deviceType#$s=#$s#$qcdrom-image#$q,Append
-TXTAddLine,%VMXFile%,ide1:0.fileName#$s=#$s#$q%pFileBox1%#$q,Append
+If,%pRadioGroup1%,Equal,3,Begin
+TxtAddLine,%VMXFile%,ide1:0.autodetect#$s=#$s#$qFALSE#$q,Append
+TxtAddLine,%VMXFile%,ide1:0.deviceType#$s=#$s#$qcdrom-image#$q,Append
+TxtAddLine,%VMXFile%,ide1:0.fileName#$s=#$s#$q%pFileBox1%#$q,Append
 End
 
 [MaxResolution]
-StrFormat,LEFT,%Max_Res_ScrollBox%,4,%ResolutionWitdh%
-StrFormat,RIGHT,%Max_Res_ScrollBox%,4,%ResolutionHeight%
-StrFormat,CTRIM,%ResolutionWitdh%,x,%ResolutionWitdh%
-StrFormat,CTRIM,%ResolutionHeight%,x,%ResolutionHeight%
-TXTAddLine,%VMXFile%,"svga.maxWidth=#$q%ResolutionWitdh%#$q",Append
-TXTAddLine,%VMXFile%,"svga.maxHeight=#$q%ResolutionHeight%#$q",Append
+StrFormat,Left,%Max_Res_ScrollBox%,4,%ResolutionWitdh%
+StrFormat,Right,%Max_Res_ScrollBox%,4,%ResolutionHeight%
+StrFormat,CTrim,%ResolutionWitdh%,x,%ResolutionWitdh%
+StrFormat,CTrim,%ResolutionHeight%,x,%ResolutionHeight%
+TxtAddLine,%VMXFile%,"svga.maxWidth=#$q%ResolutionWitdh%#$q",Append
+TxtAddLine,%VMXFile%,"svga.maxHeight=#$q%ResolutionHeight%#$q",Append
 
 [Ethernet0]
 //All info here from sanbarrow page - For more info check sanbarrow page : http://sanbarrow.com/vmx/vmx-network.html
 //--
-TXTAddLine,%VMXFile%,"Ethernet0.present=#$qTRUE#$q",Append
-//TXTAddLine,%VMXFile%,"ethernet0.startConnected=#$qtrue#$q",Append
+TxtAddLine,%VMXFile%,"Ethernet0.present=#$qTRUE#$q",Append
+//TxtAddLine,%VMXFile%,"ethernet0.startConnected=#$qtrue#$q",Append
 //--
 //bridged:  to an automatically assigned physical nic
 //          WARNING: this is unreliable on hosts with more than one physical nic.
@@ -760,9 +809,9 @@ If,Not,%Ethernet0_md_ScrollBox%,Equal,Auto,Set,%cType%,%Ethernet0_md_ScrollBox%
 //If,%Ethernet0_md_ScrollBox%%OSFamily%,Equal,AutoNT6,Set,%cType%,bridged
 //If,%Ethernet0_md_ScrollBox%%OSFamily%,Equal,AutoNT6,Set,%cType%,nat
 //If,%Ethernet0_md_ScrollBox%%OSFamily%,Equal,AutoNT6,Set,%cType%,nat
-TXTAddLine,%VMXFile%,"Ethernet0.connectionType=#$q%cType%#$q",Append
+TxtAddLine,%VMXFile%,"Ethernet0.connectionType=#$q%cType%#$q",Append
 //--
-TXTAddLine,%VMXFile%,"Ethernet0.addressType=#$qgenerated#$q",Append
+TxtAddLine,%VMXFile%,"Ethernet0.addressType=#$qgenerated#$q",Append
 //--
 //vlance : AMD PCnet32 network-card  --> Most older OS have drivers for this nic
 //vmxnet : VMXnet network-card       --> You can only use this nic if you install the VMware-tools inside the guest
@@ -770,37 +819,37 @@ TXTAddLine,%VMXFile%,"Ethernet0.addressType=#$qgenerated#$q",Append
 //         NOTE: VMware usually assigns this nic to 64bit-guests - but it also works with 32-bit guests
 //ps: NT6 projects prefer to use single e1000 for all, others leave this entry to default....
 If,Not,%Ethernet0_vd_ScrollBox%,Equal,Default,Begin
-If,Not,%Ethernet0_vd_ScrollBox%,Equal,Auto,TXTAddLine,%VMXFile%,"Ethernet0.virtualDev=#$q%Ethernet0_vd_ScrollBox%#$q",Append
+If,Not,%Ethernet0_vd_ScrollBox%,Equal,Auto,TxtAddLine,%VMXFile%,"Ethernet0.virtualDev=#$q%Ethernet0_vd_ScrollBox%#$q",Append
 If,%Ethernet0_vd_ScrollBox%,Equal,Auto,Begin
-If,%OSFamily%,Equal,NT6,TXTAddLine,%VMXFile%,"Ethernet0.virtualDev=#$qe1000#$q",Append
+If,%OSFamily%,Equal,NT6,TxtAddLine,%VMXFile%,"Ethernet0.virtualDev=#$qe1000#$q",Append
 If,%OSFamily%,Equal,NT5,Begin
-If,Not,%SourceArch%,Equal,x86,TXTAddLine,%VMXFile%,"Ethernet0.virtualDev=#$qe1000#$q",Append
-If,%SourceArch%,Equal,x86,TXTAddLine,%VMXFile%,"Ethernet0.virtualDev=#$qvlance#$q",Append
+If,Not,%SourceArch%,Equal,x86,TxtAddLine,%VMXFile%,"Ethernet0.virtualDev=#$qe1000#$q",Append
+If,%SourceArch%,Equal,x86,TxtAddLine,%VMXFile%,"Ethernet0.virtualDev=#$qvlance#$q",Append
 End
 End
 End
 
 [SharedFolder]
-TXTAddLine,%VMXFile%,"sharedFolder.maxNum=#$q1#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder.option=#$qalwaysEnabled#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder0.present=#$qTRUE#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder0.enabled=#$qTRUE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder.maxNum=#$q1#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder.option=#$qalwaysEnabled#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.present=#$qTRUE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.enabled=#$qTRUE#$q",Append
 //
 If,%ShareFolderModeScrollBox%,Equal,"enabled read-only",Begin
-TXTAddLine,%VMXFile%,"sharedFolder0.readAccess=#$qTRUE#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder0.writeAccess=#$qFALSE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.readAccess=#$qTRUE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.writeAccess=#$qFALSE#$q",Append
 End
 If,%ShareFolderModeScrollBox%,Equal,"enabled read and write",Begin
-TXTAddLine,%VMXFile%,"sharedFolder0.readAccess=#$qTRUE#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder0.writeAccess=#$qTRUE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.readAccess=#$qTRUE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.writeAccess=#$qTRUE#$q",Append
 End
 //
-TXTAddLine,%VMXFile%,"sharedFolder0.hostPath=#$q%ShareFTarget%#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder0.guestName=#$q1#$q",Append
-TXTAddLine,%VMXFile%,"sharedFolder0.expiration=#$qnever#$q",Append
-//TXTAddLine,%VMXFile%,"isolation.tools.hgfs.disable=#$qFALSE#$q",Append
-TXTReplace,%VMXFile%,"isolation.tools.hgfs.disable#$s=#$s#$qTRUE#$q","isolation.tools.hgfs.disable=#$qFALSE#$q"
-TXTAddLine,%VMXFile%,"hgfs.mapRootShare#$s=#$s#$qTRUE#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.hostPath=#$q%ShareFTarget%#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.guestName=#$q1#$q",Append
+TxtAddLine,%VMXFile%,"sharedFolder0.expiration=#$qnever#$q",Append
+//TxtAddLine,%VMXFile%,"isolation.tools.hgfs.disable=#$qFALSE#$q",Append
+TxtReplace,%VMXFile%,"isolation.tools.hgfs.disable#$s=#$s#$qTRUE#$q","isolation.tools.hgfs.disable=#$qFALSE#$q"
+TxtAddLine,%VMXFile%,"hgfs.mapRootShare#$s=#$s#$qTRUE#$q",Append
 
 [ShareFolderHostOpenDir]
 If,%ShareFolderHostFileBox%,Equal,"",Exit,"No Directory Specified"
@@ -809,12 +858,23 @@ Call,OpenDir,%ShareFolderHostFileBox%
 [Start_LastVMware]
 //Quick way of Re-Starting .vmx (must be registered with vmware ;) file if Plugin used before (hence nothing added that would slow down)
 If,ExistFile,%VMXFile%,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,%VMXFile%,,%VMXDir%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 
 [SelectISO_Process]
+Echo,"Select Image File"
+Set,%t%,""
+If,ExistVar,%IsoDir%,Begin
+If,ExistDir,%IsoDir%,Set,%t%,%IsoDir%
+End
+Call,SelectFile,ISOfileVar,%t%\*.iso,"Open ISO File",LastFolder
+If,%ISOfileVar%-,Equal,-,Echo,"No File Selected"
+If,Not,%ISOfileVar%-,Equal,-,Echo,"Image File Selected: %ISOfileVar%"
+If,Not,%ISOfileVar%-,Equal,-,Run,%ScriptFile%,Process
+
+[SelectISO_Process_CANCEL]
 //Workaround NOT Work - winbuilder .Link Bug with Retrieve,FILE, * malfunction plugin variables - but after plugin executes bug continues with not working plugin
 //for not Halt to avoid builder overall failure
 If,Not,ExistFile,%ScriptFile%,Exit,"%ScriptFile% NOT FOUND"
@@ -824,15 +884,27 @@ If,Not,%LinkTypeV%,Equal,PluginFile,Call,Echo,"SelectISO DO NOT work with linked
 If,Not,ExistVar,%IsoFolder%,Set,%IsoFolder%,%BaseDir%\ISO
 If,-%IsoFolder%,Equal,-,Set,%IsoFolder%,%BaseDir%\ISO
 If,Not,ExistDir,%IsoFolder%,DirMake,%IsoFolder%
-Retrieve,FILE,%IsoFolder%\*.ISO,%IsoSelect%
+******* Retrieve,File, Cause severe failure - Breaks Memory Database - NEVER USE -- Workaround use Call,SelectFile Retrieve,File,%IsoFolder%\*.ISO,%IsoSelect%
 If,ExistFile,%IsoSelect%,Set,%ISOfileVar%,%IsoSelect%
 If,ExistFile,%ISOfileVar%,Run,%ScriptFile%,Process
 
 [Launch_vmnetcfg]
 Run,%ScriptFile%,HuntVMware
-StrFormat,PATH,%PL%,%f%
-StrFormat,Ctrim,%f%,\,%f%
-If,ExistFile,%f%\vmnetcfg.exe,Call,Start,,%f%\vmnetcfg.exe,,%f%
+//--
+//WS: VMware Workstation - vmware.exe
+//PL: VMware Player - vmplayer.exe
+//SV: VMware Server - vmware.exe or vmplayer.exe
+If,Not,%PL%,Equal,--,Set,%WM_Exe%,%PL%
+If,Not,%SV%,Equal,--,Set,%WM_Exe%,%SV%
+If,Not,%WS%,Equal,--,Set,%WM_Exe%,%WS%
+If,%Pl_Prior_CheckBox%,Equal,True,Begin
+If,Not,%PL%,Equal,--,Set,%WM_Exe%,%PL%
+End
+StrFormat,Path,%WM_Exe%,%WM_Path%
+StrFormat,Right,%WM_Path%,1,%t%
+If,%t%,Equal,\,StrFormat,RTrim,%WM_Path%,1,%WM_Path%
+//--
+If,ExistFile,%WM_Path%\vmnetcfg.exe,Call,Start,,%WM_Path%\vmnetcfg.exe,,%WM_Path%
 
 [VM_Information]
 Call,DirMake,%ProjectTemp%\VMware_Info
@@ -847,6 +919,107 @@ Call,OpenDir,%VMXDir%
 [VMHDD_vmdk_P_B]
 Call,StartDoc,%VMXDir%\VMHDD.vmdk
 
+[VirtualOS_Info_P_B]
+//Call,IniReadSectionVar,|VirtualOS_Info_guestOS
+//Echo,"Read Information"
+//Message,%IniReadSectionVar%,Information
+//-
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+Set,%w%,%ProjectTemp%\VirtualOS_Info_guestOS.txt
+Call,FileDelete,%w%
+Call,IniExtractSectionN,,VirtualOS_Info_guestOS,%w%
+Call,StartDocNotepad,%w%
+
+[VirtualOS_Info_guestOS]
+.vmx guestOS Values - https://www.petri.com/virtual_vmware_vmx_configuration_files_guestos
+=|
+=|Microsoft Windows, 32-bit
+=|
+=|    winVista = Windows Vista (experimental)
+=|    longhorn = Windows Longhorn (experimental)
+=|    winNetBusiness = Windows 2003 Small Business Server
+=|    winNetEnterprise = Windows 2003 Enterprise Server
+=|    winNetStandard = Windows 2003 Server
+=|    winNetWeb = Windows 2003 Web Server Edition
+=|    winXPPro = Windows XP Professional Edition
+=|    winXPHome = Windows XP Home Edition
+=|    win2000AdvServ = Windows 2000 Advanced Server
+=|    win2000Serv = Windows 2000 Server
+=|    win2000Pro = Windows 2000 Professional
+=|    winNT = Windows NT
+=|    winMe = Windows Me
+=|    win98 = Windows 98
+=|    win95 = Windows 95
+=|    win31 = Windows 3.1 / Windows 3.11
+=|    windows = Other Windows
+=|
+=|Microsoft Windows, 64-bit
+=|
+=|    winVista-64 = Windows Vista x64 Edition (experimental)
+=|    longhorn-64 = Windows Longhorn x64 Edition (experimental)
+=|    winNetEnterprise-64 = Windows 2003 Enterprise Server x64 Edition
+=|    winNetStandard-64 = Windows 2003 Server x64 Edition
+=|    winXPPro-64 = Windows XP Professional x64 Edition
+=|
+=|Linux, 32-bit
+=|
+=|    ubuntu = Ubuntu Linux
+=|    redhat = Red Hat Linux
+=|    rhel4 = Red Hat Enterprise Linux 4
+=|    rhel3 = Red Hat Enterprise Linux 3
+=|    rhel2 = Red Hat Enterprise Linux 2
+=|    suse = SuSE Linux
+=|    sles = SuSE Linux Enterprise Server
+=|    mandrake = Mandrake Linux
+=|    nld9 = Novell Linux Desktop 9
+=|    sjds = Sun Java Desktop System
+=|    turbolinux = Turbo Linux
+=|    other26xlinux = Other Linux on a 2.6.x kernel
+=|    other24xlinux = Other Linux on a 2.4.x kernel
+=|    linux = Other Linux
+=|
+=|Linux, 64-bit
+=|
+=|    ubuntu-64 = Ubuntu Linux 64-bit
+=|    rhel4-64 = Red Hat Enterprise Linux 4 64-bit
+=|    rhel3-64 = Red Hat Enterprise Linux 3 64-bit
+=|    sles-64 = SuSE Linux Enterprise Server 64-bit
+=|    suse-64 = SuSE Linux 64-bit
+=|    other26xlinux-64 = Other Linux 2.6.x 64-bit
+=|    other24xlinux-64 = Other Linux 2.4.x 64-bit
+=|    otherlinux-64 = Other Linux 64-bit
+=|
+=|Sun Microsystems Solaris
+=|
+=|    solaris10-64 = Solaris 10 64-bit
+=|    solaris10 = Solaris 10
+=|    solaris9 = Solaris 9
+=|    solaris8 = Solaris 8
+=|    solaris7 = Solaris 7
+=|    solaris6 = Solaris 6
+=|    solaris = Other Solaris
+=|
+=|Novell Netware
+=|
+=|    netware6 = Netware 6.x
+=|    netware5 = Netware 5.x
+=|    netware4 = Netware 4.x
+=|    netware = Other Netware
+=|
+=|FreeBSD
+=|
+=|    freeBSD-64 = FreeBSD 64-bit
+=|    freeBSD = FreeBSD
+=|
+=|Apple Darwin
+=|
+=|    darwin = Apple Darwin (unsupported)
+=|
+=|Other
+=|
+=|    other = Other OS
+=|    other-64 = Other 64-bit OS
+
 [AuthorEncoded]
 vmware4848.ico=3259,4346
 Logo=vmware4848.ico
@@ -859,23 +1032,128 @@ lines=1
 [InterfaceEncoded]
 MesCD2424.bmp=1473,1964
 vmnetcfg1616.bmp=657,876
-Exclamation.bmp=452,603
-opendir.bmp=571,762
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
 
-[EncodedFile-InterfaceEncoded-opendir.bmp]
-lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+[DownloadXXX]
+Call,DownloadXQ
 
-[EncodedFile-InterfaceEncoded-Exclamation.bmp]
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+//Add To Azin
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2|Web3
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+Run,%ScriptFile%,First_Gui
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
-0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-MesCD2424.bmp]
 lines=0
 0=eJylVW1sU1UYBqLxI5j4Q0X5IZKIH9EYAxE1Go1EfxizgPEL+SExKkwxgRjRCPKDhCwgoGQgjA3YB46RhcFgo7T7gpVtbKO0tGtve7ve9t7e3ra3a7t2bdfetvd9PacUchmIGG/y5D333Hue932f877nLKtY+sCs0rOU4DmCx8uYPeupax/K37UPIt410qnUYy67fbPlypVhh8MxJQhC0e12xzmOOy+K4veKosz9N47JjPLwmg5fc0op3vQv67BVMgZd0tvfD5zdjrzXC4FAAGVZxng8DqlUCicmJiSCijvxG72xtx/dbYZXj/IOZyz3Ap0zOU27jaZTYOs8CtyZNvCNDIPg8YAUCADhB8qfTqchl8sByaFIfFT+E//+kcCGeX9YYG61G+fXeDJ1Rqb5pLkfWyzHsauvFm2nDoO3V48C4wBJFDESidyIP5vNYj6fp34KZG7Z7fjX6TwN86qtMK+GwwU1bmzrckOTzooH+gx45HwT6jv2w8iJejR168FiMiHLshgMBiGZTGImk6E+KD+GQiGXqqr3zORf1uy0zq9xwZN1LKxrZ8F4kYe2Di/UnbRB9elu2NdSCxe62kHkfUB0KOnD8zxIkkR90DxKWlEbDoeXa7mz+eL9iw4xyoJ6Hyw8wmDrMIsMw8PoqIDnenx4qPUytur66Tq6r0C1icViODk5CT6fD+k8HScSCWrR6/XWavmvhlNLFjVy+PwxPyxsdKLFxaHfL5K1AWScIuq7zciO8zRmZMWQOJ3Nbo5GozzVn2iEHo+H1hCQOaQg2g1q+Y85I1+9eNwPi09IsKiZBY/gB6IjQZjkHwKz2Up4QiVdGmxhaOXSZimaMBKu8neG1Gy49D/JBRiGsWr5N10K7FvaHsI3zoRgcbsfx0jcdC3VgMZDegmpziReFOUo9HMRlMKRUsxXbRzqDA60jQWB44IkbwlJD/Zp+T/qFgbfOivju/oIvKOX8aw7iHTPpqamqC3pSzQt+aOaUEu4kffzUHfKgPUn7dhpCMDQpSDZtwC6XO5d17lVgDmvdAip93uiWNEXBQLcZpFxenoaCEq1R2ucxk/OAyTnAYiCgKxlFDvaa6FWdxhre89jU6cTTutEHBoSiU7y69f5vVPKs68ZQvDJxTh8OnANKwdi4JtMA+0Z0pfUD82lpO242w12sxms3TqwnKmH7r6D0GJugWOmC9A56IILRmuvVpseOfvZe/1RXD2SpICyxa3WOOTyBSwUCkj7htY2rT+6L2FSM0GGQX/fOXDoGrFvtAnPjndCj20oPplIPK3lbxCz21cQ3rXm1C3Y75qE6ZxSOl/K/LQGQSZ5BElvBU2XQTR0gNPYDoNXDfFwNPzmzL79TcjpV5lTuH4sQwFle2O8nUmgM5Kge3AjftoHQUnCINEqMDKCPYOjaJYiX8zkBoDZG/lC+BvC87NrmgLK9uaxM4N7XHFoG5fxIieBcdyPBtaPp1wi7GWjWCXkcbdf6ZrJH8+r8zfwKqxns7DFk7srbCR+K81J+Hw4Dl/aM/CrUIBdUgE2EevPwUtafiLBBz8JKlS6FdzsVXAbnwcCLEM71r6X7E4u03HQHtvxoV6MrbqSwC2BIjRMFOtvOtdUeGggqa7d6S+YvmVzsNatwC9k7XaxgDsCBSBADUBr/5ILf5buTnLfNY9NfFfRNu5aMTiRJZo8cbvz35spLmkUpg+ssSQSNG+yL7BDKsLvoVtRReZ10cIP2vWqCnOiaeWRvKree6d7MltUH+wOpFf/OCwbPx6MquvGc1gVUrFaVoEA9xC70avEYsrt4/wv4JPKM3vNctXKLtG1fCCS/9qazG51p3o9qcLL/5d7JnKF4n354p1z1+JvDhtHs3ic4/VNLXZ2MTIxMtFLyi1gGAUjDJhxQugSVuzym9/wszEwAQCBiAZhcew1gAEAAAACAAAAKQAAAHQFAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-vmnetcfg1616.bmp]
+lines=0
+0=eJylkl9oUnEUxy3qobcK+vMY1EP/nObahIJmYWPQAoXAh5EtcFaLBquYiObIkUTDIoJA2qK01XJzW2v5p6WkTjO7S8Q2WpEkrOGfxIjo4si+3XsZpLebBB34cH/ccz7n3D/nwOGuFTwm6im2UqymWEOxjLeJuS9ZypcHgP+GZ+GhHLVazQm7rsInfkPXsoPxy2r+8FnzCYKooNp8Lsp7LD3PP32Ln6XS8mKhsLbinahzMZ9fR+equT9IclVqbLjNuW8XJkzNoK/lpMYd7X9zS4uLK+esFh1dN2QQYeKUBG5VE8abRLCLNmNUKYazsQ6J3h4Ll595EZLS7iPjDri02xExHEHCrEO4QwGnTIiHbVswrBLAKa3FgtetYPvBzpaw50oNfN018OsECJnqEL3ajFD3fni1Ajy9KMBI1zaMKWvx+sL5IbZPz35uFGJKL0ZE04g3A8eQuNeCWL8M0RsNCJqEmKR6j2p3wiXb853L958WY6pDiqimFQuEDdkZB1I+M2YG1Yheb0CgRwinkY8nh8RFLn9SVo/gUTkSRgMyATe+fXqPr+lppPzXEL+tQNi8Gx49Hx65JMP23/VZNHSPyIlWJO/bkJ+OIf3Mh2zEi2zcjln7SYR798ItFyB4XEGwfTKX28D47Up8sN5CIR5Hxu/HvNuO9CsbZkdUeHn5ILMHyQfWc1z/8MvcWz6dj+nPUj36kLzTj4+Om0gFLiFukzPuvOuxstoOkp9z65ODA2fYu5e03+0ks9mN7PpfrwLWGHicEyjLzUstSU5LNzQzNNNLyi1gGAUjCZSxQGhHJuzyzNHbdjIwAQAX0wgy7d4lGQEAAAACAAAALAAAAEECAAAAAAAAAQAAAAAAAAAAAAAA
+
+[Second_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-First_Gui,False
+Run,%ScriptFile%,Show-Hide-Second_Gui,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[First_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Show-Hide-First_Gui,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show-Hide-Second_Gui]
+Visible,%Start_LastVMware_Button%,#1,Permanent
+Visible,%pRadioGroup1%,#1,Permanent
+Visible,%Ethernet0_Bevel%,#1,Permanent
+Visible,%Ethernet0_md_TextLabel%,#1,Permanent
+Visible,%Ethernet0_md_ScrollBox%,#1,Permanent
+Visible,%Ethernet0_vd_TextLabel%,#1,Permanent
+Visible,%Ethernet0_vd_ScrollBox%,#1,Permanent
+Visible,%vmnetcfg_Button%,#1,Permanent
+Visible,%VM_Info_Button%,#1,Permanent
+Visible,%pFileBox1%,#1,Permanent
+Visible,%pFileBox2%,#1,Permanent
+Visible,%pTextLabel5%,#1,Permanent
+Visible,%pRadioButton1%,#1,Permanent
+Visible,%pNumberBox2%,#1,Permanent
+Visible,%pRadioButton2%,#1,Permanent
+Visible,%pBevel3%,#1,Permanent
+Visible,%pBevel1%,#1,Permanent
+Visible,%pCheckBox2%,#1,Permanent
+Visible,%pTextLabel6%,#1,Permanent
+Visible,%pCheckBox3%,#1,Permanent
+Visible,%pTextLabel7%,#1,Permanent
+Visible,%pTextLabel8%,#1,Permanent
+Visible,%ShareFolderBevel%,#1,Permanent
+Visible,%ShareFolderModeTextLabel%,#1,Permanent
+Visible,%ShareFolderModeScrollBox%,#1,Permanent
+Visible,%ShareFolderHostTextLabel%,#1,Permanent
+Visible,%ShareFolderScrollBox%,#1,Permanent
+Visible,%ShareFolderHostFileBox%,#1,Permanent
+Visible,%ShareFolderHostButton%,#1,Permanent
+Visible,%pTextBox1%,#1,Permanent
+Visible,%AutoStart_CheckBox%,#1,Permanent
+Visible,%HideControls_CheckBox%,#1,Permanent
+Visible,%PowerStart_CheckBox%,#1,Permanent
+Visible,%PowerClose_CheckBox%,#1,Permanent
+Visible,%VM_Workaround_ScrollBox%,#1,Permanent
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
+Visible,%firmware_CheckBox%,#1,Permanent
+Visible,%firmware_ScrollBox%,#1,Permanent
+Visible,%bios_bootdelay_CheckBox%,#1,Permanent
+Visible,%bios_bootdelay_TextBox%,#1,Permanent
+Visible,%Button_VMHDD_vmdk%,#1,Permanent
+Visible,%Button_OpenDir_VMXDir%,#1,Permanent
+Visible,%Audio_CheckBox%,#1,Permanent
+Visible,%Audio_ScrollBox%,#1,Permanent
+Visible,%virtualHW_version_TextLabel%,#1,Permanent
+Visible,%virtualHW_version_ScrollBox%,#1,Permanent
+Visible,%USB_2_0_CheckBox%,#1,Permanent
+Visible,%USB_3_0_CheckBox%,#1,Permanent
+Visible,%usb_generic_allowHID_CheckBox%,#1,Permanent
+//--
+Visible,%pButton_Show_First_Gui%,#1,Permanent
+
+[Show-Hide-First_Gui]
+//--
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
 
 [EncodedFolders]
 Folder
@@ -907,10 +1185,6 @@ lines=1
 0=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
 1=seYn8uwXYRgACtstcFedcM32bk8skF9RU1g5R+l5ElRCmpNk6WhCKvig82ZDc40IWYDxE821+zOPsCpfU95ey3C+SrpZt/wfPP7ZbpXBNm8RAXEd6eAl5DXzIFYqkoEU4LqDVVG5l8IkyBgYHj7EfFEvyjcZ0uEVWFRWkub89Zs3rhIakT3XbNz/Vw/1nkQ9V5XL9J0Su3HciiL3+9usbUfexsXMcpMNf5HBep9ZzGaYB/nHzoX+rF/DgCFSl4uG1BImPUdXd+Q6vZGYPNsaGhc5DNZUEA5lyU2MHdk2gU+Y25lprT1EmJHr2UjPwCw4HARhHFGSzFao/lgUHQ2rERwGyQLdpnh87NOhxcCYt0/AMEvhKBRxktpNOHGci6vuqrLOSshMarS7OTo3uawQ3cgvzBQTWBNNkKWBJ8tuBTGq2XwNpnR/D9SHldKDIKf7W4yGnjlThoqRhGEYBBlvHPj2tiRq4OzuV9mCXh6vfRPfhDP9WbVE5eoHpRXxMSAqCt0tGXGcH7CMw+GQ7i660wjuD8wOj+U0BWg8+qjB9UCl3xozbfDewmGruqQa5CHnOQ8+UOjbUpbM/K2RoHr6TFLBtwHX235TR0slVlsCXXWRvUCUIZRgMe4iWGco2OWzkSau9IY6tXdcr5qpn5ur7Fr07l9rVcB46FIqBTFbNehJb5DlmU5ceu2qNysLSedS9X4fEFGbBXk69w9+24W1WmdJ72TQHT5rJuEhTvpGXSEyX6pCQX/I1VrdWuU/74CjdcEtjwxEg/sai8PV/LLCqRSUq6grCevLjHltBeKh22MmQVD1WSDfZtFDeOQFLu3V6NevC75TSqyn2TBLJjuosslQaU9pHn19tcO1d9nrUw7VAu0zbUK8/NKKExbxlK4BEks48EjLz9/cSkahkzXDoQb1hmHi/opFLeleu3sAvvkcsXqnIfaoXGWm5KmalKhkUk6jVPMSIfeqnMi55vUbViZku1wHsxglJvzcacgMoXIMy6MHPWXjoxCsaSgEp47FxoTVyVS8yLahSxaZQOyWxgLcGiYYx4Gk9HNQVheRcNjIWiq5+FbMGpVrlSETb0Y6MKQEINcyTMnInuR4HnnmINkMfo45OGuV1k1tMDG8KtRMfKDOi023QPWg32c4uptwmbdQoqXm0qIBFza1N6GY1/YTvwh16P4J3HmXxL12Rz+ZwQqrAsg2BvZloH/6fyEnq9kZmJc0i5GNQTSxEBmuk/4FJLjqnKMSZkUyhBMkzc8QxpWfaWEMle5OyJNQtaU5mTmHX5CpIdaBrnkBI08C65LgfOW/BpqfIUNt+G/x7iZyUD9rMiuSkMxbBWaIn8D9JoxYSkXHnWtm57lYeN08TU00TQ1Pb2+zYTLqZa+SmHZVnIeVKH32S4U8wRExG0b0WEvU994fyl050MPvXvpfs/Y2qz4AUBGBMIQrwe9Iy/AzZkUe7+UoYMQ94waVvtNOJPJCy1utxeuTY+akH6p9XnkoQMGOOtGG5JVrne8iHGmvddF/LaS0O1Z/Sulf9PAj6sZ51U/ULOWfhcPSVN9eNbC+uLonvP1FNPvK1nX649+An5QprdU8zw03Bm/XUU1qk96bzpnmbK20/R/vF1AbA1jKGi9ossj5dMz1fxBuzNDTtQz8fe3ERC/noBenj65bJ7c4EcCzBNDhWgfLx1NVoHbD5H+M+CFAFEGAw89KBuwZ+hWD9qlo7kf64pM714nOMLKs3zyczNLElN0UssNWYYBSML1BlBaE5B7PKZTSctGJgATsgH+9hd0mABAAAAAgAAACkAAAAJEQAAAAAAAAEAAAAAAAAAAAAAAA
 
-[EncodedFile-InterfaceEncoded-vmnetcfg1616.bmp]
-lines=0
-0=eJylkl9oUnEUxy3qobcK+vMY1EP/nObahIJmYWPQAoXAh5EtcFaLBquYiObIkUTDIoJA2qK01XJzW2v5p6WkTjO7S8Q2WpEkrOGfxIjo4si+3XsZpLebBB34cH/ccz7n3D/nwOGuFTwm6im2UqymWEOxjLeJuS9ZypcHgP+GZ+GhHLVazQm7rsInfkPXsoPxy2r+8FnzCYKooNp8Lsp7LD3PP32Ln6XS8mKhsLbinahzMZ9fR+equT9IclVqbLjNuW8XJkzNoK/lpMYd7X9zS4uLK+esFh1dN2QQYeKUBG5VE8abRLCLNmNUKYazsQ6J3h4Ll595EZLS7iPjDri02xExHEHCrEO4QwGnTIiHbVswrBLAKa3FgtetYPvBzpaw50oNfN018OsECJnqEL3ajFD3fni1Ajy9KMBI1zaMKWvx+sL5IbZPz35uFGJKL0ZE04g3A8eQuNeCWL8M0RsNCJqEmKR6j2p3wiXb853L958WY6pDiqimFQuEDdkZB1I+M2YG1Yheb0CgRwinkY8nh8RFLn9SVo/gUTkSRgMyATe+fXqPr+lppPzXEL+tQNi8Gx49Hx65JMP23/VZNHSPyIlWJO/bkJ+OIf3Mh2zEi2zcjln7SYR798ItFyB4XEGwfTKX28D47Up8sN5CIR5Hxu/HvNuO9CsbZkdUeHn5ILMHyQfWc1z/8MvcWz6dj+nPUj36kLzTj4+Om0gFLiFukzPuvOuxstoOkp9z65ODA2fYu5e03+0ks9mN7PpfrwLWGHicEyjLzUstSU5LNzQzNNNLyi1gGAUjCZSxQGhHJuzyzNHbdjIwAQAX0wgy7d4lGQEAAAACAAAALAAAAEECAAAAAAAAAQAAAAAAAAAAAAAA
-
 [EncodedFile-Folder-VMware_Info.7z]
 lines=11
 0=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
@@ -925,28 +1199,4 @@ lines=11
 9=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
 10=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
 11=eA/aIvcBZDfsK/8psSyT4pBUkYEjB8yjryAF2s+qyL1BMEL66R+iWTFkpp7zNM0Vbg7oXDroXiUP6TNp2lzEmUdJU/fjc90IxmDdZ9g9Bx5v5az/RQFYQWKSaMxNAxXstVAP9TO5FdzQo6VAjtCPRiLA7xYYeGE3AgED1zUvz2YPMAmmY6xQZXdAfrQ0ithdOBbycC0Sm8dl8L0PzspvXekZjVAACBMweuD9fuxArvTEjla+I2p/PeqSE1gg2xE+8JTPZcwXFt57OHWqdPMeBmOUkYuUzxH1ispoj0NRLufjmCV06/hChMJsHEdtyiXF9qU6hgpZsYdD1Z1u/8zappRriscWb3drzozvNmgQj+fTCYNHSUOIcUPk4kSi//A30XxGzbfLVO8Ju55JuEs28RIcnP6YzNrvzQ6YaUJd9RxVvJqh2VbfsDs29qpWBYsVnVnQXC+xU14oG7gTmv5RI2tfghWEDma7BehLK5Ie5t7QqFN8AAFwbAUoQBCYDSAAcLAQABIwMBAQVdABAAAAyBPQoBnk24fQAAeJzjC/MtTyxKjffMS8vXM69iGAUjC2S04pdf1uGhwcgAACBGB7c6RhAiAQAAAAIAAAAmAAAAaIUAAAAAAAABAAAAAAAAAAAAAAA
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
-
-[Settings_Default]
-Run,%ScriptFile%,First_Gui
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

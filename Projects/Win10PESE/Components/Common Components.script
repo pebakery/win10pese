@@ -4,14 +4,14 @@ Type=Plugin
 Author=ChrisR
 Description=Common components (MDAC/HTA) - Microsoft Data Access Components / HTML Applications.
 Credits=http://TheOven.org
-Version=006
+Version=008
 Download_Level=0
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.10.09
+Date=2019.01.14
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Common%20Components.script
@@ -24,6 +24,8 @@ History003=ChrisR Win10 Compatibility - Date:2016.02.07
 History004=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
 History005=ChrisR - Multi Fallback Languages support - Date:2016.11.18
 History006=ChrisR - icrav03.rat and ticrf.rat does not exist in Win10 1607 - bob.omb http://TheOven.org/index.php?topic=2247.0 - Date:2017.10.09
+History007=Lancelot Add BuildClass 3 support - Date:2018.10.09
+History008=Lancelot Add BuildClass - Date:2019.01.14
 
 [Interface]
 pTextLabel1="Select components:",1,1,10,10,133,18,8,Bold
@@ -43,8 +45,71 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
-If,%pCheckBox2%,Equal,true,Run,%ScriptFile%,FileMDAC
-If,%pCheckBox3%,Equal,true,Run,%ScriptFile%,FileHTA
+If,%BuildClass%,Equal,3,Begin
+If,%pCheckBox2%,Equal,True,Run,%ScriptFile%,FileMDAC_3
+If,%pCheckBox3%,Equal,True,Run,%ScriptFile%,FileHTA_3
+End
+Else,Begin
+If,%pCheckBox2%,Equal,True,Run,%ScriptFile%,FileMDAC
+If,%pCheckBox3%,Equal,True,Run,%ScriptFile%,FileHTA
+End
+
+[FileHTA_3]
+Echo,"Processing HTA files..."
+Require,FileList,,FileHTA_3_FileList
+Call,IniExtractSectionN,,FileHTA_3_FileList,%ProjectTemp%\FileHTA_3_FileList_mui.txt
+TXTReplace,%ProjectTemp%\FileHTA_3_FileList_mui.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\FileHTA_3_FileList_mui.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\FileHTA_3_FileList_mui.txt,.exe,.exe.mui
+Require,FileList,%ProjectTemp%\FileHTA_3_FileList_mui.txt
+//-
+Run,%ScriptFile%,FileHTA_Reg
+
+[FileHTA_3_FileList]
+//; Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\WinPE-HTA-Package*
+//; If,ExistFile,%Source_Sys%\icrav03.rat,Require_FileQ,icrav03.rat
+//; If,ExistFile,%Source_Sys%\edgehtml.dll,Require_FileQ,edgehtml.dll
+\Windows\System32\icrav03.rat
+\Windows\System32\edgehtml.dll
+\Windows\System32\ieframe.dll
+//; ieui.dll not in Win10 WinPE-HTA.cab
+\Windows\System32\ieui.dll
+\Windows\System32\imgutil.dll
+\Windows\System32\inetcomm.dll
+\Windows\System32\INETRES.dll
+\Windows\System32\mshta.exe
+\Windows\System32\mshtml.dll
+\Windows\System32\mshtml.tlb
+\Windows\System32\mshtmled.dll
+\Windows\System32\msimtf.dll
+\Windows\System32\msrating.dll
+\Windows\System32\oledlg.dll
+\Windows\System32\pngfilt.dll
+//;If,ExistFile,%Source_Sys%\ticrf.rat,\Windows\System32\ticrf.rat
+//;If,ExistFile,%Source_Sys%\readingviewresources.dll,\Windows\System32\readingviewresources.dll
+\Windows\System32\ticrf.rat
+\Windows\System32\readingviewresources.dll
+//;-
+\Windows\System32\d2d1.dll
+\Windows\System32\d3d8thk.dll
+\Windows\System32\d3d9.dll
+\Windows\System32\d3d10.dll
+\Windows\System32\d3d10_1.dll
+\Windows\System32\d3d10_1core.dll
+\Windows\System32\d3d10core.dll
+\Windows\System32\d3d10level9.dll
+\Windows\System32\d3d10warp.dll
+\Windows\System32\d3d11.dll
+//;If,ExistFile,%Source_Sys%\d3d12.dll,\Windows\System32\d3d12.dll
+//;If,ExistFile,%Source_Sys%\D3DCompiler_47.dll,\Windows\System32\D3DCompiler_47.dll
+\Windows\System32\d3d12.dll
+\Windows\System32\D3DCompiler_47.dll
+\Windows\System32\dwrite.dll
+\Windows\System32\dxgi.dll
+\Windows\System32\fntcache.dll
+\Windows\System32\mlang.dat
+\Windows\System32\mlang.dll
+\Windows\System32\windowscodecs.dll
 
 [FileHTA]
 Echo,"Processing HTA files..."
@@ -87,6 +152,9 @@ Require_FileQ,mlang.dat
 Require_FileQ,mlang.dll
 Require_FileQ,windowscodecs.dll
 //-
+Run,%ScriptFile%,FileHTA_Reg
+
+[FileHTA_Reg]
 ExtractFile,%ScriptFile%,Folder,hta_%OS%.7z,%ProjectTemp%
 ShellExecute,Hide,%Tools%\7z.exe,"x -y #$q%ProjectTemp%\hta_%OS%.7z#$q -o#$q%ProjectTemp%#$q"
 FileDelete,%ProjectTemp%\hta_%OS%.7z
@@ -96,6 +164,145 @@ ShellExecute,hide,regedit.exe,"/s #$q%ProjectTemp%\hta_%OS%.reg#$q"
 RegHiveUnLoad,Tmp_software
 RegHiveUnLoad,Tmp_system
 FileDelete,%ProjectTemp%\hta_%OS%.reg
+
+[FileMDAC_3]
+Echo,"Processing MDAC files..."
+If,Not,ExistDir,"%TargetDir%\Program Files\Common Files\System",DirMake,"%TargetDir%\Program Files\Common Files\System"
+If,Not,ExistDir,%Target_Win%\PLA\Templates,DirMake,%Target_Win%\PLA\Templates
+If,Not,ExistDir,%Target_Sys%\Com,DirMake,%Target_Sys%\Com
+If,Not,ExistDir,%Target_Sys%\migration,DirMake,%Target_Sys%\migration
+If,Not,ExistDir,%Target_Sys%\setup,DirMake,%Target_Sys%\setup
+If,Not,ExistDir,%Target_Sys%\SMI\Store\Machine,DirMake,%Target_Sys%\SMI\Store\Machine
+If,Not,ExistDir,%Target_Sys%\wbem,DirMake,%Target_Sys%\wbem
+//-
+Require,FileList,,FileMDAC_3_FileList
+Call,IniExtractSectionN,,FileMDAC_3_FileList,%ProjectTemp%\FileMDAC_3_FileList_mui.txt
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_mui.txt,"\Program Files\Common Files\*",";-"
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_mui.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_mui.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_mui.txt,.exe,.exe.mui
+Require,FileList,%ProjectTemp%\FileMDAC_3_FileList_mui.txt
+//-
+If,%SourceArch%,Equal,x86,Begin
+Require,FileList,,FileMDAC_3_FileList_x86
+Call,IniExtractSectionN,,FileMDAC_3_FileList_x86,%ProjectTemp%\FileMDAC_3_FileList_x86_mui.txt
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_x86_mui.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_x86_mui.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\FileMDAC_3_FileList_x86_mui.txt,.exe,.exe.mui
+Require,FileList,%ProjectTemp%\FileMDAC_3_FileList_x86_mui.txt
+End
+//-
+Run,%ScriptFile%,FileMDAC_Reg
+
+[FileMDAC_3_FileList]
+\Program Files\Common Files\*
+//; \Program Files\Common Files\System\ado
+//; \Program Files\Common Files\System\msadc
+//; \Program Files\Common Files\System\Ole DB
+//;-
+\Windows\hh.exe
+\Windows\msdfmap.ini
+\Windows\PLA\Templates\WDAC_Diagnostics.xml
+//;-
+\Windows\System32\catsrv.dll
+\Windows\System32\catsrvut.dll
+\Windows\System32\clbcatq.dll
+\Windows\System32\cliconfg.dll
+\Windows\System32\cliconfg.exe
+\Windows\System32\cliconfg.rll
+\Windows\System32\colbact.dll
+\Windows\System32\comsvcs.dll
+\Windows\System32\cscript.exe
+\Windows\System32\dbnetlib.dll
+\Windows\System32\dbnmpntw.dll
+\Windows\System32\dispex.dll
+\Windows\System32\Faultrep.dll
+\Windows\System32\hhctrl.ocx
+\Windows\System32\hhsetup.dll
+\Windows\System32\mlang.dat
+\Windows\System32\mlang.dll
+//;\Windows\System32\mqad.dll
+//;\Windows\System32\mqcmiplugin.dll
+//;\Windows\System32\mqmigplugin.dll
+//;\Windows\System32\mqrt.dll
+//;\Windows\System32\mqsec.dll
+\Windows\System32\msdadiag.dll
+\Windows\System32\msdart.dll
+\Windows\System32\msdatsrc.tlb
+\Windows\System32\msdtcprx.dll
+\Windows\System32\msxml3.dll
+\Windows\System32\msxml3r.dll
+\Windows\System32\msxml6.dll
+\Windows\System32\msxml6r.dll
+//;If,ExistFile,%Source_Sys%\mswdat10.dll,Require_FileQ,mswdat10.dll
+\Windows\System32\mswdat10.dll
+\Windows\System32\mtstocom.exe
+\Windows\System32\mtxclu.dll
+//;If,ExistFile,%Source_Sys%\odbc32gt.dll,\Windows\System32\odbc32gt.dll
+\Windows\System32\odbc32gt.dll
+\Windows\System32\odbcad32.exe
+\Windows\System32\odbcbcp.dll
+\Windows\System32\odbcconf.dll
+\Windows\System32\odbcconf.exe
+\Windows\System32\odbcconf.rsp
+\Windows\System32\odbccr32.dll
+\Windows\System32\odbccu32.dll
+\Windows\System32\scrobj.dll
+\Windows\System32\scrrun.dll
+\Windows\System32\simpdata.tlb
+\Windows\System32\sqlsrv32.dll
+\Windows\System32\sqlsrv32.rll
+\Windows\System32\stclient.dll
+//;If,ExistFile,%Source_Sys%\vfpodbc.dll,Require_FileQ,vfpodbc.dll
+\Windows\System32\vfpodbc.dll
+\Windows\System32\wer.dll
+\Windows\System32\werdiagcontroller.dll
+\Windows\System32\WerFault.exe
+\Windows\System32\WerFaultSecure.exe
+//;If,ExistFile,%Source_Sys%\weretw.dll,Require_FileQ,weretw.dll
+\Windows\System32\weretw.dll
+//;If,ExistFile,%Source_Sys%\werkernel.sys,Require_FileQ,werkernel.sys
+\Windows\System32\werkernel.sys
+\Windows\System32\wermgr.exe
+\Windows\System32\werui.dll
+\Windows\System32\wscript.exe
+\Windows\System32\wshcon.dll
+\Windows\System32\wshom.ocx
+\Windows\System32\xolehlp.dll
+//;-
+\Windows\System32\Com\comadmin.dll
+\Windows\System32\Com\MigRegDB.exe
+\Windows\System32\Com\??-??\MigRegDB.exe.mui
+//;-
+\Windows\System32\migration\commig.dll
+\Windows\System32\setup\comsetup.dll
+\Windows\System32\SMI\Store\Machine\SCHEMA.DAT
+\Windows\System32\wbem\wdacetwprov.mof
+
+[FileMDAC_3_FileList_x86]
+\Windows\System32\12520437.cpx
+\Windows\System32\12520850.cpx
+\Windows\System32\ds16gt.dLL
+\Windows\System32\ds32gt.dll
+\Windows\System32\mscpx32r.dLL
+\Windows\System32\msjet40.dll
+\Windows\System32\msjint40.dll
+\Windows\System32\msjter40.dll
+\Windows\System32\msjtes40.dll
+\Windows\System32\msorc32r.dll
+\Windows\System32\msorcl32.dll
+\Windows\System32\mswstr10.dll
+\Windows\System32\odbc16gt.dll
+\Windows\System32\odbcji32.dll
+\Windows\System32\odbcjt32.dll
+\Windows\System32\oddbse32.dll
+\Windows\System32\odexl32.dll
+\Windows\System32\odfox32.dll
+\Windows\System32\odpdx32.dll
+\Windows\System32\odtext32.dll
+\Windows\System32\sqlunirl.dll
+\Windows\System32\sqlwid.dll
+\Windows\System32\sqlwoa.dll
 
 [FileMDAC]
 Echo,"Processing MDAC files..."
@@ -216,6 +423,9 @@ If,Not,ExistDir,%Target_Sys%\wbem,DirMake,%Target_Sys%\wbem
 FileCopy,%Source_Sys%\wbem\wdacetwprov.mof,%Target_Sys%\wbem
 End
 //-
+Run,%ScriptFile%,FileMDAC_Reg
+
+[FileMDAC_Reg]
 ExtractFile,%ScriptFile%,Folder,mdac_%OS%.7z,%ProjectTemp%
 ShellExecute,Hide,%Tools%\7z.exe,"x -y #$q%ProjectTemp%\mdac_%OS%.7z#$q -o#$q%ProjectTemp%#$q"
 FileDelete,%ProjectTemp%\mdac_%OS%.7z

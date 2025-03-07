@@ -1,0 +1,251 @@
+[Main]
+Title=Unlock Install Source Build
+Type=Plugin
+Author=Bob.Omb
+Description=BETA
+Credits=http://TheOven.org
+Version=005
+Download_Level=0
+Level=1
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.01.24
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Build/00-ss_Unlock%20Install%20Source.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Plugin must run with after 1) Select Source 2) Image Configuration 3) Retrieve Tools
+History001=Lancelot 2019.01.07 Plugin created
+History002=Lancelot Add to server - Date:2019.01.07
+History003=Bob.Omb updated plugin interface - Date:2019.01.19 // Lancelot changed Default Selected False (for now since BETA) - Date:2019.01.23
+History004=Bob.Omb added Legacy Component detection (DirectPlay) - Unknown status is shown if install source is not extracted. - Date:2019.01.24
+History005=Bob.Omb cleaned up variables - Date:2019.01.24
+
+[Variables]
+%CheckDotNetFile%=%InstallSRC%\Windows\Microsoft.NET\Framework\v2.0.50727\InstallUtil.exe
+%CheckDotNet4Dir%=%InstallSRC%\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files
+%CheckSMB1File%=%InstallSRC%\Windows\System32\drivers\mrxsmb10.sys
+%CheckTelnetClient%=%InstallSRC%\Windows\System32\telnet.exe
+%CheckTFTP%=%InstallSRC%\Windows\System32\tftp.exe
+%CheckPrintingFiles%=%InstallSRC%\Windows\System32\lpdsvc.dll
+%CheckLinuxSubsystem%=%InstallSRC%\Windows\System32\bash.exe
+%CheckLegacyComp%=HKEY_LOCAL_MACHINE\Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\PackagesPending\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates
+
+[Interface]
+Unlock_Install_Source_CheckBox="Unlock Install Source (BETA)",1,3,21,53,163,19,True
+Setup_Type_RadioGroup=,1,14,2,2,150,50,"Silent (Unattend)","Normal Install",0
+Halt_CheckBox="Stop at the end of plugin",1,3,27,236,151,18,False
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pTextLabel1=Status:,1,1,69,71,43,18,8,Bold
+pTextLabel3=,1,1,274,72,73,18,8,Normal
+pTextLabel4=NetFX3,1,1,47,90,55,18,8,Bold
+pTextLabelNET3T=Enabled,0,1,99,90,55,18,8,Normal
+pTextLabelNET3F=Disabled,1,1,99,90,55,18,8,Normal
+pTextLabel5=NetFX4,1,1,47,108,55,18,8,Bold
+pTextLabelNET4T=Enabled,0,1,99,108,55,18,8,Normal
+pTextLabelNET4F=Disabled,1,1,99,108,55,18,8,Normal
+pTextLabel6=SMBv1,1,1,47,126,55,18,8,Bold
+pTextLabelSMB1T=Enabled,0,1,99,126,55,18,8,Normal
+pTextLabelSMB1F=Disabled,1,1,99,126,55,18,8,Normal
+pTextLabel7=Telnet,1,1,47,144,55,18,8,Bold
+pTextLabelTelnetT=Enabled,0,1,99,144,55,18,8,Normal
+pTextLabelTelnetF=Disabled,1,1,99,144,55,18,8,Normal
+pTextLabel8=TFTP,1,1,47,162,55,18,8,Bold
+pTextLabelTFTPT=Enabled,0,1,99,162,55,18,8,Normal
+pTextLabelTFTPF=Disabled,1,1,99,162,55,18,8,Normal
+pTextLabel9=Printing,1,1,47,180,55,18,8,Bold
+pTextLabelPrintT=Enabled,0,1,99,180,55,18,8,Normal
+pTextLabelPrintF=Disabled,1,1,99,180,55,18,8,Normal
+pTextLabel10=Linux,1,1,47,198,55,18,8,Bold
+pTextLabelLinuxT=Enabled,0,1,99,198,55,18,8,Normal
+pTextLabelLinuxF=Disabled,1,1,99,198,55,18,8,Normal
+pTextLabel11=Legacy,1,1,47,216,55,18,8,Bold
+pTextLabelLegacyT=Enabled,0,1,99,216,55,18,8,Normal
+pTextLabelLegacyF=Disabled,0,1,99,216,55,18,8,Normal
+pTextLabelLegacyU=Unknown,1,1,99,216,55,18,8,Normal
+pButton1="Check Status",1,8,162,9,75,29,CheckStatus,0,False,False,_CheckStatus_,False
+
+[Process]
+If,%Unlock_Install_Source_CheckBox%,Equal,True,Begin
+If,ExistFile,%ProjectDir%\Utils\UnlockInstallSource.Script,Run,%ScriptFile%,UnlockInstallSource_Process_Goo_ALL_Silent
+End
+//-
+Run,%ScriptFile%,CheckStatus
+//
+If,%Halt_CheckBox%,Equal,True,Halt,"'%ScriptTitle%' stops The Build"
+
+[UnlockInstallSource_Process_Goo_ALL_Silent]
+//maybe precheck required here before exec !
+//for now only extract wim folders (later mounted wim file with sourcedir precheck writable)
+//---
+//If,%ExtractWimFolder%,Equal,Yes,Exec,%ProjectDir%\Utils\UnlockInstallSource.Script,Process_Goo_ALL_Silent
+//I guess we have to check if source writable or not before following or inside UnlockInstallSource plugin
+If,%Setup_Type_RadioGroup%,Equal,0,Exec,%ProjectDir%\Utils\UnlockInstallSource.Script,Process_Goo_ALL_Silent
+If,%Setup_Type_RadioGroup%,Equal,1,Exec,%ProjectDir%\Utils\UnlockInstallSource.Script,Process_Goo_P_B
+
+[CheckStatus]
+System,CURSOR,Wait
+//Check NET3
+If,ExistFile,%CheckDotNetFile%,Begin
+Visible,%pTextLabelNET3T%,True,PERMANENT
+Visible,%pTextLabelNET3F%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelNET3T%,False,PERMANENT
+Visible,%pTextLabelNET3F%,True,PERMANENT
+End
+//Check NET4
+If,ExistDir,%CheckDotNet4Dir%,Begin
+Visible,%pTextLabelNET4T%,True,PERMANENT
+Visible,%pTextLabelNET4F%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelNET4T%,False,PERMANENT
+Visible,%pTextLabelNET4F%,True,PERMANENT
+End
+//Check SMBv1
+If,ExistFile,%CheckSMB1File%,Begin
+Visible,%pTextLabelSMB1T%,True,PERMANENT
+Visible,%pTextLabelSMB1F%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelSMB1T%,False,PERMANENT
+Visible,%pTextLabelSMB1F%,True,PERMANENT
+End
+//Check Telnet
+If,ExistFile,%CheckTelnetClient%,Begin
+Visible,%pTextLabelTelnetT%,True,PERMANENT
+Visible,%pTextLabelTelnetF%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelTelnetT%,False,PERMANENT
+Visible,%pTextLabelTelnetF%,True,PERMANENT
+End
+//Check TFTP
+If,ExistFile,%CheckTFTP%,Begin
+Visible,%pTextLabelTFTPT%,True,PERMANENT
+Visible,%pTextLabelTFTPF%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelTFTPT%,False,PERMANENT
+Visible,%pTextLabelTFTPF%,True,PERMANENT
+End
+//Check Printing
+If,ExistFile,%CheckPrintingFiles%,Begin
+Visible,%pTextLabelPrintT%,True,PERMANENT
+Visible,%pTextLabelPrintF%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelPrintT%,False,PERMANENT
+Visible,%pTextLabelPrintF%,True,PERMANENT
+End
+//Check Linux
+If,ExistFile,%CheckLinuxSubsystem%,Begin
+Visible,%pTextLabelLinuxT%,True,PERMANENT
+Visible,%pTextLabelLinuxF%,False,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelLinuxT%,False,PERMANENT
+Visible,%pTextLabelLinuxF%,True,PERMANENT
+End
+//Check Legacy
+Run,%ScriptFile%,CheckLegacy
+If,%lcomp%,Equal,"dword:00000001",Begin
+Visible,%pTextLabelLegacyT%,True,PERMANENT
+Visible,%pTextLabelLegacyF%,False,PERMANENT
+Visible,%pTextLabelLegacyU%,False,PERMANENT
+End
+Else,Begin
+If,%lcomp%,Equal,Unknown,Begin
+Visible,%pTextLabelLegacyT%,False,PERMANENT
+Visible,%pTextLabelLegacyF%,False,PERMANENT
+Visible,%pTextLabelLegacyU%,True,PERMANENT
+End
+Else,Begin
+Visible,%pTextLabelLegacyT%,False,PERMANENT
+Visible,%pTextLabelLegacyF%,True,PERMANENT
+Visible,%pTextLabelLegacyU%,False,PERMANENT
+End
+End
+System,RefreshInterface
+System,CURSOR,Normal
+
+[CheckLegacy]
+If,ExistFile,"%InstallSRC%\Windows\System32\Config\SOFTWARE.",Begin
+RegHiveLoad,Tmp_Software,"%InstallSRC%\Windows\System32\Config\SOFTWARE."
+//--
+//Winbuilder Bug following do not work
+//If,ExistRegKey,HKLM,"Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates",LegacyComponents,RegRead,HKLM,"Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates",LegacyComponents,%lcomp%
+//Winbuilder Bug Workaround:
+Run,%ScriptFile%,RegRead_Value_RegEdit_Simple,%CheckLegacyComp%,LegacyComponents,lcomp
+If,Not,ExistVar,%lcomp%,Set,%lcomp%,Unknown
+RegHiveUnload,Tmp_Software
+End
+Else,Begin
+Set,%lcomp%,Unknown
+End
+
+[RegRead_Value_RegEdit_Simple]
+//If there is no regsection variable not exists
+//If there is regsection but there is no regkey variable exists with empty value
+If,#3-,Equal,-,Set,#3,RegRead_Value
+Call,RemoveVariable,#3
+Call,FileDelete,%ProjectTemp%\RegRead_Value_RegEdit.ini
+System,FileRedirect,OFF
+Shellexecute,Open,regedit.exe,"/E #$q%ProjectTemp%\RegRead_Value_RegEdit.ini#$q #$q#1#$q"
+System,FileRedirect,ON
+If,ExistFile,%ProjectTemp%\RegRead_Value_RegEdit.ini,Begin
+Call,ConvertToAnsi,%ProjectTemp%\RegRead_Value_RegEdit.ini
+FileCopy,%ProjectTemp%\RegRead_Value_RegEdit.ini,%ProjectTemp%\RegRead_Value_RegEdit_TestValueExists.ini
+IniRead,%ProjectTemp%\RegRead_Value_RegEdit.ini,#1,#$q#2#$q,%#3%
+End
+Call,FileDelete,%ProjectTemp%\RegRead_Value_RegEdit.ini
+
+[AuthorEncoded]
+icon.jpg=2453,3271
+Logo=icon.jpg
+
+[EncodedFile-AuthorEncoded-icon.jpg]
+lines=0
+0=eJydVGlYE9caPkMSEgISAglIsMSyFAWBsqtY4gZRwSpSlkqRKztiSKmySUhQEJCAKS6IohcoIgpVrKIoxYQdtVqURbYqSagLBcqEljg2253Q7Xnuc3/ce98535nvmfN9M+97zvuMZkQjBkbb/Lb6AQiCwD/QC2gkoN43IzEOgO3bgT0AgAD0IBrAoRmExiHI4q/8CLQCYBZzHXRy0c7ACI0iDPRXzTkMZvGuDRBo9HuunQLJAPv7c8POQOO/c20dgNLmAcC8+fP++d7E5INOybEHl7s7uTh5oOv5VQB8I9CMg01AB4K04w9gcBgtdLFYDA6vi8drg6Cnr0cgEAl4PHEJkahvgAKvZ0haYmCozbUv0bZru9BhQMATDP5naNoAmQBcgSsGsgI6ZAhDhjRdgI4yxUGLAH8A0sFgcbooJaI+WnDLCKWPweigZHFYdAugbHQdYMk44/ddNuiaBO7FW6VQXA+XVhOsN37TTt31FLZxi/riiB7R1GypOc32A7sVK+3dPTy9Vq9Zu2mzrx9zy9ZtQZ8Eh4SGfbo7OiY2Lj4hcd+Bg6lp6RmZh3LzjuYXFB4rOnHy1OmyM+Vnz31Vc7H2Ut3lK/U3bjbdut18525LR2dXd0/v/QcP+wcGh54Nj4yOSaSTP7589frN1E+y+V9+XZC/Rd79ptUFAQz0J/6jLjKqSwc9AyxeqwvSSdcWkLG49110jTcE4vemmFi5HiZQNpZWf9OuZ+22C6ZGffGUaGrjLrGVaaUtKvvvhB35v5T9JexvXWPAADWuDhlDBgygUjYKNEBcw4N3iSzVvaKmHe2io5UGaoJzj4jGiW5+dm3V/oqeEDXNtCagSK9W9SO81SJuTYQwPiAzzIIPfNoac9D2eh7OZx2vk8t9xLPgEpV2TcgdEWFGGcRuSHRD6vs6xRe29b8Yo098FgNjG+dreA3t43doQKxM1QDcZVWD0IL7hItFwr9Wt8OjyLQ0WFidKnm+msPqjzGTjXTdeG5iP7a0ZqTY0CbW8bzTDkrGsFo/UBHK8VZVt5rAjWGqXMkt2XBXeLhigjTVOZl8crmw6KHHiZfFDQlRgqjrq0sHb3M/O/dOA+RXVFcZSY5JaqIGKFYmjQ3PlFxK+Kf3U3eBGVPSp+/cHeH5cp3/stsujoMlGdcLZzl5UEfLyQ9mDMjMWW/Fbu6z3b1KU2t55PAtwahFwNPWzJoEHwd+5wtqZFEL62FGkTnL2sz1lrTD+vY8RZf4U8DZtp4VmBl2TiUcPFdyaGJ2En4rZvewR5MZuV48Y/fHQUH9C5uR07HS7Q/2ks4un2excsxtzV6V7nj8pQU29EXwu1q4t63yltdsMLpR+xG6LEtaNzNbp6TBBR2zmC5aRHcXw+jgHNljYGL8aPFMHtNK8sSZ2PnqwXKiyrFKp2hFFUnAEF+shAPnCitvOM+awExJfMdErpxuxomV1X+U5u/gL6Iyq2wv94ub75x8e2KTleeb2lJh3GeZ65d0569m54rgYJKgTAOamzsij/BoGhB3z0ISqnSczo6b9B9i+bwfPv1ItyImOfbRzja8TZfIrfG3Dr+00j1ZKOEqWV0XqUAEhzJGdoQi4eILDKndcRarNVt1QaJ4Huue4ZybGMJ3mj4TEibf3L/F1VB6+NA5OHJsWF6uavQQIA6iGf7XSRM3SXm/8iwT5JaukfpImvMxz2ajjGO2A1Hht0+82Ww6fr/YIaftXZ44mgItvFZSrcXpvTXoxzGqCqEXh4qEX1KGRB5dyz62f2G701y3aQuxbJAlbuYbPz7xObZkvib70bIY2qTwPc5aVb1oXyXiYNfG41dSRfEqMwkpz4eSoLYa+DnZcV1WtFS3hbXxCdN8lFZzzdJjmUO28jwUIWgXIPbOsxBLka20R6xlN+Xp8OtOsiyqL6x1wOMjRm9KUrHZx01uD8qledCJ6MizBRM28UuvfacmOqIklyEXFE7qQRGBa6S0RTZd5ITI0ruzGaGDy/M1oFu/2rZ+aopy3Kv145JTaetOK8rNHwM6vFMDkJV2XX2jB+RXkCA4V8JsR3f2LV+4YurQtStYL66joHN6X5mO55fsMjO/h96Wn3J/BmuuhYrxSqrD5LU6RTaCR13YONrLRHakyPSZgwslXrtuylRCYUCaS8Hn0fk4zKpgbjz+fE5K5HvqfkZT72zmFQ1oj+HF3UsKU5Vz7GqVG/qVbtLCVobkjtpmrI99td2GzD+7Z2azKcY4Z+N1218OF/0qICojkJeyeLUhUJ17hTyHeZsRZna8uJF66TS7LuMG3cipxmJ9PjOuxMgv+EjxstdpWTvx00cpgevp5Qx4N2kpZyNMV1L75CZDXCri5S97e/yq1jwV1fvWtkx5Dlc3NfieSf3OATuqV9qz4YedzocWvcNXXU9lL3qnAfUO7/DBSnqip9Y7CUbKTfnS8cit7iNlstq7ZCh5b7HD5eVa61DlZkoqW56JLDSqf4i8SeppPCyEYA3o8m7M/RCp/8g/YKh1g6nAQgMSR8d3+x6j24j1Kl7iT4HJtKQ2rifiL1cjA4oUDgkZ95rpg591KMQXbt9jsWrtuioyrYb8GhLKvt+zsar3Zd4PHxpKU7pB5sRskMJXPUKrU1LR39KuoYW+UVFbS2jXEuctsi8y4jthlGtWRNrKVVFmbMf7hfoHDPZ+ugGfuXqSwh0QNUXO5moPJIoRq4rerapQ6qMHMuBOp/ZKRKRumaH5bOrlmKbiiK2OTwoJBlsw9l+mnzzu8NTHLUNLtFtxkGOGSBaJ9ijEQ8fvxrK1RNP5QbQLLesfzVNx666fBZjz8hqpBuSJ2HN8XjO7fe54EPeRBizZ3yg0mmp5VsG+WIf2FOyinVpp4nb/E4pL3n3o4wNjOevm5KWqrzRg/xKmWt9a4TFN652ZEEd4SU0rJJUUX8kcyRdleDWVn37E5cCqM3t2GpWfwX2SK1otvWfdIaL6rFUGakBuDiPurnANxw5+3fGtgoHLuOp+2b2Scqm1Jc8P6+p9w+pdbNgK8Nr7Xj2Db2msEgntuS8i9bhr/RVuSo+bQiToYhItgLaNs7U5IxU3aB02Ora9qnr7XbDy+6zQWiUN8VaEcZ+K4BB6Ht3cx5XzHszuZOhzPOBXd2u+nbL8sCAs68y9QqwtCFkai8lhrnGHfgvypeyE/i3wmtF/ASXomJx4nOPITM7P08sqSGcYBSMRRHNBaF9O7PKXl/gEMjABAM6sBfKsYxvaAQAAAAIAAAAkAAAATQkAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

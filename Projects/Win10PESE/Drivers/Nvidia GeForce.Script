@@ -1,0 +1,1305 @@
+[Main]
+Title=Nvidia GeForce
+Type=Plugin
+Author=Lancelot
+Description=(Win10 x64 v418.81) (Inf Trimmed Drivers) Nvidia GeForce - 418.81-notebook-win10-64bit-international-whql and 418.81-desktop-win10-64bit-international-whql
+Credits=JFX, ChrisR
+Version=004
+Download_Level=2
+Level=6
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.12.24
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Drivers/Nvidia%20GeForce.Script
+Web2=http://yomi.cwcodes.net/Yomi/DriversY/Nvidia%20GeForce.Script
+Web1C=http://win10se.cwcodes.net/Projects/Win10PESE/Drivers/Nvidia%20GeForce_File.Script
+Web2C=http://yomi.cwcodes.net/Yomi/DriversY/Nvidia%20GeForce_File.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Lancelot Created with x64 / 10.0.17763.1
+HistoryNotes02=Plugin requires pnputil.exe drvinst.exe at boot (pnputil.exe added with \Components\'MMC' plugin)
+HistoryNotes03=Thanks JFX for inftrim and DrvInstPatch
+HistoryNotes03=Thanks ChrisR for instructions to create standalone driver plugin
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2019.02.19 Plugin created
+History002=Lancelot Add to Servers - Date:2019.02.19
+History003=Lancelot Update Description - Chris Reply 51 http://TheOven.org/index.php?topic=2726.msg31732#msg31732 - Date:2019.02.20
+History004=Lancelot Update StartupBeforeShellCMD - Date:2019.12.24
+
+[Drivers_Info]
+*******************************************
+******** Nvidia Drivers Size INFO
+*******************************************
+All Nvidia Drivers occupy 4.39 GB space
+---> you need 4.39 GB HardDisk
+All Nvidia Drivers occupy only 37 MB inside wim with Normal compresion
+All Nvidia Drivers occupy only 23.1 MB inside wim with High compresion
+Summary:
+It maybe Good idea to have All Nvidia Drivers with your build from size perspective
+It requires small time to install ALL drivers at boot.
+*******************************************
+******** Nvidia Drivers INFO One by One
+*******************************************
+Driver nv_dispi.inf : *** Nvidia GeForce 1st Checks Before Manufacturer Drivers *** --> You MUST have it to get other drivers work
+Driver nv_desktop_ref4i.inf :
+Driver nvaci.inf : Acer, Gateway
+Driver nvaei.inf :
+Driver nvaki.inf :
+Driver nvami.inf : Asus
+Driver nvaoi.inf : Apple
+Driver nvbli.inf : HP Business Market
+Driver nvcli.inf :
+Driver nvcti.inf : Compal
+Driver nvcvi.inf : Clevo
+Driver nvddi.inf :
+Driver nvdmi.inf : Dell
+Driver nvemi.inf :
+Driver nvfmi.inf : Fujitsu
+Driver nvfxi.inf :
+Driver nvgbdi.inf :
+Driver nvgbi.inf :
+Driver nvgei.inf :
+Driver nvhdci.inf :
+Driver nvhmi.inf : HP Non Business Market
+Driver nvhwi.inf :
+Driver nvivi.inf :
+Driver nvjai.inf :
+Driver nvjwi.inf :
+Driver nvlai.inf :
+Driver nvlbhi.inf :
+Driver nvlei.inf :
+Driver nvlgi.inf :
+Driver nvloi.inf : LG
+Driver nvlti.inf : Lenovo
+Driver nvmdi.inf :
+Driver nvmii.inf : MSI
+Driver nvmmi.inf :
+Driver nvmoi.inf :
+Driver nvmsoai.inf :
+Driver nvmsoi.inf :
+Driver nvmtci.inf :
+Driver nvmti.inf :
+Driver nvndi.inf :
+Driver nvpcdi.inf :
+Driver nvpgi.inf :
+Driver nvpmi.inf :
+Driver nvqui.inf :
+Driver nvrfi.inf :
+Driver nvrzi.inf :
+Driver nvsai.inf :
+Driver nvsmi.inf : Samsung
+Driver nvspi.inf :
+Driver nvszni.inf :
+Driver nvszqi.inf :
+Driver nvtdi.inf : Toshiba Qosmio
+Driver nvtfi.inf :
+Driver nvtnii.inf :
+Driver nvtsi.inf : Toshiba
+Driver nvvidi.inf :
+Driver nvwii.inf :
+*******************************************
+******** Nvidia Drivers INFO from webpage: https://www.geforce.com/drivers/results/142227
+*******************************************
+Supported Products
+GeForce RTX 20 Series (Notebooks)
+GeForce RTX 2080, GeForce RTX 2070, GeForce RTX 2060
+GeForce MX100 Series (Notebook)
+GeForce MX150, GeForce MX130, GeForce MX110
+GeForce 10 Series (Notebooks)
+GeForce GTX 1080, GeForce GTX 1070, GeForce GTX 1060, GeForce GTX 1050 Ti, GeForce GTX 1050
+GeForce 900M Series (Notebooks)
+GeForce GTX 980, GeForce GTX 980M, GeForce GTX 970M, GeForce GTX 965M, GeForce GTX 960M, GeForce GTX 950M, GeForce 945M, GeForce 940MX, GeForce 930MX, GeForce 920MX, GeForce 940M, GeForce 930M, GeForce 920M, GeForce 910M
+GeForce 800M Series (Notebooks)
+GeForce GTX 880M, GeForce GTX 870M, GeForce GTX 860M, GeForce GTX 850M, GeForce 845M, GeForce 840M, GeForce 830M, GeForce 825M, GeForce 820M, GeForce 810M
+GeForce 700M Series (Notebooks)
+GeForce GTX 780M, GeForce GTX 775M, GeForce GTX 770M, GeForce GTX 765M, GeForce GTX 760M, GeForce GT 755M, GeForce GT 750M, GeForce GT 745M, GeForce GT 740M, GeForce GT 735M, GeForce GT 730M, GeForce GT 720M
+GeForce 600M Series (Notebooks)
+GeForce GTX 680MX, GeForce GTX 680M, GeForce GTX 675MX, GeForce GTX 670MX, GeForce GTX 660M, GeForce GT 650M, GeForce GT 645M, GeForce GT 640M, GeForce GT 640M LE
+
+[Drivers_Info_P_B]
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+Set,%w%,"%ProjectTemp%\Drivers_Info.txt"
+Call,IniExtractSectionN,,Drivers_Info,%w%
+//TxtReplace,%w%,"DummyDummyDummy#$x",""
+//TxtReplace,%w%,"#$x|","#$x"
+//TxtReplace,%w%,"#$x::=,","#$x"
+Call,StartDocNotePad,%w%
+
+[InterFace]
+pBevel1=pBevel1,1,12,-3,-3,83,84
+pCheckBox1=Desktop,1,3,1,1,59,14,False,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pCheckBox4=Startup,1,3,1,65,61,14,True
+pTextBox1=,1,0,1,43,75,21,"Computer Management\Drivers","__'Start Menu' Folder"
+Requires_TextLabel=Requires:#$x\Components\'MMC'#$x\Drivers\'DrvInstPatch',1,1,193,1,137,40,8,Bold
+Drivers_Info_Button="Drivers INFO:",1,8,86,14,100,25,Drivers_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Drivers_Info_P_B_,False,"__ALL Projects Proxy Info"
+Edit_FileContainerPlugin_Button=,0,8,372,39,20,20,Edit_FileContainerPlugin_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Edit_FileContainerPlugin_P_B_,False,__Edit
+Button_Launch_Program=Launch,1,8,2,206,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,https://www.geforce.com/drivers
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Direct_FileRepository_CheckBox=Direct_FileRepository,0,3,428,41,126,18,True
+Drivers_All_RadioButton="ALL Drivers",1,11,100,42,121,20,False
+Drivers_Select_RadioButton="Select Drivers:",1,11,100,70,125,20,True
+Select_Bevel=Select_Bevel,1,12,94,67,482,261
+CheckBox_nv_desktop_ref4i="nv_desktop_ref4i ",1,3,100,110,110,14,False
+CheckBox_nv_dispi="nv_dispi ****",1,3,100,96,110,14,True
+CheckBox_nvaci="nvaci ",1,3,100,124,110,14,True
+CheckBox_nvaei="nvaei ",1,3,100,138,110,14,False
+CheckBox_nvaki="nvaki ",1,3,100,152,110,14,False
+CheckBox_nvami="nvami ",1,3,100,166,110,14,True
+CheckBox_nvaoi="nvaoi ",1,3,100,180,110,14,False
+CheckBox_nvbli="nvbli ",1,3,100,194,110,14,True
+CheckBox_nvcli="nvcli ",1,3,100,208,110,14,False
+CheckBox_nvcti="nvcti ",1,3,100,222,110,14,False
+CheckBox_nvcvi="nvcvi ",1,3,100,236,110,14,False
+CheckBox_nvddi="nvddi ",1,3,100,250,110,14,False
+CheckBox_nvdmi="nvdmi ",1,3,100,264,110,14,True
+CheckBox_nvemi="nvemi ",1,3,100,278,110,14,False
+CheckBox_nvfmi="nvfmi ",1,3,100,292,110,14,False
+CheckBox_nvfxi="nvfxi ",1,3,100,306,110,14,False
+CheckBox_nvgbdi="nvgbdi ",1,3,220,96,110,14,False
+CheckBox_nvgbi="nvgbi ",1,3,220,110,110,14,False
+CheckBox_nvgei="nvgei ",1,3,220,124,110,14,False
+CheckBox_nvhdci="nvhdci ",1,3,220,138,110,14,False
+CheckBox_nvhmi="nvhmi ",1,3,220,152,110,14,True
+CheckBox_nvhwi="nvhwi ",1,3,220,166,110,14,False
+CheckBox_nvivi="nvivi ",1,3,220,180,110,14,False
+CheckBox_nvjai="nvjai ",1,3,220,194,110,14,False
+CheckBox_nvjwi="nvjwi ",1,3,220,208,110,14,False
+CheckBox_nvlai="nvlai ",1,3,220,222,110,14,False
+CheckBox_nvlbhi="nvlbhi ",1,3,220,236,110,14,False
+CheckBox_nvlei="nvlei ",1,3,220,250,110,14,False
+CheckBox_nvlgi="nvlgi ",1,3,220,264,110,14,False
+CheckBox_nvloi="nvloi ",1,3,220,278,110,14,False
+CheckBox_nvlti="nvlti ",1,3,220,292,110,14,True
+CheckBox_nvmdi="nvmdi ",1,3,220,306,110,14,False
+CheckBox_nvmii="nvmii ",1,3,340,96,110,14,False
+CheckBox_nvmmi="nvmmi ",1,3,340,110,110,14,False
+CheckBox_nvmoi="nvmoi ",1,3,340,124,110,14,False
+CheckBox_nvmsoai="nvmsoai ",1,3,340,138,110,14,False
+CheckBox_nvmsoi="nvmsoi ",1,3,340,152,110,14,False
+CheckBox_nvmtci="nvmtci ",1,3,340,166,110,14,False
+CheckBox_nvmti="nvmti ",1,3,340,180,110,14,False
+CheckBox_nvndi="nvndi ",1,3,340,194,110,14,False
+CheckBox_nvpcdi="nvpcdi ",1,3,340,208,110,14,False
+CheckBox_nvpgi="nvpgi ",1,3,340,222,110,14,False
+CheckBox_nvpmi="nvpmi ",1,3,340,236,110,14,False
+CheckBox_nvqui="nvqui ",1,3,340,250,110,14,False
+CheckBox_nvrfi="nvrfi ",1,3,340,264,110,14,False
+CheckBox_nvrzi="nvrzi ",1,3,340,278,110,14,False
+CheckBox_nvsai="nvsai ",1,3,340,292,110,14,False
+CheckBox_nvsmi="nvsmi ",1,3,340,306,110,14,False
+CheckBox_nvspi="nvspi ",1,3,460,96,110,14,False
+CheckBox_nvszni="nvszni ",1,3,460,110,110,14,False
+CheckBox_nvszqi="nvszqi ",1,3,460,124,110,14,False
+CheckBox_nvtdi="nvtdi ",1,3,460,138,110,14,False
+CheckBox_nvtfi="nvtfi ",1,3,460,152,110,14,False
+CheckBox_nvtnii="nvtnii ",1,3,460,166,110,14,False
+CheckBox_nvtsi="nvtsi ",1,3,460,180,110,14,False
+CheckBox_nvvidi="nvvidi ",1,3,460,194,110,14,False
+CheckBox_nvwii="nvwii ",1,3,460,208,110,14,False
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Download_Container=,1,8,426,21,24,24,DownloadXXX_Container,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_pButton1_,False,"__Download Container"
+
+[Variables]
+%ProgramFolder%=Nvidia GeForce
+%FileContainer%=%ScriptDir%\Nvidia GeForce_File.Script
+
+[Process]
+If,Not,ExistFile,%FileContainer%,Run,%ScriptFile%,DownloadXXX_Container
+If,Not,ExistFile,%FileContainer%,Exit,"FileContainer: %FileContainer% not found"
+Call,TargetVersion,,4x
+//If,%TargetVersion1%,Smaller,6,Exit,"Plugin Compatible to Win7 and later"
+Run,%ScriptFile%,Process_%TargetVersion1%_%SourceArch%
+//Run,%ScriptFile%,Process_%SourceArch%
+
+[Process_x86]
+
+[Process_x86_ALL_Direct_FileRepository]
+
+[Process_x86_Select_Basic]
+
+[Process_x86_Select_Direct]
+
+[Process_x64]
+
+[Process_10_x64]
+Set,%Drivers_All_RadioButtonV%,%Drivers_All_RadioButton%
+Set,%Drivers_Select_RadioButtonV%,%Drivers_Select_RadioButton%
+//-
+If,%Drivers_All_RadioButtonV%-%Direct_FileRepository_CheckBox%,Equal,True-True,Run,%ScriptFile%,Process_x64_ALL_Direct_FileRepository
+If,%Drivers_All_RadioButtonV%-%Direct_FileRepository_CheckBox%,Equal,True-False,Run,%ScriptFile%,Process_x64_ALL_Basic
+If,%Drivers_Select_RadioButtonV%-%Direct_FileRepository_CheckBox%,Equal,True-True,Run,%ScriptFile%,Process_x64_Select_Direct
+If,%Drivers_Select_RadioButtonV%-%Direct_FileRepository_CheckBox%,Equal,True-False,Run,%ScriptFile%,Process_x64_Select_Basic
+//-
+Run,%ScriptFile%,Process_Add_Shortcut
+
+[Process_x64_ALL_Basic]
+Run,%ScriptFile%,Extract
+//-
+Run,%ScriptFile%,Process_PnpUtil_ALL
+//-
+Echo,"Copy FileRepository Files - Start"
+Run,%ScriptFile%,Process_FileRepository,nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977
+Run,%ScriptFile%,Process_FileRepository,nv_dispi.inf_amd64_251698bc642c37cb
+Run,%ScriptFile%,Process_FileRepository,nvaci.inf_amd64_cb35257211982e1b
+Run,%ScriptFile%,Process_FileRepository,nvaei.inf_amd64_3f5ff664b3bac259
+Run,%ScriptFile%,Process_FileRepository,nvaki.inf_amd64_0d6c6fe0d070c433
+Run,%ScriptFile%,Process_FileRepository,nvami.inf_amd64_1169c9c03f813a3b
+Run,%ScriptFile%,Process_FileRepository,nvaoi.inf_amd64_638591bed4bb1bef
+Run,%ScriptFile%,Process_FileRepository,nvbli.inf_amd64_9f0cfae7d3572a47
+Run,%ScriptFile%,Process_FileRepository,nvcli.inf_amd64_f31a98417598c9a8
+Run,%ScriptFile%,Process_FileRepository,nvcti.inf_amd64_4f310eef2a9e684c
+Run,%ScriptFile%,Process_FileRepository,nvcvi.inf_amd64_34843c00364aed5f
+Run,%ScriptFile%,Process_FileRepository,nvddi.inf_amd64_379d20b312705bb2
+Run,%ScriptFile%,Process_FileRepository,nvdmi.inf_amd64_98e7bd8e4fe868bb
+Run,%ScriptFile%,Process_FileRepository,nvemi.inf_amd64_62d5b70c91e698c2
+Run,%ScriptFile%,Process_FileRepository,nvfmi.inf_amd64_a561a16902afb22f
+Run,%ScriptFile%,Process_FileRepository,nvfxi.inf_amd64_a007c6f2a9f331b7
+Run,%ScriptFile%,Process_FileRepository,nvgbdi.inf_amd64_644b0401711a175e
+Run,%ScriptFile%,Process_FileRepository,nvgbi.inf_amd64_376c42db9826381c
+Run,%ScriptFile%,Process_FileRepository,nvgei.inf_amd64_e567f4d97bea3865
+Run,%ScriptFile%,Process_FileRepository,nvhdci.inf_amd64_36a7faa4a571b430
+Run,%ScriptFile%,Process_FileRepository,nvhmi.inf_amd64_d1861ccad912cb1d
+Run,%ScriptFile%,Process_FileRepository,nvhwi.inf_amd64_da3b5239211f88eb
+Run,%ScriptFile%,Process_FileRepository,nvivi.inf_amd64_83d7ac2370288302
+Run,%ScriptFile%,Process_FileRepository,nvjai.inf_amd64_5d18005983db3879
+Run,%ScriptFile%,Process_FileRepository,nvjwi.inf_amd64_19900670a36eb2af
+Run,%ScriptFile%,Process_FileRepository,nvlai.inf_amd64_4266e4e2491a6741
+Run,%ScriptFile%,Process_FileRepository,nvlbhi.inf_amd64_ac0cf46a26c8ef1c
+Run,%ScriptFile%,Process_FileRepository,nvlei.inf_amd64_f840755f339ebe24
+Run,%ScriptFile%,Process_FileRepository,nvlgi.inf_amd64_745f808722d23147
+Run,%ScriptFile%,Process_FileRepository,nvloi.inf_amd64_161aec9f1f4e6164
+Run,%ScriptFile%,Process_FileRepository,nvlti.inf_amd64_acab2825cc304213
+Run,%ScriptFile%,Process_FileRepository,nvmdi.inf_amd64_e1a015558788bda1
+Run,%ScriptFile%,Process_FileRepository,nvmii.inf_amd64_5a563dd3ea916dac
+Run,%ScriptFile%,Process_FileRepository,nvmmi.inf_amd64_79b3862e12da9814
+Run,%ScriptFile%,Process_FileRepository,nvmoi.inf_amd64_2e888f1070e897d1
+Run,%ScriptFile%,Process_FileRepository,nvmsoai.inf_amd64_bfabc68121479916
+Run,%ScriptFile%,Process_FileRepository,nvmsoi.inf_amd64_7f4a4f22dc671db7
+Run,%ScriptFile%,Process_FileRepository,nvmtci.inf_amd64_ee613dcd17aff69a
+Run,%ScriptFile%,Process_FileRepository,nvmti.inf_amd64_3a04b5abac2b526e
+Run,%ScriptFile%,Process_FileRepository,nvndi.inf_amd64_7ed37f3e58297655
+Run,%ScriptFile%,Process_FileRepository,nvpcdi.inf_amd64_90287f8b21d3e58e
+Run,%ScriptFile%,Process_FileRepository,nvpgi.inf_amd64_ea7d6e58ee896177
+Run,%ScriptFile%,Process_FileRepository,nvpmi.inf_amd64_1576ebf3c3d94bf9
+Run,%ScriptFile%,Process_FileRepository,nvqui.inf_amd64_c69c36a163f1535a
+Run,%ScriptFile%,Process_FileRepository,nvrfi.inf_amd64_febfeced77751be4
+Run,%ScriptFile%,Process_FileRepository,nvrzi.inf_amd64_97a4029d48fd5f57
+Run,%ScriptFile%,Process_FileRepository,nvsai.inf_amd64_6b8b3761c53643b0
+Run,%ScriptFile%,Process_FileRepository,nvsmi.inf_amd64_38c3d866e4f995b1
+Run,%ScriptFile%,Process_FileRepository,nvspi.inf_amd64_4a631760f99d406a
+Run,%ScriptFile%,Process_FileRepository,nvszni.inf_amd64_673e339ea48d1f81
+Run,%ScriptFile%,Process_FileRepository,nvszqi.inf_amd64_defd05c2d9b37b48
+Run,%ScriptFile%,Process_FileRepository,nvtdi.inf_amd64_c5e06dc2e1d8f5c3
+Run,%ScriptFile%,Process_FileRepository,nvtfi.inf_amd64_2baedacb90dc4042
+Run,%ScriptFile%,Process_FileRepository,nvtnii.inf_amd64_3d83c756d8fcf375
+Run,%ScriptFile%,Process_FileRepository,nvtsi.inf_amd64_305d8377faf032b1
+Run,%ScriptFile%,Process_FileRepository,nvvidi.inf_amd64_63945755428a851f
+Run,%ScriptFile%,Process_FileRepository,nvwii.inf_amd64_597a47cf78aa7e17
+Echo,"Copy FileRepository Files - Finish"
+//-
+Echo,"Copy in Target_Win\Inf - Start"
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaci.inf_amd64_cb35257211982e1b\nvaci.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaei.inf_amd64_3f5ff664b3bac259\nvaei.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaki.inf_amd64_0d6c6fe0d070c433\nvaki.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvami.inf_amd64_1169c9c03f813a3b\nvami.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaoi.inf_amd64_638591bed4bb1bef\nvaoi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvbli.inf_amd64_9f0cfae7d3572a47\nvbli.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvcli.inf_amd64_f31a98417598c9a8\nvcli.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvcti.inf_amd64_4f310eef2a9e684c\nvcti.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvcvi.inf_amd64_34843c00364aed5f\nvcvi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvddi.inf_amd64_379d20b312705bb2\nvddi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvdmi.inf_amd64_98e7bd8e4fe868bb\nvdmi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvemi.inf_amd64_62d5b70c91e698c2\nvemi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvfmi.inf_amd64_a561a16902afb22f\nvfmi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvfxi.inf_amd64_a007c6f2a9f331b7\nvfxi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvgbdi.inf_amd64_644b0401711a175e\nvgbdi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvgbi.inf_amd64_376c42db9826381c\nvgbi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvgei.inf_amd64_e567f4d97bea3865\nvgei.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvhdci.inf_amd64_36a7faa4a571b430\nvhdci.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvhmi.inf_amd64_d1861ccad912cb1d\nvhmi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvhwi.inf_amd64_da3b5239211f88eb\nvhwi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvivi.inf_amd64_83d7ac2370288302\nvivi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvjai.inf_amd64_5d18005983db3879\nvjai.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvjwi.inf_amd64_19900670a36eb2af\nvjwi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlai.inf_amd64_4266e4e2491a6741\nvlai.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlbhi.inf_amd64_ac0cf46a26c8ef1c\nvlbhi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlei.inf_amd64_f840755f339ebe24\nvlei.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlgi.inf_amd64_745f808722d23147\nvlgi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvloi.inf_amd64_161aec9f1f4e6164\nvloi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlti.inf_amd64_acab2825cc304213\nvlti.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmdi.inf_amd64_e1a015558788bda1\nvmdi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmii.inf_amd64_5a563dd3ea916dac\nvmii.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmmi.inf_amd64_79b3862e12da9814\nvmmi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmoi.inf_amd64_2e888f1070e897d1\nvmoi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmsoai.inf_amd64_bfabc68121479916\nvmsoai.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmsoi.inf_amd64_7f4a4f22dc671db7\nvmsoi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmtci.inf_amd64_ee613dcd17aff69a\nvmtci.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmti.inf_amd64_3a04b5abac2b526e\nvmti.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvndi.inf_amd64_7ed37f3e58297655\nvndi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvpcdi.inf_amd64_90287f8b21d3e58e\nvpcdi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvpgi.inf_amd64_ea7d6e58ee896177\nvpgi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvpmi.inf_amd64_1576ebf3c3d94bf9\nvpmi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvqui.inf_amd64_c69c36a163f1535a\nvqui.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvrfi.inf_amd64_febfeced77751be4\nvrfi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvrzi.inf_amd64_97a4029d48fd5f57\nvrzi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvsai.inf_amd64_6b8b3761c53643b0\nvsai.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvsmi.inf_amd64_38c3d866e4f995b1\nvsmi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvspi.inf_amd64_4a631760f99d406a\nvspi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvszni.inf_amd64_673e339ea48d1f81\nvszni.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvszqi.inf_amd64_defd05c2d9b37b48\nvszqi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtdi.inf_amd64_c5e06dc2e1d8f5c3\nvtdi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtfi.inf_amd64_2baedacb90dc4042\nvtfi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtnii.inf_amd64_3d83c756d8fcf375\nvtnii.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtsi.inf_amd64_305d8377faf032b1\nvtsi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvvidi.inf_amd64_63945755428a851f\nvvidi.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvwii.inf_amd64_597a47cf78aa7e17\nvwii.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977\nv_desktop_ref4i.inf,%Target_Win%\Inf
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nv_dispi.inf_amd64_251698bc642c37cb\nv_dispi.inf,%Target_Win%\Inf
+Echo,"Copy in Target_Win\Inf - Finish"
+//-
+Echo,"Add Registry - Start"
+RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
+System,FileRedirect,OFF
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_dispi.inf_amd64_251698bc642c37cb.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaci.inf_amd64_cb35257211982e1b.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaei.inf_amd64_3f5ff664b3bac259.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaki.inf_amd64_0d6c6fe0d070c433.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvami.inf_amd64_1169c9c03f813a3b.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaoi.inf_amd64_638591bed4bb1bef.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvbli.inf_amd64_9f0cfae7d3572a47.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcli.inf_amd64_f31a98417598c9a8.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcti.inf_amd64_4f310eef2a9e684c.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcvi.inf_amd64_34843c00364aed5f.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvddi.inf_amd64_379d20b312705bb2.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvdmi.inf_amd64_98e7bd8e4fe868bb.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvemi.inf_amd64_62d5b70c91e698c2.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfmi.inf_amd64_a561a16902afb22f.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfxi.inf_amd64_a007c6f2a9f331b7.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbdi.inf_amd64_644b0401711a175e.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbi.inf_amd64_376c42db9826381c.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgei.inf_amd64_e567f4d97bea3865.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhdci.inf_amd64_36a7faa4a571b430.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhmi.inf_amd64_d1861ccad912cb1d.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhwi.inf_amd64_da3b5239211f88eb.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvivi.inf_amd64_83d7ac2370288302.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjai.inf_amd64_5d18005983db3879.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjwi.inf_amd64_19900670a36eb2af.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlai.inf_amd64_4266e4e2491a6741.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlbhi.inf_amd64_ac0cf46a26c8ef1c.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlei.inf_amd64_f840755f339ebe24.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlgi.inf_amd64_745f808722d23147.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvloi.inf_amd64_161aec9f1f4e6164.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlti.inf_amd64_acab2825cc304213.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmdi.inf_amd64_e1a015558788bda1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmii.inf_amd64_5a563dd3ea916dac.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmmi.inf_amd64_79b3862e12da9814.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmoi.inf_amd64_2e888f1070e897d1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoai.inf_amd64_bfabc68121479916.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoi.inf_amd64_7f4a4f22dc671db7.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmtci.inf_amd64_ee613dcd17aff69a.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmti.inf_amd64_3a04b5abac2b526e.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvndi.inf_amd64_7ed37f3e58297655.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpcdi.inf_amd64_90287f8b21d3e58e.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpgi.inf_amd64_ea7d6e58ee896177.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpmi.inf_amd64_1576ebf3c3d94bf9.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvqui.inf_amd64_c69c36a163f1535a.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrfi.inf_amd64_febfeced77751be4.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrzi.inf_amd64_97a4029d48fd5f57.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsai.inf_amd64_6b8b3761c53643b0.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsmi.inf_amd64_38c3d866e4f995b1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvspi.inf_amd64_4a631760f99d406a.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszni.inf_amd64_673e339ea48d1f81.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszqi.inf_amd64_defd05c2d9b37b48.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtdi.inf_amd64_c5e06dc2e1d8f5c3.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtfi.inf_amd64_2baedacb90dc4042.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtnii.inf_amd64_3d83c756d8fcf375.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtsi.inf_amd64_305d8377faf032b1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvvidi.inf_amd64_63945755428a851f.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvwii.inf_amd64_597a47cf78aa7e17.Reg.txt#$q"
+System,FileRedirect,ON
+RegHiveUnLoad,Tmp_Drivers
+Echo,"Add Registry - Finish"
+
+[Process_x64_ALL_Direct_FileRepository]
+Run,%ScriptFile%,Extract_Direct_FileRepository_7z_Wim
+//-
+Run,%ScriptFile%,Process_PnpUtil_ALL
+//-
+Echo,"Copy in Target_Win\Inf - Start"
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaci.inf_amd64_cb35257211982e1b\nvaci.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaei.inf_amd64_3f5ff664b3bac259\nvaei.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaki.inf_amd64_0d6c6fe0d070c433\nvaki.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvami.inf_amd64_1169c9c03f813a3b\nvami.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaoi.inf_amd64_638591bed4bb1bef\nvaoi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvbli.inf_amd64_9f0cfae7d3572a47\nvbli.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvcli.inf_amd64_f31a98417598c9a8\nvcli.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvcti.inf_amd64_4f310eef2a9e684c\nvcti.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvcvi.inf_amd64_34843c00364aed5f\nvcvi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvddi.inf_amd64_379d20b312705bb2\nvddi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvdmi.inf_amd64_98e7bd8e4fe868bb\nvdmi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvemi.inf_amd64_62d5b70c91e698c2\nvemi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvfmi.inf_amd64_a561a16902afb22f\nvfmi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvfxi.inf_amd64_a007c6f2a9f331b7\nvfxi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvgbdi.inf_amd64_644b0401711a175e\nvgbdi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvgbi.inf_amd64_376c42db9826381c\nvgbi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvgei.inf_amd64_e567f4d97bea3865\nvgei.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvhdci.inf_amd64_36a7faa4a571b430\nvhdci.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvhmi.inf_amd64_d1861ccad912cb1d\nvhmi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvhwi.inf_amd64_da3b5239211f88eb\nvhwi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvivi.inf_amd64_83d7ac2370288302\nvivi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvjai.inf_amd64_5d18005983db3879\nvjai.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvjwi.inf_amd64_19900670a36eb2af\nvjwi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlai.inf_amd64_4266e4e2491a6741\nvlai.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlbhi.inf_amd64_ac0cf46a26c8ef1c\nvlbhi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlei.inf_amd64_f840755f339ebe24\nvlei.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlgi.inf_amd64_745f808722d23147\nvlgi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvloi.inf_amd64_161aec9f1f4e6164\nvloi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlti.inf_amd64_acab2825cc304213\nvlti.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmdi.inf_amd64_e1a015558788bda1\nvmdi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmii.inf_amd64_5a563dd3ea916dac\nvmii.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmmi.inf_amd64_79b3862e12da9814\nvmmi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmoi.inf_amd64_2e888f1070e897d1\nvmoi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmsoai.inf_amd64_bfabc68121479916\nvmsoai.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmsoi.inf_amd64_7f4a4f22dc671db7\nvmsoi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmtci.inf_amd64_ee613dcd17aff69a\nvmtci.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmti.inf_amd64_3a04b5abac2b526e\nvmti.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvndi.inf_amd64_7ed37f3e58297655\nvndi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvpcdi.inf_amd64_90287f8b21d3e58e\nvpcdi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvpgi.inf_amd64_ea7d6e58ee896177\nvpgi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvpmi.inf_amd64_1576ebf3c3d94bf9\nvpmi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvqui.inf_amd64_c69c36a163f1535a\nvqui.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvrfi.inf_amd64_febfeced77751be4\nvrfi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvrzi.inf_amd64_97a4029d48fd5f57\nvrzi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvsai.inf_amd64_6b8b3761c53643b0\nvsai.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvsmi.inf_amd64_38c3d866e4f995b1\nvsmi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvspi.inf_amd64_4a631760f99d406a\nvspi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvszni.inf_amd64_673e339ea48d1f81\nvszni.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvszqi.inf_amd64_defd05c2d9b37b48\nvszqi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtdi.inf_amd64_c5e06dc2e1d8f5c3\nvtdi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtfi.inf_amd64_2baedacb90dc4042\nvtfi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtnii.inf_amd64_3d83c756d8fcf375\nvtnii.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtsi.inf_amd64_305d8377faf032b1\nvtsi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvvidi.inf_amd64_63945755428a851f\nvvidi.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nvwii.inf_amd64_597a47cf78aa7e17\nvwii.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977\nv_desktop_ref4i.inf,%Target_Win%\Inf
+FileCopy,%Target_Sys%\DriverStore\FileRepository\nv_dispi.inf_amd64_251698bc642c37cb\nv_dispi.inf,%Target_Win%\Inf
+Echo,"Copy in Target_Win\Inf - Finish"
+//-
+Echo,"Add Registry - Start"
+RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
+System,FileRedirect,OFF
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_dispi.inf_amd64_251698bc642c37cb.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaci.inf_amd64_cb35257211982e1b.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaei.inf_amd64_3f5ff664b3bac259.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaki.inf_amd64_0d6c6fe0d070c433.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvami.inf_amd64_1169c9c03f813a3b.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaoi.inf_amd64_638591bed4bb1bef.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvbli.inf_amd64_9f0cfae7d3572a47.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcli.inf_amd64_f31a98417598c9a8.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcti.inf_amd64_4f310eef2a9e684c.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcvi.inf_amd64_34843c00364aed5f.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvddi.inf_amd64_379d20b312705bb2.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvdmi.inf_amd64_98e7bd8e4fe868bb.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvemi.inf_amd64_62d5b70c91e698c2.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfmi.inf_amd64_a561a16902afb22f.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfxi.inf_amd64_a007c6f2a9f331b7.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbdi.inf_amd64_644b0401711a175e.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbi.inf_amd64_376c42db9826381c.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgei.inf_amd64_e567f4d97bea3865.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhdci.inf_amd64_36a7faa4a571b430.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhmi.inf_amd64_d1861ccad912cb1d.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhwi.inf_amd64_da3b5239211f88eb.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvivi.inf_amd64_83d7ac2370288302.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjai.inf_amd64_5d18005983db3879.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjwi.inf_amd64_19900670a36eb2af.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlai.inf_amd64_4266e4e2491a6741.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlbhi.inf_amd64_ac0cf46a26c8ef1c.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlei.inf_amd64_f840755f339ebe24.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlgi.inf_amd64_745f808722d23147.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvloi.inf_amd64_161aec9f1f4e6164.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlti.inf_amd64_acab2825cc304213.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmdi.inf_amd64_e1a015558788bda1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmii.inf_amd64_5a563dd3ea916dac.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmmi.inf_amd64_79b3862e12da9814.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmoi.inf_amd64_2e888f1070e897d1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoai.inf_amd64_bfabc68121479916.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoi.inf_amd64_7f4a4f22dc671db7.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmtci.inf_amd64_ee613dcd17aff69a.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmti.inf_amd64_3a04b5abac2b526e.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvndi.inf_amd64_7ed37f3e58297655.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpcdi.inf_amd64_90287f8b21d3e58e.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpgi.inf_amd64_ea7d6e58ee896177.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpmi.inf_amd64_1576ebf3c3d94bf9.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvqui.inf_amd64_c69c36a163f1535a.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrfi.inf_amd64_febfeced77751be4.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrzi.inf_amd64_97a4029d48fd5f57.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsai.inf_amd64_6b8b3761c53643b0.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsmi.inf_amd64_38c3d866e4f995b1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvspi.inf_amd64_4a631760f99d406a.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszni.inf_amd64_673e339ea48d1f81.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszqi.inf_amd64_defd05c2d9b37b48.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtdi.inf_amd64_c5e06dc2e1d8f5c3.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtfi.inf_amd64_2baedacb90dc4042.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtnii.inf_amd64_3d83c756d8fcf375.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtsi.inf_amd64_305d8377faf032b1.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvvidi.inf_amd64_63945755428a851f.Reg.txt#$q"
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvwii.inf_amd64_597a47cf78aa7e17.Reg.txt#$q"
+System,FileRedirect,ON
+RegHiveUnLoad,Tmp_Drivers
+Echo,"Add Registry - Finish"
+
+[Process_x64_Select_Basic]
+Run,%ScriptFile%,Extract
+//-
+Run,%ScriptFile%,Process_PnpUtil_Select
+//-
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nv_desktop_ref4i.inf_amd64_3447f5e15b7d89771
+If,%CheckBox_nv_dispi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nv_dispi.inf_amd64_251698bc642c37cb1
+If,%CheckBox_nvaci%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvaci.inf_amd64_cb35257211982e1b1
+If,%CheckBox_nvaei%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvaei.inf_amd64_3f5ff664b3bac2591
+If,%CheckBox_nvaki%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvaki.inf_amd64_0d6c6fe0d070c4331
+If,%CheckBox_nvami%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvami.inf_amd64_1169c9c03f813a3b1
+If,%CheckBox_nvaoi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvaoi.inf_amd64_638591bed4bb1bef1
+If,%CheckBox_nvbli%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvbli.inf_amd64_9f0cfae7d3572a471
+If,%CheckBox_nvcli%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvcli.inf_amd64_f31a98417598c9a81
+If,%CheckBox_nvcti%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvcti.inf_amd64_4f310eef2a9e684c1
+If,%CheckBox_nvcvi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvcvi.inf_amd64_34843c00364aed5f1
+If,%CheckBox_nvddi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvddi.inf_amd64_379d20b312705bb21
+If,%CheckBox_nvdmi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvdmi.inf_amd64_98e7bd8e4fe868bb1
+If,%CheckBox_nvemi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvemi.inf_amd64_62d5b70c91e698c21
+If,%CheckBox_nvfmi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvfmi.inf_amd64_a561a16902afb22f1
+If,%CheckBox_nvfxi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvfxi.inf_amd64_a007c6f2a9f331b71
+If,%CheckBox_nvgbdi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvgbdi.inf_amd64_644b0401711a175e1
+If,%CheckBox_nvgbi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvgbi.inf_amd64_376c42db9826381c1
+If,%CheckBox_nvgei%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvgei.inf_amd64_e567f4d97bea38651
+If,%CheckBox_nvhdci%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvhdci.inf_amd64_36a7faa4a571b4301
+If,%CheckBox_nvhmi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvhmi.inf_amd64_d1861ccad912cb1d1
+If,%CheckBox_nvhwi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvhwi.inf_amd64_da3b5239211f88eb1
+If,%CheckBox_nvivi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvivi.inf_amd64_83d7ac23702883021
+If,%CheckBox_nvjai%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvjai.inf_amd64_5d18005983db38791
+If,%CheckBox_nvjwi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvjwi.inf_amd64_19900670a36eb2af1
+If,%CheckBox_nvlai%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvlai.inf_amd64_4266e4e2491a67411
+If,%CheckBox_nvlbhi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvlbhi.inf_amd64_ac0cf46a26c8ef1c1
+If,%CheckBox_nvlei%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvlei.inf_amd64_f840755f339ebe241
+If,%CheckBox_nvlgi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvlgi.inf_amd64_745f808722d231471
+If,%CheckBox_nvloi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvloi.inf_amd64_161aec9f1f4e61641
+If,%CheckBox_nvlti%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvlti.inf_amd64_acab2825cc3042131
+If,%CheckBox_nvmdi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmdi.inf_amd64_e1a015558788bda11
+If,%CheckBox_nvmii%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmii.inf_amd64_5a563dd3ea916dac1
+If,%CheckBox_nvmmi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmmi.inf_amd64_79b3862e12da98141
+If,%CheckBox_nvmoi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmoi.inf_amd64_2e888f1070e897d11
+If,%CheckBox_nvmsoai%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmsoai.inf_amd64_bfabc681214799161
+If,%CheckBox_nvmsoi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmsoi.inf_amd64_7f4a4f22dc671db71
+If,%CheckBox_nvmtci%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmtci.inf_amd64_ee613dcd17aff69a1
+If,%CheckBox_nvmti%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvmti.inf_amd64_3a04b5abac2b526e1
+If,%CheckBox_nvndi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvndi.inf_amd64_7ed37f3e582976551
+If,%CheckBox_nvpcdi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvpcdi.inf_amd64_90287f8b21d3e58e1
+If,%CheckBox_nvpgi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvpgi.inf_amd64_ea7d6e58ee8961771
+If,%CheckBox_nvpmi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvpmi.inf_amd64_1576ebf3c3d94bf91
+If,%CheckBox_nvqui%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvqui.inf_amd64_c69c36a163f1535a1
+If,%CheckBox_nvrfi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvrfi.inf_amd64_febfeced77751be41
+If,%CheckBox_nvrzi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvrzi.inf_amd64_97a4029d48fd5f571
+If,%CheckBox_nvsai%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvsai.inf_amd64_6b8b3761c53643b01
+If,%CheckBox_nvsmi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvsmi.inf_amd64_38c3d866e4f995b11
+If,%CheckBox_nvspi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvspi.inf_amd64_4a631760f99d406a1
+If,%CheckBox_nvszni%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvszni.inf_amd64_673e339ea48d1f811
+If,%CheckBox_nvszqi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvszqi.inf_amd64_defd05c2d9b37b481
+If,%CheckBox_nvtdi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvtdi.inf_amd64_c5e06dc2e1d8f5c31
+If,%CheckBox_nvtfi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvtfi.inf_amd64_2baedacb90dc40421
+If,%CheckBox_nvtnii%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvtnii.inf_amd64_3d83c756d8fcf3751
+If,%CheckBox_nvtsi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvtsi.inf_amd64_305d8377faf032b11
+If,%CheckBox_nvvidi%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvvidi.inf_amd64_63945755428a851f1
+If,%CheckBox_nvwii%,Equal,True,Run,%ScriptFile%,Process_FileRepository,nvwii.inf_amd64_597a47cf78aa7e171
+//-
+Echo,"Copy in Target_Win\Inf - Start"
+If,%CheckBox_nvaci%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaci.inf_amd64_cb35257211982e1b\nvaci.inf,%Target_Win%\Inf
+If,%CheckBox_nvaei%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaei.inf_amd64_3f5ff664b3bac259\nvaei.inf,%Target_Win%\Inf
+If,%CheckBox_nvaki%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaki.inf_amd64_0d6c6fe0d070c433\nvaki.inf,%Target_Win%\Inf
+If,%CheckBox_nvami%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvami.inf_amd64_1169c9c03f813a3b\nvami.inf,%Target_Win%\Inf
+If,%CheckBox_nvaoi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvaoi.inf_amd64_638591bed4bb1bef\nvaoi.inf,%Target_Win%\Inf
+If,%CheckBox_nvbli%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvbli.inf_amd64_9f0cfae7d3572a47\nvbli.inf,%Target_Win%\Inf
+If,%CheckBox_nvcli%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvcli.inf_amd64_f31a98417598c9a8\nvcli.inf,%Target_Win%\Inf
+If,%CheckBox_nvcti%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvcti.inf_amd64_4f310eef2a9e684c\nvcti.inf,%Target_Win%\Inf
+If,%CheckBox_nvcvi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvcvi.inf_amd64_34843c00364aed5f\nvcvi.inf,%Target_Win%\Inf
+If,%CheckBox_nvddi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvddi.inf_amd64_379d20b312705bb2\nvddi.inf,%Target_Win%\Inf
+If,%CheckBox_nvdmi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvdmi.inf_amd64_98e7bd8e4fe868bb\nvdmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvemi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvemi.inf_amd64_62d5b70c91e698c2\nvemi.inf,%Target_Win%\Inf
+If,%CheckBox_nvfmi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvfmi.inf_amd64_a561a16902afb22f\nvfmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvfxi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvfxi.inf_amd64_a007c6f2a9f331b7\nvfxi.inf,%Target_Win%\Inf
+If,%CheckBox_nvgbdi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvgbdi.inf_amd64_644b0401711a175e\nvgbdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvgbi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvgbi.inf_amd64_376c42db9826381c\nvgbi.inf,%Target_Win%\Inf
+If,%CheckBox_nvgei%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvgei.inf_amd64_e567f4d97bea3865\nvgei.inf,%Target_Win%\Inf
+If,%CheckBox_nvhdci%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvhdci.inf_amd64_36a7faa4a571b430\nvhdci.inf,%Target_Win%\Inf
+If,%CheckBox_nvhmi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvhmi.inf_amd64_d1861ccad912cb1d\nvhmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvhwi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvhwi.inf_amd64_da3b5239211f88eb\nvhwi.inf,%Target_Win%\Inf
+If,%CheckBox_nvivi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvivi.inf_amd64_83d7ac2370288302\nvivi.inf,%Target_Win%\Inf
+If,%CheckBox_nvjai%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvjai.inf_amd64_5d18005983db3879\nvjai.inf,%Target_Win%\Inf
+If,%CheckBox_nvjwi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvjwi.inf_amd64_19900670a36eb2af\nvjwi.inf,%Target_Win%\Inf
+If,%CheckBox_nvlai%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlai.inf_amd64_4266e4e2491a6741\nvlai.inf,%Target_Win%\Inf
+If,%CheckBox_nvlbhi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlbhi.inf_amd64_ac0cf46a26c8ef1c\nvlbhi.inf,%Target_Win%\Inf
+If,%CheckBox_nvlei%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlei.inf_amd64_f840755f339ebe24\nvlei.inf,%Target_Win%\Inf
+If,%CheckBox_nvlgi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlgi.inf_amd64_745f808722d23147\nvlgi.inf,%Target_Win%\Inf
+If,%CheckBox_nvloi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvloi.inf_amd64_161aec9f1f4e6164\nvloi.inf,%Target_Win%\Inf
+If,%CheckBox_nvlti%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvlti.inf_amd64_acab2825cc304213\nvlti.inf,%Target_Win%\Inf
+If,%CheckBox_nvmdi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmdi.inf_amd64_e1a015558788bda1\nvmdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmii%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmii.inf_amd64_5a563dd3ea916dac\nvmii.inf,%Target_Win%\Inf
+If,%CheckBox_nvmmi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmmi.inf_amd64_79b3862e12da9814\nvmmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmoi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmoi.inf_amd64_2e888f1070e897d1\nvmoi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmsoai%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmsoai.inf_amd64_bfabc68121479916\nvmsoai.inf,%Target_Win%\Inf
+If,%CheckBox_nvmsoi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmsoi.inf_amd64_7f4a4f22dc671db7\nvmsoi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmtci%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmtci.inf_amd64_ee613dcd17aff69a\nvmtci.inf,%Target_Win%\Inf
+If,%CheckBox_nvmti%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvmti.inf_amd64_3a04b5abac2b526e\nvmti.inf,%Target_Win%\Inf
+If,%CheckBox_nvndi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvndi.inf_amd64_7ed37f3e58297655\nvndi.inf,%Target_Win%\Inf
+If,%CheckBox_nvpcdi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvpcdi.inf_amd64_90287f8b21d3e58e\nvpcdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvpgi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvpgi.inf_amd64_ea7d6e58ee896177\nvpgi.inf,%Target_Win%\Inf
+If,%CheckBox_nvpmi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvpmi.inf_amd64_1576ebf3c3d94bf9\nvpmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvqui%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvqui.inf_amd64_c69c36a163f1535a\nvqui.inf,%Target_Win%\Inf
+If,%CheckBox_nvrfi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvrfi.inf_amd64_febfeced77751be4\nvrfi.inf,%Target_Win%\Inf
+If,%CheckBox_nvrzi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvrzi.inf_amd64_97a4029d48fd5f57\nvrzi.inf,%Target_Win%\Inf
+If,%CheckBox_nvsai%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvsai.inf_amd64_6b8b3761c53643b0\nvsai.inf,%Target_Win%\Inf
+If,%CheckBox_nvsmi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvsmi.inf_amd64_38c3d866e4f995b1\nvsmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvspi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvspi.inf_amd64_4a631760f99d406a\nvspi.inf,%Target_Win%\Inf
+If,%CheckBox_nvszni%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvszni.inf_amd64_673e339ea48d1f81\nvszni.inf,%Target_Win%\Inf
+If,%CheckBox_nvszqi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvszqi.inf_amd64_defd05c2d9b37b48\nvszqi.inf,%Target_Win%\Inf
+If,%CheckBox_nvtdi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtdi.inf_amd64_c5e06dc2e1d8f5c3\nvtdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvtfi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtfi.inf_amd64_2baedacb90dc4042\nvtfi.inf,%Target_Win%\Inf
+If,%CheckBox_nvtnii%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtnii.inf_amd64_3d83c756d8fcf375\nvtnii.inf,%Target_Win%\Inf
+If,%CheckBox_nvtsi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvtsi.inf_amd64_305d8377faf032b1\nvtsi.inf,%Target_Win%\Inf
+If,%CheckBox_nvvidi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvvidi.inf_amd64_63945755428a851f\nvvidi.inf,%Target_Win%\Inf
+If,%CheckBox_nvwii%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nvwii.inf_amd64_597a47cf78aa7e17\nvwii.inf,%Target_Win%\Inf
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977\nv_desktop_ref4i.inf,%Target_Win%\Inf
+If,%CheckBox_nv_dispi%,Equal,True,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nv_dispi.inf_amd64_251698bc642c37cb\nv_dispi.inf,%Target_Win%\Inf
+Echo,"Copy in Target_Win\Inf - Finish"
+//-
+Echo,"Add Registry - Start"
+RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
+System,FileRedirect,OFF
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977.Reg.txt#$q"
+If,%CheckBox_nv_dispi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_dispi.inf_amd64_251698bc642c37cb.Reg.txt#$q"
+If,%CheckBox_nvaci%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaci.inf_amd64_cb35257211982e1b.Reg.txt#$q"
+If,%CheckBox_nvaei%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaei.inf_amd64_3f5ff664b3bac259.Reg.txt#$q"
+If,%CheckBox_nvaki%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaki.inf_amd64_0d6c6fe0d070c433.Reg.txt#$q"
+If,%CheckBox_nvami%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvami.inf_amd64_1169c9c03f813a3b.Reg.txt#$q"
+If,%CheckBox_nvaoi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaoi.inf_amd64_638591bed4bb1bef.Reg.txt#$q"
+If,%CheckBox_nvbli%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvbli.inf_amd64_9f0cfae7d3572a47.Reg.txt#$q"
+If,%CheckBox_nvcli%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcli.inf_amd64_f31a98417598c9a8.Reg.txt#$q"
+If,%CheckBox_nvcti%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcti.inf_amd64_4f310eef2a9e684c.Reg.txt#$q"
+If,%CheckBox_nvcvi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcvi.inf_amd64_34843c00364aed5f.Reg.txt#$q"
+If,%CheckBox_nvddi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvddi.inf_amd64_379d20b312705bb2.Reg.txt#$q"
+If,%CheckBox_nvdmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvdmi.inf_amd64_98e7bd8e4fe868bb.Reg.txt#$q"
+If,%CheckBox_nvemi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvemi.inf_amd64_62d5b70c91e698c2.Reg.txt#$q"
+If,%CheckBox_nvfmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfmi.inf_amd64_a561a16902afb22f.Reg.txt#$q"
+If,%CheckBox_nvfxi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfxi.inf_amd64_a007c6f2a9f331b7.Reg.txt#$q"
+If,%CheckBox_nvgbdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbdi.inf_amd64_644b0401711a175e.Reg.txt#$q"
+If,%CheckBox_nvgbi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbi.inf_amd64_376c42db9826381c.Reg.txt#$q"
+If,%CheckBox_nvgei%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgei.inf_amd64_e567f4d97bea3865.Reg.txt#$q"
+If,%CheckBox_nvhdci%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhdci.inf_amd64_36a7faa4a571b430.Reg.txt#$q"
+If,%CheckBox_nvhmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhmi.inf_amd64_d1861ccad912cb1d.Reg.txt#$q"
+If,%CheckBox_nvhwi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhwi.inf_amd64_da3b5239211f88eb.Reg.txt#$q"
+If,%CheckBox_nvivi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvivi.inf_amd64_83d7ac2370288302.Reg.txt#$q"
+If,%CheckBox_nvjai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjai.inf_amd64_5d18005983db3879.Reg.txt#$q"
+If,%CheckBox_nvjwi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjwi.inf_amd64_19900670a36eb2af.Reg.txt#$q"
+If,%CheckBox_nvlai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlai.inf_amd64_4266e4e2491a6741.Reg.txt#$q"
+If,%CheckBox_nvlbhi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlbhi.inf_amd64_ac0cf46a26c8ef1c.Reg.txt#$q"
+If,%CheckBox_nvlei%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlei.inf_amd64_f840755f339ebe24.Reg.txt#$q"
+If,%CheckBox_nvlgi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlgi.inf_amd64_745f808722d23147.Reg.txt#$q"
+If,%CheckBox_nvloi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvloi.inf_amd64_161aec9f1f4e6164.Reg.txt#$q"
+If,%CheckBox_nvlti%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlti.inf_amd64_acab2825cc304213.Reg.txt#$q"
+If,%CheckBox_nvmdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmdi.inf_amd64_e1a015558788bda1.Reg.txt#$q"
+If,%CheckBox_nvmii%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmii.inf_amd64_5a563dd3ea916dac.Reg.txt#$q"
+If,%CheckBox_nvmmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmmi.inf_amd64_79b3862e12da9814.Reg.txt#$q"
+If,%CheckBox_nvmoi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmoi.inf_amd64_2e888f1070e897d1.Reg.txt#$q"
+If,%CheckBox_nvmsoai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoai.inf_amd64_bfabc68121479916.Reg.txt#$q"
+If,%CheckBox_nvmsoi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoi.inf_amd64_7f4a4f22dc671db7.Reg.txt#$q"
+If,%CheckBox_nvmtci%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmtci.inf_amd64_ee613dcd17aff69a.Reg.txt#$q"
+If,%CheckBox_nvmti%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmti.inf_amd64_3a04b5abac2b526e.Reg.txt#$q"
+If,%CheckBox_nvndi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvndi.inf_amd64_7ed37f3e58297655.Reg.txt#$q"
+If,%CheckBox_nvpcdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpcdi.inf_amd64_90287f8b21d3e58e.Reg.txt#$q"
+If,%CheckBox_nvpgi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpgi.inf_amd64_ea7d6e58ee896177.Reg.txt#$q"
+If,%CheckBox_nvpmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpmi.inf_amd64_1576ebf3c3d94bf9.Reg.txt#$q"
+If,%CheckBox_nvqui%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvqui.inf_amd64_c69c36a163f1535a.Reg.txt#$q"
+If,%CheckBox_nvrfi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrfi.inf_amd64_febfeced77751be4.Reg.txt#$q"
+If,%CheckBox_nvrzi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrzi.inf_amd64_97a4029d48fd5f57.Reg.txt#$q"
+If,%CheckBox_nvsai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsai.inf_amd64_6b8b3761c53643b0.Reg.txt#$q"
+If,%CheckBox_nvsmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsmi.inf_amd64_38c3d866e4f995b1.Reg.txt#$q"
+If,%CheckBox_nvspi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvspi.inf_amd64_4a631760f99d406a.Reg.txt#$q"
+If,%CheckBox_nvszni%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszni.inf_amd64_673e339ea48d1f81.Reg.txt#$q"
+If,%CheckBox_nvszqi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszqi.inf_amd64_defd05c2d9b37b48.Reg.txt#$q"
+If,%CheckBox_nvtdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtdi.inf_amd64_c5e06dc2e1d8f5c3.Reg.txt#$q"
+If,%CheckBox_nvtfi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtfi.inf_amd64_2baedacb90dc4042.Reg.txt#$q"
+If,%CheckBox_nvtnii%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtnii.inf_amd64_3d83c756d8fcf375.Reg.txt#$q"
+If,%CheckBox_nvtsi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtsi.inf_amd64_305d8377faf032b1.Reg.txt#$q"
+If,%CheckBox_nvvidi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvvidi.inf_amd64_63945755428a851f.Reg.txt#$q"
+If,%CheckBox_nvwii%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvwii.inf_amd64_597a47cf78aa7e17.Reg.txt#$q"
+System,FileRedirect,ON
+RegHiveUnLoad,Tmp_Drivers
+Echo,"Add Registry - Finish"
+
+[Process_x64_Select_Direct]
+Run,%ScriptFile%,Process_PnpUtil_Select
+//-
+Call,DirDeleteMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%_FileRepository_ExtractListFiles
+Set,%w%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%_FileRepository_ExtractListFiles\FileRepository_ExtractListFiles.txt
+FileCreateBlank,%w%
+//-
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,TxtAddLine,%w%,nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977,Append
+If,%CheckBox_nv_dispi%,Equal,True,TxtAddLine,%w%,nv_dispi.inf_amd64_251698bc642c37cb,Append
+If,%CheckBox_nvaci%,Equal,True,TxtAddLine,%w%,nvaci.inf_amd64_cb35257211982e1b,Append
+If,%CheckBox_nvaei%,Equal,True,TxtAddLine,%w%,nvaei.inf_amd64_3f5ff664b3bac259,Append
+If,%CheckBox_nvaki%,Equal,True,TxtAddLine,%w%,nvaki.inf_amd64_0d6c6fe0d070c433,Append
+If,%CheckBox_nvami%,Equal,True,TxtAddLine,%w%,nvami.inf_amd64_1169c9c03f813a3b,Append
+If,%CheckBox_nvaoi%,Equal,True,TxtAddLine,%w%,nvaoi.inf_amd64_638591bed4bb1bef,Append
+If,%CheckBox_nvbli%,Equal,True,TxtAddLine,%w%,nvbli.inf_amd64_9f0cfae7d3572a47,Append
+If,%CheckBox_nvcli%,Equal,True,TxtAddLine,%w%,nvcli.inf_amd64_f31a98417598c9a8,Append
+If,%CheckBox_nvcti%,Equal,True,TxtAddLine,%w%,nvcti.inf_amd64_4f310eef2a9e684c,Append
+If,%CheckBox_nvcvi%,Equal,True,TxtAddLine,%w%,nvcvi.inf_amd64_34843c00364aed5f,Append
+If,%CheckBox_nvddi%,Equal,True,TxtAddLine,%w%,nvddi.inf_amd64_379d20b312705bb2,Append
+If,%CheckBox_nvdmi%,Equal,True,TxtAddLine,%w%,nvdmi.inf_amd64_98e7bd8e4fe868bb,Append
+If,%CheckBox_nvemi%,Equal,True,TxtAddLine,%w%,nvemi.inf_amd64_62d5b70c91e698c2,Append
+If,%CheckBox_nvfmi%,Equal,True,TxtAddLine,%w%,nvfmi.inf_amd64_a561a16902afb22f,Append
+If,%CheckBox_nvfxi%,Equal,True,TxtAddLine,%w%,nvfxi.inf_amd64_a007c6f2a9f331b7,Append
+If,%CheckBox_nvgbdi%,Equal,True,TxtAddLine,%w%,nvgbdi.inf_amd64_644b0401711a175e,Append
+If,%CheckBox_nvgbi%,Equal,True,TxtAddLine,%w%,nvgbi.inf_amd64_376c42db9826381c,Append
+If,%CheckBox_nvgei%,Equal,True,TxtAddLine,%w%,nvgei.inf_amd64_e567f4d97bea3865,Append
+If,%CheckBox_nvhdci%,Equal,True,TxtAddLine,%w%,nvhdci.inf_amd64_36a7faa4a571b430,Append
+If,%CheckBox_nvhmi%,Equal,True,TxtAddLine,%w%,nvhmi.inf_amd64_d1861ccad912cb1d,Append
+If,%CheckBox_nvhwi%,Equal,True,TxtAddLine,%w%,nvhwi.inf_amd64_da3b5239211f88eb,Append
+If,%CheckBox_nvivi%,Equal,True,TxtAddLine,%w%,nvivi.inf_amd64_83d7ac2370288302,Append
+If,%CheckBox_nvjai%,Equal,True,TxtAddLine,%w%,nvjai.inf_amd64_5d18005983db3879,Append
+If,%CheckBox_nvjwi%,Equal,True,TxtAddLine,%w%,nvjwi.inf_amd64_19900670a36eb2af,Append
+If,%CheckBox_nvlai%,Equal,True,TxtAddLine,%w%,nvlai.inf_amd64_4266e4e2491a6741,Append
+If,%CheckBox_nvlbhi%,Equal,True,TxtAddLine,%w%,nvlbhi.inf_amd64_ac0cf46a26c8ef1c,Append
+If,%CheckBox_nvlei%,Equal,True,TxtAddLine,%w%,nvlei.inf_amd64_f840755f339ebe24,Append
+If,%CheckBox_nvlgi%,Equal,True,TxtAddLine,%w%,nvlgi.inf_amd64_745f808722d23147,Append
+If,%CheckBox_nvloi%,Equal,True,TxtAddLine,%w%,nvloi.inf_amd64_161aec9f1f4e6164,Append
+If,%CheckBox_nvlti%,Equal,True,TxtAddLine,%w%,nvlti.inf_amd64_acab2825cc304213,Append
+If,%CheckBox_nvmdi%,Equal,True,TxtAddLine,%w%,nvmdi.inf_amd64_e1a015558788bda1,Append
+If,%CheckBox_nvmii%,Equal,True,TxtAddLine,%w%,nvmii.inf_amd64_5a563dd3ea916dac,Append
+If,%CheckBox_nvmmi%,Equal,True,TxtAddLine,%w%,nvmmi.inf_amd64_79b3862e12da9814,Append
+If,%CheckBox_nvmoi%,Equal,True,TxtAddLine,%w%,nvmoi.inf_amd64_2e888f1070e897d1,Append
+If,%CheckBox_nvmsoai%,Equal,True,TxtAddLine,%w%,nvmsoai.inf_amd64_bfabc68121479916,Append
+If,%CheckBox_nvmsoi%,Equal,True,TxtAddLine,%w%,nvmsoi.inf_amd64_7f4a4f22dc671db7,Append
+If,%CheckBox_nvmtci%,Equal,True,TxtAddLine,%w%,nvmtci.inf_amd64_ee613dcd17aff69a,Append
+If,%CheckBox_nvmti%,Equal,True,TxtAddLine,%w%,nvmti.inf_amd64_3a04b5abac2b526e,Append
+If,%CheckBox_nvndi%,Equal,True,TxtAddLine,%w%,nvndi.inf_amd64_7ed37f3e58297655,Append
+If,%CheckBox_nvpcdi%,Equal,True,TxtAddLine,%w%,nvpcdi.inf_amd64_90287f8b21d3e58e,Append
+If,%CheckBox_nvpgi%,Equal,True,TxtAddLine,%w%,nvpgi.inf_amd64_ea7d6e58ee896177,Append
+If,%CheckBox_nvpmi%,Equal,True,TxtAddLine,%w%,nvpmi.inf_amd64_1576ebf3c3d94bf9,Append
+If,%CheckBox_nvqui%,Equal,True,TxtAddLine,%w%,nvqui.inf_amd64_c69c36a163f1535a,Append
+If,%CheckBox_nvrfi%,Equal,True,TxtAddLine,%w%,nvrfi.inf_amd64_febfeced77751be4,Append
+If,%CheckBox_nvrzi%,Equal,True,TxtAddLine,%w%,nvrzi.inf_amd64_97a4029d48fd5f57,Append
+If,%CheckBox_nvsai%,Equal,True,TxtAddLine,%w%,nvsai.inf_amd64_6b8b3761c53643b0,Append
+If,%CheckBox_nvsmi%,Equal,True,TxtAddLine,%w%,nvsmi.inf_amd64_38c3d866e4f995b1,Append
+If,%CheckBox_nvspi%,Equal,True,TxtAddLine,%w%,nvspi.inf_amd64_4a631760f99d406a,Append
+If,%CheckBox_nvszni%,Equal,True,TxtAddLine,%w%,nvszni.inf_amd64_673e339ea48d1f81,Append
+If,%CheckBox_nvszqi%,Equal,True,TxtAddLine,%w%,nvszqi.inf_amd64_defd05c2d9b37b48,Append
+If,%CheckBox_nvtdi%,Equal,True,TxtAddLine,%w%,nvtdi.inf_amd64_c5e06dc2e1d8f5c3,Append
+If,%CheckBox_nvtfi%,Equal,True,TxtAddLine,%w%,nvtfi.inf_amd64_2baedacb90dc4042,Append
+If,%CheckBox_nvtnii%,Equal,True,TxtAddLine,%w%,nvtnii.inf_amd64_3d83c756d8fcf375,Append
+If,%CheckBox_nvtsi%,Equal,True,TxtAddLine,%w%,nvtsi.inf_amd64_305d8377faf032b1,Append
+If,%CheckBox_nvvidi%,Equal,True,TxtAddLine,%w%,nvvidi.inf_amd64_63945755428a851f,Append
+If,%CheckBox_nvwii%,Equal,True,TxtAddLine,%w%,nvwii.inf_amd64_597a47cf78aa7e17,Append
+//-
+Run,%ScriptFile%,Extract_Direct_FileRepository_7z_Wim,%w%
+//-
+Echo,"Copy in Target_Win\Inf - Start"
+If,%CheckBox_nvaci%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaci.inf_amd64_cb35257211982e1b\nvaci.inf,%Target_Win%\Inf
+If,%CheckBox_nvaei%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaei.inf_amd64_3f5ff664b3bac259\nvaei.inf,%Target_Win%\Inf
+If,%CheckBox_nvaki%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaki.inf_amd64_0d6c6fe0d070c433\nvaki.inf,%Target_Win%\Inf
+If,%CheckBox_nvami%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvami.inf_amd64_1169c9c03f813a3b\nvami.inf,%Target_Win%\Inf
+If,%CheckBox_nvaoi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvaoi.inf_amd64_638591bed4bb1bef\nvaoi.inf,%Target_Win%\Inf
+If,%CheckBox_nvbli%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvbli.inf_amd64_9f0cfae7d3572a47\nvbli.inf,%Target_Win%\Inf
+If,%CheckBox_nvcli%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvcli.inf_amd64_f31a98417598c9a8\nvcli.inf,%Target_Win%\Inf
+If,%CheckBox_nvcti%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvcti.inf_amd64_4f310eef2a9e684c\nvcti.inf,%Target_Win%\Inf
+If,%CheckBox_nvcvi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvcvi.inf_amd64_34843c00364aed5f\nvcvi.inf,%Target_Win%\Inf
+If,%CheckBox_nvddi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvddi.inf_amd64_379d20b312705bb2\nvddi.inf,%Target_Win%\Inf
+If,%CheckBox_nvdmi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvdmi.inf_amd64_98e7bd8e4fe868bb\nvdmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvemi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvemi.inf_amd64_62d5b70c91e698c2\nvemi.inf,%Target_Win%\Inf
+If,%CheckBox_nvfmi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvfmi.inf_amd64_a561a16902afb22f\nvfmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvfxi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvfxi.inf_amd64_a007c6f2a9f331b7\nvfxi.inf,%Target_Win%\Inf
+If,%CheckBox_nvgbdi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvgbdi.inf_amd64_644b0401711a175e\nvgbdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvgbi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvgbi.inf_amd64_376c42db9826381c\nvgbi.inf,%Target_Win%\Inf
+If,%CheckBox_nvgei%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvgei.inf_amd64_e567f4d97bea3865\nvgei.inf,%Target_Win%\Inf
+If,%CheckBox_nvhdci%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvhdci.inf_amd64_36a7faa4a571b430\nvhdci.inf,%Target_Win%\Inf
+If,%CheckBox_nvhmi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvhmi.inf_amd64_d1861ccad912cb1d\nvhmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvhwi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvhwi.inf_amd64_da3b5239211f88eb\nvhwi.inf,%Target_Win%\Inf
+If,%CheckBox_nvivi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvivi.inf_amd64_83d7ac2370288302\nvivi.inf,%Target_Win%\Inf
+If,%CheckBox_nvjai%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvjai.inf_amd64_5d18005983db3879\nvjai.inf,%Target_Win%\Inf
+If,%CheckBox_nvjwi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvjwi.inf_amd64_19900670a36eb2af\nvjwi.inf,%Target_Win%\Inf
+If,%CheckBox_nvlai%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlai.inf_amd64_4266e4e2491a6741\nvlai.inf,%Target_Win%\Inf
+If,%CheckBox_nvlbhi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlbhi.inf_amd64_ac0cf46a26c8ef1c\nvlbhi.inf,%Target_Win%\Inf
+If,%CheckBox_nvlei%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlei.inf_amd64_f840755f339ebe24\nvlei.inf,%Target_Win%\Inf
+If,%CheckBox_nvlgi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlgi.inf_amd64_745f808722d23147\nvlgi.inf,%Target_Win%\Inf
+If,%CheckBox_nvloi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvloi.inf_amd64_161aec9f1f4e6164\nvloi.inf,%Target_Win%\Inf
+If,%CheckBox_nvlti%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvlti.inf_amd64_acab2825cc304213\nvlti.inf,%Target_Win%\Inf
+If,%CheckBox_nvmdi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmdi.inf_amd64_e1a015558788bda1\nvmdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmii%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmii.inf_amd64_5a563dd3ea916dac\nvmii.inf,%Target_Win%\Inf
+If,%CheckBox_nvmmi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmmi.inf_amd64_79b3862e12da9814\nvmmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmoi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmoi.inf_amd64_2e888f1070e897d1\nvmoi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmsoai%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmsoai.inf_amd64_bfabc68121479916\nvmsoai.inf,%Target_Win%\Inf
+If,%CheckBox_nvmsoi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmsoi.inf_amd64_7f4a4f22dc671db7\nvmsoi.inf,%Target_Win%\Inf
+If,%CheckBox_nvmtci%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmtci.inf_amd64_ee613dcd17aff69a\nvmtci.inf,%Target_Win%\Inf
+If,%CheckBox_nvmti%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvmti.inf_amd64_3a04b5abac2b526e\nvmti.inf,%Target_Win%\Inf
+If,%CheckBox_nvndi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvndi.inf_amd64_7ed37f3e58297655\nvndi.inf,%Target_Win%\Inf
+If,%CheckBox_nvpcdi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvpcdi.inf_amd64_90287f8b21d3e58e\nvpcdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvpgi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvpgi.inf_amd64_ea7d6e58ee896177\nvpgi.inf,%Target_Win%\Inf
+If,%CheckBox_nvpmi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvpmi.inf_amd64_1576ebf3c3d94bf9\nvpmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvqui%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvqui.inf_amd64_c69c36a163f1535a\nvqui.inf,%Target_Win%\Inf
+If,%CheckBox_nvrfi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvrfi.inf_amd64_febfeced77751be4\nvrfi.inf,%Target_Win%\Inf
+If,%CheckBox_nvrzi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvrzi.inf_amd64_97a4029d48fd5f57\nvrzi.inf,%Target_Win%\Inf
+If,%CheckBox_nvsai%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvsai.inf_amd64_6b8b3761c53643b0\nvsai.inf,%Target_Win%\Inf
+If,%CheckBox_nvsmi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvsmi.inf_amd64_38c3d866e4f995b1\nvsmi.inf,%Target_Win%\Inf
+If,%CheckBox_nvspi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvspi.inf_amd64_4a631760f99d406a\nvspi.inf,%Target_Win%\Inf
+If,%CheckBox_nvszni%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvszni.inf_amd64_673e339ea48d1f81\nvszni.inf,%Target_Win%\Inf
+If,%CheckBox_nvszqi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvszqi.inf_amd64_defd05c2d9b37b48\nvszqi.inf,%Target_Win%\Inf
+If,%CheckBox_nvtdi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtdi.inf_amd64_c5e06dc2e1d8f5c3\nvtdi.inf,%Target_Win%\Inf
+If,%CheckBox_nvtfi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtfi.inf_amd64_2baedacb90dc4042\nvtfi.inf,%Target_Win%\Inf
+If,%CheckBox_nvtnii%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtnii.inf_amd64_3d83c756d8fcf375\nvtnii.inf,%Target_Win%\Inf
+If,%CheckBox_nvtsi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvtsi.inf_amd64_305d8377faf032b1\nvtsi.inf,%Target_Win%\Inf
+If,%CheckBox_nvvidi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvvidi.inf_amd64_63945755428a851f\nvvidi.inf,%Target_Win%\Inf
+If,%CheckBox_nvwii%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nvwii.inf_amd64_597a47cf78aa7e17\nvwii.inf,%Target_Win%\Inf
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977\nv_desktop_ref4i.inf,%Target_Win%\Inf
+If,%CheckBox_nv_dispi%,Equal,True,FileCopy,%Target_Sys%\DriverStore\FileRepository\nv_dispi.inf_amd64_251698bc642c37cb\nv_dispi.inf,%Target_Win%\Inf
+Echo,"Copy in Target_Win\Inf - Finish"
+//-
+Echo,"Add Registry - Start"
+RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
+System,FileRedirect,OFF
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_desktop_ref4i.inf_amd64_3447f5e15b7d8977.Reg.txt#$q"
+If,%CheckBox_nv_dispi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_dispi.inf_amd64_251698bc642c37cb.Reg.txt#$q"
+If,%CheckBox_nvaci%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaci.inf_amd64_cb35257211982e1b.Reg.txt#$q"
+If,%CheckBox_nvaei%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaei.inf_amd64_3f5ff664b3bac259.Reg.txt#$q"
+If,%CheckBox_nvaki%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaki.inf_amd64_0d6c6fe0d070c433.Reg.txt#$q"
+If,%CheckBox_nvami%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvami.inf_amd64_1169c9c03f813a3b.Reg.txt#$q"
+If,%CheckBox_nvaoi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvaoi.inf_amd64_638591bed4bb1bef.Reg.txt#$q"
+If,%CheckBox_nvbli%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvbli.inf_amd64_9f0cfae7d3572a47.Reg.txt#$q"
+If,%CheckBox_nvcli%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcli.inf_amd64_f31a98417598c9a8.Reg.txt#$q"
+If,%CheckBox_nvcti%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcti.inf_amd64_4f310eef2a9e684c.Reg.txt#$q"
+If,%CheckBox_nvcvi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvcvi.inf_amd64_34843c00364aed5f.Reg.txt#$q"
+If,%CheckBox_nvddi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvddi.inf_amd64_379d20b312705bb2.Reg.txt#$q"
+If,%CheckBox_nvdmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvdmi.inf_amd64_98e7bd8e4fe868bb.Reg.txt#$q"
+If,%CheckBox_nvemi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvemi.inf_amd64_62d5b70c91e698c2.Reg.txt#$q"
+If,%CheckBox_nvfmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfmi.inf_amd64_a561a16902afb22f.Reg.txt#$q"
+If,%CheckBox_nvfxi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvfxi.inf_amd64_a007c6f2a9f331b7.Reg.txt#$q"
+If,%CheckBox_nvgbdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbdi.inf_amd64_644b0401711a175e.Reg.txt#$q"
+If,%CheckBox_nvgbi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgbi.inf_amd64_376c42db9826381c.Reg.txt#$q"
+If,%CheckBox_nvgei%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvgei.inf_amd64_e567f4d97bea3865.Reg.txt#$q"
+If,%CheckBox_nvhdci%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhdci.inf_amd64_36a7faa4a571b430.Reg.txt#$q"
+If,%CheckBox_nvhmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhmi.inf_amd64_d1861ccad912cb1d.Reg.txt#$q"
+If,%CheckBox_nvhwi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvhwi.inf_amd64_da3b5239211f88eb.Reg.txt#$q"
+If,%CheckBox_nvivi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvivi.inf_amd64_83d7ac2370288302.Reg.txt#$q"
+If,%CheckBox_nvjai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjai.inf_amd64_5d18005983db3879.Reg.txt#$q"
+If,%CheckBox_nvjwi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvjwi.inf_amd64_19900670a36eb2af.Reg.txt#$q"
+If,%CheckBox_nvlai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlai.inf_amd64_4266e4e2491a6741.Reg.txt#$q"
+If,%CheckBox_nvlbhi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlbhi.inf_amd64_ac0cf46a26c8ef1c.Reg.txt#$q"
+If,%CheckBox_nvlei%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlei.inf_amd64_f840755f339ebe24.Reg.txt#$q"
+If,%CheckBox_nvlgi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlgi.inf_amd64_745f808722d23147.Reg.txt#$q"
+If,%CheckBox_nvloi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvloi.inf_amd64_161aec9f1f4e6164.Reg.txt#$q"
+If,%CheckBox_nvlti%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvlti.inf_amd64_acab2825cc304213.Reg.txt#$q"
+If,%CheckBox_nvmdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmdi.inf_amd64_e1a015558788bda1.Reg.txt#$q"
+If,%CheckBox_nvmii%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmii.inf_amd64_5a563dd3ea916dac.Reg.txt#$q"
+If,%CheckBox_nvmmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmmi.inf_amd64_79b3862e12da9814.Reg.txt#$q"
+If,%CheckBox_nvmoi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmoi.inf_amd64_2e888f1070e897d1.Reg.txt#$q"
+If,%CheckBox_nvmsoai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoai.inf_amd64_bfabc68121479916.Reg.txt#$q"
+If,%CheckBox_nvmsoi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmsoi.inf_amd64_7f4a4f22dc671db7.Reg.txt#$q"
+If,%CheckBox_nvmtci%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmtci.inf_amd64_ee613dcd17aff69a.Reg.txt#$q"
+If,%CheckBox_nvmti%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvmti.inf_amd64_3a04b5abac2b526e.Reg.txt#$q"
+If,%CheckBox_nvndi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvndi.inf_amd64_7ed37f3e58297655.Reg.txt#$q"
+If,%CheckBox_nvpcdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpcdi.inf_amd64_90287f8b21d3e58e.Reg.txt#$q"
+If,%CheckBox_nvpgi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpgi.inf_amd64_ea7d6e58ee896177.Reg.txt#$q"
+If,%CheckBox_nvpmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvpmi.inf_amd64_1576ebf3c3d94bf9.Reg.txt#$q"
+If,%CheckBox_nvqui%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvqui.inf_amd64_c69c36a163f1535a.Reg.txt#$q"
+If,%CheckBox_nvrfi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrfi.inf_amd64_febfeced77751be4.Reg.txt#$q"
+If,%CheckBox_nvrzi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvrzi.inf_amd64_97a4029d48fd5f57.Reg.txt#$q"
+If,%CheckBox_nvsai%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsai.inf_amd64_6b8b3761c53643b0.Reg.txt#$q"
+If,%CheckBox_nvsmi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvsmi.inf_amd64_38c3d866e4f995b1.Reg.txt#$q"
+If,%CheckBox_nvspi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvspi.inf_amd64_4a631760f99d406a.Reg.txt#$q"
+If,%CheckBox_nvszni%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszni.inf_amd64_673e339ea48d1f81.Reg.txt#$q"
+If,%CheckBox_nvszqi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvszqi.inf_amd64_defd05c2d9b37b48.Reg.txt#$q"
+If,%CheckBox_nvtdi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtdi.inf_amd64_c5e06dc2e1d8f5c3.Reg.txt#$q"
+If,%CheckBox_nvtfi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtfi.inf_amd64_2baedacb90dc4042.Reg.txt#$q"
+If,%CheckBox_nvtnii%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtnii.inf_amd64_3d83c756d8fcf375.Reg.txt#$q"
+If,%CheckBox_nvtsi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvtsi.inf_amd64_305d8377faf032b1.Reg.txt#$q"
+If,%CheckBox_nvvidi%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvvidi.inf_amd64_63945755428a851f.Reg.txt#$q"
+If,%CheckBox_nvwii%,Equal,True,ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nvwii.inf_amd64_597a47cf78aa7e17.Reg.txt#$q"
+System,FileRedirect,ON
+RegHiveUnLoad,Tmp_Drivers
+Echo,"Add Registry - Finish"
+
+[Process_10_x86]
+
+[Process_10_x86_ALL_Direct_FileRepository]
+
+[Process_10_x86_Select_Basic]
+
+[Process_10_x86_Select_Direct]
+
+[Process_10_x64_ALL_Direct_FileRepository]
+
+[Process_10_x64_Select_Basic]
+
+[Process_10_x64_Select_Direct]
+
+[Process_PnpUtil_ALL]
+Set,%ProgramTitle%,"PnpUtil_%ProgramFolder% All"
+Set,%ProgramEXE%,"PnpUtil_%ProgramFolder% ALL.cmd"
+Set,%w%,"%Target_Sys%\PnpUtil_%ProgramFolder% ALL.cmd"
+Call,FileCreateBlank,%w%,OverWrite
+//-
+TxtAddLine,%w%,"Title %ProgramFolder% ALL",Append
+TxtAddLine,%w%,"Echo %ProgramFolder% ALL",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nv_desktop_ref4i.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nv_dispi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaci.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaei.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaki.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvami.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaoi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvbli.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvcli.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvcti.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvcvi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvddi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvdmi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvemi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvfmi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvfxi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvgbdi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvgbi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvgei.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvhdci.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvhmi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvhwi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvivi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvjai.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvjwi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlai.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlbhi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlei.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlgi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvloi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlti.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmdi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmii.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmmi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmoi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmsoai.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmsoi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmtci.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmti.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvndi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvpcdi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvpgi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvpmi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvqui.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvrfi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvrzi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvsai.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvsmi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvspi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvszni.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvszqi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtdi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtfi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtnii.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtsi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvvidi.inf#$q /install",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvwii.inf#$q /install",Append
+TxtAddLine,%w%,"Echo Proccessed>#$q#$pTemp#$p\#$p~nx0_Proccessed.txt#$q",Append
+TxtAddLine,%w%,"Exit",Append
+TxtAddLine,%w%,"Cmd",Append
+TxtAddLine,%w%,"Echo Proccessed>#$q#$pTemp#$p\#$p~nx0_Proccessed.txt#$q",Append
+
+[Process_PnpUtil_Select]
+Set,%ProgramTitle%,"PnpUtil_%ProgramFolder% Select"
+Set,%ProgramEXE%,"PnpUtil_%ProgramFolder% Select.cmd"
+Set,%w%,"%Target_Sys%\PnpUtil_%ProgramFolder% Select.cmd"
+Call,FileCreateBlank,%w%,OverWrite
+//-
+TxtAddLine,%w%,"Title %ProgramFolder% Select",Append
+TxtAddLine,%w%,"Echo %ProgramFolder% Select",Append
+If,%CheckBox_nv_desktop_ref4i%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nv_desktop_ref4i.inf#$q /install",Append
+If,%CheckBox_nv_dispi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nv_dispi.inf#$q /install",Append
+If,%CheckBox_nvaci%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaci.inf#$q /install",Append
+If,%CheckBox_nvaei%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaei.inf#$q /install",Append
+If,%CheckBox_nvaki%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaki.inf#$q /install",Append
+If,%CheckBox_nvami%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvami.inf#$q /install",Append
+If,%CheckBox_nvaoi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvaoi.inf#$q /install",Append
+If,%CheckBox_nvbli%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvbli.inf#$q /install",Append
+If,%CheckBox_nvcli%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvcli.inf#$q /install",Append
+If,%CheckBox_nvcti%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvcti.inf#$q /install",Append
+If,%CheckBox_nvcvi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvcvi.inf#$q /install",Append
+If,%CheckBox_nvddi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvddi.inf#$q /install",Append
+If,%CheckBox_nvdmi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvdmi.inf#$q /install",Append
+If,%CheckBox_nvemi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvemi.inf#$q /install",Append
+If,%CheckBox_nvfmi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvfmi.inf#$q /install",Append
+If,%CheckBox_nvfxi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvfxi.inf#$q /install",Append
+If,%CheckBox_nvgbdi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvgbdi.inf#$q /install",Append
+If,%CheckBox_nvgbi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvgbi.inf#$q /install",Append
+If,%CheckBox_nvgei%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvgei.inf#$q /install",Append
+If,%CheckBox_nvhdci%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvhdci.inf#$q /install",Append
+If,%CheckBox_nvhmi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvhmi.inf#$q /install",Append
+If,%CheckBox_nvhwi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvhwi.inf#$q /install",Append
+If,%CheckBox_nvivi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvivi.inf#$q /install",Append
+If,%CheckBox_nvjai%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvjai.inf#$q /install",Append
+If,%CheckBox_nvjwi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvjwi.inf#$q /install",Append
+If,%CheckBox_nvlai%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlai.inf#$q /install",Append
+If,%CheckBox_nvlbhi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlbhi.inf#$q /install",Append
+If,%CheckBox_nvlei%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlei.inf#$q /install",Append
+If,%CheckBox_nvlgi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlgi.inf#$q /install",Append
+If,%CheckBox_nvloi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvloi.inf#$q /install",Append
+If,%CheckBox_nvlti%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvlti.inf#$q /install",Append
+If,%CheckBox_nvmdi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmdi.inf#$q /install",Append
+If,%CheckBox_nvmii%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmii.inf#$q /install",Append
+If,%CheckBox_nvmmi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmmi.inf#$q /install",Append
+If,%CheckBox_nvmoi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmoi.inf#$q /install",Append
+If,%CheckBox_nvmsoai%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmsoai.inf#$q /install",Append
+If,%CheckBox_nvmsoi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmsoi.inf#$q /install",Append
+If,%CheckBox_nvmtci%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmtci.inf#$q /install",Append
+If,%CheckBox_nvmti%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvmti.inf#$q /install",Append
+If,%CheckBox_nvndi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvndi.inf#$q /install",Append
+If,%CheckBox_nvpcdi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvpcdi.inf#$q /install",Append
+If,%CheckBox_nvpgi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvpgi.inf#$q /install",Append
+If,%CheckBox_nvpmi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvpmi.inf#$q /install",Append
+If,%CheckBox_nvqui%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvqui.inf#$q /install",Append
+If,%CheckBox_nvrfi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvrfi.inf#$q /install",Append
+If,%CheckBox_nvrzi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvrzi.inf#$q /install",Append
+If,%CheckBox_nvsai%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvsai.inf#$q /install",Append
+If,%CheckBox_nvsmi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvsmi.inf#$q /install",Append
+If,%CheckBox_nvspi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvspi.inf#$q /install",Append
+If,%CheckBox_nvszni%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvszni.inf#$q /install",Append
+If,%CheckBox_nvszqi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvszqi.inf#$q /install",Append
+If,%CheckBox_nvtdi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtdi.inf#$q /install",Append
+If,%CheckBox_nvtfi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtfi.inf#$q /install",Append
+If,%CheckBox_nvtnii%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtnii.inf#$q /install",Append
+If,%CheckBox_nvtsi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvtsi.inf#$q /install",Append
+If,%CheckBox_nvvidi%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvvidi.inf#$q /install",Append
+If,%CheckBox_nvwii%,Equal,True,TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nvwii.inf#$q /install",Append
+TxtAddLine,%w%,"Echo Proccessed>#$q#$pTemp#$p\#$p~nx0_Proccessed.txt#$q",Append
+TxtAddLine,%w%,"Exit",Append
+TxtAddLine,%w%,"Cmd",Append
+TxtAddLine,%w%,"Echo Proccessed>#$q#$pTemp#$p\#$p~nx0_Proccessed.txt#$q",Append
+
+[Process_Add_Shortcut]
+Set,%ProgramFolder_Backup%,%ProgramFolder%
+Set,%PE_Programs%,#$pSystemRoot#$p\system32
+Set,%ProgramFolder%,""
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun,,,,,,,2
+If,%pCheckBox4%,Equal,True,Begin
+If,Not,ExistFile,%Target_Sys%\HideRun.exe,Require,File,HideRun.exe
+End
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\HideRun.exe,%ProgramTitle%,#$q%PE_Programs%\%ProgramFolder%#$q,"/w #$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+//StartupBeforeShellCMD Experimental
+If,%pCheckBox4%,Equal,True,Add,StartupBeforeShellCMD,,,"HideRun.exe /w #$q#$pSystemRoot#$p\system32\%ProgramEXE%#$q"
+Set,%ProgramFolder%,%ProgramFolder_Backup%
+
+[Process_Example_CANCEL]
+//Not used by current plugin - only an example to demonstrate how to use a Driver Plugin.
+Run,%ScriptFile%,Extract
+//-
+Set,%w%,"%Target_Sys%\PnpUtil_%ProgramFolder% Select_nv_dispi.cmd"
+Call,FileCreateBlank,%w%,OverWrite
+TxtAddLine,%w%,"Title %ProgramFolder% Select",Append
+TxtAddLine,%w%,"Echo %ProgramFolder% Select",Append
+TxtAddLine,%w%,"pnputil.exe /add-driver #$q#$pSystemRoot#$p\inf\nv_dispi.inf#$q /install",Append
+//Echo Proccessed>"%Temp%\%~nx0_Proccessed.txt"
+TxtAddLine,%w%,"Echo Proccessed>#$q#$pTemp#$p\#$p~nx0_Proccessed.txt#$q",Append
+TxtAddLine,%w%,"Exit",Append
+TxtAddLine,%w%,"Cmd",Append
+TxtAddLine,%w%,"Echo Proccessed>#$q#$pTemp#$p\#$p~nx0_Proccessed.txt#$q",Append
+//-
+Run,%ScriptFile%,Process_FileRepository,nv_dispi.inf_amd64_516e31f1e58fddf5
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\nv_dispi.inf_amd64_251698bc642c37cb\nv_dispi.inf,%Target_Win%\Inf
+RegHiveLoad,Tmp_Drivers,%Target_Sys%\config\Drivers
+System,FileRedirect,OFF
+ShellExecute,Hide,regedit.exe,"/s #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg\nv_dispi.inf_amd64_516e31f1e58fddf5.Reg.txt#$q"
+System,FileRedirect,ON
+RegHiveUnLoad,Tmp_Drivers
+
+[Process_FileRepository]
+If,ExistDir,%Target_Sys%\DriverStore\FileRepository\#1,Echo,"\DriverStore\FileRepository\#1 Exists - Replaced by current files",Warn
+If,ExistDir,%Target_Sys%\DriverStore\FileRepository\#1,Call,DirDelete,%Target_Sys%\DriverStore\FileRepository\#1
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\#1,%Target_Sys%\DriverStore\FileRepository
+
+[Extract]
+//par1 optional 7z ListFiles txt par2: with par1 par2 values 7z or wim
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%FileContainer%,Folder,Reg.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg#$q"
+ExtractFile,%FileContainer%,Folder,FileRepository.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//-
+If,#1-,Equal,-,Begin
+Echo,"Extract FileRepository.7z - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository#$q"
+Echo,"Extract FileRepository.7z - Finish - Wait Patiently"
+If,ExistFile,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\FileRepository.wim,Begin
+Echo,"Extract FileRepository.wim - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\FileRepository.wim#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository#$q"
+Echo,"Extract FileRepository.wim - Finish - Wait Patiently"
+End
+End
+Else,Begin
+If,#2,Equal,7z,Begin
+Echo,"Extract FileRepository.7z - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository#$q @#$q#1#$q"
+Echo,"Extract FileRepository.7z - Finish - Wait Patiently"
+End
+Else,Begin
+Echo,"Extract FileRepository.7z - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository#$q"
+Echo,"Extract FileRepository.7z - Finish - Wait Patiently"
+End
+//-
+If,ExistFile,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\FileRepository.wim,Begin
+If,#2,Equal,wim,Begin
+Echo,"Extract FileRepository.wim - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\FileRepository.wim#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository#$q  @#$q#1#$q"
+Echo,"Extract FileRepository.wim - Finish - Wait Patiently"
+End
+Else,Begin
+Echo,"Extract FileRepository.wim - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository\FileRepository.wim#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository#$q"
+Echo,"Extract FileRepository.wim - Finish - Wait Patiently"
+End
+End
+End
+//Extracting-7z-Finish
+
+[Extract_Direct_FileRepository_7z]
+//par1 optional 7z ListFiles txt
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%FileContainer%,Folder,Reg.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg#$q"
+ExtractFile,%FileContainer%,Folder,FileRepository.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//-
+Echo,"Extract FileRepository.7z - Start - Wait Patiently"
+If,#1-,Equal,-,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.7z#$q -y -o#$q%Target_Sys%\DriverStore\FileRepository#$q"
+End
+Else,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.7z#$q -y -o#$q%Target_Sys%\DriverStore\FileRepository#$q @#$q#1#$q"
+End
+Echo,"Extract FileRepository.7z - Finish - Wait Patiently"
+//Extracting-7z-Finish
+
+[Extract_Direct_FileRepository_7z_Wim]
+//par1 optional 7z ListFiles txt
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%FileContainer%,Folder,Reg.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\Reg#$q"
+ExtractFile,%FileContainer%,Folder,FileRepository.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//-
+Echo,"Extract FileRepository.7z - Start - Wait Patiently"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+Echo,"Extract FileRepository.7z - Finish - Wait Patiently"
+Echo,"Extract FileRepository.wim - Start - Wait Patiently"
+If,#1-,Equal,-,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.wim#$q -y -o#$q%Target_Sys%\DriverStore\FileRepository#$q"
+End
+Else,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\FileRepository.wim#$q -y -o#$q%Target_Sys%\DriverStore\FileRepository#$q @#$q#1#$q"
+End
+Echo,"Extract FileRepository.7z - Finish - Wait Patiently"
+//Extracting-7z-Finish
+
+[Launch_Program]
+Run,%ScriptFile%,Extract
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+
+[Edit_FileContainerPlugin_P_B]
+Call,StartDocNotePad,%FileContainer%
+
+[AuthorEncoded]
+418.81-notebook-win10-64bit-international-whql_0_048048.ico=2389,3186
+Logo=418.81-notebook-win10-64bit-international-whql_0_048048.ico
+
+[EncodedFile-AuthorEncoded-418.81-notebook-win10-64bit-international-whql_0_048048.ico]
+lines=0
+0=eJztmtlTW9cdx9XJW5/ygkBC+76vSAIEEqvYxGq2YGqwwWYxGAIxMbaLXU8XO10m48nWSeokrad23U5Tx3XSdtr0v2hn8lf4OX349vzOvefqInSJWeoxM5Xn43t1zrm/8zmr7kXS6b7D/sViOva/TffQrdPpdTqdj8GSdLM6KZ1eN926ii8ArzC+y9Az7AwfI/CS4ZPd9LLrKyr3V+Uy/YxlxjZjh3HjJWFHdiK3ouz6qqrfA8+ePVtaX7v4dSoZ+08o4EEo4EU4KBPyIfKCoTpF/eRCTuRGjsx1UW6DmDPF19dXv6YyVJ7HCPsRjQQQI6JBTnwPoWNid1xRH9VNDuQSkdtDjluXN/8tj0OVPKeW03WxbyR3P7+O4iRiYSTjjEQEdZzobpLHRHlcVhfVSXWTQ1xuC7mRI7ky5yWGTV4X29SuknuIX0ux2Jix8nFkUold1KeTx0p5fKqT6iYHciEn0QZyldeD2Gd2qF1RNk40bgnZXXhT/IZMHRrqSzTWp44VdWyqS7SJHMiFnMiNHMlVXtNib7pxAv1vqP1P4PzZ439S1m8l/6DfjePYP2OR4CGQ64mU9kx+JAfaO8v2T3It9w/4XDxdtOOgn1+lzxopfoDwHQF+vXDyKG5BOb2Svxp1+VKbKhOUXf1eJ7xuBzwuO9xOG1wKVgnHwXCzayiWz+PgsdV+5f6ULyhvy35QeYrvdUvO+serxw7FpTpEO4j9/L8NEYuclb52WOCwmVHF6jtunHYzq8d2LP4lbxsfXxpnp9sGWzYE02tNMFwdRM2VftR8fwjVb01A/6tzqPrD8pH8qV/cR/QXfS71N3Nm/W3NR2C8XIT+3hyvp/ruNCxm4x7MURdqC3EYlgu8TVW/WzyQv91qUubQYfzVfU79bUt6Ybg+VKrj98uouTUC40oXDFtF1FwdgGGtB8bTzTC1RWFxmne3J8LaM5RBzc4w9A+/vS1H8VfWJnOnPjcPpKG/f0GK/WgJxrk2WIIOWJkXUal+/W/Oo+baIEztUVgttbARVglLzA3juVboP5w9dn/J3SG52y2o/V4eVX+SYlZ/MANTQ0DyZj4m1p+GpU6YcmGY0j7e74aFDj6n1C41t8dhbo0ydxPsbF7T3Kaj1WODcTIL/Udn9/rbDu/vkd1NU81KvOp3pmEO2PlcMHUlUP3+GWX+mxqDqO2Kw1TvV+YLtaXmJ2Mlp89WYNjohc1n5/4U38H2GOpns8fK+0E9rw7jL9Yq7YuWQoLXyefCp/N8PZJX7WgDGw8pnXwIdb/RGBknsko7aM7rP5kv5b93Bha2bznEODB/vj68NlS/PXVo/9LnEVurQSf0H0v7C82d2u6E1Kdsnoh90bjYweeQRWP+V/9sEua4W167zl1joX+wAFMxxa+3OswwnslD/+vzR5o/6nlj2OwrzV22X5AD1UN9x9PuTMjr0bR3/ar2fRo3U3NIWi9s3Ro2VWPFxtBwqXvPWjmov7jX8XtdvP/tbC5Xs3lT/fklfqSxprVmHs0qafQZ4GDt5HOY5fF0GXNvCiZaw/L7mt8uwFofUNZs7XrvrvJaUGzaR8R9mZa/uIekMj723nJ9GMYn6xzzW69Jnmz/N9+Z5Gm1D5fhiHn5PZq4X1PK3xrl5QnLTBtqH12Urrk3D2c6yMvzWNuDMH6+rlxXCSpLfSru77X8xX043Q9TWdudKZiebHAsH5yDK+aDh/WDq5CC+d4FKf3DebiKGTa27N6TYXq8DtuPJ+GJeqV7Ub7/sr3q59NKLNdEnvcPj9XA9ts/ril5laDYdD/Pn2+Zn5Z/IhbixPlzZgDBRBDOH4zD+udNjv2ds/Alg/Cze2U6Oq+NlvI+ugDn9VH4cnF27+5RoHKOWxNKOdelIoIBKc8b9cN+d0bJ04Lu/yMh8UwY0vRPJaOcOvnZjZ6nqB3+Cz1wfbYBx9PLcH28hEBvI3PwcgKFDLybQ3B/ugTPL2YRorFLhBDIJ+Fb6IXz/gq/zvl4E77z3QgF6VnHB399FO5356S8L7Y4dK5GpNFzIz1Hkhf5afk3ZJIKyjM0I8meSeM9WfjfnoP7yzfh+fIKgtvjiDUl9zw7eh6swftonZcRZb135xDpbeJ9QWVCQzl47q/yfFFGHNWIfIqdSsbZc36Co+WfbUxzmhoz/NjYkGKk5b9pSG2Kn+tD8JNVBP5yFYEnWwj/cBrxqQISbfVItDdI6U+vIPBgHeGfnkV0sgPxWIQTy9YhfHUC/i+2eTm/ioCM+r040jM9/U2FfMhNyz/f3ICWXCOHzsX7XFM9mrMSWXZ9Izum5oqI/nIZkb9eR5hBx+i7i0ixNtTl6/m4EWnW5lShCYk3xhF9tKmUFYRVx3CF93ROf1/JNmS4Bzlp+be35jRpa2nmtOab0JLPIi+3sWmwA/UXR5G+PYcUIzPUjsxwBzIzRaS2TyP5/jLiT68h/rebh4b6PJ/L8vrJRcu/0Nmq0NXZVpFCRyuns6MFHe15uW051q5mXkf677eQYqRlUqpjqkKaOq8ckdeSa0J7W47XSW5a/r09nejrLeyC0spR0rs70dMl0V1oRyeL3fjVj3bzD5ny95XSvqqcTt4UX9Sv5T/Y31tioE9CnJenq9MY/X09rF1dyP/ztkJOg/L88vN8WXpvTwEDxR4O1aXlf2p44NCMDPVjaLDI4vfxevoZxb7uQ9Ov+PbxuBRf1KXlPzl+ijMxNsJRn1dC5Ivj+NgwYwRjo8Oc0ZEhjJ2SjgL1+/I8dbqIQVBcUQ+h5T89NXFkTv8PKK9Dy3/mzGnMzkzvi1aZSunPE+8gUDxCy39+bvZEUMF/h9KWFs9jcWGeo3WuhtJFXvmxPO15zp/3GtlffH/Ev7+jtNWVpROB7C++v+Pfn9bFw9+sXlzCxvolhc3X1/Z9L9K0yqnTK5WrFGu/ughyJFeUvj9Vvr8ePTWE9bUVbF3eeClhjnz/f/ONjX+h9P31rt8PUNsO8rf0F0kyEVH/fsAvu5/o32+c9N/P3NTxHwj9//WCXzfpP9bv/wWWEnsReJyzNjG00LMw1M3LL0lNys/P1i3PzDM00DUzScos0c3MK0ktykssyczPS8zRLc8ozIk3iDcwsQAivczkfIZRMOTBPlUIfYcDu3zzsqyvDEwAgMsYHlxrr04BAAAAAgAAAFUAAADcCAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp=737,983
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[DownloadXXX_Container]
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+Call,DownloadXQ,%FileContainer%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nLPyr6hMT83T9UzOzyvWyy9K14UKOCaXZAKFdFPyk0tzU/NKdFNTMkviDeINDM2ASC8pt4BhFAx9UMYCofOZsMvvyvLyYWACAL7jF4igD6oXAQAAAAIAAABOAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

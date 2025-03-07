@@ -4,16 +4,18 @@ Type=Plugin
 Author=apinux
 Description=Change 'My Computer' Name
 Credits=http://TheOven.org/index.php?topic=778
-Version=008
+Version=016
 Download_Level=1
 Level=3
-Selected=False
+Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=778
-Date=2017.11.24
+Date=2019.02.21
 Depend=
 Disable=
+Interface=Interface_Basic
+InterfaceList=Interface,Interface_Basic
 Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks%20Explorer/Exp%20MyComputer_Name.script
 Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks%20Explorer/Exp%20MyComputer_Name.script
 Web3=http://w8pese.cwcodes.net/Projects/Win8PESE/Tweaks/Exp%20MyComputer_Name.script
@@ -22,8 +24,14 @@ Web5=http://win10se.cwcodes.net/Projects/Win10PESE/Tweaks/Exp%20MyComputer_Name.
 CertifiedBy=
 Certification=
 HistoryNotes01=Back to Default Settings button hidden
-HistoryNotes02=Adding %UserName% variable not possible --> explorer starts without %UserName% available (same problem with RegAddBoot) result with "%UserName% on Gena" (=> here we do not mean depracated %UserName% on old builder)
+HistoryNotes02=Adding ALL Variables are possible now with "Custom Special" option. eg. %username% %computername%
+HistoryNotes02b=Reminding you can not add local with custom eg. %username% @%SystemRoot%\system32\shell32.dll,-33010
+HistoryNotes02c=OLD: FIXED with "Custom Special" ->Adding %UserName% variable not possible --> explorer starts without %UserName% available (same problem with RegAddBoot) result with "%UserName% on Gena" (=> here we do not mean depracated %UserName% on old builder)
 HistoryNotes03=Another way: Venerence Reply 4 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,Computer
+HistoryNotes04=RoyM: If you use wpeinit, pecmd and some other programs during boot of OS, They will reset the COMPUTERNAME. RoyM Reply 2: http://theoven.org/index.php?topic=2621.msg28908#msg28908
+HistoryNotes05=Also If you are using PENetwork check PENetwork.ini for related things.
+HistoryNotes06=Lancelot: Writing ComputerName\ComputerName,ComputerName ComputerName\ActiveComputerName,ComputerName values enough for cmd %ComputerName% -> reminding Session Manager\Environment",ComputerName overrides cmd %ComputerName%
+HistoryNotes07=Lancelot: ComputerName\ComputerName,ComputerName ComputerName\ActiveComputerName,ComputerName values -> If you exceed 15 charecters you will have "Your PC ran into a problem and needs to restart. We'll restart for you." -> Forever ReStart --> Tested Win10PESE by sandy (also no Special Characters by ChrisR )
 History002=Chris old Computer Name (on Win8 to change  "This PC" to "Computer" ) Reply 13 http://TheOven.org/index.php?topic=851.msg10894#msg10894 - 2014.01.30
 History003=Lancelot Added DU buttons - 2015.10.12
 History004=Lancelot Added New Servers - Date:2016.02.09
@@ -31,15 +39,58 @@ History005=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
 History006=Lancelot Changed Logo 48x48 jpg -- ied206 reply 5 - http://TheOven.org/index.php?topic=2082.msg23172#msg23172 - Date:2017.04.02
 History007=Lancelot Added Venerence Reply 4 Tmp_Default way --> does not require RegAddBoot with Gena  -> removed RegAddBoot // Improved Download // Improved ProjectName - Date:2017.09.01
 History008=Lancelot %UserName% deprecated ( use Call,HostUserName when required (Already used on plugin) ) - Date:2017.11.24
+History009=Lancelot Added HistoryNotes about troubles with changing ComputerName.... - Date:2018.11.01
+History010=Bob.Omb Old Computer name fix for v1809+ following ChrisR Reply 8 http://theoven.org/index.php?topic=2698.msg30614#msg30614 - Date:2019.01.06
+History011=Lancelot Fixed // After Win10_1809 Explorer do not take LocalizedString from {Default} -> {Default} used directly without conversion - APT topic post picture http://theoven.org/index.php?topic=2698.msg30577#msg30577 // 'Computer' name also exists at windows.storage.dll (not used for now besides lines ready commented out if required in future) - Date:2019.01.07
+History015=Lancelot Add Custom Special option // server fixed - Date:2019.01.07
+History016=Lancelot Add Environment_ComputerName Control_ComputerName_ActiveComputerName Tcpip_Hostname_NVHostname // Simplify Interface // 15 Characters and Special Character limitations Credits to sandy and ChrisR + Lancelot: Limitation seem to be only valid to ComputerName\ComputerName,ComputerName ComputerName\ActiveComputerName,ComputerName values - Date:2019.02.21
 
-[InterFace]
-pButton1="Back to Default Settings",0,8,255,243,156,25,Process_Default,0,False,False,_Process_Default_,False
-pRadioGroup1=Options:,1,14,31,40,238,91,"'HostUserName' on %ComputerName%",'ProjectName',"Old 'Computer' name Localized String",Custom,2
-pTextBox1=Custom:,1,0,93,151,158,21,Heyooooooo
+[Interface_Basic]
+Button_Int_I=a,1,8,429,243,14,14,P_Interface_I,0,False,False,_P_Interface_I_,False,"__Interface Advanced"
+Basic_I_RadioGroup=,1,14,21,6,97,46,'ProjectName',Custom,0
+Basic_I_Custom_TextBox=Custom,1,0,23,68,157,21,Heyooooooo
+Control_ComputerName_ActiveComputerName_Limitation_TextLabel="Limitation:#$xMax 15 Char#$xNo Special characters#$x\ / : * ? #$q < > |",1,1,135,10,122,55,8,Bold
 WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=778
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[InterFace]
+Button_Int_B="<-- Interface Basic",1,8,229,-1,102,25,P_Interface_B,0,False,False,_P_Interface_B_,False
+pButton1="Back to Default Settings",0,8,476,13,156,25,Process_Default,0,False,False,_Process_Default_,False
+Desktop_Icon_CheckBox="Desktop Icon:",1,3,22,60,87,18,True
+Desktop_Icon_Name_RadioGroup=Options:,1,14,31,83,238,91,"'HostUserName' on %ComputerName%",'ProjectName',"Old 'Computer' name Localized String",Custom,"Custom Special",1
+Desktop_Icon_Name_TextBox=Custom:,1,0,298,79,154,21,Heyooooooo
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=778
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+pTextFile1=Custom_Special.txt,1,6,296,153,184,38
+pTextLabel1="Custom Special: (use only ONE line).#$x (Special: You can use Variables.)",1,1,295,104,185,26,8,Normal
+Edit_Custom_Special_Button="Edit 'Custom Special'",1,8,294,133,130,20,Edit_Custom_Special_P_B,Oxygen-Icons_0_016016.bmp,False,False,_Edit_Custom_Special_P_B_,False,__Edit
+Desktop_Icon_Bevel=pBevel1,1,12,18,55,468,145
+Environment_ComputerName_Bevel=pBevel1,1,12,18,207,105,121
+Environment_ComputerName_CheckBox=Environment,1,3,22,211,89,14,True
+Environment_ComputerName_RadioGroup=,1,14,21,240,97,46,'ProjectName',Custom,0
+Environment_ComputerName_Custom_TextBox=Custom,1,0,23,302,90,21,RescueComputer
+Control_ComputerName_ActiveComputerName_Bevel=pBevel1,1,12,124,207,136,187
+Control_ComputerName_ActiveComputerName_CheckBox=,1,3,128,211,14,14,True
+Control_ComputerName_ActiveComputerName_TextLabel=ComputerName#$xActiveComputerName,1,1,144,209,110,26,8,Normal
+Control_ComputerName_ActiveComputerName_RadioGroup=,1,14,128,240,97,46,'ProjectName',Custom,0
+Control_ComputerName_ActiveComputerName_TextBox=Custom,1,0,129,302,90,21,Mamamiiiyaaaa
+Control_ComputerName_ActiveComputerName_Limitation_TextLabel="Limitation:#$xMax 15 Char#$xNo Special characters#$x\ / : * ? #$q < > |",1,1,130,332,122,54,8,Bold
+Tcpip_Hostname_NVHostname_Bevel=pBevel1,1,12,261,207,128,121
+Tcpip_Hostname_NVHostname_CheckBox=,1,3,265,211,14,14,True
+Tcpip_Hostname_NVHostname_TextLabel="TcpIP--NV Hostname#$xTcpIP--Hostname",1,1,280,210,115,54,8,Normal
+Tcpip_Hostname_NVHostname_RadioGroup=,1,14,264,237,97,46,'ProjectName',Custom,0
+Tcpip_Hostname_NVHostname_TextBox=Custom,1,0,266,302,90,21,TcpIPRescueMe
+
+[P_Interface_I]
+IniWrite,%ScriptFile%,Main,Interface,Interface
+System,RefreshInterface
+
+[P_Interface_B]
+IniWrite,%ScriptFile%,Main,Interface,Interface_Basic
+System,RefreshInterface
 
 [Variables]
 %wRegAddBoot%=0
@@ -49,7 +100,8 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
-If,%OSFamily%,Equal,NT5,Begin
+Call,TargetVersion,,4x
+If,%TargetVersion1%,Equal,5,Begin
 Set,%wRegAddBoot%,1
 IniRead,%ProjectDir%\script.project,IniVariables,RegFactoryState,%RegFactoryState%
 If,%RegFactoryState%,Equal,Enabled,Begin
@@ -62,16 +114,65 @@ End
 Run,%ScriptFile%,Process_Main
 
 [Process_Main]
+IniRead,%ScriptFile%,Main,Interface,%t%
+If,%t%,Equal,Interface,Run,%ScriptFile%,Process_Main_I
+If,%t%,Equal,Interface_Basic,Run,%ScriptFile%,Process_Main_Basic
+
+[Process_Main_Basic]
+If,%Version%,Smaller,80,Call,AddInterface,%ScriptFile%,Interface_Basic
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_Default,%RegDefault%
+RegHiveLoad,Tmp_System,%RegSystem%
 //-
-If,%pRadioGroup1%,Equal,0,Begin
+If,%Basic_I_RadioGroup%,Equal,0,Begin
+IniRead,%ProjectDir%\script.project,Main,Title,%PName%
+StrFormat,UCase,%PName%,%PNameUCase%
+StrFormat,Replace,%PNameUCase%," ",,%PNameUCase_NoSpace%
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,%PName%
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,%PName%
+//to avoid potential troubles following ms way -> Environment-ComputerName uppercase without space
+If,%NoWarnROW%,Equal,True,System,ErrorOff,5
+RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Session Manager\Environment",ComputerName,%PNameUCase_NoSpace%
+Run,%ScriptFile%,NoSpecial_Limit15,%PNameUCase_NoSpace%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ComputerName,ComputerName,%NoSpecialLimit15%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ActiveComputerName,ComputerName,%NoSpecialLimit15%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,"NV Hostname",%PName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,Hostname,%PName%
+End
+If,%Basic_I_RadioGroup%,Equal,1,Begin
+If,Not,%Basic_I_Custom_TextBox%-,Equal,-,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,3
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,%Basic_I_Custom_TextBox%
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,%Basic_I_Custom_TextBox%
+RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Session Manager\Environment",ComputerName,%Basic_I_Custom_TextBox%
+Run,%ScriptFile%,NoSpecial_Limit15,%Basic_I_Custom_TextBox%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ComputerName,ComputerName,%NoSpecialLimit15%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ActiveComputerName,ComputerName,%NoSpecialLimit15%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,"NV Hostname",%Basic_I_Custom_TextBox%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,Hostname,%Basic_I_Custom_TextBox%
+End
+End
+//-
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+RegHiveUnLoad,Tmp_System
+
+[Process_Main_I]
+Call,CompareVersions,%TargetVersion%,10.0.17763.1,Win10_1809
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+RegHiveLoad,Tmp_Default,%RegDefault%
+RegHiveLoad,Tmp_System,%RegSystem%
+//-
+If,%Desktop_Icon_CheckBox%,Equal,True,Begin
+If,%Desktop_Icon_Name_RadioGroup%,Equal,0,Begin
 //--
 //Adding %UserName% not possible -> here %UserName% uses HostUserName
 //Using HostUserName is still a good idea ex: "ChrisR on Win10PESE"
 //-
-//If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+//If,%NoWarnROW%,Equal,True,System,ErrorOff,2
 //RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
 //RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
 //--
@@ -89,66 +190,222 @@ If,%HostUserName%,Equal,System,Set,%t%,0
 If,%t%,Equal,1,Set,%UN%,%HostUserName%
 End
 //-
-If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
 RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%UN% on #$pCOMPUTERNAME#$p"
 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%UN% on #$pCOMPUTERNAME#$p"
 End
 //-
-If,%pRadioGroup1%,Equal,1,Begin
+If,%Desktop_Icon_Name_RadioGroup%,Equal,1,Begin
 IniRead,%ProjectDir%\script.project,Main,Title,%PName%
-If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
 RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%PName%"
 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%PName%"
 End
 //-
-If,%pRadioGroup1%,Equal,2,Begin
-If,%OSFamily%,Equal,NT5,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+If,%Desktop_Icon_Name_RadioGroup%,Equal,2,Begin
+If,%TargetVersion1%,Equal,5,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
 RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
 End
 Else,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF,2
+If,Not,%Win10_1809%,Equal,Smaller,Begin
+//After Win10_1809 Explorer do not expand LocalizedString from {Default} // 'Computer' also exists at windows.storage.dll
+//Require_FileQ,windows.storage.dll
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pwindir#$p\system32\windows.storage.dll,-9012"
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\windows.storage.dll,-9012"
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\windows.storage.dll,-9012"
+//RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"Test"
+//Following will screw up your HOST windows --- NEVER USE
+//Reg----NEVERUSE----Delete,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},
+System,FileRedirect,OFF
+ShellExecute,Hide,reg.exe,"Delete HKLM\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D} /ve /f"
+System,FileRedirect,ON
+//-
+//Win10PESE: RegWrite - Overwrote existing key "@%SystemRoot%\system32\windows.storage.dll,-9216" with different data
+If,%NoWarnROW%,Equal,True,System,ErrorOff,1
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-33010"
+//-
+End
+Else,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
 RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-33010"
 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"@#$pSystemRoot#$p\system32\shell32.dll,-33010"
 End
 End
-//-
-If,%pRadioGroup1%,Equal,3,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF,2
-RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%pTextBox1%"
-RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%pTextBox1%"
 End
 //-
-RegHiveUnLoad,Tmp_Software
-RegHiveUnLoad,Tmp_Default
+If,%Desktop_Icon_Name_RadioGroup%,Equal,3,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%Desktop_Icon_Name_TextBox%"
+RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,"%Desktop_Icon_Name_TextBox%"
+End
+//-
+If,%Desktop_Icon_Name_RadioGroup%,Equal,4,Begin
+Run,%ScriptFile%,Custom_Special_P
+End
 //-
 //History007 Venerence Reply 4 Tmp_Default way --> does not require RegAddBoot -> removed RegAddBoot
 Set,%wRegAddBoot%,0
 //-
 If,%wRegAddBoot%,Equal,1,Begin
-//If,%pRadioGroup1%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
+//If,%Desktop_Icon_Name_RadioGroup%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"#$pUSERNAME#$p on #$pCOMPUTERNAME#$p"
 //-
 //"Cemal on Gena"=> we can escape this with 3 ### but this ends with "%UserName% on Gena"
 //  So better leave as it is ( a surprise to end-user having HostUserName on top of desktop ;)
-//If,%pRadioGroup1%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"###$pUSERNAME###$p on #$pCOMPUTERNAME#$p"
+//If,%Desktop_Icon_Name_RadioGroup%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"###$pUSERNAME###$p on #$pCOMPUTERNAME#$p"
 //-
-If,%pRadioGroup1%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%UN% on #$pCOMPUTERNAME#$p"
-If,%pRadioGroup1%,Equal,1,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%PName%"
-If,%pRadioGroup1%,Equal,2,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
-If,%pRadioGroup1%,Equal,3,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%pTextBox1%"
+If,%Desktop_Icon_Name_RadioGroup%,Equal,0,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%UN% on #$pCOMPUTERNAME#$p"
+If,%Desktop_Icon_Name_RadioGroup%,Equal,1,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%PName%"
+If,%Desktop_Icon_Name_RadioGroup%,Equal,2,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"@#$pSystemRoot#$p\system32\shell32.dll,-9216"
+If,%Desktop_Icon_Name_RadioGroup%,Equal,3,RegAddBoot,HKLM,0x2,Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},LocalizedString,"%Desktop_Icon_Name_TextBox%"
 End
+End
+//---------------------------
+If,%Environment_ComputerName_CheckBox%,Equal,True,Begin
+If,%Environment_ComputerName_RadioGroup%,Equal,0,Begin
+IniRead,%ProjectDir%\script.project,Main,Title,%PName%
+StrFormat,UCase,%PName%,%PNameUCase%
+StrFormat,Replace,%PNameUCase%," ",,%PNameUCase_NoSpace%
+//to avoid potential troubles following ms way -> Environment-ComputerName uppercase without space
+RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Session Manager\Environment",ComputerName,%PNameUCase_NoSpace%
+End
+If,%Environment_ComputerName_RadioGroup%,Equal,1,Begin
+If,Not,%Environment_ComputerName_Custom_TextBox%-,Equal,-,Begin
+RegWrite,HKLM,0x1,"Tmp_System\ControlSet001\Control\Session Manager\Environment",ComputerName,%Environment_ComputerName_Custom_TextBox%
+End
+End
+End
+//---------------------------
+If,%Control_ComputerName_ActiveComputerName_CheckBox%,Equal,True,Begin
+If,%Control_ComputerName_ActiveComputerName_RadioGroup%,Equal,0,Begin
+IniRead,%ProjectDir%\script.project,Main,Title,%PName%
+StrFormat,UCase,%PName%,%PNameUCase%
+StrFormat,Replace,%PNameUCase%," ",,%PNameUCase_NoSpace%
+//to avoid potential troubles following ms way -> uppercase without space
+//Win10PESE: RegWrite - Overwrote existing key "MINWINPC" with different data
+Run,%ScriptFile%,NoSpecial_Limit15,%PNameUCase_NoSpace%
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ComputerName,ComputerName,%NoSpecialLimit15%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ActiveComputerName,ComputerName,%NoSpecialLimit15%
+End
+If,%Control_ComputerName_ActiveComputerName_RadioGroup%,Equal,1,Begin
+If,Not,%Control_ComputerName_ActiveComputerName_TextBox%-,Equal,-,Begin
+//-
+//Win10PESE: RegWrite - Overwrote existing key "MINWINPC" with different data
+Run,%ScriptFile%,NoSpecial_Limit15,%Control_ComputerName_ActiveComputerName_TextBox%
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ComputerName,ComputerName,%NoSpecialLimit15%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\ComputerName\ActiveComputerName,ComputerName,%NoSpecialLimit15%
+End
+End
+End
+//---------------------------
+If,%Tcpip_Hostname_NVHostname_CheckBox%,Equal,True,Begin
+If,%Tcpip_Hostname_NVHostname_RadioGroup%,Equal,0,Begin
+IniRead,%ProjectDir%\script.project,Main,Title,%PName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,"NV Hostname",%PName%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,Hostname,%PName%
+End
+If,%Tcpip_Hostname_NVHostname_RadioGroup%,Equal,1,Begin
+If,Not,%Tcpip_Hostname_NVHostname_TextBox%-,Equal,-,Begin
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,"NV Hostname",%Tcpip_Hostname_NVHostname_TextBox%
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Tcpip\Parameters,Hostname,%Tcpip_Hostname_NVHostname_TextBox%
+End
+End
+End
+//-
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+RegHiveUnLoad,Tmp_System
+
+[NoSpecial_Limit15]
+If,#2-,Equal,-,Set,#2,NoSpecialLimit15
+StrFormat,Replace,#1,\,_, #9
+StrFormat,Replace,#1,/,_,#9
+StrFormat,Replace,#1,:,_,#9
+StrFormat,Replace,#1,*,_,#9
+StrFormat,Replace,#1,?,_,#9
+StrFormat,Replace,#1,#$q,_,#9
+StrFormat,Replace,#1,<,_,#9
+StrFormat,Replace,#1,>,_,#9
+StrFormat,Replace,#1,|,_,#9
+StrFormat,Left,#9,15,#9
+Set,%#2%,#9
 
 [Process_Default]
+Echo,"Not updated for a long while now....",Warn
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_Default,%RegDefault%
 //XPSP3 - "LocalizedString"=@%SystemRoot%\system32\SHELL32.dll,-9216
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x2,"Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}","LocalizedString","@#$pSystemRoot#$p\system32\SHELL32.dll#$c-9216"
 RegDelete,HKLM,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}
 RegHiveUnLoad,Tmp_Software
 RegHiveUnLoad,Tmp_Default
+
+[Edit_Custom_Special_P_B]
+Call,DirDeleteMake,%ProjectTemp%\TempExtractFolder\MyComputer_Name
+ExtractFile,%ScriptFile%,InterfaceEncoded,Custom_Special.txt,%ProjectTemp%\TempExtractFolder\MyComputer_Name
+Echo,"USE ONLY ONE LINE - Close Editor. Waiting....... - "
+System,FileRedirect,OFF
+ShellExecute,Open,notepad.exe,%ProjectTemp%\TempExtractFolder\MyComputer_Name\Custom_Special.txt,%ProjectTemp%\TempExtractFolder\MyComputer_Name
+System,FileRedirect,ON
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\MyComputer_Name\Custom_Special.txt
+System,RefreshInterface
+//---
+
+[Custom_Special_P]
+//System,FileRedirect,OFF
+//ShellExecute,Hide,reg.exe,"Delete HKLM\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D} /ve /f"
+//System,FileRedirect,ON
+//--
+Call,DirDeleteMake,%ProjectTemp%\TempExtractFolder\MyComputer_Name
+ExtractFile,%ScriptFile%,InterfaceEncoded,Custom_Special.txt,%ProjectTemp%\TempExtractFolder\MyComputer_Name
+//-
+Set,%w%,%ProjectTemp%\TempExtractFolder\MyComputer_Name\Custom_Special.cmd
+FileCopy,%ProjectTemp%\TempExtractFolder\MyComputer_Name\Custom_Special.txt,%w%
+TxtReplace,%w%,#$x,""
+TxtReplace,%w%,#$p,"#$p#$p"
+TxtAddLine,%w%,Before,Prepend
+TxtAddLine,%w%,After,Append
+TxtReplace,%w%,"Before#$x","reg.exe Add #$qHKLM\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}#$q /ve /t REG_EXPAND_SZ /d #$q"
+//Adding custom value to LocalizedString will does not work
+//TxtReplace,%w%,"Before#$x","reg.exe Add #$qHKLM\Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}#$q /v LocalizedString /t REG_EXPAND_SZ /d #$q"
+TxtReplace,%w%,"#$xAfter","#$q /f"
+TxtAddLine,%w%,Exit,Append
+//Call,StartDocNotePad,%w%
+//-
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C #$q%w%#$q",%ProjectTemp%
+System,FileRedirect,ON
+//---
+//---------LocalizedString Test - Start
+Set,%t%,1
+Set,%t%,0
+If,%t%,Equal,1,Begin
+//Adding LocalizedString provide no bonus. eg. using:
+//%username% @%SystemRoot%\system32\shell32.dll,-33010
+//still do not work.
+//-
+Set,%w%,%ProjectTemp%\TempExtractFolder\MyComputer_Name\Custom_Special_Tmp_Software_LocalizedString.cmd
+FileCopy,%ProjectTemp%\TempExtractFolder\MyComputer_Name\Custom_Special.txt,%w%
+TxtReplace,%w%,#$x,""
+TxtReplace,%w%,#$p,"#$p#$p"
+TxtAddLine,%w%,Before,Prepend
+TxtAddLine,%w%,After,Append
+TxtReplace,%w%,"Before#$x","reg.exe Add #$qHKLM\Tmp_Software\Classes\CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}#$q /v LocalizedString /t REG_EXPAND_SZ /d #$q"
+TxtReplace,%w%,"#$xAfter","#$q /f"
+TxtAddLine,%w%,Exit,Append
+//Call,StartDocNotePad,%w%
+//-
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C #$q%w%#$q",%ProjectTemp%
+System,FileRedirect,ON
+//---
+End
+//---------LocalizedString Test - Finish
 
 [AuthorEncoded]
 MyCustomComputerB.jpg=3923,5231
@@ -163,9 +420,8 @@ lines=1
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFolders]
-Folder
+Oxygen-Icons_0_016016.bmp=710,947
+Custom_Special.txt=102,136
 
 [Folder]
 
@@ -186,23 +442,30 @@ Call,UploadXMultiQ
 
 [Settings_Default]
 IniWrite,%ScriptFile%,Main,Selected,False
-ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,0
+IniWrite,%ScriptFile%,Main,Interface,Interface_Basic
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,0
+ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,1
+ChangeInterface,Write,Value,%ScriptFile%,Interface_Basic,Basic_I_RadioGroup,0
 
 [Settings_Default_SE]
 IniWrite,%ScriptFile%,Main,Selected,True
-ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,2
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,2
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,1
 
 [Settings_Default_Win10PESE]
-IniWrite,%ScriptFile%,Main,Selected,False
-ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,2
+IniWrite,%ScriptFile%,Main,Selected,True
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,2
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,1
 
 [Settings_Default_Gena]
 IniWrite,%ScriptFile%,Main,Selected,True
-ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,0
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,0
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,1
 
 [Settings_Default_Yomi]
 IniWrite,%ScriptFile%,Main,Selected,False
-ChangeInterface,Write,Value,%ScriptFile%,Interface,pRadioGroup1,0
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,0
+//ChangeInterface,Write,Value,%ScriptFile%,Interface,Desktop_Icon_Name_RadioGroup,1
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
@@ -218,4 +481,16 @@ Call,CompareEdit
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0
 0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nJP0r6hMT83T9UzOzyuON4g3MDQDIr2k3AKGUTACQBkLhM5nwi6/K8vLh4EJAIwhCu0OuYbLAQAAAAIAAAAzAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[EncodedFile-InterfaceEncoded-Custom_Special.txt]
+lines=0
+0=JXVzZXJuYW1lJSAlY29tcHV0ZXJuYW1lJXicE3IuLS7Jz40PLkhNzkzM0SupKGEYBSMHSBKQd5nJUs7IAABRVQiuUlh43gEAAAACAAAAKQAAABkAAAAAAAAAAQAAAAAAAAAAAAAA
 

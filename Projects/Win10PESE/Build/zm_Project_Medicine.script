@@ -4,14 +4,14 @@ Type=Plugin
 Author=JFX, Lancelot
 Description=Everyone needs some medicine now and then - even Projects :) . (Post Core Medicine)
 Credits=Fxscrpt providing the already written codes :)
-Version=030
+Version=032
 Download_Level=0
 Level=1
 Selected=True
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.10.09
+Date=2019.03.01
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Basic/Build/zm_Project_Medicine.script
@@ -19,6 +19,7 @@ WebRootSubSub=Build
 CertifiedBy=
 Certification=
 HistoryNotes01=Gena by having settingsdrive as systemdrive you may notice interesting things ;)
+HistoryNotes02=Lancelot: Only changing pButton_Show_Second_Gui visible opens options to very advanced users = Mainly Project Admins
 History002=Lancelot - Common Files back in registry, thanks for JFX reminding.
 History003=Lancelot - JFX request: (post70) "Highly recommand to put storport.sys (for 2003 and x64)" added. (reminder: mass storage plugins updates storport.sys when w2003sp1 source used)
 History004=Lancelot, Galapo - Plugin name, title, location changed and set mandatory.
@@ -46,19 +47,26 @@ History027=Lancelot Added MultiLanguage Desktop.ini Support - http://TheOven.org
 History028=Lancelot Add SE Delete Notepad.lnk Command Prompt.lnk // http://TheOven.org/index.php?topic=2232 - Date:2017.09.27
 History029=ChrisR - bob.omb Avoid ReFS update volumes to be sure volumes accessable after PE --> ChrisR Reply 7 and further bob.omb  .. http://TheOven.org/index.php?topic=2243.msg24272#msg24272 - Date:2017.10.09
 History030=ChrisR - bob.omb Avoid ReFS update volumes starting Win8.1SE , Win10PESE and later. - bob.omb Reply 12 http://TheOven.org/index.php?topic=2243.msg24282#msg24282 - Date:2017.10.09
+History031=Lancelot - Add Show_Second_Gui Show_First_Gui // Cosmetics // hidden advanced button to avoid end user play with Advanced settings (no need to change these settings) - Date:2019.03.21
+History032=Lancelot - realdragonluv Reply 3 http://TheOven.org/index.php?topic=2745.msg31903#msg31903 - Workaround case: Cursor disappears after using touchscreen won't reappear w/ mouse -----> For now deleting "Arrow" key implemented to current plugin. (Memo: Basic builds do not have any \Cursor\ File ;) ) - Date:2019.03.01
 
 [Interface]
-pBevel_copy_or_expand=pBevel2,1,12,225,82,195,45
-pCheckBox_storport_sys="put storport.sys (2003 and x64) ",1,3,232,105,179,18,True
-SysWow64Path_CheckBox="Add SysWow64 Path",1,3,19,37,132,18,True,"__For WOW64 (x64)"
-pWebLabel2="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+NewBie_Info_TextLabel="Basic Fix (Medicine) and Workaround to Projects",1,1,51,59,352,24,10,Bold
+SysWow64Path_CheckBox="Add SysWow64 Path",0,3,19,37,132,18,True,"__For WOW64 (x64)"
+Gena_Bevel=pBevel2,0,12,225,82,195,45
+Gena_TextLabel=Gena:,0,1,234,89,75,18,8,Bold
+pCheckBox_storport_sys="put storport.sys (2003 and x64) ",0,3,232,105,179,18,True
+SE_Bevel=pBevel2,0,12,225,132,194,109
+SE_TextLabel=SE:,0,1,231,141,30,18,8,Bold
+SE_Dini_Main_CheckBox="Add Main Desktop.ini",0,3,232,159,130,18,True
+SE_TouchScreen_reappear_bug_workaround_CheckBox="TouchScreen reappear bug workaround:",0,3,232,187,165,29,True
+SE_TouchScreen_reappear_bug_workaround_WebLabel="realdragonluv Reply 3 ",0,10,279,217,108,18,http://TheOven.org/index.php?topic=2745.msg31903#msg31903
+pButton_Show_Second_Gui=a,0,8,392,302,16,16,Show_Second_Gui,True,True,False,_Show_Second_Gui_,True
+pButton_Show_First_Gui="<-- Back Basic GUI",0,8,275,291,112,32,Show_First_Gui,True,True,False,_Show_First_Gui_,True
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
-pTextLabel1=Gena:,1,1,234,89,75,18,8,Bold
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
-SE_Bevel=pBevel2,1,12,225,132,195,50
-SE_TextLabel=SE:,1,1,231,141,30,18,8,Bold
-SE_Dini_Main_CheckBox="Add Main Desktop.ini",1,3,232,159,130,18,True
 
 [Process]
 If,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Echo,"Basic PluginCache"
@@ -73,7 +81,7 @@ RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_System,%RegSystem%
 //--
 //To be sure VisualFXSetting always 3 default to have UserPreferencesMask fully operational
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x4,"Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects",VisualFXSetting,3
 //-
 If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,Process_NT5
@@ -106,9 +114,9 @@ If,Not,%SourceArch%,Equal,x86,Begin
 If,%TargetWOW64%,Equal,x86,Begin
 //RegHiveLoad,Tmp_System,%RegSystem%
 RegRead,HKLM,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,%t_Path_A%
-StrFormat,REPLACE,%t_Path_A%,#$pSystemRoot#$p\SysWOW64,"",%t_Path_R%
+StrFormat,Replace,%t_Path_A%,#$pSystemRoot#$p\SysWOW64,"",%t_Path_R%
 If,%t_Path_A%,Equal,%t_Path_R%,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x2,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,"%t_Path_A%;#$pSystemRoot#$p\SysWOW64"
 End
 RegRead,HKLM,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,%t_Path_Final%
@@ -130,6 +138,14 @@ End
 If,%TargetVersion1%,Bigger,9,Set,%AfterWin80%,1
 //--
 If,%SE_Dini_Main_CheckBox%,Equal,True,Run,%ScriptFile%,SE_DesktopIni_Main
+If,%SE_TouchScreen_reappear_bug_workaround_CheckBox%,Equal,True,Begin
+//4 methods: 1) Add all Cursor files (~10 MB) 2) Delete all Cursor Registry 3) Add Empty value to Arrow
+//---------- 4) Delete only Arrow key -> for now only "4) Delete only Arrow key" used - realdragonluv Reply 3 http://TheOven.org/index.php?topic=2745.msg31903#msg31903
+//RegHiveLoad,Tmp_Default,%RegDefault%
+//If,ExistRegSection,HKLM,"Tmp_Default\Control Panel\Cursors",RegDelete,HKLM,"Tmp_Default\Control Panel\Cursors"
+If,ExistRegKey,HKLM,"Tmp_Default\Control Panel\Cursors",Arrow,RegDelete,HKLM,"Tmp_Default\Control Panel\Cursors",Arrow
+//RegHiveUnLoad,Tmp_Default
+End
 //--
 //Some shorcuts comes from source - Remove them so creating shortcuts under full end user control
 Call,FileDelete,"%TargetProfilesUserDir%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Accessories\Notepad.lnk"
@@ -139,7 +155,7 @@ Run,%ScriptFile%,UserPreferencesMask_NT6
 //--
 If,%AfterWin80%,Equal,1,Begin
 //Avoid ReFS update volumes to be sure volumes accessable on HostOS after PE  --> ChrisR Reply 7 and further bob.omb  .. http://theoven.org/index.php?topic=2243.msg24272#msg24272
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\FileSystem,RefsDisableVolumeUpgrade,1
 End
 
@@ -204,7 +220,7 @@ If,%v%,Equal,"",IniWrite,%ProjectInfo%,OS,XpRes,%LocalizeLID%
 
 [UserPreferencesMask_NT6]
 //RegHiveLoad,Tmp_Default,%RegDefault%
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x3,"Tmp_Default\Control Panel\Desktop",UserPreferencesMask,9e,3e,03,80,12,00,00,00
 //RegHiveUnLoad,Tmp_Default
 
@@ -216,7 +232,7 @@ RegWrite,HKLM,0x3,"Tmp_Default\Control Panel\Desktop",UserPreferencesMask,9e,3e,
 //UserPreferencesMask XPsp3x86 MUI default settings: 9E,3E,07,80
 //9E,20,01,80 -> disable Fade options
 //RegHiveLoad,Tmp_Default,%RegDefault%
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x3,"Tmp_Default\Control Panel\Desktop",UserPreferencesMask,9E,20,01,80
 //RegHiveUnLoad,Tmp_Default
 //-----
@@ -318,6 +334,39 @@ End
 //Start Menu\Programs\Startup Finish
 //-
 
+[Show_Second_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-First_Gui,False
+Run,%ScriptFile%,Show-Hide-Second_Gui,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show_First_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Show-Hide-First_Gui,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show-Hide-Second_Gui]
+Visible,%SysWow64Path_CheckBox%,#1,Permanent
+Visible,%Gena_Bevel%,#1,Permanent
+Visible,%Gena_TextLabel%,#1,Permanent
+Visible,%pCheckBox_storport_sys%,#1,Permanent
+Visible,%SE_Bevel%,#1,Permanent
+Visible,%SE_TextLabel%,#1,Permanent
+Visible,%SE_Dini_Main_CheckBox%,#1,Permanent
+Visible,%SE_TouchScreen_reappear_bug_workaround_CheckBox%,#1,Permanent
+Visible,%SE_TouchScreen_reappear_bug_workaround_WebLabel%,#1,Permanent
+//--
+Visible,%pButton_Show_First_Gui%,#1,Permanent
+
+[Show-Hide-First_Gui]
+Visible,%NewBie_Info_TextLabel%,#1,Permanent
+Visible,%Button_Upload%,#1,Permanent
+//--
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
+
 [AuthorEncoded]
 Project_Medicine.gif=6153,8204
 Logo=Project_Medicine.gif
@@ -328,16 +377,19 @@ lines=2
 1=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
 2=AAAAAAAAAQAAAAAAAAAAAAAA
 
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
 [DownloadXXX]
 Call,DownloadXQ
 
 [UploadXXX]
 Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1
 
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
+[Settings_Default]
+Visible,%pButton_Show_Second_Gui%,False,Permanent
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0

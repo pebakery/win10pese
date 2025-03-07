@@ -4,14 +4,14 @@ Type=Plugin
 Author=booty#1, Doc, NightMan, ChrisR
 Description=Copy WinPESE to any USB-Device, Use Grub4Dos and Grub2 (x64 UEFI only).
 Credits=http://TheOven.org
-Version=056
+Version=059
 Download_Level=1
 Level=8
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=178.0
-Date=2017.11.22
+Date=2019.01.27
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/WriteMedia/USBDevice.script
@@ -38,7 +38,10 @@ History052=ChrisR - Remove HPUSB formatting tool. Use only BootIce
 History053=ChrisR - Add Grub2 EFI - 2014.10.26
 History054=Lancelot - Added DU Buttons - Date:2016.06.05 // Lancelot - Add Compare Button - Date:2017.01.10
 History055=Lancelot - Fixed Halt can have [0] ~ [1] arguments - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.09
-History056=Lancelot %ISODir% deprecated - Date:2017.11.22
+History056=Lancelot - ISODir deprecated - Date:2017.11.22
+History057=Lancelot - ISOfileName deprecated %ISO_File_Name% used // Xcopy lines improved - Date:2018.01.15
+History058=Lancelot - Removed old syntax - Date:2019.01.24
+History059=Lancelot - Add Call,HostOSArch - Date:2019.01.27
 
 [Interface]
 pTextLabel1="Please select the root directory of your USB-Device:",1,1,12,10,300,18,8,Bold
@@ -103,7 +106,7 @@ Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bm
 %cmdexeFolder%=
 
 [Process_Visible]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%FormatTool_ScrollBox%,Equal,BootIce,Begin
 Visible,%BI_Silently%,True,Permanent
 Visible,%BI_FileSystem%,True,Permanent
@@ -113,10 +116,10 @@ Visible,%BI_Silently%,False,Permanent
 Visible,%BI_FileSystem%,False,Permanent
 End
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [UseIso]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%UseIsoBoot%,Equal,True,Begin
 Message,"Note that the menu entry for OtherOS plugins are not available with ISO booting"
 Visible,%Bevel_WinContig%,True,Permanent
@@ -135,17 +138,18 @@ Visible,%CheckB_ChkDsk%,False,Permanent
 Visible,%CheckB_NoGui%,False,Permanent
 End
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Process]
 Echo,"%ScriptTitle% For %ProjectName%..."
+Call,HostOSArch
 //-
 StrFormat,Path,%IsoFile%,%IsoFolder%
 StrFormat,CTrim,%IsoFolder%,\,%IsoFolder%
 //-
 If,ExistFile,%ProjectTemp%\HostOSTools\cmd.exe,Set,%CmdexeFolder%,%ProjectTemp%\HostOSTools\
-ReadENV
-If,ExistSection,%projectdir%\script.project,SetOtherOS,Run,%projectdir%\script.project,SetOtherOS
+IniRead,%ProjectDir%\script.project,IniVariables,BuildModel,%BuildModel%
+If,ExistSection,%ProjectDir%\script.project,SetOtherOS,Run,%ProjectDir%\script.project,SetOtherOS
 //--Use Volume Name inside Menu files...
 Set,%Volume_Name%,%Vol_Name%
 If,%Volume_Name%-,Equal,-,Set,%Volume_Name%,%ProjectName%
@@ -153,27 +157,27 @@ If,Not,%BuildModel%,Equal,RAM,Message,"Booting from USB device is possible only 
 If,Not,%BuildModel%,Equal,RAM,Halt,"Please use boot.wim!"
 //--
 Set,%WinPESEIniFileName%,%ProjectName%.ini
-IniRead,%projectdir%\script.project,IniVariables,TargetImage,%TargetImage%
+IniRead,%ProjectDir%\script.project,IniVariables,TargetImage,%TargetImage%
 If,Not,ExistDir,%TargetImage%,Set,%TargetImage%,%TargetDir%
-//- Replace %targetdir% in %BootMenu_Target% by %TargetImage%
-If,Not,%TargetImage%,Equal,%targetdir%,StrFormat,REPLACE,%BootMenu_Target%,%targetdir%,%TargetImage%,%BootMenu_Target%
-If,Not,%TargetImage%,Equal,%targetdir%,StrFormat,REPLACE,%EfiBootMenu_Target%,%targetdir%,%TargetImage%,%EfiBootMenu_Target%
+//- Replace %TargetDir% in %BootMenu_Target% by %TargetImage%
+If,Not,%TargetImage%,Equal,%TargetDir%,StrFormat,Replace,%BootMenu_Target%,%TargetDir%,%TargetImage%,%BootMenu_Target%
+If,Not,%TargetImage%,Equal,%TargetDir%,StrFormat,Replace,%EfiBootMenu_Target%,%TargetDir%,%TargetImage%,%EfiBootMenu_Target%
 //--
 If,%UseIsoBoot%,Equal,True,Begin
-IniRead,%projectdir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
-StrFormat,FILENAME,%ISOfileVar%,%ISOfileName%
+IniRead,%ProjectDir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
+StrFormat,FileName,%ISOfileVar%,%ISO_File_Name%
 If,Not,ExistFile,%ISOfileVar%,Run,%ScriptFile%,IsoNotFound
 If,Not,ExistFile,%IsoFolder%\%WinPESEIniFileName%,Run,%ScriptFile%,IniNotFound
 IniRead,%IsoFolder%\%WinPESEIniFileName%,IsoInfo,IsoName,%IsoName%
-StrFormat,FILENAME,%IsoName%,%ISONameFile%
-If,Not,%ISOfileName%,Equal,%ISONameFile%,Run,%ScriptFile%,ErrorIsoName
-StrFormat,LEFT,%IsoName%,1,%FirstChar%
+StrFormat,FileName,%IsoName%,%ISONameFile%
+If,Not,%ISO_File_Name%,Equal,%ISONameFile%,Run,%ScriptFile%,ErrorIsoName
+StrFormat,Left,%IsoName%,1,%FirstChar%
 If,Not,%FirstChar%,Equal,\,Set,%IsoName%,\%IsoName%
-StrFormat,PATH,%IsoName%,%IsoNamePath%
-StrFormat,REPLACE,%IsoName%,\,/,%GrubIsoName%
+StrFormat,Path,%IsoName%,%IsoNamePath%
+StrFormat,Replace,%IsoName%,\,/,%GrubIsoName%
 End
 // Drive eg F:
-StrFormat,LEFT,%pFileBox2%,2,%DrvChar2%
+StrFormat,Left,%pFileBox2%,2,%DrvChar2%
 If,Not,ExistDir,%DrvChar2%,Begin
 Call,Echo,"The drive letter %DrvChar2% has not been found!",Warn
 Message,"The drive letter %DrvChar2% has not been found!",Warning
@@ -188,7 +192,8 @@ If,Not,ExistDir,%RootCDFolder%,DirMake,%RootCDFolder%
 Retrieve,FolderSize,%RootCDFolder%,%RootCDFolderSize%
 If,Not,%RootCDFolderSize%,Equal,0,Begin
 Echo,"Copying Root CD files... Please Wait..."
-FileCopy,%RootCDFolder%\*.*,%TargetImage%
+//FileCopy * have unicode bug - workaround with DirCopy * bug
+DirCopy,%RootCDFolder%\*,%TargetImage%
 End
 End
 //--
@@ -204,14 +209,14 @@ Run,%ScriptFile%,ExtractBootIce
 // Formatting with BootIce - Question
 If,%FormatTool_ScrollBox%,Equal,BootIce,Begin
 Set,%FormatQuestion%,"Are you sure you want to format drive %DrvChar2% ?#$xFile sytem: %BI_FileSystem%#$xVol Label: %Vol_Name%#$x#$x***** WARNING:  ALL partitions and data on the disk will be deleted! *****"
-If,QUESTION,%FormatQuestion%,Begin
+If,Question,%FormatQuestion%,Begin
 Run,%ScriptFile%,format
 Set,%FormatUSB%,True
 End
 End
 // No formatting
 If,Not,%FormatUSB%,Equal,True,Begin
-If,Not,QUESTION,"No formatting, Are you sure you want to contine ?",Exit,"Exit requested by user"
+If,Not,Question,"No formatting, Are you sure you want to contine ?",Exit,"Exit requested by user"
 End
 If,Not,ExistDir,%DrvChar2%,Begin
 Call,Echo,"The drive letter %DrvChar2% no longer exists! It has probably changed when formatting.",Warn
@@ -248,14 +253,14 @@ If,ExistDir,%ProjectTemp%\CopyToUsb,Message,"%ProjectTemp%\CopyToUsb  Folder can
 [format]
 Echo,"Formatting, be patient..."
 If,%FormatTool_ScrollBox%,Equal,BootIce,Begin
-If,%BI_Silently%,Equal,True,ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%OSArch%.exe,"/device=%DrvChar2% /partitions /repartition /activate /usb-hdd /fstype=%BI_FileSystem% /vollabel=%Volume_Name% /quiet"
-Else,ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%OSArch%.exe,"/device=%DrvChar2% /partitions /repartition /activate /usb-hdd /fstype=%BI_FileSystem% /vollabel=%Volume_Name%"
+If,%BI_Silently%,Equal,True,ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%HostOSArch%.exe,"/device=%DrvChar2% /partitions /repartition /activate /usb-hdd /fstype=%BI_FileSystem% /vollabel=%Volume_Name% /quiet"
+Else,ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%HostOSArch%.exe,"/device=%DrvChar2% /partitions /repartition /activate /usb-hdd /fstype=%BI_FileSystem% /vollabel=%Volume_Name%"
 End
 
 [WriteMBR]
 Echo,"Write NT6 in MBR and Grub4Dos in PBR..."
-ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%OSArch%.exe,"/device=%DrvChar2% /mbr /install /type=nt60 /quiet"
-ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%OSArch%.exe,"/device=%DrvChar2% /pbr /install /type=grub4dos /activate /quiet"
+ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%HostOSArch%.exe,"/device=%DrvChar2% /mbr /install /type=nt60 /quiet"
+ShellExecute,Hide,%GlobalTemplates%\BootIce\BOOTICE%HostOSArch%.exe,"/device=%DrvChar2% /pbr /install /type=grub4dos /activate /quiet"
 
 [CopyFilesToUSB]
 Echo,"Copy files, be patient..."
@@ -264,7 +269,7 @@ If,%RoboCopySilently%,Equal,True,Set,%OpenHide%,Hide
 If,%UseIsoBoot%,Equal,True,Begin
 FileCopy,%IsoFolder%\%WinPESEIniFileName%,%DrvChar2%
 //FileCopy,%ISOfileVar%,%DrvChar2%\%IsoNamePath%
-ShellExecute,%OpenHide%,%ProjectTemp%\CopyToUsb\robocopy.exe,"#$q%IsoFolder%#$q #$q%DrvChar2%\%IsoNamePath% #$q #$q%ISOfileName%#$q /FFT"
+ShellExecute,%OpenHide%,%ProjectTemp%\CopyToUsb\robocopy.exe,"#$q%IsoFolder%#$q #$q%DrvChar2%\%IsoNamePath% #$q #$q%ISO_File_Name%#$q /FFT"
 End
 Else,ShellExecute,%OpenHide%,%ProjectTemp%\CopyToUsb\robocopy.exe,"#$q%TargetImage%#$q #$q%DrvChar2%\ #$q /MIR /FFT"
 // Debug Else,ShellExecute,Open,cmd.exe,"/k #$q%ProjectTemp%\CopyToUsb\robocopy.exe#$q %TargetImage% %DrvChar2%\ /MIR /FFT"
@@ -274,7 +279,7 @@ If,Not,ExistFile,%ProjectDir%\Utils\WinContig.script,Message,"WinContig plugin r
 Else,Begin
 If,Not,ExistFile,%DrvChar2%%IsoName%,Message,"File %IsoName% Not found !!!#$x#$xExiting...",Error
 If,Not,ExistFile,%DrvChar2%%IsoName%,Halt,"File %DrvChar2%%IsoName% Not found. Exiting..."
-Echo,"Make '%ISOfileName%' contiguous, be patient..."
+Echo,"Make '%ISO_File_Name%' contiguous, be patient..."
 If,%CheckB_Quick%,Equal,True,Set,%WC_Quick%,/QUICK
 Else,Set,%WC_Quick%,""
 If,%CheckB_ChkDsk%,Equal,True,Set,%WC_ChkDsk%,/CHKDSK:1
@@ -383,7 +388,7 @@ TXTAddLine,%EfiBootMenu%,"set timeout=%tmout%",Prepend
 TXTAddLine,%EfiBootMenu%,"set default=0",Prepend
 //--Header-
 //----
-If,ExistFile,%AddEfiFile_FileBox%,ShellExecute,Hide,#$qcmd.exe#$q,"/c copy /b #$q%EfiBootMenu%#$q + #$q%AddEfiFile_FileBox%#$q #$q%EfiBootMenu%#$q"
+If,ExistFile,%AddEfiFile_FileBox%,ShellExecute,Hide,cmd.exe,"/c copy /b #$q%EfiBootMenu%#$q + #$q%AddEfiFile_FileBox%#$q #$q%EfiBootMenu%#$q"
 TXTAddLine,%EfiBootMenu%," ",Append
 Run,%ScriptFile%,Grub2AddOpt
 
@@ -494,7 +499,7 @@ If,%BootSkin%,Equal,Text,TXTAddLine,%BootMenu%,"color %pScrollBox1%/%pScrollBox2
 If,%DistLang%,Equal,fr-FR,Run,%ScriptFile%,Azerty_Fr
 //--Header-
 //----
-If,ExistFile,%AddFile_FileBox%,ShellExecute,Hide,#$qcmd.exe#$q,"/c copy /b #$q%BootMenu%#$q + #$q%AddFile_FileBox%#$q #$q%BootMenu%#$q"
+If,ExistFile,%AddFile_FileBox%,ShellExecute,Hide,cmd.exe,"/c copy /b #$q%BootMenu%#$q + #$q%AddFile_FileBox%#$q #$q%BootMenu%#$q"
 TXTAddLine,%BootMenu%," ",Append
 //-
 Run,%ScriptFile%,Grub4DosAddOpt
@@ -578,7 +583,7 @@ If,%BootSkin%,Equal,Text,TXTAddLine,%BootMenu%,"color %pScrollBox1%/%pScrollBox2
 If,%DistLang%,Equal,fr-FR,Run,%ScriptFile%,Azerty_Fr
 //--Header-
 //----
-If,ExistFile,%AddFile_FileBox%,ShellExecute,Hide,#$qcmd.exe#$q,"/c copy /b #$q%BootMenu%#$q + #$q%AddFile_FileBox%#$q #$q%BootMenu%#$q"
+If,ExistFile,%AddFile_FileBox%,ShellExecute,Hide,cmd.exe,"/c copy /b #$q%BootMenu%#$q + #$q%AddFile_FileBox%#$q #$q%BootMenu%#$q"
 TXTAddLine,%BootMenu%," ",Append
 //-
 Run,%ScriptFile%,Grub4DosAddOpt
@@ -751,7 +756,7 @@ Message,"Ini file: IsoFolder\%WinPESEIniFileName% Not found !"
 Halt,"Ini file: IsoFolder\%WinPESEIniFileName% Not found ! !"
 
 [ErrorIsoName]
-Message,"ISO file name is different between the previous building: %ISOfileName% and IsoFolder\%WinPESEIniFileName%: %ISONameFile% !"
+Message,"ISO file name is different between the previous building: %ISO_File_Name% and IsoFolder\%WinPESEIniFileName%: %ISONameFile% !"
 Halt,"ISO file name is different between the previous building and IsoFolder\%WinPESEIniFileName% !"
 
 [OpenDirGrub2Skin]
@@ -759,23 +764,20 @@ Call,OpenDir,%GlobalTemplates%\Grub2Skin
 If,Not,ExistFile,"%GlobalTemplates%\Grub2Skin\Put Splash.jpg 800x600 here",FileCreateBlank,"%GlobalTemplates%\Grub2Skin\Put Splash.jpg 800x600 here"
 
 [OpenRootCDFolder]
-If,Not,ExistDir,%RootCDFolder%,DirMake,%RootCDFolder%
-System,FILEREDIRECT,OFF
-ShellExecuteEx,Open,Explorer.exe,/e#$c#$q%RootCDFolder%#$q
-System,FILEREDIRECT,ON
+Call,OpenDir,%RootCDFolder%
 
 [History-Old]
-history013=ChrisR - Change boot for Grub4dos splashimage and menu color
-history015=ChrisR - Change boot for Grub4dos splashimage and change every %MenuFile_GRUB% into %MenuFile% thanks Dera
-history016=Lancelot - made adjustments for OtherOS plugins sharing with Leopard and others, only grub4dos section modified
-history017=ChrisR - Find and Load Windows Vista/Win7. When booting from USB device (which gets enumerated by BIOS as FIRST disk), the internal hard disk (which normally becomes SECOND disk (hd1)).
-history018=ChrisR - grub4dos-0.4.5b-2011-10-09 (http://code.google.com/p/grub4dos-chenall/downloads/list) - memdisk from Isolinux version4.04 - grubinst-1.2-bin-w32-2008-12-30 by chenall
-history019=ChrisR - delete menu.lst before copy to remove warning
-history020=ChrisR - grub4dos-0.4.5c-2012-02-01.7z (http://code.google.com/p/grub4dos-chenall/downloads/list) - memdisk from Isolinux version4.05
-history021=ChrisR - grub4dos-0.4.5c-2012-02-14 (http://code.google.com/p/grub4dos-chenall/downloads/list)
-history022=ChrisR - grubinst_1.3 thanks chenall. change grubinst disk count limit to 20 (http://code.google.com/p/grubutils/issues/detail?id=15)
-history023=ChrisR - grub4dos-0.4.5c-2012-02-27
-History024=ChrisR - Retrieve,FOLDERSIZE gives negative number when size is bigger than 2 GB in wb wb82, wb80rv3, wb77rc2 (workaround: If,%FolderSize%,Bigger,0 ==> If,Not,%FolderSize%,Equal,0). Reported by Aeolis
+History013=ChrisR - Change boot for Grub4dos splashimage and menu color
+History015=ChrisR - Change boot for Grub4dos splashimage and change every %MenuFile_GRUB% into %MenuFile% thanks Dera
+History016=Lancelot - made adjustments for OtherOS plugins sharing with Leopard and others, only grub4dos section modified
+History017=ChrisR - Find and Load Windows Vista/Win7. When booting from USB device (which gets enumerated by BIOS as FIRST disk), the internal hard disk (which normally becomes SECOND disk (hd1)).
+History018=ChrisR - grub4dos-0.4.5b-2011-10-09 (http://code.google.com/p/grub4dos-chenall/downloads/list) - memdisk from Isolinux version4.04 - grubinst-1.2-bin-w32-2008-12-30 by chenall
+History019=ChrisR - delete menu.lst before copy to remove warning
+History020=ChrisR - grub4dos-0.4.5c-2012-02-01.7z (http://code.google.com/p/grub4dos-chenall/downloads/list) - memdisk from Isolinux version4.05
+History021=ChrisR - grub4dos-0.4.5c-2012-02-14 (http://code.google.com/p/grub4dos-chenall/downloads/list)
+History022=ChrisR - grubinst_1.3 thanks chenall. change grubinst disk count limit to 20 (http://code.google.com/p/grubutils/issues/detail?id=15)
+History023=ChrisR - grub4dos-0.4.5c-2012-02-27
+History024=ChrisR - Retrieve,FolderSize gives negative number when size is bigger than 2 GB in wb wb82, wb80rv3, wb77rc2 (workaround: If,%FolderSize%,Bigger,0 ==> If,Not,%FolderSize%,Equal,0). Reported by Aeolis
 History025=ChrisR - Added GFX-Boot options
 History026=ChrisR - BootIce added - grub4dos-0.4.5c-2012-03-26.7z
 History027=ChrisR - No Formatting option, fixed extract GFX-BOOT.GFX if not exist

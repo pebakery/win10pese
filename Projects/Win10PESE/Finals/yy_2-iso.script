@@ -4,14 +4,14 @@ Type=Plugin
 Author=NightMan, ChrisR
 Description=Compile current compilation on the target directory to an ISO file using mkISOfs. Creating ISO (with optional boot manager)
 Credits=http://TheOven.org
-Version=082
+Version=085
 Download_Level=0
 Level=8
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.18
+Date=2020.03.09
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Finals/yy_2-iso.script
@@ -61,6 +61,9 @@ History079=Lancelot %ProjectTitle% deprecated - Date:2017.11.21
 History080=Lancelot %ISODir% deprecated - Date:2017.11.22
 History081=Lancelot Attempt to fix missing folder %TargetImage%\Boot - PEBakery APT Reply 155 - 160 http://TheOven.org/index.php?topic=2271.msg25086#msg25086 - Date:2017.12.17
 History082=Lancelot improve [CreateCD_Debug] Reply 167 http://TheOven.org/index.php?topic=2271.msg25132#msg25132 - Date:2017.12.18
+History083=gbrao - bob.omb - Add InfoMemTest_Button http://TheOven.org/index.php?topic=2375.0 - Date:2018.01.16
+History084=Lancelot Add Call,HostOSArch // update to TargetFinalDir - Date:2019.01.26 // Cosmetics - Date:2019.02.24
+History085=Lancelot Fix: No empty Title with "cmd.exe Start" - even HDM6 with Start QuoteQuote can crash see Malok Reply-8 Topic: http://TheOven.org/index.php?topic=3088.0 Malok Reply 8: http://TheOven.org/index.php?topic=3088.msg36827#msg36827 - Date:2020.03.09
 
 [Info]
 The plugin is designed to be called from other plugin (eg: yy_1-postconfig.script). Parameter  Section:ProcessButton, PluginFile:%ProjectDir%\Finals\yy_2-iso.script
@@ -109,12 +112,14 @@ TextB_OscdimgSwitch=,0,0,100,363,180,21,"-h -m -o -u1 -udfver102"
 TLabel_OscdimgSwitchD="Default (or blank): -h -m -o -u1 -udfver102",0,1,102,386,211,18,8,Normal
 WebLabel_Oscdimg="Options Oscdimg",0,10,289,365,96,18,http://technet.microsoft.com/en-us/library/hh824847.aspx
 pWebLabel2="Plugin Page",1,10,366,4,55,18,http://TheOven.org/index.php?board=9
-InfoCreateTool_Button=,1,8,329,15,25,25,InfoCreateTool_B,Exclamation.bmp,False,False,_InfoCreateTool_B_,False
+InfoCreateTool_Button=,1,8,329,15,25,25,InfoCreateTool_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_InfoCreateTool_B_,False
+InfoMemTest_Button=MemTest.exe/.efi,1,8,431,137,111,25,InfoMemTest_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_InfoMemTest_B_,False,"__INFO: built in 'Memory Diagnostic tool'"
 Button_CompareEdit=,1,8,471,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
 Button_Download=,1,8,425,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,448,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 
 [Variables]
+%ProgramTitle%=Create ISO
 %sizeFolder%=
 %sizeISO%=
 %RootCDFolder%=%GlobalTemplates%\RootCD
@@ -123,21 +128,21 @@ Button_Upload=,1,8,448,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016
 %ShowHide%=Hide
 
 [Tool_Choice]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%Tool_ScrollBox%,Equal,oscdimg,Begin
-Visible,%TLabel_OscdimgSwitch%,True,PERMANENT
-Visible,%TextB_OscdimgSwitch%,True,PERMANENT
-Visible,%TLabel_OscdimgSwitchD%,True,PERMANENT
-Visible,%WebLabel_Oscdimg%,True,PERMANENT
+Visible,%TLabel_OscdimgSwitch%,True,Permanent
+Visible,%TextB_OscdimgSwitch%,True,Permanent
+Visible,%TLabel_OscdimgSwitchD%,True,Permanent
+Visible,%WebLabel_Oscdimg%,True,Permanent
 End
 Else,Begin
-Visible,%TLabel_OscdimgSwitch%,False,PERMANENT
-Visible,%TextB_OscdimgSwitch%,False,PERMANENT
-Visible,%TLabel_OscdimgSwitchD%,False,PERMANENT
-Visible,%WebLabel_Oscdimg%,False,PERMANENT
+Visible,%TLabel_OscdimgSwitch%,False,Permanent
+Visible,%TextB_OscdimgSwitch%,False,Permanent
+Visible,%TLabel_OscdimgSwitchD%,False,Permanent
+Visible,%WebLabel_Oscdimg%,False,Permanent
 End
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [ProcessButton]
 Echo,"Processing Project config plugin (%ProjectDir%\config.script) to reset Boot Manager, etc."
@@ -146,13 +151,13 @@ If,ExistFile,%ProjectDir%\config.script,Exec,%ProjectDir%\config.script,CommonSe
 Else,Echo,"No Config plugin found"
 //--Since we processed another plugin, rebuild the variable to make them up to date
 //-- This is only needed *IF* you are just running the plugin to rebuild just the ISO, but is OK all the time as well.
-System,REBUILDVARS
-IniRead,%projectdir%\script.project,IniVariables,BootSector,%BootSector%
+System,ReBuildVars
+IniRead,%ProjectDir%\script.project,IniVariables,BootSector,%BootSector%
 Echo,"Continue with ISO creation using %BootSector%"
 Run,%ScriptFile%,ProcessISO,%ScriptFile%
 
 [Process]
-Echo,"%ScriptTitle%..."
+Echo,"Processing %ProgramTitle%..."
 Run,%ScriptFile%,ProcessISO,%ScriptFile%
 
 [ProcessISO]
@@ -161,15 +166,17 @@ Set,%IsoScript%,#1
 If,-#1,Equal,-,Set,%IsoScript%,%ScriptFile%
 Set,%RootCDFolder%,%GlobalTemplates%\RootCD
 //--
+Call,HostOSArch
 IniRead,%ProjectDir%\script.project,IniVariables,BuildModel,%BuildModel%
-IniRead,%projectdir%\script.project,IniVariables,BootSkin,%BootSkin%
-IniRead,%projectdir%\script.project,IniVariables,BootSector,%BootSector%
-IniRead,%projectdir%\script.project,IniVariables,BootMenu,%BootMenu%
-IniRead,%projectdir%\script.project,IniVariables,BootMenu_Target,%BootMenu_Target%
-IniRead,%projectdir%\script.project,IniVariables,TargetImage,%TargetImage%
+IniRead,%ProjectDir%\script.project,IniVariables,BootSkin,%BootSkin%
+IniRead,%ProjectDir%\script.project,IniVariables,BootSector,%BootSector%
+IniRead,%ProjectDir%\script.project,IniVariables,BootMenu,%BootMenu%
+IniRead,%ProjectDir%\script.project,IniVariables,BootMenu_Target,%BootMenu_Target%
+IniRead,%ProjectDir%\script.project,IniVariables,TargetImage,%TargetImage%
+IniRead,%ProjectDir%\script.project,IniVariables,TargetFinalDir,%TargetFinalDir%
 If,Not,ExistDir,%TargetImage%,Set,%TargetImage%,%TargetDir%
-//- Replace %targetdir% in %BootMenu_Target% by %TargetImage%
-If,Not,%TargetImage%,Equal,%targetdir%,StrFormat,REPLACE,%BootMenu_Target%,%targetdir%,%TargetImage%,%BootMenu_Target%
+//- Replace %TargetDir% in %BootMenu_Target% by %TargetImage%
+If,Not,%TargetImage%,Equal,%TargetDir%,StrFormat,Replace,%BootMenu_Target%,%TargetDir%,%TargetImage%,%BootMenu_Target%
 //--
 If,%RunSilently_CheckBox%,Equal,False,Set,%ShowHide%,Open
 Else,Set,%ShowHide%,Hide
@@ -192,9 +199,9 @@ If,%OS%,Equal,Win10,Set,%BootEFI%,Yes
 //--
 //--Use Volume Name inside Menu files...
 Set,%Volume_Name%,%pTextBox1%
-If,%Volume_Name%-,EQUAL,-,Set,%Volume_Name%,%ProjectName%
+If,%Volume_Name%-,Equal,-,Set,%Volume_Name%,%ProjectName%
 Set,%WinPESEIniFileName%,%ProjectName%.ini
-//StrFormat,LEFT,%ProjectName%,6,%WinPeISO%
+//StrFormat,Left,%ProjectName%,6,%WinPeISO%
 //Set,%WinPeISO%,%WinPeISO%.iso
 //--
 // Reset the %ISOfileVar% value - was in separate plugin before...
@@ -333,7 +340,7 @@ End
 //-- Print size of folder, and after we build CD, then size of ISO
 Retrieve,FolderSize,%TargetImage%,%sizeFolder%
 StrFormat,Bytes,%sizeFolder%
-echo,"Creating ISO: [%ISOfileVar%] Folder size: %sizeFolder%"
+Echo,"Creating ISO: [%ISOfileVar%] Folder size: %sizeFolder%"
 //--
 If,%Tool_ScrollBox%,Equal,oscdimg,Run,%IsoScript%,CreateCD_oscdimg
 If,%Tool_ScrollBox%,Equal,mkISOfs,Run,%IsoScript%,CreateCD_mkISOfs
@@ -352,11 +359,11 @@ StrFormat,Path,%IsoFile%,%IsoFolder%
 StrFormat,CTrim,%IsoFolder%,\,%IsoFolder%
 //--
 Set,%ISOfileVar%,%ISOfile%
-IniWrite,%projectdir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
+IniWrite,%ProjectDir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
 StrFormat,Path,%ISOfileVar%,%IsoFolder%
 StrFormat,RTrim,%IsoFolder%,1,%IsoFolder%
 //-- Splitting %ISOfileVar% filename from its extension --> %ISOFileName_Wout_Extension%
-strformat,filename,%ISOfileVar%,%ISOFileName_W_Extension%
+StrFormat,FileName,%ISOfileVar%,%ISOFileName_W_Extension%
 StrFormat,Split,%ISOFileName_W_Extension%,.,1,%ISOFileName_Wout_Extension%
 //-- If custom name is used , change %ISOFileName_Wout_Extension% to this value
 If,%Iso_Name_C_CheckBox%,Equal,True,If,Not,%Iso_Name_C_TextBox%,Equal,,Set,%ISOFileName_Wout_Extension%,%Iso_Name_C_TextBox%
@@ -366,7 +373,7 @@ If,%Iso_Name_Add_Arch_CheckBox%,Equal,True,If,Not,ExistVar,%SourceArch%,Set,%Sou
 If,%Iso_Name_Add_Arch_CheckBox%,Equal,True,Set,%ISOFileName_Wout_Extension%,%ISOFileName_Wout_Extension%_%SourceArch%
 //-- Final %ISOfileVar% value written as permanent variable to be used by forwarding finalize plugins (iso creation, virtualization, burning etc.)
 Set,%ISOfileVar%,%IsoFolder%\%ISOFileName_Wout_Extension%.ISO
-IniWrite,%projectdir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
+IniWrite,%ProjectDir%\script.project,IniVariables,ISOfileVar,%ISOfileVar%
 
 [WinPESEIni]
 StrFormat,Path,%IsoFile%,%IsoFolder%
@@ -908,10 +915,10 @@ End
 Else,Run,%ProjectDir%\Utils\Grub4Dos.script,Extract,%ProjectDir%\Utils\Grub4Dos.script
 
 [OscdimgCheck]
-Set,%OscdimgExe%,%Tools%\%OSArch%\oscdimg.exe
+Set,%OscdimgExe%,%Tools%\%HostOSArch%\oscdimg.exe
 If,Not,ExistFile,%OscdimgExe%,Set,%OscdimgExe%,%Tools%\x86\oscdimg.exe
-If,Not,ExistFile,%OscdimgExe%,Message,"%Tools%\%OSArch%\oscdimg.exe NOT found. Use GetWaikTools in Utils folder first. Build Stop Now",Error
-If,Not,ExistFile,%OscdimgExe%,Halt,"%Tools%\%OSArch%\oscdimg.exe NOT found. Use GetWaikTools in Utils folder first. Build Stop Now"
+If,Not,ExistFile,%OscdimgExe%,Message,"%Tools%\%HostOSArch%\oscdimg.exe NOT found. Use GetWaikTools in Utils folder first. Build Stop Now",Error
+If,Not,ExistFile,%OscdimgExe%,Halt,"%Tools%\%HostOSArch%\oscdimg.exe NOT found. Use GetWaikTools in Utils folder first. Build Stop Now"
 
 [mkISOfsCheck]
 Set,%mkISOfsExe%,%Tools%\mkisofs.exe
@@ -942,7 +949,7 @@ Else,ShellExecute,%ShowHide%,#$q%mkISOfsExe%#$q,"-v -iso-level 4 -l -J -joliet-l
 
 [CreateCD_mkISOfs]
 Set,%CreateCDTool%,%mkISOfsExe%
-StrFormat,PATH,%mkISOfsExe%,%CreateCDPath%
+StrFormat,Path,%mkISOfsExe%,%CreateCDPath%
 //-
 If,%BootSector%,Equal,etfsboot.com,Set,%BootLoadSize%,"-boot-load-size 8"
 Else,Set,%BootLoadSize%,"-boot-load-size 4"
@@ -1034,14 +1041,16 @@ TxtAddLine,%w%,"::Pause",Append
 TxtAddLine,%w%,"::cmd",Append
 
 [CreateCD_Error]
-StrFormat,FILENAME,%CreateCDTool%,%CreateCDToolFilename%
+StrFormat,FileName,%CreateCDTool%,%CreateCDToolFilename%
 Call,Echo,"Failed to create the ISO image with %CreateCDToolFilename% !!! Exit code : %tExitCode%",Warn
 //--
 If,Not,ExistFile,%TargetImage%\BOOTMGR,Echo,"BOOTMGR Missing: %TargetImage%\BOOTMGR",Warn
 If,ExistFile,%TargetDir%\BOOTMGR,Echo,"Here is BOOTMGR: %TargetDir%\BOOTMGR"
+If,ExistFile,%TargetImage%\BOOTMGR,Echo,"Here is BOOTMGR: %TargetImage%\BOOTMGR"
 If,ExistFile,%TargetDir%\WIM\BOOTMGR,Echo,"Here is BOOTMGR: %TargetDir%\WIM\BOOTMGR"
+If,ExistFile,%TargetImage%\WIM\BOOTMGR,Echo,"Here is BOOTMGR: %TargetImage%\WIM\BOOTMGR"
 //-
-Retrieve,MD5,%TargetImage%\BOOTMGR,%BOOTMGR_MD5_TI%
+Retrieve,Md5,%TargetImage%\BOOTMGR,%BOOTMGR_MD5_TI%
 //If,%BOOTMGR_MD5_TI%,Equal,04c91d3ab4cdb766c34a8dc5372ba09e,Echo,"Match with 9600.16384.WINBLUE_RTM.130821-1623_X64FRE_ENTERPRISE_EVAL_EN-US-IRM_CENA_X64FREE_EN-US_DV5.ISO"
 Retrieve,FileSize,%TargetImage%\BOOTMGR,%BOOTMGR_FSize_TI%
 //If,%BOOTMGR_FSize_TI%,Equal,427680,Echo,"Match with 9600.16384.WINBLUE_RTM.130821-1623_X64FRE_ENTERPRISE_EVAL_EN-US-IRM_CENA_X64FREE_EN-US_DV5.ISO"
@@ -1049,9 +1058,9 @@ IniRead,%ProjectDir%\script.project,IniVariables,BootSRC,%BootSRC%
 IniRead,%ProjectDir%\script.project,IniVariables,InstallSRC,%InstallSRC%
 Set,%BOOTMGR_MD5_BS_PCAT%,0
 Set,%BOOTMGR_MD5_IS_PCAT%,0
-If,ExistFile,%BootSRC%\Windows\Boot\PCAT\bootmgr,Retrieve,MD5,%BootSRC%\Windows\Boot\PCAT\bootmgr,%BOOTMGR_MD5_BS_PCAT%
+If,ExistFile,%BootSRC%\Windows\Boot\PCAT\bootmgr,Retrieve,Md5,%BootSRC%\Windows\Boot\PCAT\bootmgr,%BOOTMGR_MD5_BS_PCAT%
 //If,%BOOTMGR_MD5_BS_PCAT%,Equal,04c91d3ab4cdb766c34a8dc5372ba09e,Echo,"Match with 9600.16384.WINBLUE_RTM.130821-1623_X64FRE_ENTERPRISE_EVAL_EN-US-IRM_CENA_X64FREE_EN-US_DV5.ISO"
-If,ExistFile,%InstallSRC%\Windows\Boot\PCAT\bootmgr,Retrieve,MD5,%InstallSRC%\Windows\Boot\PCAT\bootmgr,%BOOTMGR_MD5_IS_PCAT%
+If,ExistFile,%InstallSRC%\Windows\Boot\PCAT\bootmgr,Retrieve,Md5,%InstallSRC%\Windows\Boot\PCAT\bootmgr,%BOOTMGR_MD5_IS_PCAT%
 //If,%BOOTMGR_MD5_IS_PCAT%,Equal,04c91d3ab4cdb766c34a8dc5372ba09e,Echo,"Match with 9600.16384.WINBLUE_RTM.130821-1623_X64FRE_ENTERPRISE_EVAL_EN-US-IRM_CENA_X64FREE_EN-US_DV5.ISO"
 //-
 //If,Not,%BOOTMGR_MD5_BS_PCAT%,Equal,0,Begi-n
@@ -1084,7 +1093,7 @@ TxtAddLine,%t%,"#$q%CreateCDTool%#$q %CreateCD_Parm% | tee.exe CreateISO_Debug_T
 TxtAddLine,%t%,"Exit",Append
 //-
 If,Not,ExistFile,%ProjectTemp%\Tee.exe,ExtractFile,%IsoScript%,Folder,Tee.exe,%ProjectTemp%
-ShellExecute,Hide,cmd.exe,"/C Start #$q#$q /Wait #$q%t%#$q",%ProjectTemp%
+ShellExecute,Hide,cmd.exe,"/C Start #$qCreateISO#$q /Wait #$q%t%#$q",%ProjectTemp%
 //Call,StartDoc,%ProjectTemp%\CreateISO_Debug_Tee.txt
 //-
 Call,FileDelete,%ProjectTemp%\echofile.exe
@@ -1103,10 +1112,7 @@ End
 Message,"ERROR: %CreateCDToolFilename% Failure#$x#$x#$xSome known situations:#$x+#$xReason: You are building '%ProjectName%' project on a media that uses#$x Windows 8's 'Storage Spaces'#$xSolution: copy to another media build there.#$xTip:#$xTo see if using 'Storage Spaces' feature and on which drives, goto:#$xWin8-Control Panel-System and Security-Storage Spaces#$x#$xIf not any of above reasons:#$xProvide Log to Project Forum Page#$x#$x     http://www.TheOven.org#$x",Error
 
 [OpenRootCDFolder]
-If,Not,ExistDir,%RootCDFolder%,DirMake,%RootCDFolder%
-System,FILEREDIRECT,OFF
-ShellExecuteEx,Open,Explorer.exe,/e#$c#$q%RootCDFolder%#$q
-System,FILEREDIRECT,ON
+Call,OpenDir,%RootCDFolder%
 
 [ISOfile_NotDeleted]
 Message,"!!! NOT DELETED WARNING 1/2 !!! #$x#$x %ISOfileVar% #$x#$x Actively being used by another program #$x (Emulator (Ex: qEmu#$c Virtualbox#$c Vmware) - Iso mount (Ex: Daemon Tools) - etc.) #$x#$x#$x Close active handling on iso file and press OK button. ",WARNING
@@ -1134,7 +1140,7 @@ If,ExistFile,%VMXDir%\VMware_Info.ini,IniRead,%VMXDir%\VMware_Info.ini,VMwareInf
 If,ExistFile,%VMXDir%\nvram,FileCopy,%VMXDir%\nvram,%VMXDir%\nvram2
 If,ExistFile,%VMXFile%,FileCopy,%VMXFile%,%VMXFile%2
 //--
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
 If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\nvram#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXDir%\nvram#$q"
 If,ExistFile,%VMXDir%\nvram,If,ExistFile,%VMXFile%,Begin
@@ -1149,7 +1155,7 @@ If,ExistFile,%VMXDir%\nvram,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXDir%\
 If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
 If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
 If,ExistFile,%VMXFile%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%VMXFile%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%VMXFile%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //--
 If,Not,ExistFile,%VMXDir%\nvram,If,ExistFile,%VMXDir%\nvram2,FileCopy,%VMXDir%\nvram2,%VMXDir%\nvram
 If,Not,ExistFile,%VMXFile%,If,ExistFile,%VMXFile%2,FileCopy,%VMXFile%2,%VMXFile%
@@ -1171,6 +1177,9 @@ End
 
 [InfoCreateTool_B]
 Message,"mkisof works faster but can not support unicode MultiLanguage files properly#$x#$x oscdimg works slower but supports MultiLanguage files"
+
+[InfoMemTest_B]
+Message,"**** Built in Memory Diagnostic ****#$x#$x#$x#$x*#$x Increase CountDown timer At Finals\'Create ISO' Plugin#$x -> You will Notice Option for the mem diagnostic {Use Tab}#$x#$x*#$xWhen you see the screen that says 'Press any key to boot from USB'#$x--> Press 'ENTER' key twice#$xThis will open the windows boot manager...#$x from there you can run the built in memory diagnostic#$x  by pressing the 'tab' key to highlight the 'Memory Diagnostic tool' then press enter...#$x#$x#$x#$x;)",Information
 
 [History-Old]
 History013=JFX THX Lancelot mkisofs case sensitive fix
@@ -1194,7 +1203,7 @@ History029=ChrisR Isolinux version4.05
 History030=ChrisR grub4dos-0.4.5c-2012-02-14 (http://code.google.com/p/grub4dos-chenall/downloads/list)
 History031=ChrisR Isolinux Config File, menu entry for Win7PE changed. grub4dos-0.4.5c-2012-02-27
 History032=ChrisR Increase the size of isolinux menu: Menu.cfg (Width 80,Margin 10->5,Passwordmargin 3,Rows 12->14,Tabmsgrow 18->20,Cmdlinerow 18->20,Endrow 24,Passwordrow 11,Timeoutrow 20->22)
-History033=ChrisR Retrieve,FOLDERSIZE gives negative number when size is bigger than 2 GB in wb wb82, wb80rv3, wb77rc2 (workaround: If,%FolderSize%,Bigger,0 ==> If,Not,%FolderSize%,Equal,0). Reported by Aeolis
+History033=ChrisR Retrieve,FolderSize gives negative number when size is bigger than 2 GB in wb wb82, wb80rv3, wb77rc2 (workaround: If,%FolderSize%,Bigger,0 ==> If,Not,%FolderSize%,Equal,0). Reported by Aeolis
 History034=ChrisR Added GFX-Boot options - grub4dos-0.4.5c-2012-03-26
 History035=ChrisR Fixed extract GFX-BOOT.GFX if not exist
 History037=ChrisR GFX-BootMenu is now selected in the main configuration, BootSkin option
@@ -1209,14 +1218,8 @@ History046=ChrisR grub4dos-0.4.5c-2012-10-02
 History047=ChrisR Return to grub4dos-0.4.5c-2012-06-19. Added --ignore-floppies --ignore-cd in find command. Message: no pxe stack commands(hangup means you have a problematic config) with version 2012-10-02 to understand.
 
 [AuthorEncoded]
-authorlogo.jpg=3193,4260
 cdbxpp.jpg=3634,4846
 Logo=cdbxpp.jpg
-
-[EncodedFile-AuthorEncoded-authorlogo.jpg]
-lines=1
-0=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
-1=9Da41IqM7nH7SMbtisO9dcc0pyiYkI5A4E8TJQxv0KcoDLILJI4rAOOBj4D3Yuq3V4nONLLC3JyC/KyU/P18sqSGcYBSMLePBAaB0e7PLsgoxtDEwASsQG7wMEDaABAAAAAgAAACkAAAAsDAAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-AuthorEncoded-cdbxpp.jpg]
 lines=1
@@ -1227,10 +1230,10 @@ lines=1
 CD_16x16.bmp=669,892
 BLogo.bmp=694,926
 CreateISO.bmp=1403,1871
-Exclamation.bmp=452,603
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
 
 [DownloadXXX]
 Call,DownloadXQ
@@ -1282,9 +1285,9 @@ lines=0
 lines=0
 0=eJx9klFoUmEUx5dKD8OHRiCO+yDiy54kGIxkQiCDQBtYD9ubIINRQiahUKC1YjJIN2hIGQx0G4JsDZZtSE3cnYhOkKuQhqIbw6vovcSdoiJa3NPXNJFa/eG8nPP7zv9833cU0xPcoQtNoBhDca0XV4aE3UKvfql4PB6GYRKJBMNGeVc5/yGRZDKZ0+n0ut2H6+6Y2/vy8drUlPb6yMilsFKpRHA6k6mTZPswQH/Mrlpg7hloNxLye+o/4OHhYYIgSqXS3tYW+43q4Ikde3leB9p10DVhGRoGm2WQHx8fTyQSAFAkCMh8KcaqlodtzQuYS4IZYA/qFBRtdlOfV6lUmxsbqXgcHWHwHBFgdU9B4wPDd3BBKwUkQL5eS6nVvcEUCsXu9nbqwy58zVA5WFkiF5bDBm98kaEjUK3BCQtpiiqEwxGBQIB4kUgU9vmaeLCwlfK8Odv0vi/gwVUb8yiQDpVDACfnTA7dDrmbTL2pDtbeQYjYXTnX6wjcv3Pqz86/ptahdkx40qkjmi5VkQ9AMpnkcH79y4OZmaKv+NwI9y1kdv+zflaPkrNzd6PRT8HgYaVSYVkWLiQWi7sWVmPY8ASM++D15VV3FrtJl8tdLpdpmobfQo/ZLWGjNwxvf9gZcNY6C5HT2xo1JhRGI1GSJJvNZp+XSqX9hx27Nf2qAccAp0BnS+Ej/CCfPxlsjrz4fP7g30kmb3rO0IkGQLPVarTbHRiQ2Wz+e5fQlprM2ljMT9PMIOxwOP65rGjvuVy5fNJoNFqtVtS2f02kn146f2x4nONxdok3NKswNNNLyi1gGAUjDZgxQ+hAJuzySo/vNzIwAQDaggaZuf2gSwEAAAACAAAAKAAAAFECAAAAAAAAAQAAAAAAAAAAAAAA
 
-[EncodedFile-InterfaceEncoded-Exclamation.bmp]
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
 lines=0
-0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-BLogo.bmp]
 lines=0

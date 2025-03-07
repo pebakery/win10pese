@@ -4,17 +4,18 @@ Type=Plugin
 Author=ChrisR
 Description=Customize Power Options
 Credits=http://TheOven.org
-Version=005
+Version=006
 Download_Level=1
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2016.11.28
+Date=2019.12.28
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Tweaks/PowerOptions.script
+Web2=http://yomi.cwcodes.net/Yomi/TweaksY/PowerOptions.script
 CertifiedBy=
 Certification=
 HistoryNotes01=
@@ -22,6 +23,7 @@ History002=ChrisR - Disable USB Selective suspend added - 2014.09.28
 History003=Lancelot - Added DU Buttons
 History004=ChrisR - compatible with Win10pese - Date:2016.02.09
 History005=Lancelot - Fixed DL Button - Date:2016.11.28
+History006=Lancelot - Add to Yomi - Date:2019.12.28
 
 [InterFace]
 Battery_TextLabel="On battery",1,1,161,15,64,18,8,Bold
@@ -53,19 +55,19 @@ Set,%MonitorAC%,%MonitorAC_NumberBox%
 Set,%DiskDC%,%DiskDC_NumberBox%
 Set,%DiskAC%,%DiskAC_NumberBox%
 //--
-//If,ExistFile,%target_sys%\autorun.cmd,Begi-n
-//TXTDelLine,%target_sys%\autorun.cmd,exit
-//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /monitor-timeout-ac %MonitorAC% >nul",Append
-//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /monitor-timeout-dc %MonitorDC% >nul",Append
-//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /disk-timeout-ac %DiskAC% >nul",Append
-//TXTAddLine,%target_sys%\autorun.cmd,"powercfg.exe /change /disk-timeout-dc %DiskDC% >nul",Append
-//TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//If,ExistFile,%Target_Sys%\autorun.cmd,Begi-n
+//TxtDelLine,%Target_Sys%\autorun.cmd,exit
+//TxtAddLine,%Target_Sys%\autorun.cmd,"powercfg.exe /change /monitor-timeout-ac %MonitorAC% >nul",Append
+//TxtAddLine,%Target_Sys%\autorun.cmd,"powercfg.exe /change /monitor-timeout-dc %MonitorDC% >nul",Append
+//TxtAddLine,%Target_Sys%\autorun.cmd,"powercfg.exe /change /disk-timeout-ac %DiskAC% >nul",Append
+//TxtAddLine,%Target_Sys%\autorun.cmd,"powercfg.exe /change /disk-timeout-dc %DiskDC% >nul",Append
+//TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
 //En-d
 //--
-StrFormat,MULT,%MonitorDC%,60
-StrFormat,MULT,%MonitorAC%,60
-StrFormat,MULT,%DiskDC%,60
-StrFormat,MULT,%DiskAC%,60
+StrFormat,Mult,%MonitorDC%,60
+StrFormat,Mult,%MonitorAC%,60
+StrFormat,Mult,%DiskDC%,60
+StrFormat,Mult,%DiskAC%,60
 //--
 RegHiveLoad,Tmp_System,%RegSystem%
 // Monitor Timeout
@@ -95,7 +97,20 @@ lines=1
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[CompareEditXXX]
+Call,CompareEdit
 
 [InterfaceEncoded]
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
@@ -109,9 +124,6 @@ lines=0
 [EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
 lines=0
 0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
 
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0

@@ -1,0 +1,790 @@
+[Main]
+Title=Unlock Install Source (BETA)
+Type=Plugin
+Author=Bob.Omb
+Description=Plugin unlocks the full potential of your Win10 install media, making it possible to use advanced plugins to add functionality to your builds.
+Credits=ChrisR, Lancelot
+Version=010
+Download_Level=2
+Level=10
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.01.24
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Utils/UnlockInstallSource.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Bob.Omb BETA: The only thing to finish in UnlockInstallSource is to find a way to detect if the feature "Legacy Components" has been enabled or not. (Maybe changes registry only?)
+HistoryNotes02=Bob.Omb BETA: TODO: I would like to get detection working so I can update interface with buttons that change "Enable" ==> "Disable" when pressed
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History000=ChrisR - Added PrepareDism for Win10 to Enable or Disable NetFx3 feature in .NET plugin
+History001=Bob.Omb 2018.12.09 Plugin created
+History002=Lancelot add to server. - Date:2018.12.18
+History003=Lancelot Plugin improvments to be executed by other plugins.... - Date:2018.12.26
+History004=Lancelot Message Time out : 0 -> Message box stay on screen. - Date:2018.12.27
+History006=Bob.Omb check ADK and halt if not exist [PrepareDism_Win10x64] // Add %Unattended_Silent% - Date:2018.12.29
+History007=Bob.Omb DISM detection bugfix - Date:2019.01.19
+History008=Bob.Omb Legacy Component detection added. Credit Lancelot for registry bugfix. - Date:2019.01.23
+History009=Lancelot Removed old syntax // Add missing CopyDismMuiHost // improve registry bugfix - Date:2019.01.24
+History010=Bob.Omb cleaned up variables, completed error checking for legacy components - Date:2019.01.24
+
+[InterFace]
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+ADK_INFO_TextLabel="Requires ADK downloaded first before it can function",1,1,239,49,261,41,12,Bold
+RadioGroup_IP="Show/Hide Process",1,14,17,0,107,48,"Show Process","Hide Process",0
+Goo_Button=Begin,1,8,126,6,106,40,Process_Goo_P_B,0,False,False,_Process_Goo_P_B_,False
+Silent_ALL_Test_Button="ALL Silent Test",1,8,241,6,80,25,Silent_ALL_Test_P_B,0,False,False
+Message_Bevel=pBevel2,1,12,341,96,142,50
+Message_CheckBox="Show Message",1,3,345,100,103,18,True
+Message_Time_TextLabel="Message Timeout:",1,1,347,123,96,18,8,Normal
+Message_Time_NumberBox=pNumberBox1,1,2,436,119,40,22,0,0,100,1
+Features_Bevel=pBevel1,1,12,1,50,230,150
+pCheckBox1="Enable Feature SMBv1",1,3,12,56,200,18,True
+pCheckBox2="Enable Feature NetFX3",1,3,12,74,200,18,True
+pCheckBox3="Enable Feature NetFX4 Extended",1,3,12,91,200,18,True
+pCheckBox4="Enable Feature Telnet Client",1,3,12,108,158,18,True
+pCheckBox5="Enable Feature TFTP",1,3,12,125,200,18,True
+pCheckBox6="Enable Feature Legacy Components",1,3,12,142,200,18,True
+pCheckBox7="Enable Feature Linux Subsystem",1,3,12,159,200,18,True
+pCheckBox8="Enable Feature Print Components",1,3,12,176,200,18,True
+
+[Variables]
+%SourceSXS%=%SourceDir%\Sources\sxs
+%CheckDotNetFile%=%InstallSRC%\Windows\Microsoft.NET\Framework\v2.0.50727\InstallUtil.exe
+%CheckDotNet4Dir%=%InstallSRC%\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files
+%CheckSMB1File%=%InstallSRC%\Windows\System32\drivers\mrxsmb10.sys
+%CheckTelnetClient%=%InstallSRC%\Windows\System32\telnet.exe
+%CheckTFTP%=%InstallSRC%\Windows\System32\tftp.exe
+%CheckPrintingFiles%=%InstallSRC%\Windows\System32\lpdsvc.dll
+%CheckLinuxSubsystem%=%InstallSRC%\Windows\System32\bash.exe
+%CheckLegacyComp%=HKEY_LOCAL_MACHINE\Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\PackagesPending\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates
+%Unattended_Silent%=False
+%CopyDismMuiHost%=Run,%ScriptFile%,PCopyDismMuiHost
+
+[Process]
+Echo,"There is no spoon"
+
+[Process_Goo_P_B]
+//Begin Button Follow UI selections
+Run,%ScriptFile%,Read_UI
+//-
+Run,%ScriptFile%,Process_Goo
+
+[Read_UI]
+Set,%RadioGroup_IPV%,%RadioGroup_IP%
+//-
+Set,%Message_CheckBoxV%,%Message_CheckBox%
+Set,%Message_Time_NumberBoxV%,%Message_Time_NumberBox%
+//-
+Set,%CheckBox01V%,%pCheckBox1%
+Set,%CheckBox02V%,%pCheckBox2%
+Set,%CheckBox03V%,%pCheckBox3%
+Set,%CheckBox04V%,%pCheckBox4%
+Set,%CheckBox05V%,%pCheckBox5%
+Set,%CheckBox06V%,%pCheckBox6%
+Set,%CheckBox07V%,%pCheckBox7%
+Set,%CheckBox08V%,%pCheckBox8%
+
+[Silent_ALL_Test_P_B]
+Run,%ScriptFile%,Process_Goo_ALL_Silent
+
+[Process_Goo_ALL_Silent]
+Set,%Unattended_Silent%,True
+//-
+//ALL here to be executed from other plugins to enable All features
+//1 hide process
+Set,%RadioGroup_IPV%,1
+//-
+Set,%Message_CheckBoxV%,False
+Set,%Message_Time_NumberBoxV%,1
+//-
+Set,%CheckBox01V%,True
+Set,%CheckBox02V%,True
+Set,%CheckBox03V%,True
+Set,%CheckBox04V%,True
+Set,%CheckBox05V%,True
+Set,%CheckBox06V%,True
+Set,%CheckBox07V%,True
+Set,%CheckBox08V%,True
+Run,%ScriptFile%,Process_Goo
+
+[Process_Goo]
+Run,%ScriptFile%,SetOpenHide
+//--
+If,Not,ExistDir,%SourceSXS%,Call,Echo,"Directory '\source\sxs' not found in '%SourceDir%'!",Warn,,MessageError,,Halt
+//--
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%ExtractWimFolder%
+// for extracted wim's direct in folder
+If,%ExtractWimFolder%,Equal,Yes,Begin
+If,Not,%OS%,Equal,Win10,If,%SourceArch%,Equal,x86,If,ExistDir,%SourceSXS%\amd64_*,Call,Echo,"Your selected source does not have the same architecture as your selected image in 'Image Configuration'!",Warn,,MessageError,,Halt
+If,Not,%OS%,Equal,Win10,If,%SourceArch%,Equal,x64,If,Not,ExistDir,%SourceSXS%\amd64_*,Call,Echo,"Your selected source does not have the same architecture as your selected image in 'Image Configuration'!",Warn,,MessageError,,Halt
+If,%CheckBox02V%,Equal,True,Begin
+Run,%ScriptFile%,EnableFx3
+End
+Else,Begin
+Run,%ScriptFile%,DisableFx3
+End
+If,%CheckBox03V%,Equal,True,Begin
+Run,%ScriptFile%,EnableFx4
+End
+Else,Begin
+Run,%ScriptFile%,DisableFx4
+End
+If,%CheckBox01V%,Equal,True,Begin
+Run,%ScriptFile%,EnableSMB1
+End
+Else,Begin
+Run,%ScriptFile%,DisableSMB1
+End
+If,%CheckBox04V%,Equal,True,Begin
+Run,%ScriptFile%,EnableTelnetClient
+End
+Else,Begin
+Run,%ScriptFile%,DisableTelnetClient
+End
+If,%CheckBox05V%,Equal,True,Begin
+Run,%ScriptFile%,EnableTFTP
+End
+Else,Begin
+Run,%ScriptFile%,DisableTFTP
+End
+If,%CheckBox08V%,Equal,True,Begin
+Run,%ScriptFile%,EnablePrintComponents
+End
+Else,Begin
+Run,%ScriptFile%,DisablePrintComponents
+End
+If,%CheckBox06V%,Equal,True,Begin
+Run,%ScriptFile%,EnableLegacyComponents
+End
+Else,Begin
+Run,%ScriptFile%,DisableLegacyComponents
+End
+If,%CheckBox07V%,Equal,True,Begin
+Run,%ScriptFile%,EnableLinuxSubsystem
+End
+Else,Begin
+Run,%ScriptFile%,DisableLinuxSubsystem
+End
+End
+Else,Begin
+Run,%ScriptFile%,SourceMount
+// for copied source mount wim before
+Shellexecute,Hide,cmd.exe,"/C attrib -r #$q%SourceDir%\Sources\install.wim#$q"
+Run,%ScriptFile%,RWTest
+If,%CheckBox02V%,Equal,True,Begin
+Run,%ScriptFile%,EnableFx3
+End
+Else,Begin
+Run,%ScriptFile%,DisableFx3
+End
+If,%CheckBox03V%,Equal,True,Begin
+Run,%ScriptFile%,EnableFx4
+End
+Else,Begin
+Run,%ScriptFile%,DisableFx4
+End
+If,%CheckBox01V%,Equal,True,Begin
+Run,%ScriptFile%,EnableSMB1
+End
+Else,Begin
+Run,%ScriptFile%,DisableSMB1
+End
+If,%CheckBox04V%,Equal,True,Begin
+Run,%ScriptFile%,EnableTelnetClient
+End
+Else,Begin
+Run,%ScriptFile%,DisableTelnetClient
+End
+If,%CheckBox05V%,Equal,True,Begin
+Run,%ScriptFile%,EnableTFTP
+End
+Else,Begin
+Run,%ScriptFile%,DisableTFTP
+End
+If,%CheckBox08V%,Equal,True,Begin
+Run,%ScriptFile%,EnablePrintComponents
+End
+Else,Begin
+Run,%ScriptFile%,DisablePrintComponents
+End
+If,%CheckBox06V%,Equal,True,Begin
+Run,%ScriptFile%,EnableLegacyComponents
+End
+Else,Begin
+Run,%ScriptFile%,DisableLegacyComponents
+End
+If,%CheckBox07V%,Equal,True,Begin
+Run,%ScriptFile%,EnableLinuxSubsystem
+End
+Else,Begin
+Run,%ScriptFile%,DisableLinuxSubsystem
+End
+Run,%Scriptfile%,SourceUnMount
+End
+Run,%ScriptFile%,CleanupTemp
+
+[EnableFx3]
+Echo,"Enable feature NetFx3..."
+If,Not,ExistFile,%CheckDotNetFile%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature NetFx3 is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:NetFx3 /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"NetFx3 Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnableFx4]
+Echo,"Enable feature NetFx4 Extended..."
+If,Not,ExistDir,%CheckDotNet4Dir%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature NetFx4 is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:NetFx4Extended-ASPNET45 /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"NetFx4 Extended Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnableSMB1]
+Echo,"Enable feature SMB1..."
+If,Not,ExistFile,%CheckSMB1File%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature SMB1 is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:SMB1Protocol /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:SMB1Protocol-Client /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:SMB1Protocol-Server /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:SMB1Protocol-Deprecation /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"SMB1 Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnableTelnetClient]
+Echo,"Enable feature TelnetClient..."
+If,Not,ExistFile,%CheckTelnetClient%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature TelnetClient is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:TelnetClient /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Telnet Client Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnableTFTP]
+Echo,"Enable feature TFTP..."
+If,Not,ExistFile,%CheckTFTP%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature TFTP is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:TFTP /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"TFTP Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnablePrintComponents]
+Echo,"Enable feature Print Components..."
+If,Not,ExistFile,%CheckPrintingFiles%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature Print Components is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:Printing-Foundation-LPDPrintService /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:Printing-Foundation-LPRPortMonitor /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Print Components Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnableLegacyComponents]
+RegHiveLoad,Tmp_Software,"%InstallSRC%\Windows\System32\Config\SOFTWARE."
+//--
+//Winbuilder Bug following do not work
+//If,ExistRegKey,HKLM,"Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates",LegacyComponents,RegRead,HKLM,"Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates",LegacyComponents,%lcomp%
+//Winbuilder Bug Workaround:
+Run,%ScriptFile%,RegRead_Value_RegEdit_Simple,%CheckLegacyComp%,LegacyComponents,lcomp
+If,Not,ExistVar,%lcomp%,Set,%lcomp%,Unknown
+//-
+If,Not,%lcomp%,Equal,"dword:00000001",Begin
+RegHiveUnload,Tmp_Software
+If,%lcomp%,Equal,Unknown,Begin
+Set,%t%,"Cannot Detect Legacy Components State - Attempting to Enable/Re-Enable"
+Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,"Enable feature Legacy Components..."
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature Legacy Components is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:LegacyComponents /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Echo,"Enable feature Legacy Components..."
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature Legacy Components is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:LegacyComponents /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+End
+Else,Begin
+RegHiveUnload,Tmp_Software
+Set,%t%,"Legacy Components Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[EnableLinuxSubsystem]
+Echo,"Enable feature Linux Subsystem..."
+If,Not,ExistFile,%CheckLinuxSubsystem%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Enable feature Linux Subsystem is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Enable-Feature /FeatureName:Microsoft-Windows-Subsystem-Linux /All /LimitAccess /Source:#$q%SourceSXS%#$q",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Linux Subsystem Feature is already enabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisableFx3]
+Echo,"Disable feature NetFx3..."
+If,ExistFile,%CheckDotNetFile%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature NetFx3 is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:NetFx3",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"NetFx3 Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisableFx4]
+Echo,"Disable feature NetFx4 Extended..."
+If,ExistDir,%CheckDotNet4Dir%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature NetFx4 is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:NetFx4Extended-ASPNET45",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"NetFx4 Extended Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisableSMB1]
+Echo,"Disable feature SMB1..."
+If,ExistFile,%CheckSMB1File%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature SMB1 is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:SMB1Protocol",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:SMB1Protocol-Client",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:SMB1Protocol-Server",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:SMB1Protocol-Deprecation",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"SMB1 Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisableTelnetClient]
+Echo,"Disable feature TelnetClient..."
+If,ExistFile,%CheckTelnetClient%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature TelnetClient is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:TelnetClient",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Telnet Client Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisableTFTP]
+Echo,"Disable feature TFTP..."
+If,ExistFile,%CheckTFTP%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature TFTP is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:TFTP",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"TFTP Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisablePrintComponents]
+Echo,"Disable feature Print Components..."
+If,ExistFile,%CheckPrintingFiles%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature Print Components is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:Printing-Foundation-LPDPrintService",%WorkDir%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:Printing-Foundation-LPRPortMonitor",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Print Components Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[DisableLegacyComponents]
+RegHiveLoad,Tmp_Software,"%InstallSRC%\Windows\System32\Config\SOFTWARE."
+//--
+//Winbuilder Bug following do not work
+//If,ExistRegKey,HKLM,"Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates",LegacyComponents,RegRead,HKLM,"Tmp_Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Microsoft-Windows-Legacy-Components-OC-Package~31bf3856ad364e35~amd64~~10.0.17763.1\Updates",LegacyComponents,%lcomp%
+//Winbuilder Bug Workaround:
+Run,%ScriptFile%,RegRead_Value_RegEdit_Simple,%CheckLegacyComp%,LegacyComponents,lcomp
+If,Not,ExistVar,%lcomp%,Set,%lcomp%,Unknown
+//-
+If,%lcomp%,Equal,"dword:00000001",Begin
+RegHiveUnload,Tmp_Software
+Echo,"Disable feature Legacy Components..."
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature Legacy Components is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:LegacyComponents",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+RegHiveUnload,Tmp_Software
+If,%lcomp%,Equal,Unknown,Begin
+Set,%t%,"Cannot Detect Legacy Components State - Attempting to disable"
+Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,"Disable feature Legacy Components..."
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature Legacy Components is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:LegacyComponents",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Legacy Components Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+End
+
+[DisableLinuxSubsystem]
+Echo,"Disable feature Linux Subsystem..."
+If,ExistFile,%CheckLinuxSubsystem%,Begin
+Call,HostOSVersion,,4x
+If,Not,ExistSection,%ScriptFile%,PrepareDism_%OS%%SourceArch%,Call,Echo,"Disable feature Linux Subsystem is not prepared for %OS%%SourceArch%",Warn,,MessageError,,Halt
+Run,%ScriptFile%,PrepareDism_%OS%%SourceArch%
+ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%InstallSRC%#$q /Disable-Feature /FeatureName:Microsoft-Windows-Subsystem-Linux",%WorkDir%
+Run,%ScriptFile%,CleanupTemp
+End
+Else,Begin
+Set,%t%,"Linux Subsystem Feature is already disabled!"
+If,%Message_CheckBoxV%-%Message_Time_NumberBoxV%,Equal,True-0,Message,%t%,Information
+Else,If,%Message_CheckBoxV%,Equal,True,Message,%t%,Information,%Message_Time_NumberBoxV%
+Echo,%t%
+End
+
+[SourceMount]
+Echo,"Mounting Windows Source files..."
+IniRead,%ProjectDir%\script.project,IniVariables,WIMTool,%WIMTool%
+If,%WIMTool%,Equal,ImageX,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%IMAGEX%
+If,%WIMTool%,Equal,WimUtil,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMUTIL%
+//-
+If,%WIMTool%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Call,Echo,"Image Tools ImageX was not found. Imagex.exe REQUIRED to mount/unmount !!!",Warn,,MessageError,,Halt
+If,%WIMTool%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Call,Echo,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount/unmount !!!",Warn,,MessageError,,Halt
+//--
+If,Not,ExistDir,%InstallSRC%,DirMake,%InstallSRC%
+Set,%WIMIndex%,1
+Set,%t%,""
+IniRead,%ProjectDir%\script.project,IniVariables,WIMIndex,%t%
+If,Not,%t%-,Equal,-,Set,%WIMIndex%,%t%
+//--
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,%OpenHide%,%IMAGEX%,"/mountrw #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q%InstallSRC%#$q",%IMAGEXPath%
+If,Not,ExistFile,%Source_Win%\explorer.exe,Call,Echo,"Error with mounting source! (Install.wim) return : %ExitCode% :(",Warn,,MessageError,,Halt
+End
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,%OpenHide%,%WIMUTIL%,"/mount #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q%InstallSRC%#$q /RW",%WIMUTILPath%
+If,Not,ExistFile,%Source_Win%\explorer.exe,Call,Echo,"Error with mounting source! (Install.wim) return : %ExitCode% :(",Warn,,MessageError,,Halt
+End
+
+[SourceUnMount]
+Echo,"UnMounting Windows Source files..."
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
+ShellExecute,%OpenHide%,%IMAGEX%,"/unmount #$q%InstallSRC%#$q #1",%IMAGEXPath%
+End
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
+ShellExecute,%OpenHide%,%WIMUTIL%,"/unmount #$q%InstallSRC%#$q #1 /nowarn",%WIMUTILPath%
+End
+If,ExistFile,%Source_Win%\explorer.exe,Call,Echo,"Unmount NOT successful :(",Warn,,MessageError,,Halt
+
+[PrepareDism_Win8x86]
+If,ExistDir,%ProjectTemp%\Dism,Shellexecute,Hide,cmd.exe,"/C rd #$q%ProjectTemp%\Dism#$q /s /q"
+Set,%DismDir%,%ProjectTemp%\Dism\System32
+DirMake,%DismDir%
+DirCopy,%Source_Sys%\dism,%DismDir%
+//--
+Call,FileCopyMUI-Source,%Source_Sys%\dism.exe,%DismDir%\dism
+FileCopy,%Tools%\x86\wimgapi.dll,%DismDir%\dism
+//--
+Set,%XP2k3HostOS%,No
+If,%HostOSVersion1%,Equal,5,%XP2k3HostOS%,Yes
+If,%XP2k3HostOS%,Equal,Yes,Begin
+// Under XP it searches mui files in MUI\LangID
+Call,HostOSLang
+If,Not,ExistDir,%DismDir%\dism\MUI\%HostOSLang%,DirMake,%DismDir%\dism\MUI\%HostOSLang%
+AddVariables,%ProjectDir%\script.project,MuiLang
+StrFormat,Split,%MuiLangAll%,|,0,%NbLang%
+CopyDismMuiHost,%DismDir%\dism,%DismDir%\dism\MUI\%HostOSLang%
+// Keep for a manual integration if needed
+//DirDelete,%DismDir%\dism\%DistLang%
+End
+Set,%targetdism%,%DismDir%\dism\dism.exe
+Set,%WorkDir%,%DismDir%\dism
+
+[PrepareDism_Win8x64]
+Call,HostOSArch
+If,ExistDir,%ProjectTemp%\Dism,Shellexecute,Hide,cmd.exe,"/C rd #$q%ProjectTemp%\Dism#$q /s /q"
+Set,%DismDir%,%ProjectTemp%\Dism\System32
+Set,%DismDirWOW%,%ProjectTemp%\Dism\SysWow64
+DirMake,%DismDir%
+DirMake,%DismDirWOW%
+DirCopy,%Source_Sys%\dism,%DismDir%
+DirCopy,%Source_Win%\SysWow64\dism,%DismDirWOW%
+//--
+Call,FileCopyMUI-Source,%Source_Sys%\dism.exe,%DismDir%\dism
+FileCopy,%Tools%\x64\wimgapi.dll,%DismDir%\dism
+//--
+Call,FileCopyMUI-Source,%Source_Win%\SysWow64\dism.exe,%DismDirWOW%\dism
+FileCopy,%Tools%\x86\wimgapi.dll,%DismDirWOW%\dism
+Set,%XP2k3HostOS%,No
+If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
+If,%HostOSVersion1%,Equal,5,Begin
+AddVariables,%ProjectDir%\script.project,MuiLang
+StrFormat,Split,%MuiLangAll%,|,0,%NbLang%
+End
+If,%HostOSArch%,Equal,x86,Begin
+If,%XP2k3HostOS%,Equal,Yes,Begin
+// Under XP it searches mui files in MUI\LangID
+Call,HostOSLang
+If,Not,ExistDir,%DismDirWOW%\dism\MUI\%HostOSLang%,DirMake,%DismDirWOW%\dism\MUI\%HostOSLang%
+CopyDismMuiHost,%DismDirWOW%\dism,%DismDirWOW%\dism\MUI\%HostOSLang%
+// Keep for a manual integration if needed
+//DirDelete,%DismDirWOW%\dism\%DistLang%
+End
+Set,%targetdism%,%DismDirWOW%\dism\dism.exe
+Set,%WorkDir%,%DismDirWOW%\dism
+End
+If,%HostOSArch%,Equal,x64,Begin
+If,%XP2k3HostOS%,Equal,Yes,Begin
+Call,HostOSLang
+If,Not,ExistDir,%DismDir%\dism\MUI\%HostOSLang%,DirMake,%DismDir%\dism\MUI\%HostOSLang%
+CopyDismMuiHost,%DismDir%\dism,%DismDir%\dism\MUI\%HostOSLang%
+// Keep for a manual integration if needed
+//DirDelete,%DismDir%\dism\%DistLang%
+End
+Set,%targetdism%,%DismDir%\dism\dism.exe
+Set,%WorkDir%,%DismDir%\dism
+End
+
+[PrepareDism_Win8.1x86]
+// Use ADK for Win8.1
+If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+Retrieve,FileVersion,%Tools%\%SourceArch%\dism\dism.exe,%dismexeVer%
+Call,CompareVersions,%dismexeVer%,6.3.9600.16383,dismexeVerCompare
+If,Not,%dismexeVerCompare%,Equal,Bigger,Call,Echo,"dism.exe from ADK for Windows 8.1 is required to Enable or Disable features !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+// XP, 2k3, vista Not Compatible
+Set,%XP2k3HostOS%,No
+If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
+If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
+If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Enable or Disable features for Win8.1 uses ADK for Win8.1, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.",Warn,,MessageError,,Halt
+//-
+Set,%targetdism%,%Tools%\%SourceArch%\dism\dism.exe
+Set,%WorkDir%,%Tools%\%SourceArch%\dism
+
+[PrepareDism_Win8.1x64]
+// Use ADK for Win8.1
+If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+Retrieve,FileVersion,%Tools%\x64\dism\dism.exe,%dismexeVer%
+Call,CompareVersions,%dismexeVer%,6.3.9600.16383,dismexeVerCompare
+If,Not,%dismexeVerCompare%,Equal,Bigger,Call,Echo,"dism.exe from ADK for Windows 8.1 is required to Enable or Disable features !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+// XP, 2k3, vista Not Compatible
+Set,%XP2k3HostOS%,No
+If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
+If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
+If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Enable or Disable features for Win8.1 uses ADK for Win8.1, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.",Warn,,MessageError,,Halt
+//-
+Set,%targetdism%,%Tools%\x64\dism\dism.exe
+Set,%WorkDir%,%Tools%\x64\dism
+
+[PrepareDism_Win10x86]
+// Use ADK for Win10
+If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+Retrieve,FileVersion,%Tools%\%SourceArch%\dism\dism.exe,%dismexeVer%
+StrFormat,Split,%dismexeVer%,.,1,%MajdismexeVer%
+If,%MajdismexeVer%,Smaller,10,Call,Echo,"dism.exe from ADK for Windows 10 is required to Enable or Disable features !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+// XP, 2k3, vista Not Compatible
+Set,%XP2k3HostOS%,No
+If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
+If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
+If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Enable or Disable features for Win10 uses ADK for Win10, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.",Warn,,MessageError,,Halt
+//-
+Set,%targetdism%,%Tools%\%SourceArch%\dism\dism.exe
+Set,%WorkDir%,%Tools%\%SourceArch%\dism
+
+[PrepareDism_Win10x64]
+// Use ADK for Win10
+If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Begin
+If,ExistFile,%ProjectDir%\Build\00-retrieve.script,Run,%ProjectDir%\Build\00-retrieve.script,Launch_DownloadWTTools
+End
+Retrieve,FileVersion,%Tools%\x64\dism\dism.exe,%dismexeVer%
+StrFormat,Split,%dismexeVer%,.,1,%MajdismexeVer%
+If,%MajdismexeVer%,Smaller,10,Call,Echo,"dism.exe from ADK for Windows 10 is required to Enable or Disable features !!!#$xUse Retrieve Tools Plugin.",Warn,,MessageError,,Halt
+// XP, 2k3, vista Not Compatible
+Set,%XP2k3HostOS%,No
+If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
+If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
+If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Enable or Disable features for Win10 uses ADK for Win10, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.",Warn,,MessageError,,Halt
+//-
+Set,%targetdism%,%Tools%\x64\dism\dism.exe
+Set,%WorkDir%,%Tools%\x64\dism
+
+[RegRead_Value_RegEdit_Simple]
+//If there is no regsection variable not exists
+//If there is regsection but there is no regkey variable exists with empty value
+If,#3-,Equal,-,Set,#3,RegRead_Value
+Call,RemoveVariable,#3
+Call,FileDelete,%ProjectTemp%\RegRead_Value_RegEdit.ini
+System,FileRedirect,OFF
+Shellexecute,Open,regedit.exe,"/E #$q%ProjectTemp%\RegRead_Value_RegEdit.ini#$q #$q#1#$q"
+System,FileRedirect,ON
+If,ExistFile,%ProjectTemp%\RegRead_Value_RegEdit.ini,Begin
+Call,ConvertToAnsi,%ProjectTemp%\RegRead_Value_RegEdit.ini
+IniRead,%ProjectTemp%\RegRead_Value_RegEdit.ini,#1,#$q#2#$q,%#3%
+End
+Call,FileDelete,%ProjectTemp%\RegRead_Value_RegEdit.ini
+
+[CleanupTemp]
+If,ExistDir,%ProjectTemp%\Dism,Begin
+Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\Dism#$q"
+If,ExistDir,%ProjectTemp%\Dism,Call,Echo,"ProjectTemp\Dism Folder can not be deleted",Warn,1
+End
+
+[RWTest]
+Shellexecute,Hide,cmd.exe,"/C echo #$qRWTest#$q > #$q%SourceDir%\test.txt#$q"
+FileDelete,%SourceDir%\test.txt,NOWARN
+If,Not,%ExitCode%,Equal,0,Call,Echo,"You can not enable/disable features in source on a readonly media!",Warn,,MessageError,,Halt
+
+[SetOpenHide]
+If,%RadioGroup_IPV%,Equal,0,Set,%OpenHide%,Open
+If,%RadioGroup_IPV%,Equal,0,Set,%SW_HIDE%,@SW_HIDE
+If,%RadioGroup_IPV%,Equal,1,Set,%OpenHide%,Hide
+
+[PCopyDismMuiHost]
+// #1=Source Folder - #2=Target Folde
+Loop,%ScriptFile%,PCopyDismMuiHost_Loop,1,%NbLang%,#1,#2
+
+[PCopyDismMuiHost_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,#1\#9\dism.exe.mui,Begin
+FileCopy,#1\#9\*,#2
+Loop,BREAK
+End
+
+[AuthorEncoded]
+icon.jpg=2453,3271
+Logo=icon.jpg
+
+[EncodedFile-AuthorEncoded-icon.jpg]
+lines=0
+0=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
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXQ
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

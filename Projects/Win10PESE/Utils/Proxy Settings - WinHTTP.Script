@@ -1,0 +1,367 @@
+[Main]
+Title=Proxy Settings - WinHTTP
+Type=Plugin
+Author=Lancelot
+Description=Plugin to easily set WinHTTP proxy settings (Netsh WinHTTP).
+Credits=http://TheOven.org
+Version=002
+Download_Level=2
+Level=10
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=2673
+Date=2019.02.24_23:44.58 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Proxy%20Settings%20-%20WinHTTP.Script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/Proxy%20Settings%20-%20WinHTTP.Script
+WebHardLink=True
+CertifiedBy=
+Certification=
+HistoryNotes01=Lancelot: Starting with "Administrator" maybe preventing proxy work !?
+HistoryNotes02=- a better way maybe copy proxy setting from "User" to "Administrator" ? intead of Computer WinHTTP.... (need to be tested)
+HistoryNotes03=- or user add proxy settings to "Administrator" account ? (need to be tested)
+HistoryNotes04=To test Proxy User failure: Add "adsf" + Click "Set Custom Proxy" Button -> GetWaikTools etc. will fail.
+HistoryNotes05=See websites: https://blogs.technet.microsoft.com/netgeeks/2018/06/19/winhttp-proxy-settings-deployed-by-gpo/
+HistoryNotes06=See websites: https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc731131(v=ws.10)
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2018.12.05 Plugin created following slore http://Theoven.org/index.php?topic=2660
+History002=Lancelot Add to servers. - Date:2018.12.09 // Add "Plugin Page" - Date:2018.12.17 // Cosmetics - Date:2019.02.24
+
+[InterFace]
+Netsh_winhttp_import_proxy_source_ie_Bevel=Netsh_winhttp_import_proxy_source_ie_Bevel,1,12,12,5,266,50
+Netsh_winhttp_import_proxy_source_ie_Button="Import Proxy Settings From Internet Explorer",1,8,14,7,263,47,Netsh_winhttp_import_proxy_source_ie_P_B,Sekkyumu-Developpers-Play_3232.bmp,False,False,_Netsh_winhttp_import_proxy_source_ie_P_B_,False
+//-
+Read_ME_Button="Read ME",1,8,285,11,115,40,Read_ME_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Read_ME_P_B_,False,__Edit
+//-
+Custom_Bevel=pBevel1,1,12,14,74,475,163
+Custom_Proxy_TextBox=Proxy:,1,0,20,93,454,21,
+Custom_Proxy__eg_TextLabel="Proxy Example:#$x#$xmyproxy#$xmyproxy:80 #$q<local>bar#$q#$xproxy-server=#$qhttp=myproxy;https=sproxy:88#$q bypass-list=#$q*.contoso.com#$q",1,1,69,119,393,74,8,Normal
+Netsh_winhttp_set_proxy_Button="Set Custom Proxy",1,8,24,189,158,43,Netsh_winhttp_set_proxy_P_B,Sekkyumu-Developpers-Play_3232.bmp,False,False,_Netsh_winhttp_set_proxy_P_B_,False
+Custom_TextLabel="Custom Proxy Settings:",1,1,16,58,160,18,8,Bold
+//-
+Netsh_winhttp_show_proxy_Button="show proxy",1,8,17,265,89,25,Netsh_winhttp_show_proxy_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Netsh_winhttp_show_proxy_P_B_,False
+Netsh_winhttp_reset_proxy_Button="reset proxy",1,8,17,240,90,25,Netsh_winhttp_reset_proxy_P_B,Sekkyumu-Developpers-Play_1616.bmp,False,False,_Netsh_winhttp_reset_proxy_P_B_,False
+//-
+Open_IE_Settings_Button="Internet Properties (inetcpl.cpl)",1,8,300,241,181,25,Open_IE_Settings_P_B,Papirus-Team-Papirus-Status-Dialog-information1616.bmp,False,False,_Open_IE_Settings_P_B_,False,"__IE - Connections - Lan Settings - Proxy Server"
+Open_Windows_Settings_Button="Internet Properties (SystemSettings.exe)",1,8,300,265,226,25,Open_Windows_Proxy_Settings_P_B,Papirus-Team-Papirus-Status-Dialog-information1616.bmp,False,False,_Open_Windows_Proxy_Settings_P_B_,False,"__Win10 - Settings - Network & Internet - Proxy"
+Cmd_Button=Cmd,1,8,300,289,53,25,Cmd_Button_P_B,iconfinder_cmd_100500_1616.bmp,False,False,_Cmd_Button_P_B_,False
+//--
+Test_Internet_Button="Test Internet - Ping",1,8,147,241,128,25,Test_Internet_Ping_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Test_Internet_Ping_P_B_,False
+Test_Internet_Download_Button="Test Internet - Download",1,8,147,265,150,25,Test_Internet_Download,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Test_Internet_Download_,False
+WebLabel_Plugin="Plugin Page",1,10,454,6,55,18,http://TheOven.org/index.php?topic=2673
+//-
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Compare_Sabatoge=,1,8,529,-1,24,24,Button_Compare_Sabatoge_P_B,Fatcow_Farm_Fresh_Toxic_1616.bmp,False,False,_Button_Compare_Sabatoge_P_B_,False,"__Check Current Plugin to see If Plugin can be sabotaged by IDIOT winbuilder developers or not."
+//-
+
+[Variables]
+
+[Process]
+Echo,"There is no spoon"
+
+[Netsh_winhttp_import_proxy_source_ie_P_B]
+//=,Echo,"Netsh winhttp import proxy source =ie"
+Echo,"Netsh winhttp import proxy source=ie"
+System,FileRedirect,OFF
+//=,ShellExecute,Open,cmd.exe,"/c @Echo Off&cls&Echo.&Echo.&Echo.&Netsh winhttp import proxy source =ie&Echo.&Echo.&pause&exit",%ProjectTemp%
+ShellExecute,Open,cmd.exe,"/c @Echo Off&cls&Echo.&Echo.&Echo.&Netsh winhttp import proxy source=ie&Echo.&Echo.&pause&exit",%ProjectTemp%
+System,FileRedirect,ON
+
+[Netsh_winhttp_set_proxy_P_B]
+Echo,"Netsh winhttp set proxy %Custom_Proxy_TextBox%"
+If,Not,%Custom_Proxy_TextBox%-,Equal,-,Begin
+System,FileRedirect,OFF
+//ShellExecute,Open,cmd.exe,"/c Netsh winhttp reset proxy&cmd.exe&pause&exit",%ProjectTemp%
+ShellExecute,Open,cmd.exe,"/c @Echo Off&cls&Echo.&Echo.&Echo.&Netsh winhttp set proxy %Custom_Proxy_TextBox%&Echo.&Echo.&pause&exit",%ProjectTemp%
+System,FileRedirect,ON
+End
+Else,Call,Echo,"You must first fill Proxy Box.",Warn,,MessageError
+
+[Netsh_winhttp_reset_proxy_P_B]
+Echo,"Netsh winhttp reset proxy"
+System,FileRedirect,OFF
+//ShellExecuteex,Open,cmd.exe,"/c Netsh winhttp reset proxy&cmd.exe&pause&exit",%ProjectTemp%
+ShellExecute,Open,cmd.exe,"/c @Echo Off&cls&Echo.&Echo.&Echo.&Netsh winhttp reset proxy&Echo.&Echo.&pause&exit",%ProjectTemp%
+System,FileRedirect,ON
+
+[Netsh_winhttp_show_proxy_P_B]
+Echo,"Netsh winhttp show proxy"
+System,FileRedirect,OFF
+//ShellExecuteex,Open,cmd.exe,"/k Netsh winhttp show proxy",%ProjectTemp%
+//ShellExecuteex,Open,cmd.exe,"/c Netsh winhttp show proxy&pause&exit",%ProjectTemp%
+ShellExecute,Open,cmd.exe,"/c @Echo Off&cls&Echo.&Echo.&Echo.&Netsh winhttp show proxy&Echo.&Echo.&pause&exit",%ProjectTemp%
+System,FileRedirect,ON
+
+[Test_Internet_Ping_P_B]
+Call,InternetConnection
+If,%CallInternetConnection%,Equal,True,Message,"Success: Internet is working. :)",Information
+If,%CallInternetConnection%,Equal,False,Message,"Failure: Internet is NOT working. :(",Error
+
+[Test_Internet_Download]
+Call,DownloadTest
+Echo,%DownloadTest%
+If,%DownloadTest%,Equal,True,Message,"Success: Download is working. :)",Information
+If,%DownloadTest%,Equal,False,Message,"Failure: Download is NOT working. :(",Error
+
+[Read_ME_P_B]
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+Set,%w%,"%ProjectTemp%\Read_ME_Proxy Settings - WinHTTP.txt"
+Call,IniExtractSectionN,,Read_ME,%w%
+TxtReplace,%w%,"DummyDummyDummy#$x",""
+TxtReplace,%w%,"#$x|","#$x"
+TxtReplace,%w%,"#$x::=,","#$x"
+Call,StartDocNotePad,%w%
+
+[Read_ME]
+DummyDummyDummy
+'Proxy Settings - WinHTTP' Plugin info (by Lancelot 2018.12.06)
+Summary:
+If you are using proxy with IE settings:
+1) Click 'Import Proxy Settings From Internet Explorer' Button.
+2) Make your build OR use relevant plugins to download files from internet. (files only downloaded once)
+3) Click 'Reset Proxy' to disable WinHTTP with Proxy If you do not like this setting exists on your windows.
+|
+Proxy setting with WinHTTP will get applications download from web if applications use WinHTTP
+Other applications which download files from internet without WinHTTP requires Proxy Settings.
+For such cases use \Utils\"Proxy Settings" plugin
+(eg. to download updated applications from Plugin interface there are "Download" buttons)
+|
+More Info:
+|
+|The main difference with Proxy:
+| * Internet Settings Control Panel works at the User level
+| * WinHTTP Windows Component works globally at the computer level
+|
+Netsh WinHTTP will get utilities which use WinHTTP to be able to download from internet by adding Proxy Settings for WinHTTP.
+eg. GetWaikTools and WinNTSetup by JFX.
+GetWaikTools is important to download some sepecial files for SE "Once".
+WinNTSetup is important to download some sepecial files for WinNTSetup "Once".
+|
+This looks like a "Dirty Trick" so after building a project
+| or using relevant plugins to download from internet
+|  you can disable Netsh WinHTTP with 'Reset Proxy' button available on plugin.
+|
+|
+|
+|
+More WinHTTP Info:
+Following is a cmd file with information you can test WinHTTP easily:
+|
+@Echo Off
+cd /d "%~dp0"
+cls
+::_______________________________________________________________________________
+:: https://blogs.technet.microsoft.com/netgeeks/2018/06/19/winhttp-proxy-settings-deployed-by-gpo/
+:: Windows has 2 places where you can configure the proxy:
+:: * Internet Settings Control Panel (or inetcpl.cpl for you guys who are advanced users)
+:: * WinHTTP Windows Services.
+::The main difference between them is that
+:: the Internet Settings Control Panel works at the User level,
+:: while the WinHTTP Windows Component works globally at the computer level.
+::
+::WinHTTP proxy Settings saved here:
+::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Connections
+::WinHttpSettings // Type: Binary // Value (for Direct Access or No Proxy): 1800000000000000010000000000000000000000
+::______________________
+::https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc731131(v=ws.10)
+::Netsh winhttp commands
+::Applies To: Windows Server 2008
+::   _________________________ flush logbuffer __________________________________
+::Flushes the internal buffers for the log files.
+::_______________________________________________________________________________
+::____________________________ import proxy _____________________________________
+::Imports the proxy settings in the Internet Explorer Web browser's Internet Options.
+:: Importing settings from IE is the only available option
+::=,::Syntax: import proxy source =ie
+::_______________________________________________________________________________
+::____________________________ reset proxy ______________________________________
+::Resets the WinHTTP proxy setting to DIRECT
+::_______________________________________________________________________________
+::____________________________ reset tracing ____________________________________
+::Resets the WinHTTP trace parameters to the default settings.
+::Default WinHTTP trace parameters:
+::---------Tracing State --------- Disabled
+::---------trace-file-prefix ----- None
+::---------output ---------------- File
+::---------level ----------------- Default
+::---------format ---------------- Ansi
+::---------max-trace-file-size --- 65535
+::_______________________________________________________________________________
+::____________________________ set proxy ________________________________________
+::Configures the WinHTTP proxy setting.
+::Syntax: set proxy [proxy-server=] ProxyServerName [bypass-list=] <HostsList>
+::Parameters:
+::    * Proxy-Server
+::Required. Specifies the proxy server to use for http, secure http (https),
+:: or both http and https protocols.
+::    * Bypass-list
+::Optional. Specifies a list of Web sites that should be visited without
+:: utilizing the proxy server. Use "<local>" to bypass all short name hosts.
+::Examples:
+::=,::set proxy myproxy
+::=,::set proxy myproxy:80 "<local>bar"
+::=,::set proxy proxy-server="http=myproxy;https=sproxy:88" bypass-list="*.contoso.com"
+::_______________________________________________________________________________
+::____________________________ set tracing ______________________________________
+::Configures the WinHTTP tracing parameters.
+::=,::set tracing [output=] file | debugger | both [trace-file-prefix=] FilePrefix [level=] default | verbose [format=] ansi | hex [max-trace-file-size=] FileSize [state=] enabled |disabled
+::    * Output
+::      Optional. Specifies whether tracing data is exported to a file, a debugger, or both.
+::    * Trace-file-prefix
+::      Optional. Specifies a string value that is a prefix for the log file. The file prefix can include a folder location/path. Type "*" to delete an existing prefix.
+::    * Level
+::      Optional. Specifies the amount of information to log.
+::    * Format
+::      Optional. Specifies the display format of network traffic (hexadecimal or ansi).
+::    * Max-trace-file-size
+::      Optional. Specifies a numeric value that is the maximum size of the trace file in bytes.
+::    * State
+::      Required. Specifies whether tracing is enabled or disabled.
+::Examples:
+::=,::set tracing trace-file-prefix="C:\Temp\Test3" level=verbose format=hex
+::=,::set tracing output=debugger max-trace-file-size=512000 state=enabled
+::_______________________________________________________________________________
+::____________________________ show proxy _______________________________________
+::Displays the current WinHTTP proxy setting.
+::____________________________ show tracing _____________________________________
+::Displays the current WinHTTP tracing parameters.
+::
+::
+::cls
+Echo ______________________ Show Current WinHTTP Proxy __________________________
+Echo.
+Netsh winhttp show proxy
+Echo.
+Echo ______________________ PROXY TEST___________________________________________
+Echo.
+Echo Google DNS servers Primary 8.8.8.8 - Secondary 8.8.4.4
+Echo ping 8.8.8.8
+Echo ping 8.8.8.4
+Echo ping google.com
+Echo ping google.nl
+cmd.exe
+pause
+exit
+cmd.exe
+
+[Open_IE_Settings_P_B]
+//IE - Connections - Lan Settings - Proxy Server
+Call,HostSystemDir
+Set,%t%,1
+System,FileRedirect,OFF
+If,ExistFile,%HostSystemDir%\inetcpl.cpl,Begin
+ShellExecuteex,Hide,cmd.exe,"/c #$q%HostSystemDir%\inetcpl.cpl#$q",%HostSystemDir%
+End
+Else,Set,%t%,0
+System,FileRedirect,ON
+If,%t%,Equal,0,Message,"Error: %HostSystemDir%\inetcpl.cpl NOT FOUND",Error
+
+[Open_Windows_Proxy_Settings_P_B]
+//Win10 - Settings - Network & Internet - Proxy (do same with IE settings)
+Call,HostWindowsDir
+Set,%t%,1
+System,FileRedirect,OFF
+If,ExistFile,%HostWindowsDir%\ImmersiveControlPanel\SystemSettings.exe,Begin
+//UWP apps, which the Settings app is, cannot run as a local admin, by design. They’re sandboxed.
+//ShellExecuteex,Hide,cmd.exe,"/c #$q%HostWindowsDir%\ImmersiveControlPanel\SystemSettings.exe#$q",%HostWindowsDir%
+//Interesting: we can run UWP app with Admin Priviledges ;) -> which seems to fallback to user first.
+ShellExecuteex,Hide,cmd.exe,"/c start ms-settings:",%HostWindowsDir%
+End
+Else,Set,%t%,0
+System,FileRedirect,ON
+If,%t%,Equal,0,Message,"Error: %HostWindowsDir%\ImmersiveControlPanel\SystemSettings.exe NOT FOUND",Error
+
+[Cmd_Button_P_B]
+System,FileRedirect,OFF
+ShellExecuteex,Open,cmd.exe,"/k cls&Echo UserName: %UserName%",%ProjectTemp%
+//Set,%w%,%ProjectTemp%\Test.cmd
+//Call,FileCreateBlank,%ProjectTemp%\Test.cmd,OverWrite
+//TxtAddLine,%w%,"cls&Echo UserName: %UserName%&cmd.exe",Append
+//ShellExecuteex,Open,cmd.exe,"/c #$q%ProjectTemp%\Test.cmd#$q",%ProjectTemp%
+System,FileRedirect,ON
+
+[Button_Compare_Sabatoge_P_B]
+Call,CheckIDIOTwinbuilderdevelopersSabotage
+
+[AuthorEncoded]
+Everaldo-Crystal-Clear-App-internet-connection-tools_0_048048.ico=4271,5695
+Logo=Everaldo-Crystal-Clear-App-internet-connection-tools_0_048048.ico
+
+[EncodedFile-AuthorEncoded-Everaldo-Crystal-Clear-App-internet-connection-tools_0_048048.ico]
+lines=1
+0=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
+1=V2tvrL8lebyY2keEwd5G6l+CmmeznCo8hAzA/zh3g7IzqXBGCK0B7i7hhiiMF5dNPRAvMfNND7xhkM1jsHIfrnMMrqKnY21kv507mmpayYalQBn++1WWlYmSKGYlEIxptfx0RrA3Dau6Lfbqes3MvyZ2IoN1GXxc2tTfMh4ZYBFMeGQ+xtA0h0toI8siHJ/RaIrK8TrkG0jQ7E2OpBpNU1CLW4yt9jYPcaHucDs6G9uhJaKIaaix9BQ2EusP2ims5sj2PCIJNiKN70Gliu+aRKoCz37lDwN1P4eAHbT0TUpxWFBmBlcgLkhviQz+3ofHsfE5ws8IGjOTAtdrFCsas1P37+PkOqtwN0NTVgZ10NtlaUAl+r2BoU5LA14Otvnr8QAzUPgYXCjDtDwX1QDJdOSGD8Wa2ozU6D+rws9r1Ql5eJOWRLspc9ED/G8d+OKzMeIoshlseNxJ3ZXyIWYUFUENRmpfL7se2m+T2uhxUXDiV/we4lqxz3yPWw/bKJzuSsfpDvgOVhPcVATqgvZIV4/0dUZibzNagmNx0q0hKhOiuVRz35gvkjyvACWKz92Fl7aP5e9ZOw+diaRuidQ9YbtFWW8TnIdHtVBTIbqrJTsDQ5Dh/FhUFRfBgyFMaG/mxcS+vF8reptIj26FKkPGCxhM2ljykHktBm02cN3ucOThlK7oPio7l3rNW62amFtNZtleXYVlUOHbVV2FlfQ6iD1qoybC4rwrrCHChPS0SGstSEn41r8jKwrbocO+probO+ls+FDrKH5UOkyYUet4Nfb3sV3AfF6eCG6Tc3zi0uT4kHnkNDHQ/KS+hubuTH9VRnaguzX4j22ir+2daaCuhi9ZTGHXU1kObj0ON9Zrfaq+Q+KF6nd37qtH9VSunDGMaZfFmDT9paoaejHbtb6DxVRXss+Zih+blxS3UFdDbVS5+pLuff7Wysw8x7Lt3+WvtV/8z/d4sMT4+jdbB7YG/I8+/t7oLerk582t6GXS1NwHRPZzs/7m5tRgb+fkcbPmlvxe62FmihHjXM6Gyhv/aRIfv7zu8VP81d8g575WJjb994VpOfDj3dndD3rBf66QzOwMaD6H/2DBjvkqRoCDXQqBaqb74gstR++3VxH5T7ZmYjA7WPLnY5IG8l2Lssx09rf2uU5cW+BIEBPrDTB4YIk/Nd/loq1U7KK/x8tZRVHlgbjH/dvF8kQiUlGdFNnWlxAl3ZBDsjuQRHI7l4Z+OlcQ7Gc0VCy1fia/5/bci0eEAPk+p+biqv27iRvC7jhvE6muOWDuip0s+5kXJSLVNKuofjhrVKNcfPx/EbCNIEHHuOvSgnfZ+bynHsMXbdxkmf6x/QeHlA0wfvavPfL72Ofu5zlOphyA9/0jLPXcNL6l/Ne/nXeuSAP96R+uknv/CaDNRmGqS+IMhIdRnv3/8Bv1WsNnicc3QtSy1KzEnJ13UuqiwuSczRdc5JTSzSdSwo0M3MK0ktykst0U3Oz8tLTS7JzM/TLcnPzymON4g3MLEAIr3M5HyGUTCEwT5VCG0ggF3eXdTXm4EJAFNvGd5JYaliAQAAAAIAAABbAAAAMBAAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Sekkyumu-Developpers-Play_3232.bmp=937,1250
+Sekkyumu-Developpers-Play_1616.bmp=435,580
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp=737,983
+Papirus-Team-Papirus-Status-Dialog-information1616.bmp=430,574
+iconfinder_cmd_100500_1616.bmp=281,375
+Fatcow_Farm_Fresh_Toxic_1616.bmp=796,1062
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+
+[Settings_Default]
+Set,%Custom_Proxy_TextBox%,"",Permanent
+
+[EncodedFile-InterfaceEncoded-Sekkyumu-Developpers-Play_3232.bmp]
+lines=0
+0=eJztlmtIlFkcxu1DV1naYCP60uVD0IdgMeyilVBQbZQ1WSaZmaCB0AWiC1Ro5pZ2c8pia7vRbFKZd6d01MpKa3Q0R8fx7ow2a2Yqoni///a8L8vSstXGOFnEHPjxnpcXzvOc/znvc84K99QfHeS2UDBXMEswWzBG7jk4hPz9/f0G2LFj5xtkYGCA9vZ2mpub5af0Ppr6kqZSrWJxuB/hsVexWCx0dHSMmo/6+nqcw3aw6NFlpit9WXLKn8jk29TV1dHV1cXg4OAX9WE2m3EM+gW3gvusKUlhaeZVpkX4sFK5G1V6ApK/7u5uhoaGvoiPqqoqHEPWsSDnD5xzVMJHDGtLNbik/8ZU4WP9pQPEPtPQ0NBAT08Pw8PDNvUh6U86oWBRXhTzc27JSP0VhgTWlaWxMO0iU855s/n3o2i0z2hsbKS3t9dmPmT905645t9lQe7tf+Gaf49VxWo2lGXgnBrJ5PM+eN88TlZBLk1NTfT394/Yg6Q/MWIrS0XdF+fd/Q8uefdw08eJvZHKxrJHOKUo+SHSF19VGIaSYlpaWkbkQ9YX47kVxeMq9uDHWCL8LTck4l6RwcaKx8xTn8Xxkh8770RQXllBZ2enVWsi6U+47M/yomSW6eP/F7fCBFYaH6KozJTrMVd9molXAtAZC+nr67NKf/z1QBRVz1lf+fSz2VKdzTbTC7yqs3B6eo1dD67JNbBK/9YePEzZbKh+/kkUgu01WvbXFRJabyTAoGFG7DEU0WcxmCqsnv+4qH1sMr9AITx8iE3mbPxe6zj4xkDo2xJ2FD3kp9gg1kafIUb7RM4Ga/9JWT/6EJ5iXh7Cw/t4mrUEWPI58tbIr0J3iz6JKfHBeMRdQK3LknVHmo2S/ti4I3i9zmVzrVZma20ugX/qCWooFfMtxv1VPI6JwfgkXeGloUDOIFtloawvxvay5OEt2P2miJB35QSLWq/Oj2F80jH8H9xAX2KUz2hpjW2ZwdL5M1Z9nEChG9pYyVGxt5bp7jAz4SR706IoLS//J2Nsnf0S0vn2s1rJrlodTloVc5LPcPhxDCaTidbWVptk7KeQ7h/ncjTMT73IicxEampqaGtrG7X7x9e+f9mx873zF430XD14nFMKTs3OrizNLdV1SS1LzckvKEgtKtYNyEmsjDc2MjbSS8otYBgFwxdsE4DQ7szY5VduehnPwAQAYp0QRYghzkwBAAAAAgAAAD4AAABHAwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Sekkyumu-Developpers-Play_1616.bmp]
+lines=0
+0=eJxz8i1jYQADMyDWAGIBIBYEYkYGBbC4A1QeGfz//38UQ/HvP3/+r9u37f/1+3f+g9ik6v/w+dN/nQXl/02WN/6vWNj3//7Tx////P1LtDlvP374r7C04r/piUX/7U8t/2++vPl/04oZ/5+9fvn/7z/C5rz99OG/0ur6/2Ynl4CxzZmV/51Or/5vsbL1f/fa+f/fffr4/9+/fzjNeQuUV9nY/t/67GoU7HRx43+Xs+v+W6zu+L9u/06cbgHp19kz7b/frQMoOOjWwf9p90/+9z2z/n/+5nnAsP2NU7/uwTn/A+8cBuOwu0f/5zw68z/84pb/URtn/N958vD/7z9/4nW/3vFF/6MfnPyf//j8/+BLW/4nbZz9/9iNy3j1wePvy+f/9idW/A86v+l/7sb5/y/cvfX/Jw63Yk0/f//8X3v8wP/rj+6TlX6GIgYAbSk453icUwpOzc6uLM0t1XVJLUvNyS8oSC0q1g3ISayMNzQzNNNLyi1gGAXDF5SxQOhARuzyz54k7GZgAgBhyxBH6DwdrgEAAAACAAAAPgAAAFEBAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Fatcow_Farm_Fresh_Toxic_1616.bmp]
+lines=0
+0=eJylk1lPU1EUhTHxB+g/8MkYXxyCKGnBS0VooIWCwagkvPjgBCohEAykCBGZ2lIQkIJDCxQVKJ1ub2conVBLC6ZFBAP8A/SB1MQHl6cHCpIIMfEkKze5+3x7nX3uugJxzeEUutKIThAdITpKdCjlGH3PbNf/XAD+WxsbG4jFYohGo/+kxN4Ek+RHtVo0Nz1Gy5MmKGRt6H2mxMsBFQb7+9DTpYS8vY3WGhvqUVdbg+qqSmjU6h1+YWEewYAfn8hzcTGGleUvWFtdpVpZWcbS0mfiGSX1BUTCc5jxTCMSiez6j2phs3JEFky7XQj4fQjPhTAX+ojZYADeGQ9cTgetm00mIiOGNJodfn19Df19PTAZdHA77QiHPsCkn4RSLkNbSzM0r1+Rvk6YjXqMvX0DWXsrVsnZkvyPeBwvBp6DNenhmXLhwd1bkOQLIRGLkJd7GQJeOsquXQXHmqAbH6N944RJ8vFtnmONaKx7hJwOFXJUOhTnCSG6xOCcyoUz0gFUlt+BYXJiX95us6CYePLXf+H8VyCvohbZt6txklzV8dmf4KeeJjMY9uUdNg75Odkovl4KcVUDmEED+F1aMDcrwTAMUk+fgsVsPNi/QIwrkgKUFIohrG2CoEqK3KxMMJkZ4KVfONCfzi+tR1GBCCUiIdJmv+Os9xtyL2Ygg8/Dw/sVf51/c3Nz7/2X30NhkQRZcjV4nSPIEghQVnpjz/0nmCTv9/kwqNryT/Dz4RA9Z7dCDlnrU4wMqeElmbNazNDrxqFUyOD1end4h8NOZrfCTjI4PeWmWY6QHmGSv/fBIM2f2+UkeziwZjORCRaW3fX3+9HR2kz+l168Gx2GlZwj4J2BzzMFO8dCPzEG7bCGztjdqYCUZMRHzpzkXaS325nob6P/AWdhyXfa8qGimd/KfUKJmpXjKP8bbc8gFnicU3BLLEnOL493SyzKjXcrSi3OiA/Jr8hMjjc0MzTTS8otYBgFwxmUsUDoPUzY5UPYTwUwMAEAuKQOcJPHcw8BAAAAAgAAADwAAAC8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nLPyr6hMT83T9UzOzyvWyy9K14UKOCaXZAKFdFPyk0tzU/NKdFNTMkviDeINDM2ASC8pt4BhFAx9UMYCofOZsMvvyvLyYWACAL7jF4igD6oXAQAAAAIAAABOAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Papirus-Team-Papirus-Status-Dialog-information1616.bmp]
+lines=0
+0=eJxz8i1jYQADMyDWAGIBIBYEYkYGBbC4A1QeGfz//39Q4T9//vw/ffLw/7Xz6v6vm5oAwUD2qROH/v/+/fs/Pr1Pnjz+v2la3P9bi/T/315sgIJBYiA5kBpsep89e/r/4ExXFD031keDMbLYIaAakFp0/VtnJmHY+enBTjBGF986KxlF/9XL57C6GZd+kNprQD0w/fvW9WCowacfhA9u6IXrP7uhhGT9FzeXwPXf3FVNsv67e2vg+q8dmoVVzeszPWCMTe7m0dlw/U8f3gSKGWK6cbYuGGPqN/z//NFNlDh4dLAe0/33d4Ixuvjjw40Y8f/p4/v/j7bHo6rbHgfGyGKPdsT///zpPdY0CDLj8ZGW/3eWmmHYCRJ7cqQZp16UtPzo1v+bxxf+v3+oHYg7/t86sRDo31sE9ZGDAc77IMV4nDMLSCzILCot1g1JTczVhXGCSxJLgJRLZmJOfrpuZl5aflFuYklmfp6hmaGZXlJuAcMoGB6gjAVCOzBil+cpeB7DwAQAPrMWmNdcQkcBAAAAAgAAAEoAAABAAQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-iconfinder_cmd_100500_1616.bmp]
+lines=0
+0=eJxz8i1jYQADMyDWAGIBIBYEYkYGBbC4A1QeGfz//58i/OzZs/8LFiz4P2fOHJLw4sWL/79+/fp/QUHBf319fbJwbW3t/7Kysv+xcbH/o6Kj/0dFIeOo/9FAOjo6CigHYgNxNJQPFI+Njf1fV1f3v7q6+r+trS1ZuLm5eVT/INAPAsjiMECK/cSoJ+R+Us1oamqiyH6Q/hos/icWt7S0/D916tT/8vLy//39/SThCRMm/L948eJ/AFAPNAN4nJPLTM7PS8vMS0ktik/OTYk3NDAwNTCINzQzNNNLyi1gGAXDG5SxQOg9OOSX1asKMDABAAQmDISVxqrbAQAAAAIAAAA5AAAAvAAAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

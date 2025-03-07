@@ -1,0 +1,780 @@
+[Main]
+Title=Mozilla Firefox ESR (P)
+Type=Plugin
+Author=ChrisR
+Description=(x86/x64 NT6x) Mozilla Firefox ESR (Extended Support Release). Committed to you, your privacy and an open Web.
+Credits=Nikky
+Version=026
+Download_Level=2
+Level=5
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.03.09
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/Network/Mozilla_Firefox_ESR.Script
+Web1C_uBlock=http://yomi.cwcodes.net/Yomi/AppY/Network/Mozilla_Addon_uBlock_File.Packed
+Web1C_x86_CANCEL=http://yomi.cwcodes.net/Yomi/AppY/Network/Mozilla_Firefox_ESR_x86_File.Packed
+Web1C_x64_CANCEL=http://yomi.cwcodes.net/Yomi/AppY/Network/Mozilla_Firefox_ESR_x64_File.Packed
+Web2=http://yomi.cwcodes.net/Yomi/AppY/Network/Mozilla_Firefox_ESR.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=uBlock0@raymondhill.net.xpi location: C:\Users\%UserName%\AppData\Roaming\Mozilla\Firefox\Profiles\vn10izyr.default\extensions
+HistoryNotes02=Get latest Firefox ESR: https://ftp.mozilla.org/pub/firefox/releases/latest-esr/README.txt
+HistoryNotes03=eg. https://download.mozilla.org/?product=firefox-esr-latest&os=win&lang=en-US
+HistoryNotes04=eg. https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=en-US
+HistoryNotes05=eg. https://download.mozilla.org/?product=firefox-esr-latest&os=win&lang=tr
+HistoryNotes06=eg. https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=tr
+HistoryNotes07=Get Old FireFox ESR: eg. https://download-installer.cdn.mozilla.net/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox Setup 52.9.0esr.exe
+HistoryNotes08=Tip: --> Empty TextBox force to download latest during build.
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+HistoryNotes52=To add Registry see line starting with //Registry
+History001=ChrisR Mozilla Firefox 52.7.3
+History002=ChrisR Latest Mozilla Firefox 52.9.0esr supported
+History003a=ChrisR "Mozilla Firefox ESR" -> Same section: [AddConfig] [AdduBlock] // [AddFiles]--->[Require_FileList] // Same Attachments (Config\* + AddOns) // Same interface after //-From_ChrisR_ESR //// Same [Second_Gui] [First_Gui] [Show-Hide-Second_Gui] [Show-Hide-First_Gui]
+History003b=[Associations from] "Mozilla Firefox CR" (Not from ChrisR "Mozilla Firefox ESR" )
+History003c=Lancelot Additional: Improved Download (Download latest as default) // Add Container Plugin
+History003=Lancelot 2018.11.24 Plugin created following ChrisR "Mozilla Firefox ESR" XPEPlugin - Date:2018.11.26
+History004=Lancelot Fix FileContainer_SetupFile // Use FileContainer ( FileContainerx64 ) at first build out of box. - Date:2018.11.26
+History004=Lancelot Add Flash_CheckBox from "Mozilla Firefox CR"
+History005=Lancelot updated v005 - Date:2018.11.26
+History006=Lancelot updated plugin following original plugin (2018-12-15) (Updated uBlock Origin v1.17.4) - Date:2018.12.15
+History007=Lancelot fixed %FileContainer%=? --> %FileContainer%=> (bad idea to use ? with If,ExistFile :)) + %Always_Container_CheckBox% default False -- Thanks feedback supervinh0000 http://TheOven.org/index.php?topic=2683.0 - Date:2018.12.23
+History008=Lancelot to avoid misunderstanding download button label "Download 2 Files" - Thanks slore reply 24 http://TheOven.org/index.php?topic=2660.msg30020#msg30020 - Date:2018.12.29
+History009=Lancelot update FileContainer plugin 60.4.0 - Date:2019.01.03
+History010=Lancelot update FileContainer plugin 60.5.0 - Date:2019.02.01
+History011=Lancelot update uBlock v1.18.2 - Date:2019.02.03
+History012=Lancelot update uBlock v1.18.4 - Date:2019.02.08
+History014=Lancelot update FileContainer plugin 60.5.1 - Date:2019.02.18
+History015=Lancelot update FileContainer plugin 60.5.2 - Date:2019.02.24
+History016=Lancelot update uBlock v1.18.6 - Date:2019.03.16
+History018=Nikky update Add Custom settings / profile (now you can have bookmarks and so on) CustomSettings_CheckBox - Nikky Reply 80 http://TheOven.org/index.php?topic=175.msg32603#msg32603 - Date:2019.03.27
+History019=Lancelot update FileContainer plugin Firefox Setup 60.6.1esr - Date:2019.03.30
+History020=Lancelot update uBlock v1.18.14 - Date:2019.03.31
+History021=Lancelot update uBlock v1.18.16 - Date:2019.04.12
+History022=Lancelot update uBlock v1.24.16 - FileContainer plugin Firefox Setup 68.3.0esr.exe - Date:2020.01.01 // Lancelot Add FileContainer_uBlock x2 - Date:2020.01.15
+History023=Lancelot a lot of plugin improvments....  Hide and Cancel Container for now (can be added later when required) as a result Select False as default x2 - Date:2020.01.15
+History024=Lancelot FireFox 68.5 for now uBlock seem to require new method of "Permission for Addons" -> for now uBlock checkbox hidden ;) - uBlock container updated to 1.24.4 - https://support.mozilla.org/en-US/kb/permission-request-messages-firefox-extensions?as=u&utm_source=inproduct - Date:2020.03.01
+History025=Lancelot Fix Flash Lines - Date:2020.03.08
+History026=Lancelot Update Syntax - Date:2020.03.09
+
+[Interface]
+pBevel1=pBevel1,1,12,-3,-3,83,109
+pCheckBox1=Desktop,1,3,1,1,59,14,True,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pCheckBox4="Send To",1,3,3,67,66,18,True,"__Send To Shortcut"
+pCheckBox5=Recent,1,3,3,83,60,18,True,"__Recent Menu Shortcut (NT6x only)"
+pTextBox1=,1,0,1,43,75,21,,"__'Start Menu' Folder"
+Image_Software=FirefoxInt.jpg,1,5,84,23,180,68
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+WebLabel_Homepg=HomePage,1,10,342,22,51,18,https://www.mozilla.org/en-US/firefox/organizations/
+Download_Tested_Button="Download 52.9.0 ESR",0,8,565,131,131,25,Download_Tested,0,False,_Download_Tested_,False,"__Download Localized Mozilla Firefox 52.9.0 ESR"
+Always_Container_CheckBox="Always Use FileContainer Plugin",0,3,568,175,179,18,False
+Flash_CheckBox="Add Flash",1,3,84,93,78,18,True
+Lang_ScrollBox="English (US)                           en-US",1,4,316,131,131,21,"English (US)                           en-US","Chinese (Simplified)                   zh-CN","Chinese (Traditional)                  zh-TW","Danish                                    da","Dutch                                     nl","Finnish                                   fi","French                                    fr","German                                   de","Greek                                     el","Hebrew                                    he","Hungarian                                 hu","Italian                                   it","Japanese                                  ja","Korean                                    ko","Polish                                    pl","Portuguese (Portugal)                  pt-PT","Russian                                   ru","Spanish (Spain)                        es-ES","Swedish                                sv-SE","Turkish                                   tr"
+WebLabel_Download="Download page",1,10,322,42,74,18,https://www.mozilla.org/en-US/firefox/organizations/all/
+WebLabel_Extensions="Extensions Page",1,10,317,61,79,18,https://addons.mozilla.org/en-US/firefox/extensions/
+WebLabel_uBlock_Origin="uBlock Origin",1,10,335,78,61,18,https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/
+Homepage_TextLabel="Browser Homepage",1,1,84,109,108,18,8,Normal
+Homepage_TextBox=,1,0,84,123,163,21,https://www.google.com/
+Protected_CheckBox="Disable Protected Mode",1,3,84,149,139,18,True
+Private_CheckBox="Private Browsing",1,3,84,167,110,18,True
+BlankNewTab_CheckBox="Blank Page on New Tab",1,3,84,185,139,18,True
+AskDownloadDir_CheckBox="Ask where to Save files",1,3,84,203,139,18,True
+WarnOnClose_CheckBox="Warn On Close",1,3,84,221,101,18,False
+uBlock_CheckBox="Add uBlock Origin",0,3,84,239,105,18,False
+Show_Second_UI_Button="+ Proxy",1,8,1,264,56,18,Second_UI_P_B,0,False,_Second_UI_P_B_,False
+Show_First_UI_Button="- Proxy",0,8,1,264,56,18,First_UI_P_B,0,False,_First_UI_P_B_,False
+Servername_TextLabel="Servername for all protocols",0,1,142,302,150,18,8,Normal
+Servername_TextBox=,0,0,140,316,277,21,servername
+Port_TextLabel=Port,0,1,423,302,30,18,8,Normal
+Port_NumberBox=Port_NumberBox,0,2,421,316,56,22,80,0,65535,1
+Autoproxyurl_TextBox=,0,0,140,366,337,21,http://our_company_pacfile.pac/
+Proxy_Radio=,0,14,4,285,479,108,"No proxy","Manual proxy","Use system proxy settings","Proxy autoconfig URL",2
+NoProxy_TextLabel="Manual No proxy for",0,1,25,397,114,18,8,Normal
+NoProxy_TextBox=,0,0,140,394,337,21,"localhost, 127.0.0.1"
+CustomSettings_CheckBox="Add Custom Settings",1,3,84,257,122,18,False,"__For ex. Bookmarks, you need to copy / prepare from last run. Hint: Put only necessary files insted whole profile."
+ProvideFiles_Opendir_Custom_Button=,1,8,213,258,18,18,ProvideFiles_OpenDir_Custom_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_Custom_P_B_,False,"__Open profile Folder"
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Upload_Container_uBlock=,1,8,495,-1,24,24,UploadXXX_Container_uBlock,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_uBlock_,False,"__UPLOAD Container uBlock (Admins Only)"
+Button_Download_Container_uBlock=,1,8,495,21,24,24,DownloadXXX_Container_uBlock_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_uBlock_P_Q_B_,False,"__Download uBlock Container"
+Button_Download_Container_uBlock_2=,0,8,189,236,22,22,DownloadXXX_Container_uBlock_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_uBlock_P_Q_B_,False,"__Download uBlock Container"
+Button_Open_Container_uBlock=,1,8,495,44,24,24,Open_Container_uBlock_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_uBlock_P_B_,False,"__Open uBlock 'File Container'"
+Button_Download_Container_x64=,0,8,518,21,24,24,DownloadXXX_Container_x64_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x64_P_Q_B_,False,"__Download Container x64"
+Button_Download_Container_x86=,0,8,541,21,24,24,DownloadXXX_Container_x86_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x86_P_Q_B_,False,"__Download Container x86"
+Process_Download_Bevel=Process_Download,1,12,268,101,100,26
+Process_Download_CheckBox=Download,1,3,274,107,70,14,True
+Process_Download_Info_Button=,1,8,343,103,22,22,Process_Download_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Process_Download_Info_P_B_,False
+ProvideFile_Bevel=ProvideFile_Bevel,1,12,268,128,285,67
+ProvideFile_Opendir_Button=,1,8,270,130,22,22,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Folder"
+ProvideFile_Info_Button=,1,8,294,130,22,22,ProvideFile_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_ProvideFile_Info_P_B_,False
+ProvideFile_x64_TextBox=,1,0,316,152,231,21,"win64_en-US\Firefox Setup 68.5.0esr.exe"
+ProvideFile_x86_TextBox=,1,0,316,172,231,21,"win_en-US\Firefox Setup 68.5.0esr.exe"
+Button_Download_Web_x64=x64,1,8,270,151,46,22,Button_Download_Web_x64_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_x64_P_B_,False,"__Download Latest FireFox ESR x64 File"
+Button_Download_Web_x86=x86,1,8,270,172,46,22,Button_Download_Web_x86_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_x86_P_B_,False,"__Download Latest FireFox ESR x86 File"
+
+[Variables]
+%ProgramTitle%=Mozilla Firefox ESR
+%ProgramEXE%=FireFox.exe
+%ProgramFolder%=Mozilla_Firefox
+%ProgramFolderS%=core
+%ProgramEXE_x64%=%ProgramEXE%
+%ProgramFolder%=Mozilla_Firefox
+%ProgramFolderx64%=%ProgramFolder%_x64
+%SetupFile%=%SetupFilex86%
+%ProgramSourceFiles%=Firefox_ProvideFile
+%ProvideFiles%=%GlobalTemplates%\%ProgramSourceFiles%
+%FileWebRoot%=https://download.mozilla.org/?product=firefox-esr-latest&
+%ProvideFile%=%ProvideFile_x86_TextBox%
+%ProvideFileUse%=0
+%FileContainerUse%=0
+//-
+%FileContainer_uBlock%=%ScriptDir%\Mozilla_Addon_uBlock_File.Packed
+%FileContainer%=>
+%FileContainer_x64%=%ScriptDir%\Mozilla_Firefox_ESR_x64_File.Packed
+%FileContainer_x86%=%ScriptDir%\Mozilla_Firefox_ESR_x86_File.Packed
+%FileContainer_x64_B%=%BaseDir%\Projects\Yomi\AppY\Network\Mozilla_Firefox_ESR_x64_File.Packed
+%FileContainer_x86_B%=%BaseDir%\Projects\Yomi\AppY\Network\Mozilla_Firefox_ESR_x86_File.Packed
+%FileContainer_SetupFilex%=%FileContainer_SetupFile_x86%
+%FileContainer_SetupFile_x86%=Firefox Setup 68.3.0esr.exe
+%FileContainer_SetupFile_x64%=Firefox Setup 68.3.0esr.exe
+
+[Process]
+If,Not,%OSFamily%,Equal,NT6,Exit,"Plugin designed for NT6x ONLY"
+//Arch,x86|x64
+Echo,"Processing %ScriptTitle%..."
+//--
+//First time use - no need to download - use ready FileContainer_x64:
+If,Existfile,%FileContainer_x64%,Begin
+If,%ProvideFile_x64_TextBox%,Equal,"win64_en-US\%FileContainer_SetupFile_x64%",Begin
+If,Not,ExistDir,%ProvideFiles%\win64_en-US,DirMake,%ProvideFiles%\win64_en-US
+If,Not,ExistFile,%ProvideFiles%\win64_en-US\%FileContainer_SetupFile_x64%,Call,PackedExtractFile,%FileContainer_x64%,%ProvideFiles%\win64_en-US,%FileContainer_SetupFile_x64%
+End
+End
+//--
+Run,%ScriptFile%,Select_File,%SourceArch%
+//--------------------------
+If,%ProvideFileUse%-%FileContainerUse%,Equal,0-0,Exit,"%ProgramTitle% - FileContainer OR ProvideFiles Not Found - Plugin Exit"
+//--
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//--
+Run,%ScriptFile%,Extract
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+//--
+DirMake,%Target_Prog%\%ProgramFolder%\distribution\extensions
+//--
+Call,TargetAppdata
+If,ExistDir,%TargetAppdata%\Mozilla\Firefox,Call,DirDelete,%TargetAppdata%\Mozilla\Firefox
+DirMake,%TargetAppdata%\Mozilla\Firefox\profile
+Set,%profileDir%,%TargetAppdata%\Mozilla\Firefox\profile
+// Plugin default config
+Echo,"Create Plugin default config"
+Run,%ScriptFile%,AddConfig
+// Add Custom config
+If,%CustomSettings_CheckBox%,Equal,True,Begin
+If,ExistDir,%ProvideFiles%\profile,Begin
+Retrieve,FolderSize,%ProvideFiles%\profile,%t%
+If,%t%,Bigger,100,Begin
+Echo,"Add Custom config"
+//FileCopy * have unicode bug - workaround with DirCopy * bug
+DirCopy,%ProvideFiles%\profile\*,%profileDir%
+End
+End
+End
+//--
+If,%uBlock_CheckBox%,Equal,True,Run,%ScriptFile%,AdduBlock
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+If,%FileArch%,Equal,I386,Begin
+If,%SourceArch%,Equal,x86,Require,FileList
+Else,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+Call,IniExtractSectionN,,Require_FileList,%ProjectTemp%\Extract.ini
+TxtReplace,%ProjectTemp%\Extract.ini,\Windows\System32\,\Windows\SysWOW64\
+Require,FileList,%ProjectTemp%\Extract.ini
+End
+End
+End
+Else,Require,FileList
+//--
+//Registry - Use Utils\RegCPE Plugin - Copy/Paste Registry lines here.
+//--
+Run,%ScriptFile%,Associations
+//--
+If,%Flash_CheckBox%,Equal,True,Run,%ScriptFile%,FlashPlayer
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+If,%pCheckBox4%,Equal,True,Add_Shortcut,SendTo
+If,%pCheckBox5%,Equal,True,Begin
+If,%pCheckBox2%,Equal,True,Add_Pin,RecentPrograms,,$Start_Menu\Programs\%pTextBox1%\%ProgramTitle%.lnk
+Else,If,%pCheckBox1%,Equal,True,Add_Pin,RecentPrograms,,$Desktop\%ProgramTitle%.lnk
+End
+
+[Require_FileList]
+\Windows\System32\??-??\efswrt.dll.mui
+\Windows\System32\??-??\evr.dll.mui
+\Windows\System32\??-??\mscms.dll.mui
+\Windows\System32\??-??\NapiNSP.dll.mui
+\Windows\System32\??-??\pdh.dll.mui
+\Windows\System32\??-??\pdhui.dll.mui
+\Windows\System32\??-??\pnrpnsp.dll.mui
+\Windows\System32\??-??\vaultcli.dll.mui
+\Windows\System32\??-??\winrnr.dll.mui
+\Windows\System32\??-??\wscapi.dll.mui
+\Windows\System32\??-??\wshtcpip.dll.mui
+\Windows\System32\clbcatq.dll
+\Windows\System32\coloradapterclient.dll
+\Windows\System32\efswrt.dll
+\Windows\System32\evr.dll
+\Windows\System32\icm32.dll
+\Windows\System32\mf.dll
+\Windows\System32\mfplat.dll
+\Windows\System32\MSAudDecMFT.dll
+\Windows\System32\mscms.dll
+\Windows\System32\msmpeg2vdec.dll
+\Windows\System32\msvproc.dll
+\Windows\System32\NapiNSP.dll
+\Windows\System32\odbcbcp.dll
+\windows\system32\OEMDefaultAssociations.dll
+\Windows\System32\OnDemandConnRouteHelper.dll
+\Windows\System32\pdh.dll
+\Windows\System32\pdhui.dll
+\Windows\System32\pnrpnsp.dll
+\windows\SYSTEM32\resourcepolicyclient.dll
+\Windows\System32\rmclient.dll
+\Windows\System32\vaultcli.dll
+\Windows\System32\Windows.UI.dll
+\Windows\System32\winrnr.dll
+\Windows\System32\ws2help.dll
+\Windows\System32\wscapi.dll
+\Windows\System32\wshtcpip.dll
+
+[Require_FileList_2018_10_03_CANCEL]
+\Windows\System32\efswrt.dll
+\Windows\System32\NapiNSP.dll
+\Windows\System32\odbcbcp.dll
+\Windows\System32\OnDemandConnRouteHelper.dll
+\Windows\System32\pdh.dll
+\Windows\System32\pdhui.dll
+\Windows\System32\pnrpnsp.dll
+\Windows\System32\rmclient.dll
+\Windows\System32\vaultcli.dll
+\Windows\System32\winrnr.dll
+\Windows\System32\ws2help.dll
+\Windows\System32\wshtcpip.dll
+\Windows\System32\??-??\efswrt.dll.mui
+\Windows\System32\??-??\NapiNSP.dll.mui
+\Windows\System32\??-??\pdh.dll.mui
+\Windows\System32\??-??\pdhui.dll.mui
+\Windows\System32\??-??\pnrpnsp.dll.mui
+\Windows\System32\??-??\vaultcli.dll.mui
+\Windows\System32\??-??\winrnr.dll.mui
+\Windows\System32\??-??\wshtcpip.dll.mui
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//--
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%SetupFile%#$q -y -aou -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+FileRename,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolderS%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//-----------
+Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\uninstall
+//-
+Call,Version,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramExe%,ProgramEXEVersion,4x
+Set,%ExtslastAppVersion%,%ProgramEXEVersion1%.%ProgramEXEVersion2%.%ProgramEXEVersion3%
+Set,%ExtslastPlatformVersion%,%ProgramEXEVersion1%.%ProgramEXEVersion2%.%ProgramEXEVersion3%
+Call,FileArch,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramExe%
+//Extracting-7z-Finish
+
+[PluginSet_x64]
+Set,%ProgramFolder%,%ProgramFolderx64%
+//Set,%ProgramEXE%,%ProgramEXE_x64%
+//Set,%SetupFile%,%SetupFile_x64%
+//Set,%FArch%,x64
+
+[Process_Download_Info_P_B]
+//Message,"Download Minimum Required Files (If Not Exists) During Build#$x#$x eg. No Container#$x#$x eg. No Provided Files",Information
+Message,"Download Minimum Required Files (If Not Exists) During Build#$x#$x uBlock (~3 MB) #$x#$x SetupFile (~50 MB)",Information
+
+[ProvideFile_Info_P_B]
+Run,%ScriptFile%,ProvideFile_Info_P
+
+[ProvideFile_Info_P]
+Call,IniReadSectionVar,|ProvideFile_Info_Txt
+Echo,"Read Information"
+Message,%IniReadSectionVar%,Information
+
+[ProvideFile_Info_Txt]
+Information:
+|
+|  1) Select 'Language'
+|  2) Use 'Download x64' or ''Download x86' Buttons
+|  --->
+|  Result:
+|  Download Latest SetupFile with Selected Language
+|                 from server and Update relevant TextBox
+
+[Download_Tested]
+//Download tested version:
+StrFormat,Right,%Lang_ScrollBox%,5,%Language%
+StrFormat,Replace,%Language%," ",,%Language%
+//-
+If,Not,ExistFile,"%ProvideFiles%\win_%Language%\Firefox Setup 52.9.0esr.exe",Begin
+Call,Download,%ProvideFiles%\win_%Language%\,"https://download-installer.cdn.mozilla.net/pub/firefox/releases/52.9.0esr/win32/%Language%/Firefox Setup 52.9.0esr.exe"
+If,Not,%CallDownloadFileName%-,Equal,-,Begin
+Set,%ProvideFile_x86_TextBox%,win_%Language%\%CallDownloadFileName%,Permanent
+End
+If,%CallDownloadFileName%-,Equal,-,Call,Echo,"Failed downloading",Warn,,MessageError,5
+End
+Else,Begin
+Set,%ProvideFile_x86_TextBox%,"win_%Language%\Firefox Setup 52.9.0esr.exe",Permanent
+End
+//-
+If,Not,ExistFile,"%ProvideFiles%\win64_%Language%\Firefox Setup 52.9.0esr.exe",Begin
+Call,Download,%ProvideFiles%\win64_%Language%\,"https://download-installer.cdn.mozilla.net/pub/firefox/releases/52.9.0esr/win64/%Language%/Firefox Setup 52.9.0esr.exe"
+If,Not,%CallDownloadFileName%-,Equal,-,Begin
+Set,%ProvideFile_x64_TextBox%,"win64_%Language%\%CallDownloadFileName%",Permanent
+End
+If,%CallDownloadFileName%-,Equal,-,Call,Echo,"Failed downloading",Warn,,MessageError,5
+End
+Else,Begin
+Set,%ProvideFile_x64_TextBox%,"win64_%Language%\Firefox Setup 52.9.0esr.exe",Permanent
+End
+//-
+System,RefreshInterface
+
+[ProvideFiles_OpenDir_P_B]
+Call,OpenDir,%ProvideFiles%
+
+[ProvideFiles_OpenDir_Custom_P_B]
+Call,OpenDir,%ProvideFiles%\profile
+
+[Button_Download_Web_x64_P_B]
+//Set,%DownloadMessage%,Yes
+Run,%ScriptFile%,Button_Download_Web_x64_P
+
+[Button_Download_Web_x64_P]
+//Run,%ScriptFile%,PluginSet_x64
+//Run,%ScriptFile%,Download_Process
+Run,%ScriptFile%,Download_Web_P_x64
+
+[Button_Download_Web_x86_P_B]
+//Set,%DownloadMessage%,Yes
+Run,%ScriptFile%,Button_Download_Web_x86_P
+
+[Button_Download_Web_x86_P]
+//Run,%ScriptFile%,PluginSet_x86
+//Run,%ScriptFile%,Download_Process
+Run,%ScriptFile%,Download_Web_P_x86
+
+[Download_Web_P_x86]
+StrFormat,Right,%Lang_ScrollBox%,5,%Language%
+StrFormat,Replace,%Language%," ",,%Language%
+If,Not,ExistDir,%ProvideFiles%\win_%Language%,DirMake,%ProvideFiles%\win_%Language%
+//-
+Call,Download,%ProvideFiles%\win_%Language%\,%FileWebRoot%os=win&lang=%Language%
+If,Not,%CallDownloadFileName%-,Equal,-,Begin
+Set,%ProvideFile_x86_TextBox%,win_%Language%\%CallDownloadFileName%,Permanent
+End
+If,%CallDownloadFileName%-,Equal,-,Call,Echo,"Failed downloading",Warn,,MessageError,5
+System,RefreshInterface
+
+[Download_Web_P_x64]
+StrFormat,Right,%Lang_ScrollBox%,5,%Language%
+StrFormat,Replace,%Language%," ",,%Language%
+If,Not,ExistDir,%ProvideFiles%\win64_%Language%,DirMake,%ProvideFiles%\win64_%Language%
+//-
+Call,Download,%ProvideFiles%\win64_%Language%\,%FileWebRoot%os=win64&lang=%Language%
+If,Not,%CallDownloadFileName%-,Equal,-,Begin
+Set,%ProvideFile_x64_TextBox%,"win64_%Language%\%CallDownloadFileName%",Permanent
+End
+If,%CallDownloadFileName%-,Equal,-,Call,Echo,"Failed downloading",Warn,,MessageError,5
+System,RefreshInterface
+
+[Select_File]
+//#1 Architecture
+If,%Always_Container_CheckBox%,Equal,False,Begin
+If,#1,Equal,x64,Begin
+If,%ProvideFile_x64_TextBox%-,Equal,-,Begin
+If,%Process_Download_CheckBox%,Equal,True,Run,%ScriptFile%,Download_Web_P_x64
+End
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_x64_TextBox%,Begin
+If,%Process_Download_CheckBox%,Equal,True,Run,%ScriptFile%,Download_Web_P_x64
+End
+If,ExistFile,%ProvideFiles%\%ProvideFile_x64_TextBox%,Begin
+Set,%ProvideFile%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+Set,%SetupFile%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+Set,%ProvideFileUse%,1
+Run,%ScriptFile%,PluginSet_x64
+End
+End
+Else,Begin
+If,%ProvideFile_x86_TextBox%-,Equal,-,Begin
+If,%Process_Download_CheckBox%,Equal,True,Run,%ScriptFile%,Download_Web_P_x86
+End
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_x86_TextBox%,Begin
+If,%Process_Download_CheckBox%,Equal,True,Run,%ScriptFile%,Download_Web_P_x86
+End
+If,ExistFile,%ProvideFiles%\%ProvideFile_x86_TextBox%,Begin
+Set,%ProvideFile%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+Set,%SetupFile%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+Set,%ProvideFileUse%,1
+End
+End
+End
+//-------------------------------
+If,%ProvideFileUse%,Equal,0,Begin
+//FF links Broken or "Always_Container_CheckBox" -> FallBack to Container File:
+If,#1,Equal,x64,Begin
+If,Existfile,%FileContainer_x64%,Set,%FileContainer%,%FileContainer_x64%
+Else,If,Existfile,%FileContainer_x64_B%,Set,%FileContainer%,%FileContainer_x64%
+If,Not,ExistFile,%FileContainer%,Begin
+Run,%ScriptFile%,DownloadXXX_Container_x64_P_Q_B
+If,Existfile,%FileContainer_x64_B%,Set,%FileContainer%,%FileContainer_x64%
+End
+If,Existfile,%FileContainer%,Begin
+Call,PackedExtractFile,%FileContainer%,%ProvideFiles%\win64_en-US,%FileContainer_SetupFile_x64%
+Set,%Lang_ScrollBox%,"English (US)                           en-US",Permanent
+Set,%ProvideFile_x64_TextBox%,win64_en-US\%FileContainer_SetupFile_x64%,Permanent
+Set,%ProvideFile%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+Set,%SetupFile%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+Set,%FileContainerUse%,1
+Run,%ScriptFile%,PluginSet_x64
+End
+End
+Else,Begin
+If,Existfile,%FileContainer_x86%,Set,%FileContainer%,%FileContainer_x86%
+Else,If,Existfile,%FileContainer_x86_B%,Set,%FileContainer%,%FileContainer_x86%
+If,Not,ExistFile,%FileContainer%,Begin
+Run,%ScriptFile%,DownloadXXX_Container_x86_P_Q_B
+If,Existfile,%FileContainer_x86_B%,Set,%FileContainer%,%FileContainer_x86%
+End
+If,Existfile,%FileContainer%,Begin
+Call,PackedExtractFile,%FileContainer%,%ProvideFiles%\win_en-US,%FileContainer_SetupFile_x86%
+Set,%Lang_ScrollBox%,"English (US)                           en-US",Permanent
+Set,%ProvideFile_x86_TextBox%,win_en-US\%FileContainer_SetupFile_x86%,Permanent
+Set,%ProvideFile%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+Set,%SetupFile%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+Set,%FileContainerUse%,1
+End
+End
+End
+
+[Associations]
+Echo,"Processing Default Browser File Associations..."
+RegHiveLoad,Tmp_Software,%RegSoftware%
+//- URL
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x2,Tmp_Software\Classes\InternetShortcut\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//- HTTP
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\http\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\http\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//-
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x1,Tmp_Software\Classes\IE.HTTP\Application,ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\IE.HTTP\shell\Open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//- HTTPS
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\https\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\https\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//-
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x1,Tmp_Software\Classes\IE.HTTPS\Application,ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\IE.HTTPS\shell\Open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//- FTP
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\ftp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\ftp\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//-
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x1,Tmp_Software\Classes\IE.FTP\Application,ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\IE.FTP\shell\Open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//- HTML
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Firefox_HTML\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Firefox_HTML\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//-
+If,%NoWarnROW%,Equal,True,System,ErrorOff,5
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.htm,,Firefox_HTML
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.html,,Firefox_HTML
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.shtml,,Firefox_HTML
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.xht,,Firefox_HTML
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.xhtml,,Firefox_HTML
+RegHiveUnLoad,Tmp_Software
+
+[FlashPlayer]
+Echo,"Add Flash Player..."
+Set,%t%,%ScriptDir%\Flash_Add.Script
+If,Not,ExistFile,%t%,Set,%t%,%ProjectDir%\Apps\Network\Flash_Add.Script
+If,Not,ExistFile,%t%,Set,%t%,%BaseDir%\Projects\Yomi\AppY\Network\Flash_Add.Script
+If,ExistFile,%t%,Run,%t%,Add_Flash,%t%
+Else,Echo,"Flash Plugin required to Enable Flash Player",Warn
+
+[AdduBlock]
+Echo,"Add uBlock Add-Ons..."
+//ExtractFile,%ScriptFile%,AddOns,uBlock0@raymondhill.net.xpi,%profileDir%\extensions
+If,Not,ExistFile,%FileContainer_uBlock%,Begin
+If,%Process_Download_CheckBox%,Equal,True,Run,%ScriptFile%,DownloadXXX_Container_uBlock_P
+End
+If,ExistFile,%FileContainer_uBlock%,Begin
+Call,PackedExtractFile,%FileContainer_uBlock%,%profileDir%\extensions,uBlock0@raymondhill.net.xpi
+If,Not,ExistFile,%profileDir%\extensions\uBlock0@raymondhill.net.xpi,Echo,"File Not Found (Not Exists at %FileContainer_uBlock%) - File: %profileDir%\extensions\uBlock0@raymondhill.net.xpi",Warn
+End
+Else,Echo,"File Container NOT Found: %FileContainer_uBlock%",Warn
+
+[AddConfig]
+Echo,"Apply Configuration..."
+ExtractFile,%ScriptFile%,Config,activate.js,%Target_Prog%\%ProgramFolder%\browser\defaults\preferences
+ExtractFile,%ScriptFile%,Config,Mozilla.cfg,%Target_Prog%\%ProgramFolder%
+ExtractFile,%ScriptFile%,Config,profiles.ini,%TargetAppdata%\Mozilla\Firefox
+ExtractFile,%ScriptFile%,Config,bookmarks.html,%profileDir%
+ExtractFile,%ScriptFile%,Config,prefs.js,%profileDir%
+//-
+Set,%prefs%,%profileDir%\prefs.js
+TXTAddLine,%prefs%,"",Append
+// Required to install extensions in addition to activate.js pref("extensions...
+TXTAddLine,%prefs%,"user_pref(#$qextensions.lastAppVersion#$q#$c #$q%ExtslastAppVersion%#$q);",Append
+TXTAddLine,%prefs%,"user_pref(#$qextensions.lastPlatformVersion#$q#$c #$q%ExtslastPlatformVersion%#$q);",Append
+// Startup Homepage
+If,Not,%Homepage_TextBox%-,Equal,-,TXTAddLine,%prefs%,"user_pref(#$qbrowser.startup.homepage#$q#$c #$q%Homepage_TextBox%#$q);",Append
+// Disable Flash
+TXTAddLine,%prefs%,"user_pref(#$qPlugin.state.flash#$q#$c 0);",Append
+// Protected mode for flash player (default false)
+If,%Protected_CheckBox%,Equal,True,TXTAddLine,%prefs%,"user_pref(#$qdom.ipc.plugins.flash.disable-protected-mode#$q#$c true);",Append
+// Private Browsing (default false)
+If,%Private_CheckBox%,Equal,True,TXTAddLine,%prefs%,"user_pref(#$qbrowser.privatebrowsing.autostart#$q#$c true);",Append
+// Blank on New Tab Page (default true)
+If,%BlankNewTab_CheckBox%,Equal,True,TXTAddLine,%prefs%,"user_pref(#$qbrowser.newtabpage.enabled#$q#$c false);",Append
+// Always Ask me where to Save files (default true)
+If,%AskDownloadDir_CheckBox%,Equal,True,TXTAddLine,%prefs%,"user_pref(#$qbrowser.download.useDownloadDir#$q#$c false);",Append
+// Warn On Close (default true)
+If,%WarnOnClose_CheckBox%,Equal,False,Begin
+TXTAddLine,%prefs%,"user_pref(#$qbrowser.tabs.warnOnClose#$q#$c false);",Append
+TXTAddLine,%prefs%,"user_pref(#$qbrowser.tabs.warnOnCloseOtherTabs#$q#$c false);",Append
+End
+// 1st Reader Message
+TXTAddLine,%prefs%,"user_pref(#$qbrowser.reader.detectedFirstArticle#$q#$c true);",Append
+//-
+// Use System Proxy Setting (None) %Proxy_Radio%=2
+// No proxy:
+If,%Proxy_Radio%,Equal,0,TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.type#$q, 0);",Append
+// Manual proxy
+If,%Proxy_Radio%,Equal,1,Begin
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.type#$q, 1);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.ftp#$q, #$q%Servername_TextBox%#$q);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.ftp_port#$q, %Port_NumberBox%);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.http#$q, #$q%Servername_TextBox%#$q);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.http_port#$q, %Port_NumberBox%);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.socks#$q, #$q%Servername_TextBox%#$q);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.socks_port#$q, %Port_NumberBox%);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.socks_version#$q, 4);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.ssl#$q, #$q%Servername_TextBox%#$q);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.ssl_port#$q, %Port_NumberBox%);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.no_proxies_on#$q, #$q%NoProxy_TextBox%#$q);",Append
+End
+// Autotomatic Proxy configuration URL:
+If,%Proxy_Radio%,Equal,3,Begin
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.type#$q, 2);",Append
+TXTAddLine,%prefs%,"user_pref(#$qnetwork.proxy.autoconfig_url#$q, #$q%Autoproxyurl_TextBox%#$q);",Append
+End
+// Try to avoid the datareporting prompt
+TXTAddLine,%prefs%,"",Append
+TXTAddLine,%prefs%,"/* Try to avoid the datareporting prompt with also sessionCheckpoints.json file created */",Append
+TXTAddLine,%prefs%,"user_pref(#$qdatareporting.policy.dataSubmissionPolicyAcceptedVersion#$q#$c 2);",Append
+TXTAddLine,%prefs%,"user_pref(#$qdatareporting.policy.dataSubmissionPolicyNotifiedTime#$q#$c #$q1478539106412#$q);",Append
+FileCreateBlank,%profileDir%\sessionCheckpoints.json
+TXTAddLine,%profileDir%\sessionCheckpoints.json,"{#$qprofile-after-change#$q:true#$c#$qfinal-ui-startup#$q:true#$c#$qsessionstore-windows-restored#$q:true#$c#$qquit-application-granted#$q:true#$c#$qquit-application#$q:true#$c#$qprofile-change-net-teardown#$q:true#$c#$qprofile-change-teardown#$q:true#$c#$qprofile-before-change#$q:true}",Append
+
+[AuthorEncoded]
+Logo=FireFox4848.ico
+FireFox4848.ico=4450,5934
+
+[EncodedFile-AuthorEncoded-FireFox4848.ico]
+lines=1
+0=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
+1=4t6bXdGPKIqVeRkzMNFzP1UUZ5f8DcZxDf2ZI3c65aQNcXU13Q6/b7SDeUY+5dJsQzrAiII8QWAjHUD9pTHNEN4nA5Wn3hCXsAbbrZ9wca6r9Frf7b1utf0U+myp/2V2KRnHnsh0v+tjQL2dDe3PHdMuS+nFLHvWauQPVrpBfiXfmmwFWKo8UPByGIG8OO+MaR/ycQ4q8AHS43HofT7qv9RON7SL0hpnsH9OTZoTH/iZP7RK5fqwy5L+c9OZ8faJao/LOI/1SaK2jPbUW1aJ9bJnXO3Dnnr1MdvEOaWUJ5P7QTgrgx3IhvJ/L+xGKg4zWJX8VBCM5HdUPfeXyFilCD3janT9T7f/3s4xmjzvz95NkC73F5b85zm5ZisB8m+dtMI/50zZL2uZbrqlA+z0jJO3MvJ+633xWYn5cBQbwY7sQ16QbQmXG9Po7ERuJwOF75uO/86h70tDzYIcnxsi7aXfZfZe5vyWfFcr/IZ4DWw+T5Ap/naPgcZ7Hk7z/+MrJmvIs352bjq1c6oGKOIXTzpWYq3iYfWi5wmWIwKrivzAp2xDP5JqGEYih5QhzqPWlRiBr32KFGT+FeuzRJ9qfnx7jdqp9/guVZg7Jv6SnPGfhsh8/Kaud+vzFFuDTSXPH5yimklxmyXjn3lW+QDy2jvvu+wMzt2RDEyYC53QJSGDclGouF40igzzY9Xf72E3T/q3uQarstNsnpOHnQvfp9Y1gDD1JrWJn91RroP2MFSkZKr+f+pHgl6b5qoZp74n5jhYDP6RPKnBNAXFNLgS6MWxJPisO9QFcmQkOfqPvHV4rVO+5pzkeQ6HYKbb3uPDpDqDXAZ5rm2VQD06SGDJdU4FB2c9ybKHurUrfzpHZY92UfUN1+KGBYVKnw73xb8q/FI3Hcqo+jBeVe/9vL0b+VOy+e59Icj99MdjuDBI9zaOd1Ba2DSmpCIktobiuDb/cSRPc7iFEDFsF1wjXZB8hHQxYeRuEEC6XPKp6par98Kc09lPvrHwvSTg0sKKddb9fjSXGEU/71D1euEb//7wDaHg7H81JcLyDBsxCxzYuqe3qveWFZQOtC3p9siPRW5vv9NKsd6OWEZ8d+CJuXS5QzzYA3juOXGS6/zj/xv8n8KffOJY/ybyyOdpR7/f2662bLD9v+Tu689HrYHIxPcblUk+BRjCjPK8s5B4t8fW0/bhmwZUOEt7KH5X0gz/cX+uvj4nBjrJ7UHW/NzMCOOfH1+l8k9V9G+i8l/nqXq+FB3LrdIc53Go8jjOLT0F5Xm1faW/zX/x6m6eKY/2mC2/WHERYfWDeMLTfMu8/2WLdLvEfhefN8P0NlvucZWfEfmhmqZ6r+s0D2W/afO6T/puduwEXlX4uGcQQUo4rPefT+VrFZ/MG/H0XZ5JnHO1/b0dj3LA8VBl8lNBt+KNXy2Fmal68MJn3QrHw3W86aPK/xrMbzTp2G6B503rcZtiWP8mckExyu6u5ol11JEctRKRZc8voj3GtXhCgw/s8+czjNIDh/gGbGtWFiz60xopRnzloPrb0HD7gHLBVlf1/T/rjB9Ue5d6C8m17WFYht2/hsUE8sejBc/IV/mz+cKQyKRwuz0heEFaP4P4TZ2bF1M69WnKouirktucfTo2GRrlDsOGH91C/9n7P0tLtupnjdlJoxuaK7Kw6edfmrSf3OpWnyU9U3bhSD9pc7yeKv//84fv/adraJKKp6T/xv5P7/6//M+hd3aJajeJzjd8ssSnXLrzCxMLHQy0zOZxgFIwrsU4XQwoLY5feudPzFwAQA0d8IrrpN1iwBAAAAAgAAACsAAAATEQAAAAAAAAEAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Mazenl77-NX11-Internet-Real_016_016.bmp=909,1212
+FirefoxInt.jpg=11733,15644
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+//Was Default True for SE - Later Containers removed -> Default False
+IniWrite,%ScriptFile%,Main,Selected,False
+Set,%Always_Container_CheckBox%,False,Permanent
+Run,%ScriptFile%,First_UI_P_B
+
+[Upload_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[DownloadXXX_Container_x64_P_Q_B]
+IniRead,%ScriptFile%,Main,Web1C_x64,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x64_B%,%WebFileContainer%
+
+[DownloadXXX_Container_x86_P_Q_B]
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x86_B%,%WebFileContainer%
+
+[UploadXXX_Container_uBlock]
+IniRead,%ScriptFile%,Main,Web1C_uBlock,%WebFileContainer%
+Call,UploadXQ,%FileContainer_uBlock%,%WebFileContainer%
+
+[DownloadXXX_Container_uBlock_P_Q_B]
+IniRead,%ScriptFile%,Main,Web1C_uBlock,%WebFileContainer%
+Call,DownloadXQ,%FileContainer_uBlock%,%WebFileContainer%
+
+[DownloadXXX_Container_uBlock_P]
+IniRead,%ScriptFile%,Main,Web1C_uBlock,%WebFileContainer%
+Call,DownloadX,%FileContainer_uBlock%,%WebFileContainer%
+
+[Open_Container_uBlock_P_B]
+If,Not,ExistFile,%FileContainer_uBlock%,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%FileContainer_uBlock%#$xNot Found#$xDo You Want to Create an EMPTY File Container ?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+Call,PackedNewFile,%FileContainer_uBlock%
+Call,FileOpenWait,%FileContainer_uBlock%
+End
+End
+Else,Call,FileOpenWait,%FileContainer_uBlock%
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp]
+lines=0
+0=eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-FirefoxInt.jpg]
+lines=3
+0=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
+1=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
+2=z4yK9MeTctI9e8vEv0YMn7GThUfVr5JpCMi38t+XdnKLmyePllihaf1Qw4RwN7ya1YoF0byR10CvZkYdGQxBeDAbWEED9B/oxbiG3HFF1kjGXt2VS+0EZ4U/qMWMhvPhItQXVW6lXGfSPx/fMnf+sHMn00F12dFfrjH9Bn2an8/RZtB+krRa7N/N7eFN++3UWEt+J+yiAAFukou3k1PEOk+HrEFzNcVKQDfh4hy99MWcY9Geo0U6zDr3iw2YdXoFOsM9UrBrQNsCfHXCl47mKVata9/GAz0jrK+bbI3zbinOI8QCnEQVF2trg0CXYd6D3CddS/UZyKhbkz6oAKI8jAkFqu9aG8q8Z55w9UmQxOjauA2n3qJH7HDU4BxmMPVB7KTdvz/+1nmBJN5jx0iMXu8Ja4kc66AIjYQ/ghQpvUHUcldYqRf5Rp6G2Sml+EZ/W6jgfzLkLfVUZ5UcD6kmR535WUKjzM7RkgH/gtROKh/vtdHKb+XOHWWjUFo3KXX7rZrqxvwXnWM8TxFvq6eGoFZyX9JDusMHx/YkyzN7kiBecreGuIJ/qS5NsGllG/8jiSolW5Z6efO3qFFSFTJwqO+jEneMrue3FnHM0nSNDdMLOgjKXgBu+WUaZawvShAneFfeKcfGtWTxjafwPGh3VR5QB7/XZLN1jwjNuGbGOVSAeueprOpvoL5t3gTbFBCAMIZ1tFKRrONwSzcaTN6xC3b0yXYThpzSXRoq9hLWzfPu71P6kQk/HMVMyv949mUBxUY9I/fDN7WhSljDKHuaQ9Bc2PNJlG8KE16azYqU1p2DRmK3YUxb7z3NuQ/rc755WQWh8ZbOZ7SD8MwsjqESkVGvdYvCXM+i3AI0WmA2dlkBGQd8hIunCLrXeFI46saRgaRVDoj15odNE6GWPywL/S8z9xd7gL0sltbAE1bdT3jNcFFyN4lfiwxEdA8wUfcIcBhSl2ygi49WeL67Nk8u4ZDRkfciFxflCUoJtxqzsFkUEDGj66g4o3+mpW+6PTAycw16AQjjNR6+cRBeouXyE2ysjXSKaX46qKwlmizFiBtIZIrHS7PLRfLCBZjt7x+zfDv/WBxfZlXsOfZuXaXNq1fAjX7zSlgddoWJ/pX6Azyddae6DD7PlSmKTI+jSBUndji8ykgofuTfrMl4U9ShenyrI4NTSHs8C1OmuGA1ORJZv2mPAnVIs5JYLUhZDvj+MBjNRk56kxkF8212YfO95KHo1XP4onipcRgm3eZptRDKuLlq0UrwWUX5Krf0jj+Brut0ovXNV9LurJrmfiCqljJaPS7fH/Y9nlPC6ElIsC9fEyp5v2cd+GjmbZVFKSi/ACOZ+Yaw3QWnJwktn3nlU+MQsfITRNNZtvyuwb7+Kmjs8xaO06LcxhmkFH7si24Ytb/cVSOhAUiz0fzg9z51VejUsRvxXjRQxokA/tEqQkhNkPfaYDkzmqh86e0wfvjGRXVgymQOmmWRs25qfVgHF52dZRH0+uxK3ZfQUnEB2GTuDmF3y1s1iaWrcLuMpdVS6zC3/NgJYfRQovvksM+oJfKrONrACGHCNihWxUsuz82AhgsdahP24vcNeIdFTYmXLIPjAv2vGV532gAWbOWJfhx7l2mWgM8y07TIIfVqsokbt+93J3wr5Or/aAyzugC0PyHb+9LFkgWWc71NeyLCSnurtkJ1QrZ8AqYLM5cMmz50hLA8xbzdkHDVdBD7Gn153BNxprRZULdyL7qY4D+3GK6PIuQMVqlQpj/iGXZvY2zttM70vBBad4b+XX7Jy7PmSu6fH3DV4dtQkmR++fP8f1/34pqKa4fx29vWbde3uAdSBW0XrdwNYY7sLzGZelOZH+3k/obNWn7KmvVTo+tStY+NvBk5oBqcRGYrmtuwkyIio8kyhZ5NR+lZd04tjuKcGsbvsmjLVbDofdD7vjPJYZ6uyuZszg+UI5uLd6vLEql5spxDYkzeEzSfdIkzZf8qj+tx+fuyWvmlAUumwfqug5wH3vNxcuhwZs6rMnl0zWGgsjXt21N1aAjO3DaXqAiGQ7TigfrtLF3O083qrBKD/tE5jtXQLfLDssgTvvdjHcb5L9X5pQJzEDp5KIPFdnzBLCuOP/GbjQdHpBT633l0wzQqBp2Aqx/Jyliy6Oa6O7+uVRajmPTG0BreSvApXPG9oovrJr602nkH551p3uq9HWZ2WSPWOdq0l7fVqcLOpFuIRbbw4TO2A8M/ewS3H60yJNuybTuhUcHxQFt74/EK7z3nnMBcPQw6RfmO123euHjVeS4pbk1zD9mavO5i6/5/G26d1TpBdiKsmEsG4xbsn7Q2wLt6oaP7Q1ujg2uxKEPJlv49F5s6rM88Z3fkmTAxq1PsUytDZlg6YQHIlMAJHLIR5L1Zk1JvmYJtN6R9opKhrTxZZA3/WG78NjEhbVW/JNKs014LxrC5HK6Vem193gEsRzCR6XXoQcoUZ53bq/TLBKrBneJwG6PvXJ6wPpmZChB1LFbu7RDTFy1pzUUTp6LDtYo9QxfTyp9AijelVZcWVHuvWMfdto6/65JhRkaKRt3N9SPdeiVjFyaQEi6JFJrbDEUFl7lw9wZsXh/wYumjmN5Oev9ZUrBASt7Y9tNr9lY9oil3D7bFrZv/Us2EsbcsJcwrDBFjdgc/cjdlf9D1dtvIrrmShfTK3RfxX7xH2O5tFjBApXUJU9G3xjIcm7OMYq4uGOwYrH5vDEyxIJdR3fuJxnnXs12NEulMGQhtlicGJzU/wmcTdgWF+2W7sDdlAhoWW7aGZr7KmBFIeoqGnFMfA7bEdMw8zfyNnpeO2YyPNxdwh18ibHfA6RFdJDvBIf9sSJW4VCWuhO1xvsJ5ool0h5PcNbcbOhZQK7Qo2K9I523Jqlj6l4kis+7ZQd+gL/jLB3fShCy1+RhobjwUe/RPCJaIfLVwQPM/pa/pzJ7NBjp/NFS5+1H7LvzriP0oHXENbv9XKSsr7Ywcraho1Z0f8nXrudBiQdnssFOY9+0H99BNyYVw4fa/TzT/UEtxGXDRv6AnS55/buUjIY/dSTX8iK+5jajLbaqYWAWtxy9axnaDGf5U5dy/MY/laSnex2IG6D/SZ9gtgE8M9dJ2mZOIS/C/PRjqCwBystnpOIZA25ZKFlcsKPUgbgU9lu3luSU7N/T5T0P9q6sasut7IjxZIrgVVxMCb8SPaQPZ/hUObsjA/ZEyXgWdBEKlzhe0jZDvaTBYi8vyTOXrVNPv1A3DovWUT0uXSQnNENNtJ5Ih8Ni0rrk1ry3kcbGKkJZCe9cZkjUmqZhrbMRRRMd0zjhZRWsN9BaGupyGHxSbxU8uP/HnfBSBGNjyeblGvfYkKvuz04G1reYVba7nFBv8sy+np0tdqpoYRK9HWbtviJv/1S4JJZFazZG+EiUAc/tsZ0iCWY/ZCz8vwpwFgR1NOOniGtmTls8tdZP0UDzBsFxa2kpq7hHGP/5UouKns/b8MVNFKw85gKiYzxsEFx7hmwE8gbly3Sng5Gqo/yCMObDY7xaV+LWubpziRZ4isnYMTEXLWX3K45Mwt00qNJssoh+H8zDraCO4PwFNec08IaHdlaILL4/AsG3ktfVmHnykhqE8bn5YcvjVvK0Cr4aITj6YTr6xmvSHzWzH3RwMyec+nMCAE40j6DqZSMLrf/KJ1MZpz7+n4tUT0ha1I4SzcXs8HZN24RXdbpbhYN8Ke01hKd3S8XpGxTvfSgUeUobt67L+rJ+p6JZ7/HubNVNfTylCzkxvwu8QFdFlSvHNRuUekxx3/ga0fzOYuuFxLLf4NzgnuiqVr5kji73edfn+2OEqavyXuijJzSRFsYGAy58WfSHxxShta8STgfXs2r7chvjkocANXb+0eXd1NvcrnftavAIz7GO6Na+YrcJIRs4+AI/dL0YFcA0uh7+xnCTkCgery3BsQ1qK8pJif4aqshWU1wcWB/WxMmDGdiAkA8XSNxvauwyICQnB5kA9gSh1dkKkWMja1bfK1iLd98yba8b35yXFPpTLr5p/lWYvUrHTbzD57j27U2Bv5cl/i2iQ7AEsZ8wu3lA0mYaCH4YIjsFPT19ctV34u3
+3=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
+
+[Second_UI_P_B]
+System,Cursor,Wait
+Visible,%Show_Second_UI_Button%,False,Permanent
+//Run,%ScriptFile%,Show-Hide-First_UI,False
+Run,%ScriptFile%,Show-Hide-Second_UI,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[First_UI_P_B]
+System,Cursor,Wait
+Run,%ScriptFile%,Show-Hide-Second_UI,False
+Visible,%Show_Second_UI_Button%,True,Permanent
+//Run,%ScriptFile%,Show-Hide-First_UI,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show-Hide-Second_UI]
+Visible,%Proxy_Radio%,#1,Permanent
+Visible,%Servername_TextLabel%,#1,Permanent
+Visible,%Servername_TextBox%,#1,Permanent
+Visible,%Port_TextLabel%,#1,Permanent
+Visible,%Port_NumberBox%,#1,Permanent
+Visible,%Autoproxyurl_TextBox%,#1,Permanent
+Visible,%NoProxy_TextLabel%,#1,Permanent
+Visible,%NoProxy_TextBox%,#1,Permanent
+//--
+Visible,%Show_First_UI_Button%,#1,Permanent
+
+[Show-Hide-First_UI]
+Visible,%Show_Second_UI_Button%,#1,Permanent
+
+[EncodedFolders]
+Folder
+Config
+
+[Folder]
+
+[Config]
+activate.js=232,310
+bookmarks.html=4887,6516
+Mozilla.cfg=328,438
+prefs.js=635,847
+profiles.ini=163,218
+
+[EncodedFile-Config-activate.js]
+lines=0
+0=eJxtzDELwjAQhuFd8D+ETAqa6ODkJLp0cijOkqaXGrheSi5R8dfbCHXqeHzPe1qLijgZRHFq2+2VeLkYIriVhHcCYh+IFT/Ci2pAsGm8b5XciBQzrI8zFsg0CG1twwA8wv1hlpmcwsVzsX+6K1JrcQ7kfCecR5jKDgiiQWV/kwoN2xzh/jSYYSpnZXlCpi9I9uHjEY2yrpMl+AIlMVQteJzjTkwuySxLLEnVyypmGAUjDvyB0vNxyFts383PwAQAnj0HvuUNi+sBAAAAAgAAACUAAACfAAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Config-bookmarks.html]
+lines=1
+0=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
+1=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
+
+[EncodedFile-Config-Mozilla.cfg]
+lines=0
+0=eJytksFKBDEMhu+C7yBzWQUp6tWbuGcFDx6l02amYTNNSdPRfXs7LArq7IyCx6Tf158mJXa7R4HuvLEpmZK8VTC2KDeXZ52lDBe3pyc0B0G0LYFf5TLIiG6Fb4VfK1hhKy4ss8pMO1SjQDCAyt5MDo4rET+1P+IlYofH8PpUK5BYFGNvAljScKjrHIit3y6FfbUTE7q9mZpPpR0wZ+T4T74Zb5Y3INgHzYZHEEEPFVYpx7ZVU7UkE3iAZHt4+bDMkJXjJDfYRxZo5i8oGfxDfMboa319tRiWagf0l98oAJFxAdzuHjpbSO8OJ7PaBt4U4jSk/C1l84m/A40FHOp4nOP2za/KzMlJ1EtOS2cYBSMOaDBD6H845H9tknjIwAQAPfUIEvPrSAkBAAAAAgAAACYAAAD+AAAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-Config-prefs.js]
+lines=0
+0=eJylVE2P0zAQvVfqfxiVC6wqL1xBXNByQGJFtWzFceU4k2RUxxP5o6X8esZpu1XabgkQKWltz3vzZvzsV3DPv8haDcuAHhYeK/ToDIbpZDq5vYE7BscRsKQIsaEAFVlU0wnc5Be+VLDlBK1eIZhGuxoDRD5GwqbJ39gg6K6zZHQkdiCrPjlHrp73NHn9AN+IHCgQeI1+4ylGdMIin1MS/EkxHKU88k6Glh+XtN0TZjndsax5r9doB2sKfU0Iy4evoAtO8b1hV1Gd6W4P9VPQhVSw7EodEUp2COQOXVOmqvtYiUzSwKec6fVMVKrUA5ROkWdzqLQN+ObD9Vh0OVU5Nlwm12TGwQrPGxkJRnvT7BlOEIN6H9Fii9FvR5Ycme2KoooHnMqJaD1O3jn631DJUUVnqEFhUrj22LGP4r6RxQ0wqkFtY7MbSyct6/LzCLVDko7Fx1uVJ7+noqUQxNKXaQbyK/Ih5sMDna7H+vF590VBTJ1quMUMf8pnzFOJqg1RmCQx1Y79dQ/JVPnN/SBXyvjd21G+O8EoctGznDsBz2aX6lywWWH8y/q6HvSCdwb0pkGzgjusdLIRPu3wl7IpuE/S8GJ3h1kt/y1J1JUmN2it6hPs+ff0l/R8zA8cL1+oPLewsKkWGfvVHHzV9fki6OlzK/8Q++zAvQF7Pz0kdxQ3ILji/MP18/8ML5yhIQ23ijqjur41QVWyFY0Kqeg8y7UelPEysSOWTTizQO73b58gT8x4nOMoKEpNK9bLKmYYBSMRvGWD0MZM2OUNdi/5zcAEAAi/BugaWjpXAQAAAAIAAAAkAAAAMwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Config-profiles.ini]
+lines=0
+0=eJyLdk/NSy1KzInl5QouSSwqCc8syfBJLC4JKMpPy8xJtTXk5eLliobyDICq/BJzU21TUtMSS3NKeLk8i4NScxJLMsvAKgMSSzJsCyBqeblcIIpAEgDmSyFceJzjKSjKT8vMSS3Wy8zLZBgFIw2kQekoHPJHpZOZGJgAeZIG5s/08doBAAAAAgAAACUAAABaAAAAAAAAAAEAAAAAAAAAAAAAAA
+

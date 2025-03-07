@@ -2,20 +2,22 @@
 Title=MS Visual C++ Runtime
 Type=Plugin
 Author=Homes32, ChrisR
-Description=Allows you to run programs created with Microsoft Visual C++ 2005/2008/2010/2012/2013/2017
+Description=(NT6x) Allows you to run programs created with Microsoft Visual C++ 2005/2008/2010/2012/2013/2017
 Credits=Thanks to JFX for help with reg entries for SideBySide
-Version=015
+Version=019
 Download_Level=1
 Level=3
-Selected=False
+Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.11.07
+Date=2020.01.21
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/VcRunTimes.script
-Web1C=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/VcRunTimes_File.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/VcRunTimes.script
+Web1C=http://yomi.cwcodes.net/Yomi/ComponentsY/VcRunTimes_File.Packed
+Web1C_CANCEL=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/VcRunTimes_File.script
 CertifiedBy=
 Certification=
 HistoryNotes01=The Plugin Uses a Container File for MS Visual C++ Runtime binary
@@ -29,44 +31,118 @@ History011=Lancelot - Fixed IniVariables,OS - Added DU buttons
 History012=ChrisR - Added Visual C++ 2015 (14.0.23026)
 History014=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
 History015=ChrisR - Added Visual C++ 2017 (14.11.25325) = VC++ 2015 Update. Copy Embedded SxS registry with CopySoftKey.cmd - Date:2017.11.07
+History016=Lancelot - Add Add BuildClass 3 support - Date:2018.10.09
+History017=Lancelot - Add BuildClass - Date:2019.01.14 // Default True to get end users start apps easier - Eg. Spanni http://TheOven.org/index.php?topic=2790.0 - Date:2019.04.03
+History019=Lancelot - Improve BuildClass 3 // Improve Container File // Add to Yomi - Date:2020.01.21
+
+[Interface]
+BVL_Container=pBevel1,1,12,0,17,404,208
+TXT_Ver=RuntimeVer.txt,1,6,235,20,164,200
+LBL_Runtimes="Add the following Runtimes:",1,1,10,23,185,18,8,Bold
+LBL_EMB="Embedded version (8.0 - 9.0)",1,1,3,50,145,18,8,Normal,"__Full x86: 3MB / x64: 4MB / Total: 7MB"
+SB_EMB="Full                      1",1,4,150,48,84,21,"None                   0","Full                      1","__Full x86: 3MB / x64: 4MB / Total: 7MB"
+LBL_VC8="Visual C++ 2005 (8.0)",1,1,3,75,123,18,8,Normal,"__Full x86: 13MB / x64: 24MB / Total: 38MB - Lite x86: 4.5MB / x64: 6.2MB / Total: 10.7MB"
+SB_VC8="Lite (latest)         2",1,4,150,73,84,21,"None                   0","Full                      1","Lite (latest)         2","__Full x86: 13MB / x64: 24MB / Total: 38MB - Lite x86: 4.5MB / x64: 6.2MB / Total: 10.7MB"
+LBL_VC9="Visual C++ 2008 (9.0)",1,1,3,100,145,18,8,Normal,"__Full x86: 42MB / x64: 49MB / Total: 91MB - Lite x86: 9.5MB / x64: 12.3MB / Total: 21.8MB"
+SB_VC9="Lite (latest)         2",1,4,150,98,84,21,"None                   0","Full                      1","Lite (latest)         2","__Full x86: 42MB / x64: 49MB / Total: 91MB - Lite x86: 9.5MB / x64: 12.3MB / Total: 21.8MB"
+LBL_VC10="Visual C++ 2010 (10.0)",1,1,3,125,145,18,8,Normal,"__Full x86: 12MB / x64: 15MB / Total: 27MB"
+SB_VC10="Full                      1",1,4,150,123,84,21,"None                   0","Full                      1","__Full x86: 12MB / x64: 15MB / Total: 27MB"
+LBL_VC11="Visual C++ 2012 (11.0)",1,1,3,150,145,18,8,Normal,"__Full x86: 11MB / x64: 14MB / Total: 25MB"
+SB_VC11="Full                      1",1,4,150,148,84,21,"None                   0","Full                      1","__Full x86: 11MB / x64: 14MB / Total: 25MB"
+LBL_VC12="Visual C++ 2013 (12.0)",1,1,3,175,145,18,8,Normal,"__Full x86: 11MB / x64: 14MB / Total: 25MB"
+SB_VC12="Full                      1",1,4,150,173,84,21,"None                   0","Full                      1","__Full x86: 11MB / x64: 14MB / Total: 25MB"
+LBL_VC14="Visual C++ 2017 (14.11)",1,1,3,200,145,18,8,Normal,"__Full x86: 13MB / x64: 15MB / Total: 28MB"
+SB_VC14="Full                      1",1,4,150,197,84,21,"None                   0","Full                      1","__Full x86: 13MB / x64: 15MB / Total: 28MB"
+LBL_Warning="Warning: ",1,1,4,235,230,18,8,Normal
+LBL_WarnTxt2="Disabling components of this Plugin may cause your programs to stop working.#$xDo not disable individual runtimes unless you know what you are doing!",1,1,4,253,380,28,8,Normal
+WebLabel_Plugin="Plugin Page",1,10,339,0,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Upload_Container=,1,8,495,-1,24,24,UploadXXX_Container,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_,False,"__UPLOAD Container (Admins Only)"
+Button_Download_Container=,1,8,495,21,24,24,DownloadXXX_Container_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_P_Q_B_,False,"__Download Container"
+Button_Open_Container=,1,8,495,44,24,24,Open_Container_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_P_B_,False,"__Open 'File Container'"
 
 [Variables]
-%ContainerFileFolder%=%scriptdir%
-%ContainerFileName%=VcRunTimes_File.script
-%ContainerFile%=%ContainerFileFolder%\%ContainerFileName%
-%FileContainer%=%ContainerFileFolder%\%ContainerFileName%
+%ProgramTitle%=MS Visual C++ Runtime
+%FileContainer%=%FileContainer_Solo%
+%FileContainer_Solo%=%ScriptDir%\VcRunTimes_File.Packed
 //-
 Extract=Run,%ScriptFile%,PExtract
 ExtractCopyApiUcrt=Run,%ScriptFile%,PExtractCopyApiUcrt
+
+[Variables_CANCEL]
+%ContainerFileFolder%=%ScriptDir%
+%ContainerFileName%=VcRunTimes_File.script
+%ContainerFile%=%ContainerFileFolder%\%ContainerFileName%
 
 [Process]
 If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
-If,Not,ExistFile,%ContainerFile%,Exit,"'%ScriptTitle%' Container File Missing %ContainerFile%"
-StrFormat,RIGHT,%SB_EMB%,1,%EMB%
-StrFormat,RIGHT,%SB_VC8%,1,%VC8%
-StrFormat,RIGHT,%SB_VC9%,1,%VC9%
-StrFormat,RIGHT,%SB_VC10%,1,%VC10%
-StrFormat,RIGHT,%SB_VC11%,1,%VC11%
-StrFormat,RIGHT,%SB_VC12%,1,%VC12%
-StrFormat,RIGHT,%SB_VC14%,1,%VC14%
+Call,TargetVersion,,1
+If,Not,%TargetVersion1%,Bigger,5,Exit,"'%ProgramTitle%' Plugin - Compatible to Vista and later - Plugin Exit"
+//-
+If,Not,ExistFile,%FileContainer%,Begin
+If,ExistFile,%BaseDir%\Projects\Yomi\ComponentsY\VcRunTimes_File.Packed,Set,%FileContainer%,%BaseDir%\Projects\Yomi\ComponentsY\VcRunTimes_File.Packed
+If,Not,ExistFile,%FileContainer%,Begin
+If,ExistFile,%BaseDir%\Projects\Win10PESE\Components\VcRunTimes_File.Packed,Set,%FileContainer%,%BaseDir%\Projects\Win10PESE\Components\VcRunTimes_File.Packed
+End
+If,Not,ExistFile,%FileContainer%,Begin
+If,ExistFile,%BaseDir%\Projects\Win8.1SE\Components\VcRunTimes_File.Packed,Set,%FileContainer%,%BaseDir%\Projects\Win8.1SE\Components\VcRunTimes_File.Packed
+End
+If,Not,ExistFile,%FileContainer%,Begin
+If,ExistFile,%BaseDir%\Projects\Win8PESE\Components\VcRunTimes_File.Packed,Set,%FileContainer%,%BaseDir%\Projects\Win8PESE\Components\VcRunTimes_File.Packed
+End
+If,Not,ExistFile,%FileContainer%,Begin
+If,ExistFile,%BaseDir%\Projects\Win7PESE\Components\VcRunTimes_File.Packed,Set,%FileContainer%,%BaseDir%\Projects\Win7PESE\Components\VcRunTimes_File.Packed
+End
+End
+//-
+If,Not,ExistFile,%FileContainer%,Begin
+Echo,"'%ProgramTitle%' Plugin - FileContainer (~50 MB) NOT found - Trying to Download - FileContainer:%FileContainer%"
+Run,%ScriptFile%,DownloadXXX_Container_P
+End
+If,Not,ExistFile,%FileContainer%,"'%ProgramTitle%' Plugin - FileContainer NOT found - Plugin Exit -  - FileContainer:%FileContainer%"
+//-
+StrFormat,Right,%SB_EMB%,1,%EMB%
+StrFormat,Right,%SB_VC8%,1,%VC8%
+StrFormat,Right,%SB_VC9%,1,%VC9%
+StrFormat,Right,%SB_VC10%,1,%VC10%
+StrFormat,Right,%SB_VC11%,1,%VC11%
+StrFormat,Right,%SB_VC12%,1,%VC12%
+StrFormat,Right,%SB_VC14%,1,%VC14%
 //- Install VC++ x86 runtime for x86 Build or for x64 Build with Wow64 support.
 Set,%x86Runtime%,False
 If,%SourceArch%,Equal,x86,Set,%x86Runtime%,True
-If,%SourceArch%,Equal,x64,If,%TargetWOW64%,Equal,x86,Set,%x86Runtime%,True
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Set,%x86Runtime%,True
+End
 //-
 If,ExistDir,%ProjectTemp%\TempExtractFolder\VC++,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\VC++#$q"
 If,ExistDir,%ProjectTemp%\TempExtractFolder\VC++,Call,DirDelete,%ProjectTemp%\TempExtractFolder\VC++
 DirMake,%ProjectTemp%\TempExtractFolder\VC++
 // Embedded version (8.0 - 9.0) (0=None, 1=Full)
 If,%EMB%,Equal,1,Begin
-IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
-IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+IniRead,%ProjectDir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
+IniRead,%ProjectDir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+If,%RegistryCache%-,Equal,-,Set,%RegistryCache%,/
 ExtractFile,%ScriptFile%,Folder,CopySoftKey.cmd,%ProjectTemp%\TempExtractFolder\VC++
 Echo,"Installing Embedded Visual C++ 2005 - 2008..."
 If,%x86Runtime%,Equal,True,Begin
+If,%BuildClass%,Equal,3,Begin
+Set,%w%,%ProjectTemp%\FileList_x86Runtime.txt
+Call,FileCreateBlank,%w%,OverWrite
+TxtAddLine,%w%,"\Windows\winsxs\x86_microsoft.vc80.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\x86_microsoft.vc90.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\x86_microsoft.vc80.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\x86_policy.8.0.microsoft.vc80.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\x86_microsoft.vc90.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\x86_policy.9.0.microsoft.vc90.crt*",Append
+Require,FileList,%w%
+End
+Else,Begin
 Call,DirCopy,%Source_Win%\winsxs\x86_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\,OverWrite
 Call,DirCopy,%Source_Win%\winsxs\x86_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\,OverWrite
 FileCopy,%Source_Win%\winsxs\manifests\x86_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\manifests
@@ -74,7 +150,20 @@ FileCopy,%Source_Win%\winsxs\manifests\x86_policy.8.0.microsoft.vc80.crt*,%Targe
 FileCopy,%Source_Win%\winsxs\manifests\x86_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
 FileCopy,%Source_Win%\winsxs\manifests\x86_policy.9.0.microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
 End
+End
 If,%SourceArch%,Equal,x64,Begin
+If,%BuildClass%,Equal,3,Begin
+Set,%w%,%ProjectTemp%\FileList_x64Runtime.txt
+Call,FileCreateBlank,%w%,OverWrite
+TxtAddLine,%w%,"\Windows\winsxs\amd64_microsoft.vc80.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\amd64_microsoft.vc90.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\amd64_microsoft.vc80.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\amd64_policy.8.0.microsoft.vc80.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\amd64_microsoft.vc90.crt*",Append
+TxtAddLine,%w%,"\Windows\winsxs\manifests\amd64_policy.9.0.microsoft.vc90.crt*",Append
+Require,FileList,%w%
+End
+Else,Begin
 Call,DirCopy,%Source_Win%\winsxs\amd64_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\,OverWrite
 Call,DirCopy,%Source_Win%\winsxs\amd64_microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\,OverWrite
 FileCopy,%Source_Win%\winsxs\manifests\amd64_microsoft.vc80.crt*,%TargetDir%\Windows\winsxs\manifests
@@ -83,64 +172,65 @@ FileCopy,%Source_Win%\winsxs\manifests\amd64_microsoft.vc90.crt*,%TargetDir%\Win
 FileCopy,%Source_Win%\winsxs\manifests\amd64_policy.9.0.microsoft.vc90.crt*,%TargetDir%\Windows\winsxs\manifests
 End
 End
+End
 // Visual C++ 2005 (0=None, 1=Full, 2=Lite)
 If,%VC8%,Bigger,0,Begin
 Echo,"Installing Visual C++ 2005..."
-If,%x86Runtime%,Equal,True,Extract,x86,VC8Lite.7z,%target_win%\WinSxS
-If,%SourceArch%,Equal,x64,Extract,x64,VC8Lite.7z,%target_win%\WinSxS
+If,%x86Runtime%,Equal,True,Extract,x86,VC8Lite.7z,%Target_Win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC8Lite.7z,%Target_Win%\WinSxS
 If,%VC8%,Equal,1,Begin
-If,%x86Runtime%,Equal,True,Extract,x86,VC8.7z,%target_win%\WinSxS
-If,%SourceArch%,Equal,x64,Extract,x64,VC8.7z,%target_win%\WinSxS
+If,%x86Runtime%,Equal,True,Extract,x86,VC8.7z,%Target_Win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC8.7z,%Target_Win%\WinSxS
 End
 End
 // Visual C++ 2008 (0=None, 1=Full, 2=Lite)
 If,%VC9%,Bigger,0,Begin
 Echo,"Installing Visual C++ 2008..."
-If,%x86Runtime%,Equal,True,Extract,x86,VC9Lite.7z,%target_win%\WinSxS
-If,%SourceArch%,Equal,x64,Extract,x64,VC9Lite.7z,%target_win%\WinSxS
+If,%x86Runtime%,Equal,True,Extract,x86,VC9Lite.7z,%Target_Win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC9Lite.7z,%Target_Win%\WinSxS
 If,%VC9%,Equal,1,Begin
-If,%x86Runtime%,Equal,True,Extract,x86,VC9.7z,%target_win%\WinSxS
-If,%SourceArch%,Equal,x64,Extract,x64,VC9.7z,%target_win%\WinSxS
+If,%x86Runtime%,Equal,True,Extract,x86,VC9.7z,%Target_Win%\WinSxS
+If,%SourceArch%,Equal,x64,Extract,x64,VC9.7z,%Target_Win%\WinSxS
 End
 End
 // Visual C++ 2010 (0=None, 1=Full)
 If,%VC10%,Equal,1,Begin
 Echo,"Installing Visual C++ 2010..."
 If,%SourceArch%,Equal,x64,Begin
-If,%x86Runtime%,Equal,True,Extract,x86,VC10.7z,%target_win%\SysWOW64
-Extract,x64,VC10.7z,%target_win%\System32
+If,%x86Runtime%,Equal,True,Extract,x86,VC10.7z,%Target_Win%\SysWOW64
+Extract,x64,VC10.7z,%Target_Win%\System32
 End
-Else,Extract,x86,VC10.7z,%target_win%\System32
+Else,Extract,x86,VC10.7z,%Target_Win%\System32
 End
 // Visual C++ 2012 (0=None, 1=Full)
 If,%VC11%,Equal,1,Begin
 Echo,"Installing Visual C++ 2012..."
 If,%SourceArch%,Equal,x64,Begin
-If,%x86Runtime%,Equal,True,Extract,x86,VC11.7z,%target_win%\SysWOW64
-Extract,x64,VC11.7z,%target_win%\System32
+If,%x86Runtime%,Equal,True,Extract,x86,VC11.7z,%Target_Win%\SysWOW64
+Extract,x64,VC11.7z,%Target_Win%\System32
 End
-Else,Extract,x86,VC11.7z,%target_win%\System32
+Else,Extract,x86,VC11.7z,%Target_Win%\System32
 End
 // Visual C++ 2013 (0=None, 1=Full)
 If,%VC12%,Equal,1,Begin
 Echo,"Installing Visual C++ 2013..."
 If,%SourceArch%,Equal,x64,Begin
-If,%x86Runtime%,Equal,True,Extract,x86,VC12.7z,%target_win%\SysWOW64
-Extract,x64,VC12.7z,%target_win%\System32
+If,%x86Runtime%,Equal,True,Extract,x86,VC12.7z,%Target_Win%\SysWOW64
+Extract,x64,VC12.7z,%Target_Win%\System32
 End
-Else,Extract,x86,VC12.7z,%target_win%\System32
+Else,Extract,x86,VC12.7z,%Target_Win%\System32
 End
 // Visual C++ 2017 (0=None, 1=Full)
 If,%VC14%,Equal,1,Begin
 Echo,"Installing Visual C++ 2017..."
 If,%SourceArch%,Equal,x64,Begin
-If,%x86Runtime%,Equal,True,Extract,x86,VC14.11.7z,%target_win%\SysWOW64
+If,%x86Runtime%,Equal,True,Extract,x86,VC14.11.7z,%Target_Win%\SysWOW64
 If,%x86Runtime%,Equal,True,ExtractCopyApiUcrt,x86,VC14.11Ucrt.7z
-Extract,x64,VC14.11.7z,%target_win%\System32
+Extract,x64,VC14.11.7z,%Target_Win%\System32
 ExtractCopyApiUcrt,x64,VC14.11Ucrt.7z
 End
 Else,Begin
-Extract,x86,VC14.11.7z,%target_win%\System32
+Extract,x86,VC14.11.7z,%Target_Win%\System32
 ExtractCopyApiUcrt,x86,VC14.11Ucrt.7z
 End
 End
@@ -151,22 +241,30 @@ If,%SourceArch%,Equal,x64,Run,%ScriptFile%,SxS_x64
 DirDelete,%ProjectTemp%\TempExtractFolder\VC++,FAST
 
 [PExtract]
-// #1Encoded Folder (x86|x64) - #2 Archive (ex: VC14.11.7z) - #3 Target Folder (ex: %target_win%\System32)
-ExtractFile,%ContainerFile%,#1,#2,%ProjectTemp%\TempExtractFolder\VC++\#1
+// #1Encoded Folder (x86|x64) - #2 Archive (ex: VC14.11.7z) - #3 Target Folder (ex: %Target_Win%\System32)
+//-
+//ExtractFile,%ContainerFile%,#1,#2,%ProjectTemp%\TempExtractFolder\VC++\#1
+Call,PackedExtractFile,%FileContainer%,%ProjectTemp%\TempExtractFolder\VC++\#1,#1\#2
+If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\VC++\#1\#2,Call,Echo,"Halt:#$x#$x'%ProgramTitle%' Plugin - Can NOT Extract #1\#2 from FileContainer#$x#$xFileContainer:#$x%FileContainer%",Warn,,MessageError,,Halt
+//-
 ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\VC++\#1\#2#$q -y -o#$q#3#$q"
 
 [PExtractCopyApiUcrt]
 // #1 Encoded Folder (x86|x64) - #2 Archive (ex: VC14.11Ucrt.7z -> ex ExtractedFolder: ProjectTemp\TempExtractFolder\VC++\x86\VC14.11Ucrt)
-StrFormat,RTRIM,#2,3,%t%
+StrFormat,RTrim,#2,3,%t%
 Set,%ExtractedFolder%,%ProjectTemp%\TempExtractFolder\VC++\#1\%t%
-ExtractFile,%ContainerFile%,#1,#2,%ProjectTemp%\TempExtractFolder\VC++\#1
+//-
+//ExtractFile,%ContainerFile%,#1,#2,%ProjectTemp%\TempExtractFolder\VC++\#1
+Call,PackedExtractFile,%FileContainer%,%ProjectTemp%\TempExtractFolder\VC++\#1,#1\#2
+If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\VC++\#1\#2,Call,Echo,"Halt:#$x#$x'%ProgramTitle%' Plugin - Can NOT Extract #1\#2 from FileContainer#$x#$xFileContainer:#$x%FileContainer%",Warn,,MessageError,,Halt
+//-
 ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\VC++\#1\#2#$q -y -o#$q%ExtractedFolder%#$q"
 //-
 If,%SourceArch%,Equal,x64,Begin
-If,#1,Equal,x86,Set,%TargetCopy%,%target_win%\SysWOW64
-If,#1,Equal,x64,Set,%TargetCopy%,%target_win%\System32
+If,#1,Equal,x86,Set,%TargetCopy%,%Target_Win%\SysWOW64
+If,#1,Equal,x64,Set,%TargetCopy%,%Target_Win%\System32
 End
-Else,Set,%TargetCopy%,%target_win%\System32
+Else,Set,%TargetCopy%,%Target_Win%\System32
 // Copy ucrtbase.dll in System32 or SysWOW64 without overwrite
 If,ExistFile,%ExtractedFolder%\ucrtbase.dll,Begin
 If,Not,ExistFile,%TargetCopy%\ucrtbase.dll,FileCopy,%ExtractedFolder%\ucrtbase.dll,%TargetCopy%
@@ -319,7 +417,10 @@ If,ExistFile,%RegistryCache%\install_wim\SOFTWARE,Begin
 RegHiveLoad,Tmp_Install_Software,%RegistryCache%\install_wim\SOFTWARE
 End
 Else,Begin
-If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\TempExtractFolder\VC++
+If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE,Begin
+If,%BuildClass%,Equal,2,FileCopy,%Source_Sys%\config\SOFTWARE,%ProjectTemp%\TempExtractFolder\VC++
+If,%BuildClass%,Equal,3,FileCopy,%ProjectTemp%\Install.hives\SOFTWARE,%ProjectTemp%\TempExtractFolder\VC++
+End
 RegHiveLoad,Tmp_Install_Software,%ProjectTemp%\TempExtractFolder\VC++\SOFTWARE
 End
 // CopySoftKey MainKey Key (* accepted in key). Use quotes #$q if there are any spaces in the main key or the searched key
@@ -487,31 +588,9 @@ End
 End
 RegHiveUnLoad,Tmp_Software
 
-[Interface]
-BVL_Container=pBevel1,1,12,0,17,465,208
-TXT_Ver=RuntimeVer.txt,1,6,265,20,192,200
-LBL_Runtimes="Add the following Runtimes:",1,1,10,23,185,18,8,Bold
-LBL_EMB="Embedded version (8.0 - 9.0)",1,1,18,50,145,18,8,Normal,"__Full x86: 3MB / x64: 4MB / Total: 7MB"
-SB_EMB="Full                      1",1,4,165,48,84,21,"None                   0","Full                      1","__Full x86: 3MB / x64: 4MB / Total: 7MB"
-LBL_VC8="Visual C++ 2005 (8.0)",1,1,18,75,145,18,8,Normal,"__Full x86: 13MB / x64: 24MB / Total: 38MB - Lite x86: 4.5MB / x64: 6.2MB / Total: 10.7MB"
-SB_VC8="Lite (latest)         2",1,4,165,73,84,21,"None                   0","Full                      1","Lite (latest)         2","__Full x86: 13MB / x64: 24MB / Total: 38MB - Lite x86: 4.5MB / x64: 6.2MB / Total: 10.7MB"
-LBL_VC9="Visual C++ 2008 (9.0)",1,1,18,100,145,18,8,Normal,"__Full x86: 42MB / x64: 49MB / Total: 91MB - Lite x86: 9.5MB / x64: 12.3MB / Total: 21.8MB"
-SB_VC9="Lite (latest)         2",1,4,165,98,84,21,"None                   0","Full                      1","Lite (latest)         2","__Full x86: 42MB / x64: 49MB / Total: 91MB - Lite x86: 9.5MB / x64: 12.3MB / Total: 21.8MB"
-LBL_VC10="Visual C++ 2010 (10.0)",1,1,18,125,145,18,8,Normal,"__Full x86: 12MB / x64: 15MB / Total: 27MB"
-SB_VC10="Full                      1",1,4,165,123,84,21,"None                   0","Full                      1","__Full x86: 12MB / x64: 15MB / Total: 27MB"
-LBL_VC11="Visual C++ 2012 (11.0)",1,1,18,150,145,18,8,Normal,"__Full x86: 11MB / x64: 14MB / Total: 25MB"
-SB_VC11="Full                      1",1,4,165,148,84,21,"None                   0","Full                      1","__Full x86: 11MB / x64: 14MB / Total: 25MB"
-LBL_VC12="Visual C++ 2013 (12.0)",1,1,18,175,145,18,8,Normal,"__Full x86: 11MB / x64: 14MB / Total: 25MB"
-SB_VC12="Full                      1",1,4,165,173,84,21,"None                   0","Full                      1","__Full x86: 11MB / x64: 14MB / Total: 25MB"
-LBL_VC14="Visual C++ 2017 (14.11)",1,1,18,200,145,18,8,Normal,"__Full x86: 13MB / x64: 15MB / Total: 28MB"
-SB_VC14="Full                      1",1,4,165,197,84,21,"None                   0","Full                      1","__Full x86: 13MB / x64: 15MB / Total: 28MB"
-LBL_Warning="Warning: ",1,1,4,235,230,18,8,Normal
-LBL_WarnTxt2="Disabling components of this Plugin may cause your programs to stop working.#$xDo not disable individual runtimes unless you know what you are doing!",1,1,4,253,380,28,8,Normal
-WebLabel_Plugin="Plugin Page",1,10,404,0,55,18,http://TheOven.org/index.php?board=9
-Button_Download=,1,8,466,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
-Button_Upload=,1,8,466,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
-Button_Download_Container=,1,8,489,21,24,24,DownloadXXX_Container,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_pButton1_,False,"__Download Container"
-Button_CompareEdit=,1,8,489,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+[Open_Container_P_B]
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_Solo%
 
 [AuthorEncoded]
 Visual_C++_Icon.jpg=4673,6231
@@ -528,12 +607,59 @@ BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
 AmperossQetto2Move0016016.bmp=893,1191
 RuntimeVer.txt=322,430
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
 
 [DownloadXXX]
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add to Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Container_Main]
+Web1=http://yomi.cwcodes.net/Yomi/ComponentsY/VcRunTimes_File.Packed
+Web2=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/VcRunTimes_File.Packed
+Web3=http://w8pese.cwcodes.net/Projects/Win8PESE/Components/VcRunTimes_File.Packed
+Web4=http://win81se.cwcodes.net/Projects/Win8.1SE/Components/VcRunTimes_File.Packed
+Web5=http://win10se.cwcodes.net/Projects/Win10PESE/Components/VcRunTimes_File.Packed
+WebHardLink=True
+
+[UploadXXX_Container]
+//IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_Solo%,%WebFileContainer%
+//IniRead,%ScriptFile%,Main,Web2C,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_Solo%,%WebFileContainer%
+//-
+//IniRead,%ScriptFile%,Container_Main,Web1,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Begi-n
+//  StrFormat,FileName,%WebFileContainer%,%FileName%
+//  StrFormat,Replace,%FileName%,#$p20," ",%FileName%
+//  Set,%File%,%ScriptDir%\%FileName%
+//  //-
+//  Call,UploadXMultiQ,%File%,|Container_Main
+//En-d
+//-
+Call,UploadXMultiQ,%FileContainer_Solo%,|Container_Main
+
+[DownloadXXX_Container_P_Q_B]
+//IniRead,%ScriptFile%,Container_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_Solo%,%WebFileContainer%
+
+[DownloadXXX_Container_P]
+//IniRead,%ScriptFile%,Container_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadX,%FileContainer_Solo%,%WebFileContainer%
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
@@ -543,16 +669,9 @@ lines=0
 lines=0
 0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
 
-[DownloadXXX_Container]
-IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
-Call,DownloadXQ,%FileContainer%,%WebFileContainer%
-
 [EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
 lines=0
 0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
 
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0
@@ -562,13 +681,17 @@ lines=0
 lines=0
 0=eJyFkT9PxDAMxfdK/Q4dWyEi23H+jeyHdLo7YEaiQ4criBapHx/T6GhcBrL5/eyX+OX0Nc7DtW+e+89peB+nurr//9RVNGAcBAqGqWlPl8eu1IIX8XxEJTI4q+pEoWlfhjGcj6A7E8ONaA/nkjgvnpXqMbmmPbzO/TR3jSIJs1Pc3xGZYiYG9ywty7Iy/NHrKgkhBCITc2GlLRksC0Yr2yzRd1plNSI7+3LnkuidSxL4r7NzAW5JbKpHj79JKBADlkFsJNoYdBAb2weBIIiBMBlLbv3iu4fLITMU5hGsPOvp442zSKuXA1wrNtJFTma/AUM5gSp4nOMLKs0rycxNDUst0iupKGEYBSMLlDNB6K845H+uePOVgQkASKIKoPpuOH4BAAAAAgAAACkAAAD1AAAAAAAAAAEAAAAAAAAAAAAAAA
 
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
 [EncodedFolders]
 Folder
+
+[Folder]
+CopySoftKey.cmd=404,539
 
 [EncodedFile-Folder-CopySoftKey.cmd]
 lines=0
 0=eJyNkdFqgzAUhu8F3+EYCN1g0LWwG8ExsXEVrbJ1N4OCuPa0E9KktXadN332JZl1LWOwG5GY75zv/33A+buELAxta4p1IucFByaKN44j5EXDFvi5KcSulMJcgHEclmIRY+PR49C2oiUQ2p1RArjdAyHwKGsJLsvCEzUpSpFVK28cs9c8yQI/ySd+MI5SNntZb/JI7OqC83wql/WhqHBGj4NzNMXDX+glEsoK+iGQBfJyvfMIUOpDlMJV7xlX8LTHqjHGrY8y7scGOE/Ru4aRhEAJgZsrLpAbTVGf2JZtnWWzre77yRYbHdO4tOWYE/d4e3OntgncAjFJLkoyu04DdFjagU4n63hO14ZDqW1dRjLX1Yp7secw1E+l5yqJVNbAqkpWCX4ghwEw/c813Ab7Yb/f1XxdzFQVY1L8GvBftkv4BboFtgx4nON3zi+oDM5PK/FOrdRLzk1hGAUjCqQzQWg3RuzyTGIBXgxMAG6eBzZlTHT/AQAAAAIAAAAqAAAARgEAAAAAAAABAAAAAAAAAAAAAAA
-
-[Folder]
-CopySoftKey.cmd=404,539
 

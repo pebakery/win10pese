@@ -1,0 +1,1644 @@
+[Main]
+Title=Media Player Classic - BE
+Type=Plugin
+Author=ChrisR, Oscar
+Description=(x86/x64 Tested: v1.5.3.4455 - 2019.03.06) Media Player Classic - BE is a free and open source audio and video player for Windows. BE is based on the original "Media Player Classic" project (Gabest) and "Media Player Classic Home Cinema" project (Casimir666), contains additional features and bug fixes.
+Credits=http://TheOven.org
+Version=027
+Download_Level=2
+Level=5
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.03.09
+Depend=
+Disable=
+InterfaceList=
+Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Supplementary/MultiMedia/mpc-be.Script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/Supplementary/MultiMedia/mpc-be.Script
+Web1C_x86_CANCEL=http://yomi.cwcodes.net/Yomi/AppY/Supplementary/MultiMedia/mpc-be_x86_File.Packed
+Web1C_x64_CANCEL=http://yomi.cwcodes.net/Yomi/AppY/Supplementary/MultiMedia/mpc-be_x64_File.Packed
+CertifiedBy=
+Certification=
+HistoryNotes01=
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+HistoryNotes52=To add Registry see line starting with //Registry
+HistoryNotes53=%SetupFile% is File at FileContainer
+History003=ChrisR - Remove Audio and Video Context Menu "Play with Windows Media Player" if MPlayer Associations is selected
+History004=ChrisR - wmdrmsdk.dll windows media DRM SDK, required for win8.1SE logon
+History005=Oscar - Fixed WMP association for .flv, .mkv, .ogg, added .webm, .rm, .swf, .3gp
+History006=ChrisR - %ProgramFolder%_x64 for x64 build
+History007=Kyhi - update to version 1.7.8
+History008=Kyhi - update to version 1.7.9
+History009=Prz42 - Removed unnessary files & folders
+History010=Lancelot - Adjustments to get Plugin work on Gena
+History012=Oscar - play midi files with the bundled MS GS Wavetable Synth
+History014=Lancelot - fixed Language scrollbox - Chinese Simplified - Chinese Traditional (ps: not all languages in list ;) ) http://TheOven.org/index.php?topic=1412
+History016=kyhi - fixed Marks Confusion so remove actually decreases size (Reverse CheckBox_LAV logic from Add Lav files to Remove Lav Files)
+History017=Lancelot - Improved DU buttons x2
+History018=Lancelot - Added GdiPlus.dll for Gena
+History019=ChrisR - test if msmpeg2a(v)dec exist before copying - Date:2016.05.23
+History020=ChrisR - updated v1.7.10 - Date:2016.10.06 // Lancelot - Add Compare Button - Date:2017.01.12
+History021=ChrisR - updated v1.7.13 - Date:2017.08.24
+History022=Lancelot - Ported plugin to use Media Player BE v1.5.3.4322 - WIEBENOR Reply 9 http://TheOven.org/index.php?topic=1359.msg31234#msg31234 - Date:2019.01.30
+History023=Lancelot - Web update - Add to SE - Date:2019.02.07
+History024=Lancelot - update 1.5.3.4455 - Date:2019.03.16
+History025=Lancelot - update 1.5.4.4969 - Date:2020.01.07
+History026=Lancelot - update with download options and other features // For now FileContainer not available -> Default False // Update to support %BuildClass% 3 // LavFilter option hidden for now (not Exists at MBC-BE) - Date:2020.01.19
+History027=Lancelot Update Syntax - Date:2020.03.09
+
+[InterFace]
+pBevel1=pBevel1,1,12,-3,-3,83,70
+pCheckBox1=Desktop,1,3,1,1,59,14,True,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pTextBox1=,1,0,1,43,75,21,Accessories,"__'Start Menu' Folder"
+Image_Software=MPCBE_1.jpg,1,5,293,47,219,209
+Image_Software_SeePic_Button=,1,8,292,48,16,16,Image_Software_SeePic_P_B,Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp,False,False,_Image_Software_SeePic_P_B_,False,"__See Picture"
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+Button_Launch_Program=Launch,1,8,2,276,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,https://sourceforge.net/projects/mpcbe/
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=683.0
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Open_Container_x64=,1,8,518,44,24,24,Open_Container_x64_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_x64_P_B_,False,"__Open 'File Container x64'"
+Button_Open_Container_x86=,1,8,541,44,24,24,Open_Container_x86_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_x86_P_B_,False,"__Open 'File Container x86'"
+Button_Update_Container_x64_Button=,1,8,518,67,24,24,Button_Update_Container_x64_P_B,Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp,False,False,_Button_Update_Container_x64_P_B_,False,"__Update 'File Container x64'"
+Button_Update_Container_x86_Button=,1,8,541,67,24,24,Button_Update_Container_x86_P_B,Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp,False,False,_Button_Update_Container_x86_P_B_,False,"__Update 'File Container x86''"
+ProvideFile_Bevel=ProvideFile_Bevel,1,12,-2,128,145,118
+ProvideFile_Opendir_Button=,1,8,-1,130,22,22,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Folder"
+ProvideFile_Info_Button=,1,8,23,130,22,22,ProvideFile_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_ProvideFile_Info_P_B_,False
+ProvideFile_x64_TextBox=,1,0,0,173,140,21,MPC-BE.1.5.4.4969.x64.7z
+ProvideFile_x86_TextBox=,1,0,0,222,140,21,MPC-BE.1.5.4.4969.x86.7z
+Button_Download_Web_x64=x64,1,8,-1,151,46,22,Button_Download_Web_x64_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_x64_P_B_,False,"__Download or Update x64"
+Button_Download_Web_x86=x86,1,8,-1,200,46,22,Button_Download_Web_x86_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_x86_P_B_,False,"__Download or Update x86"
+Process_Download_Bevel=Process_Download,1,12,-2,101,100,26
+Process_Download_CheckBox=Download,1,3,1,107,70,14,True
+Process_Download_Info_Button=,1,8,74,103,22,22,Process_Download_Info_P_B,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Process_Download_Info_P_B_,False
+Audio_Info_TextLabel="**  Audio (Drivers) Required  **",1,1,86,23,188,18,8,Bold
+ScrollBox_Lang="English                                  :0:en",1,4,2,72,133,21,"All Languages                            :0:al","Armenian                                 :1067:hy","Basque                                   :1069:eu","Belarusian                               :1059:by","Catalan                                  :1027:ca","Chinese Simplified                       :2052:zh_CN","Chinese Traditional                      :3076:zh_TW","Czech                                    :1029:cz","Dutch                                    :1043:nl","English                                  :0:en","French                                   :1036:fr","German                                   :1031:de","Greek                                    :1032:el","Hebrew                                   :1037:he","Hungarian                                :1038:hu","Italian                                  :1040:it","Japanese                                 :1041:ja","Korean                                   :1042:kr","Polish                                   :1045:pl","Portuguese (Brazil)                      :1046:br","Romanian                                 :1048:ro","Russian                                  :1049:ru","Slovak                                   :1051:sk","Spanish                                  :1034:es","Swedish                                  :1053:sv","Turkish                                  :1055:tr","Ukrainian                                :1058:ua"
+ScrollBox_Asso="WMP Associations",1,4,153,40,130,21,"WMP Associations","MPlayer Associations"
+TextLabel_Association=Association,1,1,152,59,121,18,8,Normal
+pBevel2=pBevel2,1,12,148,74,140,38
+CheckBox_AudioAsso="Audio Association",1,3,153,76,130,18,True
+CheckBox_VideoAsso="Video Association",1,3,153,94,130,18,True
+TextLabel_ContextMenu="Playlist Context Menu",1,1,152,113,130,18,8,Normal
+pBevel3=pBevel3,1,12,148,127,140,62
+CheckBox_Playlist="Add Playlist CMenu",1,3,153,130,130,18,True
+TextBox_Playlist="Context Menu Name",1,0,153,163,130,21,"Add to Playlist"
+TextLabel_AllFilesAsso="All Files Association",1,1,152,192,123,18,8,Normal
+pBevel4=pBevel4,1,12,148,206,140,62
+CheckBox_AllFilesAsso="associate to all files",1,3,153,209,130,18,True
+TextBox_Play="Context Menu Name",1,0,153,242,130,21,"Play with MPlayer"
+pBevel5=pBevel5,0,12,148,273,140,25
+CheckBox_LAV="Remove LAV Filters",0,3,153,276,130,18,True
+
+[Interface_DISABLED]
+//Interface_DISABLED
+//Process_Update_CheckBox not required -> Download button(s) can not update automatically to new file
+Process_Update_CheckBox=Update,1,3,56,134,62,14,False
+//FileContainers Disabled for now
+Button_Download_Container_x64=,1,8,518,21,24,24,DownloadXXX_Container_x64_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x64_P_Q_B_,False,"__Download Container x64"
+Button_Download_Container_x86=,1,8,541,21,24,24,DownloadXXX_Container_x86_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x86_P_Q_B_,False,"__Download Container x86"
+Button_Upload_Container_x64=,1,8,518,-1,24,24,UploadXXX_Container_x64,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_x64_,False,"__UPLOAD Container x64 (Admins Only)"
+Button_Upload_Container_x86=,1,8,541,-1,24,24,UploadXXX_Container_x86,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_x86_,False,"__UPLOAD Container x86 (Admins Only)"
+
+[Variables]
+%ProgramTitle%=MPlayerC BE
+%ProgramEXE%=%ProgramEXE_x86%
+%ProgramEXE_x86%=mpc-be.exe
+%ProgramEXE_x64%=mpc-be64.exe
+%ProgramFolder%=%ProgramFolder_x86%
+%ProgramFolder_x64%=Mpc-BE_x64
+%ProgramFolder_x86%=Mpc-BE_x86
+%SetupFile%=%SetupFile_x86%
+%SetupFile_x86%=MPC-BE.1.5.4.4969.x86.7z
+%SetupFile_x64%=MPC-BE.1.5.4.4969.x64.7z
+%SetupFile_SubFolder%=
+%FArch%=x86
+%ProgramSourceFiles%=mpc-be_ProvideFile
+%ProvideFiles%=%GlobalTemplates%\%ProgramSourceFiles%
+%FileContainer%=%FileContainer_x86%
+%FileContainer_x64%=%ScriptDir%\mpc-be_x64_File.Packed
+%FileContainer_x86%=%ScriptDir%\mpc-be_x86_File.Packed
+%DownloadMessage%=No
+%FileWeb%=%FileWeb_x86%
+%FileWeb_x86%=https://sourceforge.net/projects/mpcbe/files/MPC-BE/Release%20builds/1.5.4/MPC-BE.1.5.4.4969.x86.7z/download
+%FileWeb_x64%=https://sourceforge.net/projects/mpcbe/files/MPC-BE/Release%20builds/1.5.4/MPC-BE.1.5.4.4969.x64.7z/download
+%LAVFilters%=%LAVFilters_x86%
+%LAVFilters_x86%=LAVFilters
+%LAVFilters_x64%=LAVFilters64
+
+[Process]
+//Arch,x86|x64
+Echo,"Processing %ScriptTitle%..."
+//-
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,PluginSet_x64
+//-
+Run,%ScriptFile%,Check_Files
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+//--
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+Run,%ScriptFile%,Extract
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+//DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+DirMake,%Target_Prog%\%ProgramFolder%\Lang
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\*,%Target_Prog%\%ProgramFolder%,NoRec
+//--
+// Language for resource language - LangID is used for Interface Language in registry
+StrFormat,Split,%ScrollBox_Lang%,:,2,%LangID%
+StrFormat,Split,%ScrollBox_Lang%,:,3,%Lang%
+If,%Lang%,Equal,al,Begin
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Lang\*,%Target_Prog%\%ProgramFolder%\Lang
+End
+Else,Begin
+// for English (default), mpc-hc needs at least 1 language resource (french language copied)
+If,%Lang%,Equal,en,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Lang\mpcresources.fr.dll,%Target_Prog%\%ProgramFolder%\Lang
+Else,Begin
+If,ExistFile,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Lang\mpcresources.%Lang%.dll,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Lang\mpcresources.%Lang%.dll,%Target_Prog%\%ProgramFolder%\Lang
+Else,Begin
+// for English (default), mpc-hc needs at least 1 language resource (french language copied)
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Lang\mpcresources.fr.dll,%Target_Prog%\%ProgramFolder%\Lang
+Call,Echo,"%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Lang\mpcresources.%Lang%.dll NOT FOUND",Warn
+End
+End
+End
+//--
+If,%CheckBox_LAV%,Equal,True,Begin
+If,ExistDir,%Target_Prog%\%ProgramFolder%\%LAVFilters%,Call,DirDelete,%Target_Prog%\%ProgramFolder%\%LAVFilters%
+Else,Begin
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%LAVFilters%,DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%LAVFilters%,%Target_Prog%\%ProgramFolder%
+End
+End
+//--
+//Dependencies - Require,FileList [Require_FileList] http://TheOven.org/index.php?topic=1466.0 - Require_FileQ - : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+If,Not,%OSFamily%,Equal,NT5,Run,%ScriptFile%,Dependencies_mpchc
+Else,Run,%ScriptFile%,Dependencies_mpchc_NT5
+//--
+If,%TextBox_Playlist%-,Equal,-,Set,%TextBox_Playlist%,"Add to %ProgramTitle% Playlist"
+If,%TextBox_Play%-,Equal,-,Set,%TextBox_Play%,"Play with %ProgramTitle%"
+//--
+//Registry - Use Utils\RegCPE Plugin - Copy/Paste Registry lines here.
+RegHiveLoad,Tmp_Default,%RegDefault%
+RegHiveLoad,Tmp_Software,%RegSoftware%
+Run,%ScriptFile%,AddRegMPC
+Echo,"Processing %ScriptTitle% Associations..."
+If,%CheckBox_AllFilesAsso%,Equal,True,Run,%ScriptFile%,AddRegAllFiles
+//If,%CheckBox_DirAsso%,Equal,True,Run,%ScriptFile%,AddRegDir
+If,%ScrollBox_Asso%,Equal,"WMP Associations",Begin
+If,%CheckBox_AudioAsso%,Equal,True,Run,%ScriptFile%,AddRegAudioWMP
+If,%CheckBox_VideoAsso%,Equal,True,Run,%ScriptFile%,AddRegVideoWMP
+End
+Else,Begin
+If,%CheckBox_AudioAsso%,Equal,True,Run,%ScriptFile%,AddRegAudioMPC
+If,%CheckBox_VideoAsso%,Equal,True,Run,%ScriptFile%,AddRegVideoMPC
+End
+Run,%ScriptFile%,AddRegMidi
+RegHiveUnLoad,Tmp_Software
+RegHiveUnLoad,Tmp_Default
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+
+[Extract]
+//Extract_ProvideFiles_Compressed_And_Packed_SetupFile_SubFolder_FileName
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//--
+If,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%ProvideFile_TextBoxV%#$q -y -aou -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%ProvideFile_TextBoxV%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+Call,FileNameNoExt,%ProvideFile_TextBoxV%,ProvideFile_TextBoxV_SubFolder
+If,Not,%ProvideFile_TextBoxV_SubFolder%,Equal,%ProgramFolder%,FileRename,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProvideFile_TextBoxV_SubFolder%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+End
+Else,Begin
+If,ExistFile,%FileContainer%,Begin
+Call,PackedExtractFile,%FileContainer%,%ProvideFiles%,%SetupFile%
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Exit,"%ProgramTitle% - FileContainer Extract Failure - FileContainer:%FileContainer% --> %ProvideFiles%\%SetupFile% - Possible Reason: SetupFile:%SetupFile% not exists inside FileContainer (Empty FileContainer) - Possible Fix: 1) Download or Update FileContainer 2) Download File If Provide File Option Exists 3) Delete or Rename FileContainer - Plugin Exit"
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%SetupFile%#$q -y -aou -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+Call,FileNameNoExt,%SetupFile%,SetupFile_SubFolder
+If,Not,%SetupFile_SubFolder%,Equal,%ProgramFolder%,FileRename,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile_SubFolder%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+End
+End
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Shaders,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\Shaders
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\CrashReporter,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\CrashReporter
+
+[PluginSet_x64]
+Set,%ProgramFolder%,%ProgramFolder_x64%
+Set,%ProgramEXE%,%ProgramEXE_x64%
+Set,%SetupFile%,%SetupFile_x64%
+Set,%FArch%,x64
+Set,%FileContainer%,%FileContainer_x64%
+Set,%ProvideFile_TextBoxV%,%ProvideFile_x64_TextBox%
+Set,%ProvideFile_TextBox_Name%,ProvideFile_x64_TextBox
+Set,%FileWeb%,%FileWeb_x64%
+Set,%LAVFilters%,%LAVFilters_x64%
+
+[PluginSet_x86]
+Set,%ProgramFolder%,%ProgramFolder_x86%
+Set,%ProgramEXE%,%ProgramEXE_x86%
+Set,%SetupFile%,%SetupFile_x86%
+Set,%FArch%,x86
+Set,%FileContainer%,%FileContainer_x86%
+Set,%ProvideFile_TextBoxV%,%ProvideFile_x86_TextBox%
+Set,%ProvideFile_TextBox_Name%,ProvideFile_x86_TextBox
+Set,%FileWeb%,%FileWeb_x86%
+Set,%LAVFilters%,%LAVFilters_x86%
+
+[Launch_Program]
+Call,HostOSArch
+If,%HostOSArch%,Equal,x64,Run,%ScriptFile%,PluginSet_x64
+//-
+Run,%ScriptFile%,Check_Files
+//--
+Run,%ScriptFile%,Extract
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+
+[Launch_Program_Innounp_MultiArch]
+Run,%ScriptFile%,Extract
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//--
+Call,HostOSArch
+Set,%Sapp%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+Set,%Tapp%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\x86
+DirMake,%Tapp%
+Run,%ScriptFile%,Innounp_Files_x86
+//-
+Set,%Tapp%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\x64
+DirMake,%Tapp%
+Run,%ScriptFile%,Innounp_Files_x64
+//-
+Set,%Tapp%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%HostOSArch%
+//--
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//If,ExistFile,%Tapp%\%ProgramEXE%,Call,Start,,%ProgramEXE%,,%Tapp%
+
+[Dependencies_mpchc_NT5]
+Require,File,GdiPlus.dll
+Require_FileQ,dsound.dll
+Require_FileQ,msimg32.dll
+Require_FileQ,oleacc.dll
+Require_FileQ,oleaccrc.dll
+//--
+If,ExistDir,%ProjectTemp%\TempExtractFolder\SourceACM,Call,DirDelete,%ProjectTemp%\TempExtractFolder\SourceACM
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%Source_Sys%\*.ac_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\SourceACM#$q"
+Shellexecute,Hide,cmd.exe,"/C Copy /Y #$q%Source_Sys%\*.acm#$q #$q%ProjectTemp%\TempExtractFolder\SourceACM#$q"
+FileCopy,%ProjectTemp%\TempExtractFolder\SourceACM\*.acm,%Target_Sys%
+//--
+//Require_FileQ,COURTNEY.ACM
+//Require_FileQ,EARL.ACM
+//Require_FileQ,IMAADP32.ACM
+//Require_FileQ,MERLIN.ACM
+//Require_FileQ,MSADP32.ACM
+//Require_FileQ,MSG711.ACM
+//Require_FileQ,MSGSM32.ACM
+//Require_FileQ,ROVER.ACM
+//Require_FileQ,TSSOFT32.ACM
+//If,%SourceArch%,Equal,x86,Begi-n
+//Require_FileQ,L3CODECA.ACM
+//Require_FileQ,MSAUD32.ACM
+//Require_FileQ,MSG723.ACM
+//Require_FileQ,MSGSM32.ACM
+//Require_FileQ,QMARK.ACM
+//Require_FileQ,SL_ANET.ACM
+//Require_FileQ,TSSOFT32.ACM
+//En-d
+//-
+If,Not,ExistFile,%Target_Sys%\mpg2splt.ax,Begin
+If,ExistFile,%Source_Sys%\mpg2splt.ax,CopyOrExpand,%Source_Sys%\mpg2splt.ax,%Target_Sys%
+If,Not,ExistFile,%Target_Sys%\mpg2splt.ax,Expand,%Source_Sys%\mpg2splt.ax_,%Target_Sys%
+End
+//-
+If,Not,ExistFile,%Target_Sys%\mpeg2data.ax,Begin
+If,ExistFile,%Source_Sys%\mpg2data.ax,CopyOrExpand,%Source_Sys%\mpeg2data.ax,%Target_Sys%
+Else,Begin
+If,ExistFile,%Source_Sys%\mpg2data.ax,CopyOrExpand,%Source_Sys%\mpg2data.ax,%Target_Sys%\mpeg2data.ax
+Else,Begin
+If,ExistFile,%Source_Sys%\mpg2data.ax_,Begin
+Expand,%Source_Sys%\mpg2data.ax_,%Target_Sys%
+FileRename,%Target_Sys%\mpg2data.ax,%Target_Sys%\mpeg2data.ax
+End
+End
+End
+End
+If,Not,ExistFile,%Target_Sys%\mpeg2data.ax,Echo,"mpeg2data.ax NOT found"
+//-
+Require_FileQ,msrle32.dll
+Require_FileQ,msvidc32.dll
+//-
+// Some few DirectX files in order to use without the DirectX plugin
+//If,Not,ExistFile,%Target_Sys%\dxva2.dll,Require_FileQ,dxva2.dll
+If,Not,ExistFile,%Target_Sys%\msdmo.dll,Require_FileQ,msdmo.dll
+//If,Not,ExistFile,%Target_Sys%\mpg2splt.ax,Require_FileQ,mpg2splt.ax
+If,Not,ExistFile,%Target_Sys%\qasf.dll,Require_FileQ,qasf.dll
+If,%SourceArch%,Equal,x86,Begin
+If,Not,ExistFile,%Target_Sys%\d3dim700.dll,Require_FileQ,d3dim700.dll
+//If,Not,ExistFile,%Target_Sys%\iac25_32.ax,Require_FileQ,iac25_32.ax
+If,Not,ExistFile,%Target_Sys%\ir32_32.dll,Require_FileQ,ir32_32.dll
+//If,Not,ExistFile,%Target_Sys%\ir41_32.ax,Require_FileQ,ir41_32.ax
+End
+
+[Dependencies_mpchc]
+Require_FileQ,dsound.dll
+Require_FileQ,msimg32.dll
+Require_FileQ,oleacc.dll
+Require_FileQ,oleaccrc.dll
+//-
+Require_FileQ,evr.dll
+Require_FileQ,mfplat.dll
+// for WMP associations. wmploc.dll could be reduced
+If,%ScrollBox_Asso%,Equal,"WMP Associations",Require_FileQ,wmploc.dll
+Require_FileQ,unregmp2.exe
+//--
+// Codecs
+//-
+If,Not,ExistDir,%Target_Sys%\spp\tokens\ppdlic,Dirmake,%Target_Sys%\spp\tokens\ppdlic
+If,%BuildClass%,Equal,2,Begin
+FileCopy,%Source_Sys%\*.acm,%Target_Sys%
+If,ExistFile,%Source_Sys%\spp\tokens\ppdlic\msmpeg2adec-ppdlic.xrm-ms,FileCopy,%Source_Sys%\spp\tokens\ppdlic\msmpeg2adec-ppdlic.xrm-ms,%Target_Sys%\spp\tokens\ppdlic
+If,ExistFile,%Source_Sys%\spp\tokens\ppdlic\msmpeg2vdec-ppdlic.xrm-ms,FileCopy,%Source_Sys%\spp\tokens\ppdlic\msmpeg2vdec-ppdlic.xrm-ms,%Target_Sys%\spp\tokens\ppdlic
+End
+If,%BuildClass%,Equal,3,Require,FileList
+//-
+If,%SourceArch%,Equal,x86,Require_FileQ,iccvid.dll
+Require_FileQ,iyuv_32.dll
+Require_FileQ,MP3DMOD.DLL
+Require_FileQ,MP4SDECD.DLL
+Require_FileQ,MP43DECD.DLL
+Require_FileQ,Mpeg2Data.ax
+Require_FileQ,mpg2splt.ax
+Require_FileQ,MPG4DECD.DLL
+Require_FileQ,msmpeg2adec.dll
+Require_FileQ,msmpeg2vdec.dll
+Require_FileQ,msrle32.dll
+Require_FileQ,msvidc32.dll
+Require_FileQ,msyuv.dll
+Require_FileQ,tsbyuv.dll
+// required for win8.1SE logon
+// In OS build we can use also, "NTUSER\Software\Microsoft\Active Setup\Installed Components" to make windows to think first run customizations done
+// and removing wmdrmsdk.dll and unregmp2.exe. Thanks Kullenen for information. It is not done here to simplify and for compatibility.
+Require_FileQ,wmdrmsdk.dll
+//--
+Require_FileQ,WMADMOD.DLL
+Require_FileQ,WMADMOE.DLL
+Require_FileQ,WMASF.DLL
+Require_FileQ,WMSPDMOD.DLL
+//Require_FileQ,WMSPDMOE.DLL
+Require_FileQ,WMVCORE.DLL
+Require_FileQ,WMVDECOD.DLL
+Require_FileQ,wmvdspa.dll
+//Require_FileQ,WMVENCOD.DLL
+Require_FileQ,WMVSDECD.DLL
+//Require_FileQ,WMVSENCD.DLL
+//Require_FileQ,WMVXENCD.DLL
+//--
+// Add Codec files
+//Require_FileQ,codecfile.dll
+//--
+// Some few DirectX files in order to use without the DirectX plugin
+If,Not,ExistFile,%Target_Sys%\dxva2.dll,Require_FileQ,dxva2.dll
+If,Not,ExistFile,%Target_Sys%\msdmo.dll,Require_FileQ,msdmo.dll
+If,Not,ExistFile,%Target_Sys%\mpg2splt.ax,Require_FileQ,mpg2splt.ax
+If,Not,ExistFile,%Target_Sys%\qasf.dll,Require_FileQ,qasf.dll
+If,%SourceArch%,Equal,x86,Begin
+If,Not,ExistFile,%Target_Sys%\d3dim700.dll,Require_FileQ,d3dim700.dll
+If,Not,ExistFile,%Target_Sys%\iac25_32.ax,Require_FileQ,iac25_32.ax
+If,Not,ExistFile,%Target_Sys%\ir32_32.dll,Require_FileQ,ir32_32.dll
+If,Not,ExistFile,%Target_Sys%\ir41_32.ax,Require_FileQ,ir41_32.ax
+End
+// Optional for Audio Plugin Audio Generic USB Audio   wdma_usb.inf_x86_81a9f5b34377ee1b
+// Optional for Audio Plugin Bluetooth   wdma_bt.inf_x86_f29ca54c4ade4e86
+
+[Require_FileList]
+\Windows\System32\*.acm
+\Windows\System32\spp\tokens\ppdlic\msmpeg2adec-ppdlic.xrm-ms
+\Windows\System32\spp\tokens\ppdlic\msmpeg2vdec-ppdlic.xrm-ms
+
+[AddRegMidi]
+// play midi files with the bundled MS GS Wavetable Synth
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",wave1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",midi1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",mixer1,wdmaud.drv
+RegWrite,HKLM,0x1,"Tmp_Software\Microsoft\Windows NT\CurrentVersion\Drivers32",aux1,wdmaud.drv
+
+[AddRegMPC]
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",UpdaterAutoCheck,0
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",UpdaterDelay,7
+// Set playback video output DirectShow Video to "Enchanced Video Renderer (custom presenter)" by default (For system default DSVidRen,0)
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",DSVidRen,11
+// Set Interface Language with Lang ID except for All Languages
+If,Not,%Lang%,Equal,al,RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",InterfaceLanguage,%LangID%
+//--
+RegWrite,HKLM,0x1,"Tmp_Default\Software\Gabest\Media Player Classic",ExePath,%PE_Programs%\%ProgramFolder%\%ProgramEXE%
+RegWrite,HKLM,0x3,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",LastWindowRect,E3,01,00,00,18,01,00,00,1E,03,00,00,9B,01,00,00
+RegWrite,HKLM,0x4,"Tmp_Default\Software\Gabest\Media Player Classic\Settings",ExitAfterPlayBack,1
+//--
+RegWrite,HKLM,0x1,Tmp_Software\RegisteredApplications,"Media Player Classic","Software\Clients\Media\Media Player Classic\Capabilities"
+// Remove Add to mpc-hc list...
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio\shell\Enqueue
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\video\shell\Enqueue
+
+[AddRegAllFiles]
+// AllFileSystemObjects
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\AllFileSystemObjects\shell\Media Player",,%TextBox_Play%
+RegWrite,HKLM,0x2,"Tmp_Software\Classes\AllFileSystemObjects\shell\Media Player\Command",,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+
+[AddRegDir]
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Directory\shell\Media Player.enqueue,,%TextBox_Playlist%
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.enqueue,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Directory\shell\Media Player.play,,%TextBox_Play%
+RegWrite,HKLM,0x1,"Tmp_Software\Classes\Directory\shell\Media Player.play",,&Play
+RegWrite,HKLM,0x2,"Tmp_Software\Classes\Directory\shell\Media Player.play",MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9991"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.play,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Directory\shell\Media Player.play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+
+[AddRegAudioWMP]
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MIDI,,"MIDI Sequence"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MIDI,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9907"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MIDI\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-730"
+Run,%ScriptFile%,AddRegAssoWMP,.MIDI,Audio
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WAV,,"Wave Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WAV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9908"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WAV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-734"
+Run,%ScriptFile%,AddRegAssoWMP,.WAV,Audio
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MP3,,"MP3 Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP3,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9925"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP3\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-732"
+Run,%ScriptFile%,AddRegAssoWMP,.MP3,Audio
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WMA,,"WMA Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMA,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9912"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMA\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-735"
+Run,%ScriptFile%,AddRegAssoWMP,.WMA,Audio
+//-- ogg association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.OGG,,"OGG Sound"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.OGG,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9908"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.OGG\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-734"
+Run,%ScriptFile%,AddRegAssoWMP,.OGG,Audio
+// User Choice
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ogg,,WMP11.AssocFile.ogg
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ogg,PerceivedType,audio
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ogg,"Content Type",audio/mpeg
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ogg\UserChoice,Hash,H9lIgQY3R8w=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ogg\UserChoice,ProgId,WMP11.AssocFile.ogg
+//--
+
+[AddRegVideoWMP]
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.AVI,,"AVI Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.AVI,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.AVI\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.AVI,Video
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MP4,,"MP4 Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP4,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9932"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MP4\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-730"
+Run,%ScriptFile%,AddRegAssoWMP,.MP4,Video
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MOV,,"QuickTime Movie"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MOV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9936"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MOV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-730"
+Run,%ScriptFile%,AddRegAssoWMP,.MOV,Video
+If,ExistRegSection,HKLM,Tmp_Software\Classes\WMP11.AssocFile.MOV\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f},RegDelete,HKLM,Tmp_Software\Classes\WMP11.AssocFile.MOV\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f}
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MPEG,,"Movie Clip"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MPEG,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9902"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MPEG\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-733"
+Run,%ScriptFile%,AddRegAssoWMP,.MPEG,Video
+//--
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WMV,,"WMV Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9914"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WMV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-736"
+Run,%ScriptFile%,AddRegAssoWMP,.WMV,Video
+//-- flv association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.FLV,,"FLV Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.FLV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.FLV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.FLV,Video
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.flv,WMP11.AssocFile.FLV
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\UserChoice,Hash,QcWkJCk+r2g=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\UserChoice,Hash,T0OjNjD8K0g=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.flv\UserChoice,ProgId,WMP11.AssocFile.FLV
+//-- mkv association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.MKV,,"MKV Video"
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MKV,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.MKV\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.MKV,Video
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.mkv,WMP11.AssocFile.MKV
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\UserChoice,Hash,RLOTwgmp1Ck=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\UserChoice,Hash,uyRKtLGaraw=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mkv\UserChoice,ProgId,WMP11.AssocFile.MKV
+//-- webm association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.WEBM,,"WEBM Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WEBM,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.WEBM\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.WEBM,Video
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.webm,WMP11.AssocFile.WEBM
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\UserChoice,Hash,emGZueashIk=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\UserChoice,Hash,vlUCFX38/rQ=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.webm\UserChoice,ProgId,WMP11.AssocFile.WEBM
+//-- rm association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.RM,,"RM Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.RM,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.RM\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.RM,Media
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.rm,WMP11.AssocFile.RM
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\UserChoice,Hash,klFXx35zM3g=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\UserChoice,Hash,74YOt0PUPno=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.rm\UserChoice,ProgId,WMP11.AssocFile.RM
+//-- swf association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.SWF,,"SWF Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.SWF,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.SWF\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.SWF,Media
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.swf,WMP11.AssocFile.SWF
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\OpenWithList,MRUList,a
+If,%OS%,Equal,Win8.1,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\UserChoice,Hash,3rAAjZbD5xs=
+Else,RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\UserChoice,Hash,Eo4fs4TXfYo=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.swf\UserChoice,ProgId,WMP11.AssocFile.SWF
+//-- 3gp association
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile.3GP,,"SWF Media"
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.3GP,FriendlyTypeName,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9905"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile.3GP\DefaultIcon,,"#$pSystemRoot#$p\system32\wmploc.dll,-731"
+Run,%ScriptFile%,AddRegAssoWMP,.3GP,Media
+// User Choice
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",.3gp,WMP11.AssocFile.3GP
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\OpenWithList,a,%ProgramEXE%
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\OpenWithList,MRUList,a
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\UserChoice,Hash,klFXx35zM3g=
+RegWrite,HKLM,0x1,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.3gp\UserChoice,ProgId,WMP11.AssocFile.3GP
+//--
+
+[AddRegAssoWMP]
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x3,Tmp_Software\Classes\WMP11.AssocFile#1,EditFlags,00,00,31,00
+RegWrite,HKLM,0x4,Tmp_Software\Classes\WMP11.AssocFile#1,PreferExecuteOnMismatch,1
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell,,Play
+If,ExistRegSection,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue
+// It seems that there are permissions issues with Add to Mplayer Playlist (Oscar feedback). There is Set,%CheckBox_Playlist%,False above. We Keep it here for history.
+If,%CheckBox_Playlist%,Equal,True,Begin
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue,,%TextBox_Playlist%
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9800"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+//RegAddBoot,HKLM,0x1,Software\Classes\WMP11.AssocFile#1\shell\Enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+End
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell\open,LegacyDisable,
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play,,&Play
+RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9991"
+If,ExistRegSection,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,RegDelete,HKLM,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command
+// minimized // If,#2,Equal,Audio,RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q /minimized"
+If,#2,Equal,Audio,RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q "
+Else,RegWrite,HKLM,0x2,Tmp_Software\Classes\WMP11.AssocFile#1\shell\Play\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q  #$q#$pL#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\WMP11.AssocFile#1\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f},,{031EE060-67BC-460d-8847-E4A7C5E45A27}
+
+[AddRegAudioMPC]
+// Remove Audio Context Menu "Play with Windows Media Player"
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\audio
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aac,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aac\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.aac
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ac3,,AC-3/DTS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ac3\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,2"
+Run,%ScriptFile%,AddRegAssoMPC,.ac3
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aif,,AIFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aif\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,3"
+Run,%ScriptFile%,AddRegAssoMPC,.aif
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aifc,,AIFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aifc\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,3"
+Run,%ScriptFile%,AddRegAssoMPC,.aifc
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aiff,,AIFF
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aiff\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,3"
+Run,%ScriptFile%,AddRegAssoMPC,.aiff
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.alac,,"Apple Lossless"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.alac\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,4"
+Run,%ScriptFile%,AddRegAssoMPC,.alac
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.amr,,AMR
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.amr\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,5"
+Run,%ScriptFile%,AddRegAssoMPC,.amr
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.aob,,"Other Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.aob\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.aob
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ape,,"Monkey's Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ape\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,6"
+Run,%ScriptFile%,AddRegAssoMPC,.ape
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.apl,,"Monkey's Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.apl\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,6"
+Run,%ScriptFile%,AddRegAssoMPC,.apl
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.au,,AU/SND
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.au\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,7"
+Run,%ScriptFile%,AddRegAssoMPC,.au
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.cda,,"Audio CD track"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.cda\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,10"
+Run,%ScriptFile%,AddRegAssoMPC,.cda
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dts,,AC-3/DTS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,13"
+Run,%ScriptFile%,AddRegAssoMPC,.dts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flac,,FLAC
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flac\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,14"
+Run,%ScriptFile%,AddRegAssoMPC,.flac
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m1a,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m1a\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.m1a
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2a,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2a\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.m2a
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4a,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4a\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.m4a
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4b,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4b\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.m4b
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4r,,"MPEG-4 Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4r\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,1"
+Run,%ScriptFile%,AddRegAssoMPC,.m4r
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mid,,MIDI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mid\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,19"
+Run,%ScriptFile%,AddRegAssoMPC,.mid
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.midi,,MIDI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.midi\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,19"
+Run,%ScriptFile%,AddRegAssoMPC,.midi
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mka,,"Matroska audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mka\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,20"
+Run,%ScriptFile%,AddRegAssoMPC,.mka
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mlp,,"Other Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mlp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.mlp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp2,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.mp2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp3,,MP3
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp3\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,23"
+Run,%ScriptFile%,AddRegAssoMPC,.mp3
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpa,,"MPEG audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpa\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,25"
+Run,%ScriptFile%,AddRegAssoMPC,.mpa
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpc,,Musepack
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpc\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,26"
+Run,%ScriptFile%,AddRegAssoMPC,.mpc
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ofr,,OptimFROG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ofr\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,28"
+Run,%ScriptFile%,AddRegAssoMPC,.ofr
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ofs,,OptimFROG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ofs\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,28"
+Run,%ScriptFile%,AddRegAssoMPC,.ofs
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.oga,,"Ogg Vorbis"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.oga\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,29"
+Run,%ScriptFile%,AddRegAssoMPC,.oga
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ogg,,"Ogg Vorbis"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ogg\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,29"
+Run,%ScriptFile%,AddRegAssoMPC,.ogg
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.opus,,"Opus Audio Codec"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.opus\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.opus
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ra,,"Real Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ra\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,32"
+Run,%ScriptFile%,AddRegAssoMPC,.ra
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rmi,,MIDI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rmi\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,19"
+Run,%ScriptFile%,AddRegAssoMPC,.rmi
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.snd,,AU/SND
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.snd\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,7"
+Run,%ScriptFile%,AddRegAssoMPC,.snd
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.tak,,TAK
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.tak\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.tak
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.tta,,"True Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.tta\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,38"
+Run,%ScriptFile%,AddRegAssoMPC,.tta
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wav,,WAV
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wav\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,40"
+Run,%ScriptFile%,AddRegAssoMPC,.wav
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wma,,"Windows Media Audio"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wma\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,42"
+Run,%ScriptFile%,AddRegAssoMPC,.wma
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wv,,WavPack
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,44"
+Run,%ScriptFile%,AddRegAssoMPC,.wv
+//-
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationDescription,"One of the most powerful, configurable multimedia players for Windows operating system. Originaly made by a Hungarian developer known as Gabest, this version has additional features such as Direct 3D fullscreen mode and better support for Windows Vista/7."
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationName,"Media Player Classic Home Cinema"
+//-
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayCDAudio\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1 /cd"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayMusicFiles\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayCDAudioOnArrival,MPCPlayCDAudioOnArrival,
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayMusicFilesOnArrival,MPCPlayMusicFilesOnArrival,
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,Action,"Play Audio CD"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,InvokeVerb,PlayCDAudio
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayCDAudioOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,Action,"Play Music"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,InvokeVerb,PlayMusicFiles
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayMusicFilesOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+
+[AddRegVideoMPC]
+// Remove Video Context Menu "Play with Windows Media Player"
+If,ExistRegSection,HKLM,Tmp_Software\Classes\SystemFileAssociations\video,RegDelete,HKLM,Tmp_Software\Classes\SystemFileAssociations\video
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3g2,,3G2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3g2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,22"
+Run,%ScriptFile%,AddRegAssoMPC,.3g2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3ga,,3GP
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3ga\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.3ga
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3gp,,3GP
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3gp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.3gp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3gp2,,3G2
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3gp2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,22"
+Run,%ScriptFile%,AddRegAssoMPC,.3gp2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.3gpp,,3GP
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.3gpp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.3gpp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.amv,,mplayerc.amv
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.amv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.amv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.asf,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.asf\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.asf
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.avi,,AVI
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.avi\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,8"
+Run,%ScriptFile%,AddRegAssoMPC,.avi
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.bdmv,,"Blu-ray playlist"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.bdmv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,31"
+Run,%ScriptFile%,AddRegAssoMPC,.bdmv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.bik,,"Smacker/Bink Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.bik\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,9"
+Run,%ScriptFile%,AddRegAssoMPC,.bik
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.d2v,,"DVD2AVI File"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.d2v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,11"
+Run,%ScriptFile%,AddRegAssoMPC,.d2v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.divx,,Other
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.divx\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.divx
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dsa,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dsa\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dsa
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dsm,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dsm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dsm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dss,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dss\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dss
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.dsv,,"DirectShow Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.dsv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,12"
+Run,%ScriptFile%,AddRegAssoMPC,.dsv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.evo,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.evo\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.evo
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.f4v,,"Flash Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.f4v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,16"
+Run,%ScriptFile%,AddRegAssoMPC,.f4v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flc,,"FLIC Animation"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flc\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,15"
+Run,%ScriptFile%,AddRegAssoMPC,.flc
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.fli,,"FLIC Animation"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.fli\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,15"
+Run,%ScriptFile%,AddRegAssoMPC,.fli
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flic,,"FLIC Animation"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flic\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,15"
+Run,%ScriptFile%,AddRegAssoMPC,.flic
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.flv,,"Flash Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.flv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,16"
+Run,%ScriptFile%,AddRegAssoMPC,.flv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.hdmov,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.hdmov\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.hdmov
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ifo,,DVD-Video
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ifo\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,17"
+Run,%ScriptFile%,AddRegAssoMPC,.ifo
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ivf,,"Indeo Video Format"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ivf\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,18"
+Run,%ScriptFile%,AddRegAssoMPC,.ivf
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m1v,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m1v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.m1v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2p,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2p\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.m2p
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2t,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2t\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.m2t
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2ts,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2ts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.m2ts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m2v,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m2v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.m2v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.m4v,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.m4v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.m4v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mkv,,Matroska
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mkv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,21"
+Run,%ScriptFile%,AddRegAssoMPC,.mkv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mov,,"QuickTime Movie"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mov\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,22"
+Run,%ScriptFile%,AddRegAssoMPC,.mov
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp2v,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp2v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mp2v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp4,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp4\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.mp4
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mp4v,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mp4v\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.mp4v
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpe,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpe\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpe
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpeg,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpeg\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpeg
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpg,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpg\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpg
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpls,,"Blu-ray playlist"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpls\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,31"
+Run,%ScriptFile%,AddRegAssoMPC,.mpls
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpv2,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpv2\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.mpv2
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mpv4,,MP4
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mpv4\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,24"
+Run,%ScriptFile%,AddRegAssoMPC,.mpv4
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.mts,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.mts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.mts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ogm,,"Ogg Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ogm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,30"
+Run,%ScriptFile%,AddRegAssoMPC,.ogm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ogv,,"Ogg Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ogv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,30"
+Run,%ScriptFile%,AddRegAssoMPC,.ogv
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.pva,,MPEG
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.pva\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,27"
+Run,%ScriptFile%,AddRegAssoMPC,.pva
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ram,,"Real Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ram\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,33"
+Run,%ScriptFile%,AddRegAssoMPC,.ram
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rec,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rec\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.rec
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rm,,"Real Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,33"
+Run,%ScriptFile%,AddRegAssoMPC,.rm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rmm,,"Real Media"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rmm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,33"
+Run,%ScriptFile%,AddRegAssoMPC,.rmm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rmvb,,Other
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rmvb\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,0"
+Run,%ScriptFile%,AddRegAssoMPC,.rmvb
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rp,,"Real Script"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,34"
+Run,%ScriptFile%,AddRegAssoMPC,.rp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.rt,,"Real Script"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.rt\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,34"
+Run,%ScriptFile%,AddRegAssoMPC,.rt
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.smil,,"Real Script"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.smil\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,34"
+Run,%ScriptFile%,AddRegAssoMPC,.smil
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.smk,,"Smacker/Bink Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.smk\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,35"
+Run,%ScriptFile%,AddRegAssoMPC,.smk
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.swf,,"Shockwave Flash"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.swf\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,36"
+Run,%ScriptFile%,AddRegAssoMPC,.swf
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.tp,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.tp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.tp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.trp,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.trp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.trp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.ts,,MPEG-TS
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.ts\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,37"
+Run,%ScriptFile%,AddRegAssoMPC,.ts
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.vob,,DVD-Video
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.vob\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,39"
+Run,%ScriptFile%,AddRegAssoMPC,.vob
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.webm,,WebM
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.webm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,41"
+Run,%ScriptFile%,AddRegAssoMPC,.webm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wm,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wm\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.wm
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wmp,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wmp\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.wmp
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc.wmv,,"Windows Media Video"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc.wmv\DefaultIcon,,"#$q%PE_Programs%\%ProgramFolder%\mpciconlib.dll#$q,43"
+Run,%ScriptFile%,AddRegAssoMPC,.wmv
+//-
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationDescription,"One of the most powerful, configurable multimedia players for Windows operating system. Originaly made by a Hungarian developer known as Gabest, this version has additional features such as Direct 3D fullscreen mode and better support for Windows Vista/7."
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationIcon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities",ApplicationName,"Media Player Classic Home Cinema"
+//-
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayDVDMovie\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1 /dvd"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\MediaPlayerClassic.Autorun\Shell\PlayVideoFiles\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$p1"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayDVDMovieOnArrival,MPCPlayDVDMovieOnArrival,
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayVideoFilesOnArrival,MPCPlayVideoFilesOnArrival,
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,Action,"Play DVD Movie"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,InvokeVerb,PlayDVDMovie
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayDVDMovieOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+//-
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,Action,"Play Video"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,Provider,"Media Player Classic"
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,InvokeProgID,MediaPlayerClassic.Autorun
+RegWrite,HKLM,0x1,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,InvokeVerb,PlayVideoFiles
+RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MPCPlayVideoFilesOnArrival,DefaultIcon,"%PE_Programs%\%ProgramFolder%\%ProgramEXE%,0"
+
+[AddRegAssoMPC]
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,Tmp_Software\Classes\#1,,mplayerc#1
+If,ExistRegSection,HKLM,Tmp_Software\Classes\mplayerc#1\shell\Enqueue,RegDelete,HKLM,Tmp_Software\Classes\mplayerc#1\shell\Enqueue
+If,%CheckBox_Playlist%,Equal,True,Begin
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc#1\shell\enqueue,,%TextBox_Playlist%
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\enqueue,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+//RegAddBoot,HKLM,0x1,Software\Classes\mplayerc#1\shell\enqueue\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q /add #$q#$p1#$q"
+End
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc#1\shell\open,,%TextBox_Play%
+RegWrite,HKLM,0x1,Tmp_Software\Classes\mplayerc#1\shell\open,,&Play
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\open,MUIVerb,"@#$pSystemRoot#$p\system32\unregmp2.exe,-9991"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\open,Icon,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,0"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\mplayerc#1\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//RegAddBoot,HKLM,0x1,Software\Classes\mplayerc#1\shell\open\command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+RegWrite,HKLM,0x1,"Tmp_Software\Clients\Media\Media Player Classic\Capabilities\FileAssociations",#1,mplayerc#1
+
+[Image_Software_SeePic_P_B]
+Call,StartImageUI,,,Image_Software
+
+[Process_Download_Info_P_B]
+Message,"Download Minimum Required Files (If Not Exists) During Build#$x#$x eg. No Container#$x#$x eg. No Provided Files",Information
+
+[ProvideFile_Info_P_B]
+Run,%ScriptFile%,ProvideFile_Info_P
+
+[ProvideFile_Info_P]
+Call,IniReadSectionVar,|ProvideFile_Info_Txt
+Echo,"Read Information"
+Message,%IniReadSectionVar%,Information
+
+[ProvideFile_Info_Txt]
+Information:
+______________________________________________________________
+|
+|  * Use 'Open Folder' Button(s)
+|                 to Get (or Update) File(s) manually
+|
+|  OR
+|
+|  * Use 'Download' Button(s)
+|                 to Get (or Update) File(s) automatically
+|
+|    Tip: Change 'TextBox' (FileName) to Update Download Link ;)
+|_____________________________________________________________
+
+[ProvideFiles_OpenDir_P_B]
+Call,OpenDir,%ProvideFiles%
+
+[Open_Container_x64_P_B]
+If,Not,ExistFile,%FileContainer_x64%,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%FileContainer_x64%#$xNot Found#$xDo You Want to Create File Container ?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+If,ExistFile,%ProvideFiles%\%ProvideFile_x64_TextBox%,Begin
+Call,PackedNewFile,%FileContainer_x64%
+Call,PackedAddFile,%FileContainer_x64%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x64%
+End
+Else,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%ProvideFiles%\%ProvideFile_x64_TextBox%#$xNot Found#$xDo You Want to Create an EMPTY File Container ?#$x#$x#$xTip:#$x Later Add Files Manually ;)#$x  OR#$x   If Available See relevant 'Update File Container' Button",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+Call,PackedNewFile,%FileContainer_x64%
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x64%
+End
+End
+End
+End
+Else,Begin
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x64%
+End
+
+[Open_Container_x86_P_B]
+If,Not,ExistFile,%FileContainer_x86%,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%FileContainer_x86%#$xNot Found#$xDo You Want to Create File Container ?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+If,ExistFile,%ProvideFiles%\%ProvideFile_x86_TextBox%,Begin
+Call,PackedNewFile,%FileContainer_x86%
+Call,PackedAddFile,%FileContainer_x86%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x86%
+End
+Else,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%ProvideFiles%\%ProvideFile_x86_TextBox%#$xNot Found#$xDo You Want to Create an EMPTY File Container ?#$x#$x#$xTip:#$x Later Add Files Manually ;)#$x  OR#$x   If Available See relevant 'Update File Container' Button",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+Call,PackedNewFile,%FileContainer_x86%
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x86%
+End
+End
+End
+End
+Else,Begin
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x86%
+End
+
+[Check_Files]
+Set,%t%,1
+If,ExistVar,%FileContainer_Solo%,Begin
+If,Not,ExistFile,%FileContainer_Solo%,Set,%t%,0
+End
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+If,Not,ExistFile,%FileContainer%,Set,%t%,0
+End
+If,Not,ExistFile,%FileContainer%,Begin
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Set,%t%,0
+End
+//-
+//First Update later Download
+If,Not,ExistVar,%Process_Update_CheckBox%,Set,%Process_Update_CheckBox%,False
+If,%Process_Update_CheckBox%,Equal,True,Run,%ScriptFile%,Process_Download_Update
+//-
+If,%Process_Download_CheckBox%-%Process_Update_CheckBox%-%t%,Equal,True-False-0,Run,%ScriptFile%,Process_Download_Minimum
+//-
+Set,%t%,1
+If,ExistVar,%FileContainer_Solo%,Begin
+If,Not,ExistFile,%FileContainer_Solo%,Set,%t%,0
+End
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+If,Not,ExistFile,%FileContainer%,Set,%t%,0
+End
+If,Not,ExistFile,%FileContainer%,Begin
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Set,%t%,0
+End
+If,%t%,Equal,0,Run,%ScriptFile%,Check_Files_Failure
+
+[Check_Files_Failure]
+Set,%t%,"%ProgramTitle% - File Not Found:#$x#$x"
+If,ExistVar,%FileContainer_Solo%,Begin
+If,Not,%FileContainer_Solo%-,Equal,-,Begin
+If,Not,ExistFile,%FileContainer_Solo%,Set,%t%,"%t%%FileContainer_Solo%#$x#$xAND#$x#$x"
+End
+End
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+If,Not,ExistFile,%FileContainer%,Set,%t%,"%t%%FileContainer%#$xOR#$x"
+End
+If,Not,ExistFile,%FileContainer%,Begin
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Set,%t%,"%t%%ProvideFiles%\%ProvideFile_TextBoxV%#$x#$x"
+End
+//-
+//If,Not,ExistFile,%FileContainer_Solo%,Exit,"%FileContainer_Solo% Not Found"
+//If,Not,ExistFile,%FileContainer%,Exit,"%FileContainer% Not Found"
+//If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Exit,"%ProvideFiles%\%ProvideFile_TextBoxV% Not Found"
+//-
+If,%Process_Download_CheckBox%,Equal,False,StrFormat,Replace,%t%,"#$x"," ",#9
+If,%Process_Download_CheckBox%,Equal,False,Exit,"#9",Warn
+If,%Process_Download_CheckBox%,Equal,True,Call,Echo,"%t%",Warn,,MessageError,5,Exit
+
+[Process_Download_Minimum]
+If,ExistVar,%FileContainer_Solo%,Begin
+If,Not,ExistFile,%FileContainer_Solo%,Begin
+IniRead,%ScriptFile%,Main,Web1C,%t%
+If,Not,%t%-,Equal,-,Run,%ScriptFile%,DownloadXXX_Container_P
+End
+End
+//-
+If,Not,ExistFile,%FileContainer%,Begin
+//-
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Run,%ScriptFile%,Download_Web_%FArch%_P
+//-
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+IniRead,%ScriptFile%,Main,Web1C_%FArch%,%t%
+If,Not,%t%-,Equal,-,Run,%ScriptFile%,DownloadXXX_Container_%FArch%_P
+End
+End
+
+[Process_Download_Update]
+IniRead,%ScriptFile%,Main,Web1C,%t%
+If,Not,%t%-,Equal,-,Run,%ScriptFile%,DownloadXXX_Container_P
+//-
+Run,%ScriptFile%,Download_Web_%FArch%_P
+//-
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+IniRead,%ScriptFile%,Main,Web1C_%FArch%,%t%
+If,Not,%t%-,Equal,-,Run,%ScriptFile%,DownloadXXX_Container_%FArch%_P
+End
+
+[AuthorEncoded]
+Logo=mpc-be_0_048_048.ico
+mpc-be_0_048_048.ico=3159,4212
+
+[EncodedFile-AuthorEncoded-mpc-be_0_048_048.ico]
+Lines=1
+0=eJzdWQtUlVUWvjQsqRx5qagIqKDyusDlAiLykNflZRCoPJSHIEq+WFotJ3A1wsLA8JWolSlptdLKGYupqVmTrdFWzXLS1kxrXCNgthKNXIqPREStdM/3HbjMvXDJNEqbw9qce////Of/9j77fHvvczUaK/zpdBr8H6t5fYJG46TRaLwguKQp1HRdZ6ucoPm/bQcPHgxNTEpqCQgIOOrv5/eZH0Sr1faIT3/i49O/aNn/0Bit+X0L8/ZgICZ//8/8AgKOREREnGloaMgxxW9ITPwLOhk5apSMHj1aiYuLi4m4iovr/8TV1fz7LYVzmDxrSfq7Z3xuNOZwBi7i1AcFHTbFr9fr/2ljYyPjx48Xd3d3Gec+TsaNMxVe6yvuPyC3O/7HiqOjo0yePLnFFD++/8fa2lq8fXzE09NLJkycKBMmTFD6eHhAJ4++uAYCy53iDw0LO79nz54HjPgDg4Iax8DOvr6+Al+ToOBgCdTrlegogYFKAgJ1EqDTif+PkYAA8fcPEPit+Pn5q3l9tVr1Dgpt5e3tLV4ULy/xhEz09JSJtB1kPOznoeznoXr6tJubm+qDg4Mv1dfXDzHi1+l0jZNCQyXt4XRJeeghmRoTI7Hx8T9N4uIkJjZWzRU1dapERk2ViMhICY+IkCnh4RIWFiaTIXxvyKRJymbwa9hJ32Uj6E+dsX+hp48Eh4Soa67QAZ/b6+rqbE3xc1xmdrZ8+umnAi6SxOTknyaYIyExUeITEiRO6ROv9ImGPlOjo6FPlNJH6TJlioROnqx0CQ4x1SVQYea6EVdQSLCMHDmS9jfDHxgY2BiGeYjfkJAoST8V+wDiN66FD30O6zBm7FgJCgq61Bv/FKxrVk6OJAyE7X8G/PQPxASFX98LP/Rp5FzEz3ezWcJkvN7ffeM9S80Uf3+N+Ptr5AGugcKvN8cPf2qkPQYK/63sz9bb/qb4LdnfHL/eDH9ISEhTJDji14o/NDS0KQo++WvCX1FR0YMf8beJPG0Jv6XP/bXbwd+7Gfdv79Ybv9uYMYyr5vjDwizi7w+bJfvfLv47tT9jMK6b4Q8PD2+Kxtym+Hvjtmjju4CfuSi+m+GPjIy0iN8SL94L+JFPmeGfGhXVHNML/632r6X2S/A/6wD0l0pLS3vwR0dHN8cg3zLivxfjrxH/KGdn5K9aM/7EnM2x9zr+gC78I5C/QZf29957rwd/bGzsMQPeQ/zxBoM8lJp6T+Fn7+3ro2qCkaNof9/LqF/sjPjj4+M/5/PEfy/mz1p/P4VLHxwkjkOHsubp2Llzp30PfoPhc863afPmgZNNm6QOsrGuTjZu3CjPUJ55RjZA1m/YIOvWr5d169bJurVrZS1kDaS2tlaehqx++mmpWb1aampqpKa6RiorK2XVU6tk5cqVMnz4cNRpXh27du1yMOJPSEg4XlhYKCUlJZKXny/z0RfPmyfz5lPmK5k/v0RdNxN13VzmmQrmmEuZO1eKIIVFRcL3zJkzRwrmFEh+QYHk5ubKrNmzJQu1R8b06agBH1b+m5ySonJ5+jPXbwrWiHvYzt6B9eWV7du3OxrxGwyJnydirVPT0tTzD6enS3p6hmRkTJfpmHP6jBlKZsycKTP7Ed6bwTHdY/kc8WRkZEg6Rc3ZJXxHGt8FmTZtmiQBZxz4A3FU1ZLIjxVWT9TGrH1Zm5P36fs2DzzAOvnq5s2bhxrx4/3N9FeFLzNTMrOyJBv2yM3LU++Pgm/FxHT5Lu0xG/bKxTrNxn2OoR1TgIN+HRsbp3ybNRzv5cyaJdnYV9k5s2DjHDUHa6WIyCieIwjtRnsZDAl4PkY9G6ALFMdhw8TWzk7uf/BBsR40SJxGjBRncP8gGxv6f6fR/u+//74z6q/LPBPgGrGu5p5CTi1aXKMeZeVlUgCMjzzyiFprjkXM6KrP0fO5pUuXyqOPPgpd8mXx4kXAY1B8QV5GfFfz0g6PPfaY8s3Z8Jt58+ar2tbVzVWAQZ0/kB/9YXvaiPOqZ9EPgg6DBw8WO+jkNGIE91c48a9YsWLLKKwL50ce3cMDFJ5xcE1bv/7aLBYuWbJEbO6/Xyaptdar87WysnKzMZ2dneq+vb296v38/NTZxysvv2w27tDhw+LoOBT+4aLm4lmZj4+v/PvIEbNxW559Vp292dnbqTVITU2tI/4FCxZsXVFVJVtffFH0gXq1b2j7+pdfkc1bt8pQ8BX9o3fjtWFYY9qX5yPKJuAd03b69GnRwReYs3Mc6lSV/+4/cMBs3L4PPpDhTk7qvITj3N09lB0vXLxoNo68RB3sHRwkY0bGauIvLy9/nrUXfZnryzhGn8grmAOMc5S/0w8XLlzYRwdyhhPeS5/n+vFsbNu27WZjWlpaoINO6cA9yhqcOcBh2N20vfvuu8pW9KeY2BhlD/oN19G0VYNXqUNmZuYm4l9VXf08z4QisKe4h4k/OTlF+Q35Kxn7EvWN8pfFi5f00YEcw3fxLIrvHjxkiLywbZvZmC+++ELd4zkwz6E43gG6Hjz4D7Nxe/fuFQcHR3H38FA6851arZ+0tZ0zG7dw0SKeJW4h/qqqque4b2hnYjdKUlKyTAO/BeF9xA9O/nbosGHf/O6JJy5hig4IDXMNc98kR3G9yTkRkRGK6xoa/qTe9d1336n+0KHDagxjLsd5YR3IMy0nW9T9GzduqL4efsyYS26gPck5mVnZZvjb2y9L/Y4dzxF/ZVXVs55e3oq/evBDF3K2L/yR+y8yMqoV+cYgjUk7duyYDfzbCdO5NzY2er722msT4QNK9u3bN7G1tdXr2rVrXm3t7V5tbW1e10S829vbfc6dO6eEn0+ePKk9fvy49vLly9rz58+z97t+/br/hQsXeqSjo0PX3Nys++qrr3T8fPHixcDOb78Nx3vdiGPZsmW7/aCvqf2Nth+LuEGfdHBwuAmb7C4pLi5CjA4uLi521NwD7aOPPnIoKCz8F8/4yTnkHuRyyueTUqapdZ6Kvc14SK7BI2Jra6vipVarbXV1dX0V159EzJ0FHh79S+N/7oUXknle/fuqVVJduwY8HaJ8LiU1TQyIi1wLxksf5K7O4IxliE9nzpxRPnjq1Ck5Ao5+/Y03VE0EP7sJjj8CDm9APlWTkpISgzzH/tYo7rxh7+bB9teXPv64FCHfoi7Mc+OxF6bxHB08amtrp2IZObp3u3nzJjh/i8oHjGesjI+YWvFZXl7e9+D8U97e3m8i71mAPC4OcXrsQOuRnJzsB3stB8f8Afb/BHa/wnN6xpPHoduVK1f6YH9xxw7F6S6jXVQuwbhD3iGnvLprV8848vfRo0eRV81UetEPkX805eTkrC8uLMxG/hO2fPnyIbcEeRsNdhscFROTsuOll5gUbIUcNeJhHcEc60HkIqwviJu/nbCuKEF+dPbs2T66NjU3SVHRXMTfYOyzSUpP6sLf3Jirgu86sU5/RQ60FntpMfwicCD1YQOMcYcOHYoHpy7S6fVvY1+cBtffYI5Ert6/f38f3Ixb+chTh6HmYPxKBK+xHmSOxvrhREsX94M31VjOQT9krobcsRX67AdXbM/Nzckqyc93A5dYD6RO5FHwaQL29AbA+DOksQtPh6xEzcQ1IXbuI8YtfueaNTQ09NGVbXt9vRrL39zou8xHaDrmdVxb+OlVcMR+1GtOA6mHaQMMjzVr1hQCw8q09PQ/Yj9d5O+A9LGy8nLEzva+e2nnTtTnXWcjrAFikE+58pwT+d6u3bvNxnIvvf3OO+/8XPh7t9LSUpuC4mL/3Xv2pOH1qyGfQL4hlo///rGqYaysrVXuz9jD3yNZuyxCjt527lwfXd986y15oqxs7y+F31IDDCvkpe5FRUXFhqSkHajT/oYarE3tJfDBgQ8/7IP7yy+/VDU0H8/Kylp2N/FbahUVFfdVV1dHnjh5shRw10AOEnfn1auy4skn5beI+xqr+1Teilg/6W7j/TEN8IcjFwwDnxeULFiwOy7ecBZ74lJtba3z3cZ2pw257hDwrOLRLs/SaA7wi1U/vebX11febt99klpp1WUPjcauu9dUdPe/MdppDPrv0VuhlxP4YEM7apS9UA5191LZ3X/f3cuJ7l
+1=6M/XWN5r+3xRbYeJwTyS1I1k1KjTeINzCxAGG9zOR8hlEwUsA+VQjNxoNd3u684HUGJgBIwgkjEMidWwEAAAACAAAALQAAAAYMAAAAAAAAAQAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp=791,1055
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Mazenl77-NX11-Internet-Real_016_016.bmp=909,1212
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
+Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp=701,935
+MPCBE_1.jpg=67868,90491
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[DownloadXXX_Container_x64_P_Q_B]
+//IniRead,%ScriptFile%,Container_x64_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C_x64,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x64%,%WebFileContainer%
+
+[DownloadXXX_Container_x64_P]
+//IniRead,%ScriptFile%,Container_x64_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C_x64,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadX,%FileContainer_x64%,%WebFileContainer%
+
+[DownloadXXX_Container_x86_P_Q_B]
+//IniRead,%ScriptFile%,Container_x86_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x86%,%WebFileContainer%
+
+[DownloadXXX_Container_x86_P]
+//IniRead,%ScriptFile%,Container_x86_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x86%,%WebFileContainer%
+
+[Container_x64_Main]
+Web1=
+Web2=
+WebHardLink=False
+
+[UploadXXX_Container_x64]
+IniRead,%ScriptFile%,Main,Web1C_x64,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_x64%,%WebFileContainer%
+//IniRead,%ScriptFile%,Main,Web2C_x64,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_x64%,%WebFileContainer%
+//-
+//IniRead,%ScriptFile%,Container_x64_Main,Web1,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Begi-n
+//  StrFormat,FileName,%WebFileContainer%,%FileName%
+//  StrFormat,Replace,%FileName%,#$p20," ",%FileName%
+//  Set,%File%,%ScriptDir%\%FileName%
+//  //-
+//  Call,UploadXMultiQ,%File%,|Container_x64_Main
+//En-d
+//-
+//Call,UploadXMultiQ,%FileContainer_x86%,|Container_x64_Main
+
+[Container_x86_Main]
+Web1=
+Web2=
+WebHardLink=False
+
+[UploadXXX_Container_x86]
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_x86%,%WebFileContainer%
+//IniRead,%ScriptFile%,Main,Web2C_x86,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_x86%,%WebFileContainer%
+//-
+//IniRead,%ScriptFile%,Container_x86_Main,Web1,%WebFileContainer%
+//If,Not,%WebFileContainer%-,Equal,-,Begi-n
+//  StrFormat,FileName,%WebFileContainer%,%FileName%
+//  StrFormat,Replace,%FileName%,#$p20," ",%FileName%
+//  Set,%File%,%ScriptDir%\%FileName%
+//  //-
+//  Call,UploadXMultiQ,%File%,|Container_x86_Main
+//En-d
+//-
+//Call,UploadXMultiQ,%FileContainer_x86%,|Container_x86_Main
+
+[Button_Download_Web_x64_P_B]
+Set,%DownloadMessage%,Yes
+Run,%ScriptFile%,Download_Web_x64_P
+
+[Download_Web_x64_P]
+Run,%ScriptFile%,PluginSet_x64
+Run,%ScriptFile%,Download_Process
+
+[Button_Download_Web_x86_P_B]
+Set,%DownloadMessage%,Yes
+Run,%ScriptFile%,Download_Web_x86_P
+
+[Download_Web_x86_P]
+Run,%ScriptFile%,PluginSet_x86
+Run,%ScriptFile%,Download_Process
+
+[Download_Process]
+//Download_Process_Type_2
+//Use PluginSet_xXXXX --> %ProvideFile_TextBoxV% - %ProvideFiles% - %SetupFile% - %FileContainer% - %FileWeb% (Optional: %DownloadMessage% Yes NO)
+//-
+If,Not,ExistVar,%DownloadMessage%,Set,%DownloadMessage%,Yes
+//-
+If,Not,ExistDir,%ProvideFiles%,DirMake,%ProvideFiles%
+//-
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+If,ExistVar,%FileContainer%,Begin
+If,ExistFile,%FileContainer%,Begin
+Echo,"ExtractFile - FileContainer - Wait Patiently - Start"
+Call,PackedExtractFile,%FileContainer%,%ProvideFiles%,%SetupFile%
+Echo,"ExtractFile - FileContainer - Wait Patiently - Finish"
+End
+End
+End
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+Echo,"ExtractFile - Wait Patiently - Start"
+If,ExistSection,%ScriptFile%,EncodedFile-Folder-%SetupFile%,ExtractFile,%ScriptFile%,Folder,%SetupFile%,%ProvideFiles%
+Echo,"ExtractFile - Wait Patiently - Finish
+End
+//-
+//eg. %FileWeb_x86%=https://sourceforge.net/projects/mpcbe/files/MPC-BE/Release%20builds/1.5.4/MPC-BE.1.5.4.4969.x86.7z/download
+StrFormat,Replace,%ProvideFile_TextBoxV%," ","#$p20",#9
+StrFormat,Path,%FileWeb%,%FileWeb%
+StrFormat,RTrim,%FileWeb%,1,%FileWeb%
+StrFormat,Path,%FileWeb%,%FileWeb%
+StrFormat,RTrim,%FileWeb%,1,%FileWeb%
+StrFormat,Path,%FileWeb%,%FileWeb%
+StrFormat,RTrim,%FileWeb%,1,%FileWeb%
+StrFormat,Split,#9,.,2,#5
+StrFormat,Split,#9,.,3,#4
+Set,#5,#5.#4
+StrFormat,Split,#9,.,4,#4
+Set,#5,#5.#4
+Set,%FileWeb%,%FileWeb%/#5/%ProvideFile_TextBoxV%/download
+Set,#8,%ProvideFiles%\%ProvideFile_TextBoxV%
+//-
+StrFormat,Date,#4,yyyy_mm_dd_hhnn_ss_zzz
+StrFormat,Ext,#8,#5
+//-
+If,ExistFile,#8,Begin
+Retrieve,Md5,#8,#7
+FileRename,#8,#8_Backup_#4#5
+End
+//-
+Echo,"Download - Start - %ProvideFile_TextBoxV%"
+Call,Download,#8,%FileWeb%
+Echo,"Download - Finish - %ProvideFile_TextBoxV%"
+//-
+If,%CallDownloadFileName%-,Equal,-,Begin
+If,ExistFile,#8_Backup_#4#5,FileRename,#8_Backup_#4#5,#8
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"Can NOT Download #9 - %FileWeb%",Warning,5
+Echo,"Can NOT Download #9 - %FileWeb%",Warn
+End
+End
+Else,Begin
+Retrieve,Md5,#8,#6
+If,#7,Equal,#6,Begin
+Call,FileDelete,#8_Backup_#4#5
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"No new #9",Information,5
+Echo,"No new #9"
+End
+End
+Else,Begin
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"New #9 File UPDATED",Information,5
+Echo,"New #9 File UPDATED"
+End
+End
+End
+
+[Button_Update_Container_x64_P_B]
+Set,%Answer%,No
+Echo,"UPDATE 'FileContainer x64'   Are you Sure?"
+If,Question,"UPDATE 'FileContainer x64'#$x#$x#$xAre you Sure?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Run,%ScriptFile%,Button_Update_Container_x64_P
+
+[Button_Update_Container_x64_P]
+If,ExistFile,%ProvideFiles%\%ProvideFile_x64_TextBox%,Begin
+If,ExistFile,%FileContainer_x64%,Begin
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+StrFormat,Date,#9,yyyy_mm_dd_hhnn_ss_zzz
+StrFormat,Ext,%FileContainer_x64%,#8
+StrFormat,FileName,%FileContainer_x64%,#7
+FileCopy,%FileContainer_x64%,%ProjectTemp%\#7_#9#8
+If,ExistFile,%ProjectTemp%\#7_#9#8,Begin
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%FileContainer_x64%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%FileContainer_x64%#$q"
+System,FileRedirect,ON
+If,ExistFile,%FileContainer_x64%,Call,FileDelete,%FileContainer_x64%
+If,ExistFile,%FileContainer_x64%,Call,Echo,"Can not Delete#$x#$x%FileContainer_x64%#$x#$x'File Container' NOT Updated",Warn,,MessageError,5
+If,Not,ExistFile,%FileContainer_x64%,Begin
+Call,PackedNewFile,%FileContainer_x64%
+Call,PackedAddFile,%FileContainer_x64%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+IniWrite,%ScriptFile%,Variables,#$pSetupFile_x64#$p,%ProvideFile_x64_TextBox%
+End
+End
+End
+Else,Begin
+Set,%Answer%,No
+Echo,"Do You Want to Create 'File Container' ? - %FileContainer_x64% Not Found "
+If,Question,"FileContainer:#$x#$x%FileContainer_x64%#$xNot Found#$xDo You Want to Create 'File Container' ?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+Call,PackedNewFile,%FileContainer_x64%
+Call,PackedAddFile,%FileContainer_x64%,%ProvideFiles%\%ProvideFile_x64_TextBox%
+IniWrite,%ScriptFile%,Variables,#$pSetupFile_x64#$p,%ProvideFile_x64_TextBox%
+End
+Else,Begin
+Echo,"FileContainer: %FileContainer_x64% Not Created"
+End
+End
+End
+Else,Begin
+Echo,"Error: File Container NOT Updated File NOT Found: %ProvideFiles%\%ProvideFile_x64_TextBox%  Tip: First DOWNLOAD %ProvideFile_x64_TextBox%",Warn
+Message,"Error: File Container NOT Updated#$xFile NOT Found:#$x%ProvideFiles%\%ProvideFile_x64_TextBox%#$x#$xTip:#$xFirst DOWNLOAD %ProvideFile_x64_TextBox%",Error,5
+End
+
+[Button_Update_Container_x86_P_B]
+Set,%Answer%,No
+Echo,"UPDATE 'FileContainer x86'   Are you Sure?"
+If,Question,"UPDATE 'FileContainer x86'#$x#$x#$xAre you Sure?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Run,%ScriptFile%,Button_Update_Container_x86_P
+
+[Button_Update_Container_x86_P]
+If,ExistFile,%ProvideFiles%\%ProvideFile_x86_TextBox%,Begin
+If,ExistFile,%FileContainer_x86%,Begin
+If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
+StrFormat,Date,#9,yyyy_mm_dd_hhnn_ss_zzz
+StrFormat,Ext,%FileContainer_x86%,#8
+StrFormat,FileName,%FileContainer_x86%,#7
+FileCopy,%FileContainer_x86%,%ProjectTemp%\#7_#9#8
+If,ExistFile,%ProjectTemp%\#7_#9#8,Begin
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%FileContainer_x86%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%FileContainer_x86%#$q"
+System,FileRedirect,ON
+If,ExistFile,%FileContainer_x86%,Call,FileDelete,%FileContainer_x86%
+If,ExistFile,%FileContainer_x86%,Call,Echo,"Can not Delete#$x#$x%FileContainer_x86%#$x#$x'File Container' NOT Updated",Warn,,MessageError,5
+If,Not,ExistFile,%FileContainer_x86%,Begin
+Call,PackedNewFile,%FileContainer_x86%
+Call,PackedAddFile,%FileContainer_x86%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+IniWrite,%ScriptFile%,Variables,#$pSetupFile_x86#$p,%ProvideFile_x86_TextBox%
+End
+End
+End
+Else,Begin
+Set,%Answer%,No
+Echo,"Do You Want to Create 'File Container' ? - %FileContainer_x86% Not Found "
+If,Question,"FileContainer:#$x#$x%FileContainer_x86%#$xNot Found#$xDo You Want to Create 'File Container' ?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+Call,PackedNewFile,%FileContainer_x86%
+Call,PackedAddFile,%FileContainer_x86%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+IniWrite,%ScriptFile%,Variables,#$pSetupFile_x86#$p,%ProvideFile_x86_TextBox%
+End
+Else,Begin
+Echo,"FileContainer: %FileContainer_x86% Not Created"
+End
+End
+End
+Else,Begin
+Echo,"Error: File Container NOT Updated File NOT Found: %ProvideFiles%\%ProvideFile_x86_TextBox%  Tip: First DOWNLOAD %ProvideFile_x86_TextBox%",Warn
+Message,"Error: File Container NOT Updated#$xFile NOT Found:#$x%ProvideFiles%\%ProvideFile_x86_TextBox%#$x#$xTip:#$xFirst DOWNLOAD %ProvideFile_x86_TextBox%",Error,5
+End
+
+[EncodedFile-InterfaceEncoded-Fatcow-Farm-Fresh-Image_www.fatcow.com-free-icons_0_016_016.bmp]
+lines=0
+0=eJylk21IU1EYxw360qeKgj5YZFroQFFSJyuhHJFGqCFZiElZJqm9pyaac85aMyaKli+hhk7pQ0EQFEiEzspliUUbhAiFURTp7u7u2+6+7N+zk9oyKKQDP+7hOef3PM85nKvPrFwZxoaWiCHWEGuJFWERLL57fj10APgvAoEAVFWFz6eE4PsLP/f4/X4suN1NtWg3ly+L/nYLy6EoPkyNDFIrgWURdIIu84dtFFIprtD3H7A9KnMW/ZEBWHu9WJfOIfwYj8jLAjTNIuIHZcTflaFplRBVLWDjCR7r93EwtvHMCfVbBzik0Hr0KR7xdQKS2yWk3peR+kCBtktCgolynuax5SAHU6f7l+8L+ja09M1CX8pDd9GL2BovklpE6Pok6GwyktpEljOmhEdEDvkd35mjKOp8fRuaer5h53EPsgwC9l6n/WaBeck3RWxvFBBX5UV0kQebMznU3/q6xO9HY9cXaPM8SC/34vANEfmdEvTNEuIayL3iheYsj60FHmzKcMPY+vkP39w2g4RsDml0hmzq9UiLhNJeGWV3ZORaRaRVepFY6EFUuhvWzhnmhPbfYP0AzR43dlCNDLqDXJOIQqpfRvdYcVuGoVuGpUeBpUPGk6efltQfgPHaNCJT5pB4gHo4ySOLzpFXL6DIIuJMk4RKymWgnkw0H3r8kfnB97zg19W+R7hmFrF6N3SH6B6KeeRQHwU1AoqNIs5dFVFlFmEghh5OM+c3v9qFVavnsCGaw7ZUHomZAnbli9hfJCG3TMbR8zJKLsm4UCHj0b2pRd+v+jFlp/crOgH/O0AlfIQ8j7QEkeCdzFn4B13j45gYHibsmBixY3J0DK/tDkyMOjD5zIG3L17C6XDA5XgO59goXGN2TL95xdwfR9Ne2Xics3dLLEnOL9d1SyzK1XUrSi3O0PXMTUxPjS8vL9dLA8vpJefn6qYVpabqZibn5xXHG8QbGJqBsF5SbgHDKBjSoIwFQs9jwi4vcqb7OAMTALUZGb1B2iP4AQAAAAIAAABVAAAAngIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp]
+lines=0
+0=eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp]
+lines=0
+0=eJyt0t9PUmEcx3Hb+gOqv6DLtu66aLV10fq53Cy5aQ2zbpxaaYCpzViZWR1+JPFDhUQIKDAhBFFIQEtBFJm55uLHAQ4LhK3VdfNKPz2dSUsPri56ttfO9n32Puc823OqpnNvFbuOEoeIfcR+Yk/VQXZ+cmv/zwXgvwjMRiAZNEFKyLRmllRrqsCMZCaHnb3U6ofYlwE1twZJqAjZfAnPyiIlyMmTms1D/I6B3R/m9L0GN7q8DNrH6Yo6PDTaXCncD+RhnYpw+m7jBNrcGdwYTfx2y5FktRA37Qk0v4mjczKHobEgpxcbfWi0xVFvXGFdNXxE3Q58/TKE7iw0b6e39Zubm2jXe3HlRQxnpNM4y5rhOE0F0TjyGZRlclu/sbGBe5YZtDpp8v4MhOMMRFvaiNuuLARuht1vdWbw2Ozl/L/Ou4DLUgeqxUO42G3AJaJZ8xr8p8PgPTSilqh5YECDzo9XgSinn1tJ4Fq/D8dFGhwTqnFBrobzewyDdBAnuhRkRuYCNVosYSRya5z+x/o6OkYWUD/gwTnbAPgFFcTfbLjz1YTqlAw1ejPqNG48ckTw67yV7uDSahw8Ww+O0EKcL/SAX1KAV5TgMCPEgZXrELxUIV3gfruMsj9H8+oTtKb70JQj8ko0fSGycghSfaidF+DDcmjXfupTEMqwDg0Td0FlhkExRsKAXloHka8HypAWqSK9a1+mdPXDyozBmnOxTOlRRNOxv3ZlGmc/IsVFREpRYhGz+TlEk0v/3HuiHihnlFC9V7EUQQWypWzF/idbaCAaeJzTcy1LLUrMScnXdS6qLC5JzNF1zklNLNJ1LCjQTSzK1jWKN4w3MDQDYb2k3AKGUTC8QBkLhA5iwi4v1713EQMTAC02El3ZoiKsAQAAAAIAAABHAAAAUgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-MPCBE_1.jpg]
+lines=22
+0=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
+1=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
+2=MDnQsdvx2vL8rLYbtMUlqn6mFVNiya/SVSvTNx1boUyaixJpWj7sLV1fMo7OZBSB7ARTimK4GrMM7hiIqM+HmXcCkAHI+ZsJ1GXN0GDPEDxXg2e464hUxqDB1dWJIJed0RfAfF72Ak1/weoVDXw6QZ4T7RW7LRIphBNzNNrf2k/qjMr2POsW8JxAo7WIVdaDhR26xc6lmXAuQu/LFnFCL8R5pMRXHgc2O18ySbmc+6I28kWdDdTbonyzCTA7BR0pgjze5Jc8GE4ngfpPyFfjlsvjl+yDfHm46YVP83tyBc3F2c6tEWhJICzGb+bH0M/mZ5p1cPoCpFu3vkzbewXVgIDvlxe6ZxzQM+FdnG4rIhixKUQxd5KH6K1qnQjJqlWWVPSTJN9wEZzONp1zUYi5l4+ZLuyLi0lNyOHbMkeaWqgDALZQYkmcWTRmh1eiHkXBytqtEWVR8kY5iQ+Y3EKsX75YOan6O9dpUk2qVrGd5Pl/dVmWXjNWBXWafdtBtYxBatrOGz2v942b9V2LbimT8kEIjs6uCQgvLhDneaCibIuyqghELrBlEsG7peWaC+G5kZ6Zr+LozSb3dYg0ypAWRsBl6OOwcvTwbQwvruTgl/jcysBzxeWuMIcXGCVzZMhp9q5D+i3dT/y3IVBF5eYS5GyU5cWzm9AbOjEuGDCh4B6N0nq92c2qJoodV+AnaPyz+cQPviaIuLsA2HotMrcanvnf0/VAoFSf8meHlh9AUgnH9S2WYob6EIzrZo005LqF1Dea8dBsndZSS2PIi7BVphbwsOb0HyWp39b8GIJN7DduYPWmkwQQN4PjK0Gkvz6fz8BBNY+MfHH319XRxUUGGzdv9xZ/Vms16zC3NmdrWsJEgSakCdhreJKAE9YYclhOsMwbpU/p3zyeSbWffAAGAguKQul5gPH10ZO5mufdh2wXwS2SvDTEdXpXX/qts/TmJsL2uoRmpOb76RWTS9RxXRQQHLkC1r5eaPUV7morjFLeluucnj7baYf7Nz5mjCE/TLfuRRNd5ksep7wAaLQwXFhKqzGV3nl49on4tLlkyMzxTNgkFwlvkrtkmEQsEaRzL8skdRLOq7KP03rn1EyQBKwoW1IslMDKyngvqgaEhTQW3zPB9Q7ppcbYmSjxP2qqtG5KQNv0Wc8n4b3GbVDdSElNqHD25YCL+7mx2jgznbPf+6CaG4us2oTmmrdI7350kBgBqgbhWq0xW+8a+knLgo7gDigWE8+cl4B7AycFxl3BxiiXSV3TOxR/47dZH2jpppZaklvzC1us4sq/nk953IUO70NEuYvoZIWexK6n3AexG+YeP7Nqjd/Dp4zFGy8A1DzrwJojBcctQTeE9yU19BbmgvHUYMw3Norcz9wSWthLUqxX7jrw1bEHDvQh49tRsvzW18PWRrrbm3FOMiKn3TVjk2MDKARHfLBJIFhpfbVrGp1ART25Yob8QA1p51ne9+Xhgz6IDCsa2Ep+0oVuNJLmDcxZJePcGqIhTEry8tuOl3OfKcNZXThWlSGFCe+ZZcyIuzPGbKuwNPPr7eJqu799neagS0Pzzw8FJih7YCbgOtxQ2NBhF5pAxMyn/Fi9bqDY4gQ5XgBHasfHtG5e89HH39uJgm+9j+psnZdlGlsEQngOYCO2NTgFer283xH1FkcQlwgQ/FGY09voHal1GMc9zusM+cnQbzsybcX47gVQRcszKDdT9YR+X6NN8CjTGtkVt7cswzBKMKqRWhbBazXW/sEjVEm3wRTOg66CCBkIvEuRipyfYUTXS1G3dackV3P3cxkv/cAelXBkELC8gIrPM01SfoTg7DulVwPJl5xZl70Lpal0W8OhN2iz7ciQMXp0QO0ytox3QJ3qCzxS4p8fo5OciZLYS21GjuclEAI9vCvqpoW1+oiJEunP0Lvk8FZdaDzRjBFy9B35O1yxUVDXdA9l8RWz0qqJ8+9PaggBoRsNg8SLvhJwUTGY9d39P5sjWtS7ZaPKsExrFoeow6ZYVKujt3EPtSyh3GrVJU/e7TEihStrpOQkLGxK1OQdwB9SOsyViqVbcQBJ1adQcTnIPK7KlKUZZFUlixKmJXWh7LaMrHIG1fYkW3ItP1+fKO2hUJyS45YkuQWP+Fdidiu4OKjy8anmadKh5EEYeM0dwiEl4WADYIWJ9FijNEyz/ygDUMR08SBzy2mp6vlrlSu9DtqPmO41OQWjVZZ4KAJ6K5g62P3Z33EosInp1q61vydQnKvqjDgeyELkdV3r5fHnMFquYo24RWKZw47HTSPdVQ0MlaoR2D5pFGfrXaHWntocaG5U6B+2yBcY3VcS9b0A4JB/tgxu3WWRq8irKPYPOYGOQE2b8T01ShMwGbEDTYyFkRy4JfOjT8TsqZ9ll9hkW9SYrDvbwjHtZgpqW3B7UPrN6evNRV0sFEqFgGCDRq6VrH7FeDdnf1Q+seNF9PnRbUmkNarxIbLGRdhGihH1OMtlfLSx9bbv0kdBOwXZAfNiI2XNOfxCsX7HlHIOEZIbIOOUDm852AIppblp/vd8nCiSD6giB1L7aVDNF/ZXiFc52HinTnt7Kz37e2m7Rr2bucB1wUns7OfuWE8N1tdwCp8dFjKxc9q7hTwN/jv/ec036NEXkNAGUhh47bn/vOC1wyerJcYo/NgvAOiU9whJR3Hf5RWvBdpLTITBxl3VbuSfNtIYWZSBGj5tHch7W0anR+XicijECdVdGHaihHiR1ZF/X/SSTgCSL0yxK6wUnSBAlVC2cN/dZ8fB54rWvnaXpMQ8EW/x1wugWFJJOyWiuqC3ZKjI8Xbvy3KjY5AM4qemJM0iWuNL17yyRxz423mrB4lpBDHH9FLW5fnbAf/WbyNkqfTWRd/1l3Erb2UjRBcm9dKqdxdW03ryPGCHc41BXz7OCSGdS9dbrWPeE3O3BGkPVCUqs8+9XSAvOWfaYmL55P1Ai1hxIGShbp3Wb4Qpei/VYBhZZvc+1c8iOI3ObZCzI9RmX5siRpY1MV0uzTlkFbMsOYWwite7jymDZeTs0emHNUyqs7ReiiMf57dmVFXdvgDj6rYB1Lz8geR9qFLf7wEAlD6IwU4e5dV3dy0TOXMY0/PBroa8UruisDUwPEtr5YaT4h5yZikM88ch3Kh4/4tRY4CP4e10rH5V2lPtjqY1vSq6oOt2ei1mb2cjxxUHnMZZq/oLwHCJlrloUXwFLt+eUj85CR39pOZRFZWDb+X6RJqFMbr/yJyqjm3ovDy/NwcNQYKfLirSBNXsKkbj/mdFfQRhilozLwEhBdIJGNpOgO7tT5Hu7VxmFfb26hHk0YTXqju7p//rlMuZ+W1aCp4Pz3wuZtA0ngT2+wg2FfHZ34Ulw6X3C0W1FGrHZOiBEp62VY9SVJJWBtNNVWPKogsM9oNjyoAN6dnvcdmLhSWBw3y2KgmY8lE9vpr+mhvMxEvbg84O3hEEksZCc1GGnuyUMyp10DD+eyGc7TcUI+L72xLn4WkwRTzlzValOzJZSpMXTrDjWWnvNrfTOliBznbSnxxdlNnab5rUR0LrK+oXeI2NpzndHVfF1EO/jNlVy/q5ejmtHLazLV2p4itzbdcE6H8d5GqptFfSTMN2NbecZPwQVczZJIibx4nXhGVvO2rU3w22p9eUtUUGxOeaP1pAlJL0d5tOe9oMd4xaNgxBHDz4rmEWlpqJ/k2t6E4Tb7mdAxwhSZ9Cu5CdKgq2B4Qi0BwMOPmlI/Sj57R4YzSjBXEba4ksMgq/gZRWv8QpksVohN0uiBE50K6gXYmd/nn6vZdPeZJLOV47AuGnh1YIMz9SlUeNyPsXgNp7azltJUpUhBLA+9Fh25nih4TN7VRFQZFNpT2F4IxeYr8Jfj/+aI7+SYAGR/eIXp89x9LvH/m4FrJj/oNyZ5rMi/HBHF8H1zVxxzTf8SJkZq/H9pnSfRq+M7XYdMRE45Ve3Oo5IIDYt2iWlMJRvbkS0bdElwJVsHGu0LkXB8CmWRQw0p6FqDjoMyN5UL+fG4SoUTnlR9Pv5y2WfWg0ICLr+Th9QAhASCg2exNhzVXyo9ALkcS4D1dKrTY2qDQTl1ECytilhnokUzG9PN
+3=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
+4=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
+5=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
+6=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
+7=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
+8=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
+9=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
+10=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
+11=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
+12=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
+13=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
+14=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
+15=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
+16=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
+17=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
+18=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
+19=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
+20=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
+21=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
+22=z0s0R7vrHLj88Hlw3AX2n/tm554Snc9/6mpo7qzdghWzNq1K9zWeddrE8vi1LaUm3AxWDYycSX1+T1+b/vquZeu/XsNp0iINJwEmgRaGFkUGRQ4HDhiHccn+d/vr+n8+9FHk4LgVH6n+/lK97cltif8ZEh7JH1zyL9NJNPXdpovfJ8Y/Wf23MfCPCrDdt+pOi67qTo83HE6inkKrvk7891f+860lE1pY0nj/7e6u5/l3ymSd/b9D6//xqn/2EthS9+ln3Ylz0vbmvzex/71a/+GX/Zspx+L/M6R4/lFa/Ct8IXfU/sO/6k48X/h+vfrvTUzr39Xz/zlv/1linWHdkfMnOZy6busDtX4x/6l/U1qRI+a5B7L7GejFUQW2RlM5nJjuOv5bc0WRg///TQBCXYtceJzj9g1wdnKNN9TLKkhnGAUjDpRLM4Lp8xyMWOWjTefPZWACAIgxBqub+OknAQAAAAIAAAApAAAAzwgBAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

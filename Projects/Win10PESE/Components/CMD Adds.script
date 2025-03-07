@@ -2,21 +2,24 @@
 Title=CMD Adds
 Type=Plugin
 Author=Lancelot
-Description=Adds useful Standalone Command Utilities from your Source into your build. (NO network related)
+Description=Adds useful Standalone Command Utilities from your Source into your build. (MOSTLY NOT network related)
 Credits=ChrisR, FiZiX, http://TheOven.org
-Version=018
+Version=028
 Download_Level=0
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.09.27
+Date=2020.01.14_21:59.25 (GMT0: -3 Hours)
 Depend=
 Disable=
 CertifiedBy=
 Certification=
+Interface=Interface_ALL
+InterfaceList=Interface,Interface_ALL
 Web1=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/CMD%20Adds.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/CMD%20Adds.script
 WebRootSubSub=Components
 HistoryNotes01=Lancelot - for perfect Plugin dependencies must be investigated one by one ;), so far many dependencies found , will be better in time with contributions.
 HistoryNotes02=Lancelot Regini.exe dependencies not checked.....
@@ -49,6 +52,14 @@ History015=Lancelot Added IpConfig.exe http://TheOven.org/index.php?topic=1551 -
 History016=Lancelot syntax updated - Date:2016.02.01
 History017=Lancelot Added Components_PluginCache_Extract - Date:2016.11.07
 History018=Lancelot Add INFO_CMD_SH_Button http://TheOven.org/index.php?topic=2232.msg24143 - Date:2017.09.27
+History019=Lancelot Add Require,File,Choice.exe topgundcp http://TheOven.org/index.php?topic=2380.0 - Date:2018.01.19
+History021=Lancelot Add BuildClass 3 support x2 - Date:2018.10.15 - Date:2018.10.16
+History023=Lancelot Add ALL option (faster than selecting one by one) - Beta1 hopefully working fine ;) x2 . - Date:2018.10.16
+History024=Lancelot Improve Download button for Interface_ALL - Date:2018.10.17
+History025=Lancelot Add To Yomi Server - Date:2018.10.23
+History026=Lancelot Add BuildClass - Date:2019.01.14 - Date:2019.01.17
+History027=Lancelot Choice.exe not available at XPx86 - Date:2019.11.25
+History028=Lancelot workaround winbuilder Interface Set bug x3 - Date:2020.01.14
 
 [Variables]
 GetFile=Run,%ScriptFile%,ScriptApiGetFile
@@ -75,7 +86,27 @@ If,%targetdirvalue%,Equal,%Target_Sys%,ShellExecute,hide,expand.exe,"#$q%SourceD
 If,Not,ExistFile,%Target_Sys%\#1,Echo,"Support.cab does not contain #1 REPORT this error to project - Plugin author",Warn
 If,%targetdirvalue%,Equal,%Target_Win%\SysWOW64,Echo,"Support.cab does not contain 32bit files :) #1",Warn
 
+[Interface_ALL]
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Int="<-- Interface",1,8,445,-3,108,29,P_Interface,0,False,False,_P_Interface_,False
+pCheckBox_ALL_WOW64CmdFiles="Add WOW64 cmd files",1,3,262,4,131,18,True
+pTextLabel1="ALL CMD utilities listed at 'Interface' added#$x IF available at source.#$x   (See '<-- Interface' button for the listed cmd utilities.)",1,1,17,46,497,62,12,Bold
+Gena_pTextLabel2="Gena (Exception) :",1,1,57,135,129,18,10,Bold
+Gena_pTextLabel3="JFX: Gena - Avoid Chkdsk.exe Chkntfs.exe on new disks",1,1,56,153,277,18,8,Normal
+Gena_pBevel1=pBevel1,1,12,51,128,289,78
+pCheckBox_ALL_Chkdsk=Chkdsk.exe,1,3,55,170,110,14,True
+pCheckBox_ALL_Chkntfs=Chkntfs.exe,1,3,55,184,110,14,True
+
+[P_Interface]
+IniWrite,%ScriptFile%,Main,Interface,Interface
+System,RefreshInterface
+
+[P_Interface_ALL]
+IniWrite,%ScriptFile%,Main,Interface,Interface_ALL
+System,RefreshInterface
+
 [Interface]
+Button_Int_ALL="Interface ALL --->",1,8,427,24,124,25,P_Interface_ALL,0,False,False,_P_Interface_ALL_,False
 pWebLabel1="MS Command-line reference A-Z (XP)",1,10,324,166,154,18,http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/ntcmds.mspx?mfr=true
 pWebLabel2="CommandWindows XP",1,10,337,185,200,18,http://commandwindows.com/command3.htm
 pWebLabel3="CommandWindows Vista",1,10,337,204,200,18,http://commandwindows.com/vista-commands.htm
@@ -93,34 +124,36 @@ pCheckBox_Chkdsk=Chkdsk.exe,1,3,36,85,110,14,True
 pCheckBox_Chkdsk_WOW64=,1,3,12,85,14,14,False
 pCheckBox_Chkntfs=Chkntfs.exe,1,3,36,100,110,14,True
 pCheckBox_Chkntfs_WOW64=,1,3,12,100,14,14,False
-pCheckBox_Cipher=Cipher.exe,1,3,36,115,110,14,True
+pCheckBox_Choice="Choice.exe -XPx86",1,3,36,115,110,14,True
+pCheckBox_Choice_WOW64=,1,3,12,115,14,14,False
+pCheckBox_Cipher=Cipher.exe,1,3,36,130,110,14,True
 pCheckBox_Cipher_WOW64=,1,3,12,115,14,14,False
-pCheckBox_Comp="Comp.exe  -w",1,3,36,130,110,14,True
-pCheckBox_Comp_WOW64=,1,3,12,130,14,14,False
-pCheckBox_Compact="Compact.exe  -w",1,3,36,145,110,14,True
-pCheckBox_Compact_WOW64=,1,3,12,145,14,14,False
-pCheckBox_Convert=Convert.exe,1,3,36,160,110,14,True
-pCheckBox_Convert_WOW64=,1,3,12,160,14,14,False
-pCheckBox_Diskcomp="Diskcomp.com  -w -10",1,3,36,175,126,14,True
-pCheckBox_Diskcopy="Diskcopy.com  -w -10",1,3,36,190,122,14,True
-pCheckBox_Doskey=Doskey.exe,1,3,36,205,110,14,True
-pCheckBox_Doskey_WOW64=,1,3,12,205,14,14,False
-pCheckBox_Expand=Expand.exe,1,3,36,220,110,14,True
-pCheckBox_Expand_WOW64=,1,3,12,220,14,14,True
-pCheckBox_Fc="Fc.exe  -w",1,3,36,235,110,14,True
-pCheckBox_Fc_WOW64=,1,3,12,235,14,14,True
-pCheckBox_Find=Find.exe,1,3,36,250,110,14,True
-pCheckBox_Find_WOW64=,1,3,12,250,14,14,True
-pCheckBox_Findstr="Findstr.exe  -w",1,3,36,265,110,14,True
-pCheckBox_Findstr_WOW64=,1,3,12,265,14,14,True
-pCheckBox_Format=Format.com,1,3,36,280,110,14,True
-pCheckBox_Format_WOW64=,1,3,12,280,14,14,True
-pCheckBox_Fsutil="Fsutil.exe  -w",1,3,36,295,110,14,True
-pCheckBox_Fsutil_WOW64=,1,3,12,295,14,14,True
+pCheckBox_Comp="Comp.exe  -w",1,3,36,145,110,14,True
+pCheckBox_Comp_WOW64=,1,3,12,145,14,14,False
+pCheckBox_Compact="Compact.exe  -w",1,3,36,160,110,14,True
+pCheckBox_Compact_WOW64=,1,3,12,160,14,14,False
+pCheckBox_Convert=Convert.exe,1,3,36,175,110,14,True
+pCheckBox_Convert_WOW64=,1,3,12,175,14,14,False
+pCheckBox_Diskcomp="Diskcomp.com  -w -10",1,3,36,190,126,14,True
+pCheckBox_Diskcopy="Diskcopy.com  -w -10",1,3,36,205,122,14,True
+pCheckBox_Doskey=Doskey.exe,1,3,36,220,110,14,True
+pCheckBox_Doskey_WOW64=,1,3,12,220,14,14,False
+pCheckBox_Expand=Expand.exe,1,3,36,235,110,14,True
+pCheckBox_Expand_WOW64=,1,3,12,235,14,14,True
+pCheckBox_Fc="Fc.exe  -w",1,3,36,250,110,14,True
+pCheckBox_Fc_WOW64=,1,3,12,250,14,14,True
+pCheckBox_Find=Find.exe,1,3,36,265,110,14,True
+pCheckBox_Find_WOW64=,1,3,12,265,14,14,True
+pCheckBox_Findstr="Findstr.exe  -w",1,3,36,280,110,14,True
+pCheckBox_Findstr_WOW64=,1,3,12,280,14,14,True
+pCheckBox_Format=Format.com,1,3,36,295,110,14,True
+pCheckBox_Format_WOW64=,1,3,12,295,14,14,True
+pCheckBox_Fsutil="Fsutil.exe  -w",1,3,36,310,110,14,True
+pCheckBox_Fsutil_WOW64=,1,3,12,310,14,14,True
 pCheckBox_Help=Help.exe,1,3,190,40,110,14,True
-pCheckBox_Help_WOW64=,1,3,167,39,14,14,False
+pCheckBox_Help_WOW64=,1,3,167,40,14,14,False
 pCheckBox_Label="Label.exe  -w",1,3,190,55,110,14,True
-pCheckBox_Label_WOW64=,1,3,167,54,14,14,False
+pCheckBox_Label_WOW64=,1,3,167,55,14,14,False
 pCheckBox_Makecab="Makecab.exe  -w",1,3,190,70,110,14,True
 pCheckBox_Makecab_WOW64=,1,3,167,70,14,14,True
 pCheckBox_Mode=Mode.com,1,3,190,85,110,14,True
@@ -152,9 +185,9 @@ pCheckBox_Subts_WOW64=,1,3,167,280,14,14,False
 pCheckBox_Tree=Tree.com,1,3,190,295,69,14,True
 pCheckBox_Xcopy=Xcopy.exe,1,3,190,310,110,14,True
 pCheckBox_Xcopy_WOW64=,1,3,167,310,14,14,True
-pTextLabel3="Note:#$x2nd checkbox on left is only for SysWOW64.#$x-w means known not exists at waik#$x-10 means known not exists at Win10",1,1,308,44,217,60,8,Normal
-pTextLabel_Help="List in cmd HELP",1,1,388,271,85,19,8,Normal
-pButton_Help=Help,1,8,440,273,25,16,HelpView_Process
+pTextLabel3="Note:#$x2nd checkbox on left is only for SysWOW64.#$x-w means known not exists at waik#$x-10 means known not exists at Win10#$x-Xpx86 means known not exists at XPx86",1,1,309,48,217,71,8,Normal
+pTextLabel_Help="List in cmd HELP",0,1,388,271,85,19,8,Normal
+pButton_Help=Help,0,8,440,270,25,16,HelpView_Process,_HelpView_Process_,False
 pWebLabel5="CommandWindows Win7",1,10,337,219,200,18,http://commandwindows.com/windows7-commands.htm
 pCheckBox_NetSh=NetSh.exe,1,3,299,269,86,18,True
 pCheckBox_NetSh_WOW64=,1,3,283,271,14,14,True
@@ -178,6 +211,1070 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+IniRead,%ScriptFile%,Main,Interface,%t%
+If,%Version%,Smaller,80,Call,AddInterface,%ScriptFile%,%t%
+//-
+Run,%ScriptFile%,Process_%t%
+
+[Process_InterFace_ALL]
+If,%BuildClass%,Equal,1,Run,%ScriptFile%,Process_NT5_ALL
+Else,Run,%ScriptFile%,Process_NT6_ALL
+
+[Process_NT5_ALL]
+//To get full dependency list per file see Macro Library http://TheOven.org/index.php?topic=454
+//Current plugin list have lots of cuts for duplicate files
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+IniRead,%ProjectDir%\script.project,IniVariables,OSServicePack,%OSServicePack%
+//-
+Echo,"Adding CMD System32 Files..."
+Run,%Scriptfile%,Process_NT5_Files_ALL,,,,,,,%Target_Sys%
+//-
+IF,%pCheckBox_ALL_WOW64CmdFiles%-%TargetWOW64%,Equal,True-x86,Begin
+If,Not,%SourceArch%,Equal,x86,Begin
+Set,%PluginArch%,x86
+Echo,"Adding CMD SysWOW64 Files..."
+Run,%Scriptfile%,Process_NT5_Files_ALL,,,,,,,%Target_Win%\SysWOW64
+End
+End
+
+[Process_NT5_Files_ALL]
+If,Not,ExistFile,#7\Cmd.exe,Require_FileQ,Cmd.exe
+If,Not,ExistFile,#7\sxs.dll,Require_FileQ,sxs.dll
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,#7\mpr.dll,Require_FileQ,mpr.dll
+End
+If,Not,ExistFile,#7\Attrib.exe,Require_FileQ,Attrib.exe
+If,Not,ExistFile,#7\ulib.dll,Require_FileQ,ulib.dll
+If,Not,ExistFile,#7\Cacls.exe,Require_FileQ,Cacls.exe
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,#7\ws03res.dll,Require,File,ws03res.dll
+End
+If,Not,ExistFile,#7\Chcp.com,Require_FileQ,Chcp.com
+If,%pCheckBox_ALL_Chkdsk%,Equal,True,Begin
+If,Not,ExistFile,#7\Chkdsk.exe,Require_FileQ,Chkdsk.exe
+End
+If,Not,ExistFile,#7\ufat.dll,Require_FileQ,ufat.dll
+If,Not,ExistFile,#7\untfs.dll,Require_FileQ,untfs.dll
+If,Not,ExistFile,#7\cfgmgr32.dll,Require_FileQ,cfgmgr32.dll
+If,Not,ExistFile,#7\ifsutil.dll,Require_FileQ,ifsutil.dll
+If,Not,ExistFile,#7\setupapi.dll,Require_FileQ,setupapi.dll
+If,Not,ExistFile,#7\ole32.dll,Require_FileQ,ole32.dll
+If,Not,ExistFile,#7\oleaut32.dll,Require_FileQ,oleaut32.dll
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,#7\vssapi.dll,Require_FileQ,vssapi.dll
+If,Not,ExistFile,#7\winspool.drv,Require_FileQ,winspool.drv
+End
+If,%pCheckBox_ALL_Chkntfs%,Equal,True,Begin
+If,Not,ExistFile,#7\Chkntfs.exe,Require_FileQ,Chkntfs.exe
+End
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,#7\Choice.exe,Require_FileQ,Choice.exe
+End
+If,Not,ExistFile,#7\Cipher.exe,Require_FileQ,Cipher.exe
+If,Not,ExistFile,#7\Comp.exe,Require_FileQ,Comp.exe
+If,Not,ExistFile,#7\Compact.exe,Require_FileQ,Compact.exe
+If,Not,ExistFile,#7\Convert.exe,Require_FileQ,Convert.exe
+If,Not,ExistFile,#7\cabinet.dll,Require_FileQ,cabinet.dll
+If,Not,ExistFile,#7\cnvfat.dll,Require_FileQ,cnvfat.dll
+If,Not,ExistFile,#7\osuninst.dll,Require_FileQ,osuninst.dll
+If,Not,ExistFile,#7\scecli.dll,Require_FileQ,scecli.dll
+If,Not,ExistFile,#7\userenv.dll,Require_FileQ,userenv.dll
+If,Not,ExistFile,#7\DiskComp.com,Require_FileQ,DiskComp.com
+If,Not,ExistFile,#7\DiskCopy.com,Require_FileQ,DiskCopy.com
+If,Not,ExistFile,#7\Doskey.exe,Require_FileQ,Doskey.exe
+If,Not,ExistFile,#7\Expand.exe,Require_FileQ,Expand.exe
+If,Not,ExistFile,#7\Fc.exe,Require_FileQ,Fc.exe
+If,Not,ExistFile,#7\Find.exe,Require_FileQ,Find.exe
+If,Not,ExistFile,#7\Findstr.exe,Require_FileQ,Findstr.exe
+If,Not,ExistFile,#7\Format.com,Require_FileQ,Format.com
+If,Not,ExistFile,#7\FsUtil.exe,Require_FileQ,FsUtil.exe
+If,Not,ExistFile,#7\Help.exe,Require_FileQ,Help.exe
+If,Not,ExistFile,#7\Label.exe,Require_FileQ,Label.exe
+If,Not,ExistFile,#7\Makecab.exe,Require_FileQ,Makecab.exe
+//Lancelot: not fully checked //Mode.com not exists at WOW64
+If,#7,Equal,%Target_Sys%,Begin
+If,Not,ExistFile,#7\Mode.com,Require_FileQ,Mode.com
+If,Not,ExistFile,#7\ureg.dll,Require_FileQ,ureg.dll
+End
+If,Not,ExistFile,#7\More.com,Require_FileQ,More.com
+If,Not,ExistFile,#7\MountVol.exe,Require_FileQ,MountVol.exe
+If,Not,ExistFile,#7\Net.exe,Require_FileQ,Net.exe
+If,Not,ExistFile,#7\net1.exe,Require_FileQ,net1.exe
+If,Not,ExistFile,#7\samlib.dll,Require_FileQ,samlib.dll
+If,Not,ExistFile,#7\ntdsapi.dll,Require_FileQ,ntdsapi.dll
+If,Not,ExistFile,#7\ws2_32.dll,Require_FileQ,ws2_32.dll
+If,Not,ExistFile,#7\ws2help.dll,Require_FileQ,ws2help.dll
+If,Not,ExistFile,#7\netmsg.dll,Require_FileQ,netmsg.dll
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,ExistFile,#7\netrap.dll,Require_FileQ,netrap.dll
+If,Not,ExistFile,#7\net.hlp,Require_FileQ,net.hlp
+End
+If,#7,Equal,%Target_Sys%,Begin
+//services.exe only at System32
+If,Not,ExistFile,%Target_Sys%\services.exe,Require_FileQ,services.exe
+If,Not,ExistFile,%Target_Sys%\scesrv.dll,Require_FileQ,scesrv.dll
+If,Not,ExistFile,%Target_Sys%\authz.dll,Require_FileQ,authz.dll
+If,Not,ExistFile,%Target_Sys%\msvcp60.dll,Require_FileQ,msvcp60.dll
+If,Not,ExistFile,%Target_Sys%\ncobjapi.dll,Require_FileQ,ncobjapi.dll
+If,Not,ExistFile,%Target_Sys%\umpnpmgr.dll,Require_FileQ,umpnpmgr.dll
+//services.exe only at System32
+//lsass.exe only at System32
+If,Not,ExistFile,%Target_Sys%\lsass.exe,Require_FileQ,lsass.exe
+If,Not,ExistFile,%Target_Sys%\lsasrv.dll,Require_FileQ,lsasrv.dll
+If,Not,ExistFile,%Target_Sys%\samsrv.dll,Require_FileQ,samsrv.dll
+If,Not,ExistFile,%Target_Sys%\dnsapi.dll,Require_FileQ,dnsapi.dll
+If,Not,ExistFile,%Target_Sys%\cryptdll.dll,Require_FileQ,cryptdll.dll
+If,Not,ExistFile,%Target_Sys%\mpr.dll,Require_FileQ,mpr.dll
+If,Not,ExistFile,%Target_Sys%\msasn1.dll,Require_FileQ,msasn1.dll
+If,Not,ExistFile,%Target_Sys%\msprivs.dll,Require_FileQ,msprivs.dll
+If,Not,ExistFile,%Target_Sys%\netapi32.dll,Require_FileQ,netapi32.dll
+If,Not,ExistFile,%Target_Sys%\wldap32.dll,Require_FileQ,wldap32.dll
+If,Not,ExistFile,%Target_Sys%\drivers\NPFS.SYS,Begin
+If,ExistFile,%Source_Sys%\NPFS.SY?,CopyOrExpand,%Source_Sys%\NPFS.SYS,%Target_Sys%\drivers
+End
+//lsass.exe only at System32
+End
+If,Not,ExistFile,#7\Ipconfig.exe,Require_FileQ,Ipconfig.exe
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,ExistFile,#7\netman.dll,Require_FileQ,netman.dll
+End
+If,Not,ExistFile,#7\netshell.dll,Require_FileQ,netshell.dll
+If,Not,ExistFile,#7\rtutils.dll,Require_FileQ,rtutils.dll
+If,Not,ExistFile,#7\credui.dll,Require_FileQ,credui.dll
+If,Not,ExistFile,#7\Atl.dll,Require_FileQ,Atl.dll
+If,Not,ExistFile,#7\clusapi.dll,Require_FileQ,clusapi.dll
+If,Not,ExistFile,#7\mprapi.dll,Require_FileQ,mprapi.dll
+If,Not,ExistFile,#7\activeds.dll,Require_FileQ,activeds.dll
+If,Not,ExistFile,#7\adsldpc.dll,Require_FileQ,adsldpc.dll
+If,Not,ExistFile,#7\rasapi32.dll,Require_FileQ,rasapi32.dll
+If,Not,ExistFile,#7\rasman.dll,Require_FileQ,rasman.dll
+If,Not,ExistFile,#7\tapi32.dll,Require_FileQ,tapi32.dll
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,#7\wzcsvc.dll,Require,HighVersion,wzcsvc.dll,TargetWin\System32
+End
+If,Not,ExistFile,#7\WMI.dll,Require_FileQ,WMI.dll
+If,Not,ExistFile,#7\dhcpcsvc.dll,Require_FileQ,dhcpcsvc.dll
+If,Not,ExistFile,#7\WTSAPI32.dll,Require_FileQ,WTSAPI32.dll
+If,Not,ExistFile,#7\WINSTA.dll,Require_FileQ,WINSTA.dll
+If,Not,ExistFile,#7\esent.dll,Require_FileQ,esent.dll
+//If,Not,%OS%%SourceArch%,Equal,XPx86,If,Not,ExistFile,#7\WZCSAPI.dll,Require_FileQ,WZCSAPI.dll
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,%OS%%SourceArch%,Equal,XPx86,Begin
+If,Not,ExistFile,#7\WZCSAPI.dll,Require,HighVersion,WZCSAPI.dll,TargetWin\System32
+End
+End
+//-
+If,%OS%%SourceArch%%OSServicePack%,Equal,XPx86SP3,Begin
+If,Not,ExistFile,#7\dot3api.dll,Require_FileQ,dot3api.dll
+If,Not,ExistFile,#7\dot3dlg.dll,Require_FileQ,dot3dlg.dll
+If,Not,ExistFile,#7\onex.dll,Require_FileQ,onex.dll
+If,Not,ExistFile,#7\eappcfg.dll,Require_FileQ,eappcfg.dll
+If,Not,ExistFile,#7\eappprxy.dll,Require_FileQ,eappprxy.dll
+If,Not,ExistFile,#7\wzcsvc.dll,Require,HighVersion,wzcsvc.dll,TargetWin\System32
+If,Not,ExistFile,#7\wzcsapi.dll,Require,HighVersion,wzcsapi.dll,TargetWin\System32
+If,Not,ExistFile,#7\EapolQec.dll,Require_FileQ,EapolQec.dll
+If,Not,ExistFile,#7\QUtil.dll,Require_FileQ,QUtil.dll
+End
+If,Not,ExistFile,#7\netsh.exe,Require_FileQ,netsh.exe
+If,%OSFamily%,Equal,NT5,Begin
+If,Not,ExistFile,#7\w03a2409.dll,Require,File,w03a2409.dll
+End
+//[Expand_FileX_File_Netsh.exe_Helper_NT5]
+//XP x64 - XP x86 Could not obtain host information from machine. Some commands may not be available. Class not registered
+//--
+If,Not,ExistFile,#7\xpob2res.dll,Require,File,xpob2res.dll
+If,%OS%%SourceArch%,Equal,XPx86,Begin
+//XPx86SP3
+//ipv6mon.dll
+//ipmontr.dll
+//ifmon.dll
+//ippromon.dll
+//rasmontr.dll
+//*ipxpromn.dll
+//dgnet.dll
+//HNETMON.dll
+//fwcfg.dll
+//-helper DLL ipv6mon.dll
+If,Not,ExistFile,#7\ipv6mon.dll,Require_FileQ,ipv6mon.dll
+//-helper DLL ipmontr.dll
+If,Not,ExistFile,#7\ipmontr.dll,Require_FileQ,ipmontr.dll
+//-helper DLL ifmon.dll
+If,Not,ExistFile,#7\ifmon.dll,Require_FileQ,ifmon.dll
+If,Not,ExistFile,#7\netcfgx.dll,Require_FileQ,netcfgx.dll
+If,Not,ExistFile,#7\winipsec.dll,Require_FileQ,winipsec.dll
+If,Not,ExistFile,#7\clusapi.dll,Require_FileQ,clusapi.dll
+If,Not,ExistFile,#7\mswsock.dll,Require_FileQ,mswsock.dll
+//-helper DLL ippromon.dll
+If,Not,ExistFile,#7\ippromon.dll,Require_FileQ,ippromon.dll
+//-helper DLL rasmontr.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\rasmontr.dll,Require_FileQ,rasmontr.dll
+//-helper DLL ipxpromn.dll
+If,Not,ExistFile,#7\ipxpromn.dll,Require_FileQ,ipxpromn.dll
+If,Not,ExistFile,#7\framedyn.dll,Require_FileQ,framedyn.dll
+//-helper DLL ipxmontr.dll
+If,Not,ExistFile,#7\ipxmontr.dll,Require_FileQ,ipxmontr.dll
+//-helper DLL hnetmon.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\hnetmon.dll,Require_FileQ,hnetmon.dll
+//-helper DLL fwcfg.dll
+If,Not,ExistFile,#7\fwcfg.dll,Require_FileQ,fwcfg.dll
+End
+Else,Begin
+//--
+//-helper DLL ipv6mon.dll
+If,Not,ExistFile,#7\ipv6mon.dll,Require_FileQ,ipv6mon.dll
+//-helper DLL ipmontr.dll
+If,Not,ExistFile,#7\ipmontr.dll,Require_FileQ,ipmontr.dll
+//-helper DLL ifmon.dll
+If,Not,ExistFile,#7\ifmon.dll,Require_FileQ,ifmon.dll
+If,Not,ExistFile,#7\netcfgx.dll,Require_FileQ,netcfgx.dll
+If,Not,ExistFile,#7\winipsec.dll,Require_FileQ,winipsec.dll
+If,Not,ExistFile,#7\clusapi.dll,Require_FileQ,clusapi.dll
+If,Not,ExistFile,#7\mswsock.dll,Require_FileQ,mswsock.dll
+//-helper DLL ippromon.dll
+If,Not,ExistFile,#7\ippromon.dll,Require_FileQ,ippromon.dll
+//If,Not,ExistFile,%SourceDir%\win51.pos,Begi-n
+//-helper DLL rasmontr.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\rasmontr.dll,Require_FileQ,rasmontr.dll
+//-helper DLL rpcnsh.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\rpcnsh.dll,Require_FileQ,rpcnsh.dll
+//-helper DLL dhcpmon.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\dhcpmon.dll,Require_FileQ,dhcpmon.dll
+If,Not,ExistFile,#7\dhcpsapi.dll,Require_FileQ,dhcpsapi.dll
+If,Not,ExistFile,#7\dsauth.dll,Require_FileQ,dsauth.dll
+If,%SourceArch%,Equal,x86,Begin
+//-helper DLL winsmon.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\winsmon.dll,Require_FileQ,winsmon.dll
+If,Not,ExistFile,#7\winsrpc.dll,Require_FileQ,winsrpc.dll
+End
+//En-d
+//-helper DLL aaaamon.dll
+If,Not,ExistFile,#7\aaaamon.dll,Require_FileQ,aaaamon.dll
+//-helper DLL dgnet.dll
+If,Not,ExistFile,#7\dgnet.dll,Require_FileQ,dgnet.dll
+If,Not,ExistFile,#7\framedyn.dll,Require_FileQ,framedyn.dll
+//If,Not,ExistFile,%SourceDir%\win51.pos,Begi-n
+//-helper DLL hnetmon.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\hnetmon.dll,Require_FileQ,hnetmon.dll
+//En-d
+//-helper DLL fwcfg.dll
+If,Not,ExistFile,#7\fwcfg.dll,Require_FileQ,fwcfg.dll
+//If,Not,ExistFile,%SourceDir%\win51.pos,Begi-n
+//-helper DLL nshipsec.dll -- Not Exists at POSReady2009
+If,Not,ExistFile,#7\nshipsec.dll,Require_FileQ,nshipsec.dll
+If,Not,ExistFile,#7\polstore.dll,Require_FileQ,polstore.dll
+//En-d
+End
+If,Not,ExistFile,#7\Ntsd.exe,Require_FileQ,Ntsd.exe
+If,Not,ExistFile,#7\dbgeng.dll,Require_FileQ,dbgeng.dll
+If,Not,ExistFile,#7\dbghelp.dll,Require_FileQ,dbghelp.dll
+If,Not,ExistFile,#7\Recover.exe,Require_FileQ,Recover.exe
+If,Not,ExistFile,#7\Reg.exe,Require_FileQ,Reg.exe
+//Regini.exe not exists at WOW64 and POSReady2009
+If,Not,#7,Equal,%Target_Win%\SysWOW64,Begin
+If,Not,ExistFile,#7\Regini.exe,Require_FileQ,Regini.exe
+End
+If,Not,ExistFile,#7\Regsvr32.exe,Require_FileQ,Regsvr32.exe
+If,Not,ExistFile,#7\Replace.exe,Require_FileQ,Replace.exe
+If,Not,ExistFile,#7\Sc.exe,Require_FileQ,Sc.exe
+If,Not,ExistFile,#7\Sort.exe,Require_FileQ,Sort.exe
+If,Not,ExistFile,#7\Subst.exe,Require_FileQ,Subst.exe
+//Tree.com not exists at WOW64
+If,Not,#7,Equal,%Target_Win%\SysWOW64,Begin
+If,Not,ExistFile,#7\Tree.com,Require_FileQ,Tree.com
+End
+If,Not,ExistFile,#7\Xcopy.exe,Require_FileQ,Xcopy.exe
+
+[Process_NT6_ALL]
+//To get full dependency list per file see Macro Library http://TheOven.org/index.php?topic=454
+//Current plugin list have lots of cuts for duplicate files
+//-
+Echo,"Adding CMD System32 Files..."
+Require,FileList,,Require_FileList_NT6_System32_ALL
+//-
+IF,%pCheckBox_ALL_WOW64CmdFiles%-%TargetWOW64%,Equal,True-x86,Begin
+If,Not,%SourceArch%,Equal,x86,Begin
+Echo,"Adding CMD SysWOW64 Files..."
+Require,FileList,,Require_FileList_NT6_SysWOW64_ALL
+End
+End
+
+[Require_FileList_NT6_System32_ALL]
+\Windows\System32\Cmd.exe
+\Windows\System32\sxs.dll
+\Windows\System32\Attrib.exe
+\Windows\System32\ulib.dll
+\Windows\System32\Cacls.exe
+\Windows\System32\Chcp.com
+\Windows\System32\Chkdsk.exe
+\Windows\System32\ufat.dll
+\Windows\System32\untfs.dll
+\Windows\System32\sxs.dll
+\Windows\System32\cfgmgr32.dll
+\Windows\System32\ifsutil.dll
+\Windows\System32\setupapi.dll
+\Windows\System32\Chkntfs.exe
+\Windows\System32\Choice.exe
+\Windows\System32\Cipher.exe
+\Windows\System32\Comp.exe
+\Windows\System32\Compact.exe
+\Windows\System32\Convert.exe
+\Windows\System32\cabinet.dll
+\Windows\System32\cnvfat.dll
+\Windows\System32\osuninst.dll
+\Windows\System32\scecli.dll
+\Windows\System32\userenv.dll
+\Windows\System32\DiskComp.com
+\Windows\System32\DiskCopy.com
+\Windows\System32\Doskey.exe
+\Windows\System32\Expand.exe
+\Windows\System32\dpx.dll
+\Windows\System32\Fc.exe
+\Windows\System32\Find.exe
+\Windows\System32\Findstr.exe
+\Windows\System32\Format.com
+\Windows\System32\FsUtil.exe
+\Windows\System32\Help.exe
+\Windows\System32\Label.exe
+\Windows\System32\Makecab.exe
+//;Lancelot: not fully checked //;Mode.com not exists at WOW64
+\Windows\System32\Mode.com
+\Windows\System32\ureg.dll
+\Windows\System32\More.com
+\Windows\System32\MountVol.exe
+\Windows\System32\Net.exe
+\Windows\System32\net1.exe
+\Windows\System32\samlib.dll
+\Windows\System32\ntdsapi.dll
+\Windows\System32\ws2_32.dll
+\Windows\System32\ws2help.dll
+\Windows\System32\netmsg.dll
+//;services.exe only at System32
+\Windows\System32\services.exe
+\Windows\System32\scesrv.dll
+\Windows\System32\authz.dll
+\Windows\System32\msvcp60.dll
+\Windows\System32\ncobjapi.dll
+\Windows\System32\umpnpmgr.dll
+\Windows\System32\winsta.dll
+//;services.exe only at System32
+//;lsass.exe only at System32
+\Windows\System32\lsass.exe
+\Windows\System32\lsasrv.dll
+\Windows\System32\samsrv.dll
+\Windows\System32\dnsapi.dll
+\Windows\System32\cryptdll.dll
+\Windows\System32\mpr.dll
+\Windows\System32\msasn1.dll
+\Windows\System32\msprivs.dll
+\Windows\System32\netapi32.dll
+\Windows\System32\wldap32.dll
+\Windows\System32\Drivers\NPFS.SYS
+\Windows\System32\Ipconfig.exe
+\Windows\System32\netshell.dll
+\Windows\System32\rtutils.dll
+\Windows\System32\credui.dll
+\Windows\System32\Atl.dll
+\Windows\System32\clusapi.dll
+\Windows\System32\mprapi.dll
+\Windows\System32\activeds.dll
+\Windows\System32\adsldpc.dll
+\Windows\System32\rasapi32.dll
+\Windows\System32\rasman.dll
+\Windows\System32\tapi32.dll
+\Windows\System32\WMI.dll
+\Windows\System32\dhcpcsvc.dll
+\Windows\System32\WTSAPI32.dll
+\Windows\System32\esent.dll
+//;[Expand_FileX_File_Netsh.exe_List_3]
+\Windows\System32\netsh.exe
+//;--
+//;_ML_Win10_1607 Equal Bigger Start
+\Windows\System32\dmcmnutils.dll
+\Windows\System32\mdmregistration.dll
+//;Only \System32\ Start
+//;mdmpostprocessevaluator.dll not exists at \SysWOW64\ - Only \System32\
+\Windows\System32\mdmpostprocessevaluator.dll
+//;Only \System32\ Finish
+//;_ML_Win10_1607 Equal Bigger Finish
+//;[Expand_FileX_File_Netsh.exe_Helper_Win10x_List_3]
+//;-helper DLL ifmon.dll
+\Windows\System32\ifmon.dll
+//;-helper DLL rasmontr.dll
+\Windows\System32\rasmontr.dll
+\Windows\System32\mfc42u.dll
+\Windows\System32\dpapi.dll
+//;-helper DLL authfwcfg.dll
+\Windows\System32\authfwcfg.dll
+\Windows\System32\FirewallAPI.dll
+\Windows\System32\FWPolicyIOMGR.dll
+\Windows\System32\fwbase.dll
+//;-helper DLL DhcpcMonitor.dll
+\Windows\System32\DhcpcMonitor.dll
+//;-helper DLL Dot3CFG.dll
+\Windows\System32\Dot3CFG.dll
+\Windows\System32\dot3api.dll
+\Windows\System32\OneX.dll
+\Windows\System32\eappcfg.dll
+\Windows\System32\eappprxy.dll
+//;-helper DLL fwcfg.dll
+\Windows\System32\fwcfg.dll
+//;-helper DLL hnetmon.dll
+\Windows\System32\hnetmon.dll
+\Windows\System32\nlaapi.dll
+//;-helper DLL netiohlp.dll
+\Windows\System32\netiohlp.dll
+//;-
+//;nettrace.dll NO WOW64 - Start
+\Windows\System32\nettrace.dll
+\Windows\System32\ndfapi.dll
+//;nettrace.dll NO WOW64 - Finish
+//;-
+//;-helper DLL nshhttp.dll
+\Windows\System32\nshhttp.dll
+\Windows\System32\httpapi.dll
+//;-helper DLL nshipsec.dll
+\Windows\System32\nshipsec.dll
+\Windows\System32\polstore.dll
+\Windows\System32\winipsec.dll
+//;-helper DLL nshwfp.dll
+\Windows\System32\nshwfp.dll
+//;-helper DLL p2pnetsh.dll
+\Windows\System32\p2pnetsh.dll
+\Windows\System32\p2p.dll
+//;-helper DLL rpcnsh.dll
+\Windows\System32\rpcnsh.dll
+//;-
+//;wcnnetsh.dll NO WOW64 Start
+//;-helper DLL wcnnetsh.dll
+\Windows\System32\wcnnetsh.dll
+\Windows\System32\wlanapi.dll
+//;wcnnetsh.dll NO WOW64 Finish
+//;-
+//;-helper DLL whhelper.dll
+\Windows\System32\whhelper.dll
+//;-helper DLL wlancfg.dll
+\Windows\System32\wlancfg.dll
+\Windows\System32\WiFiDisplay.dll
+\Windows\System32\wevtapi.dll
+//;-helper DLL wshelper.dll
+\Windows\System32\wshelper.dll
+//;-
+//;wwancfg.dll NO WOW64 Start
+//;-helper DLL wwancfg.dll
+\Windows\System32\wwancfg.dll
+\Windows\System32\wwapi.dll
+\Windows\System32\RmClient.dll
+\Windows\System32\wcmapi.dll
+//;wwancfg.dll NO WOW64 Finish
+//;-
+//;-helper DLL peerdistsh.dll
+//;peerdistsh.dll not exists at Win10 1809 - 10.0.17763.1
+//;peerdistsh.dll NOT exists on Win7 (6.1) x86 - x64
+\Windows\System32\peerdistsh.dll
+\Windows\System32\ktmw32.dll
+//;[Expand_FileX_File_Netsh.exe_Helper_Win7_8]
+//;Win7-8 (Can't Remember which I tested with)
+//;-helper DLL napmontr.dll
+\Windows\System32\napmontr.dll
+\Windows\System32\QUtil.dll
+\Windows\System32\certcli.dll
+//;certca.dll NOT exists on Win7 (6.1) x86 - x64
+\Windows\System32\certca.dll
+//;If,%_ML_TV1%,Smaller,9,\Windows\System32\DhcpQEC.dll
+\Windows\System32\DhcpQEC.dll
+\Windows\System32\Recover.exe
+\Windows\System32\Reg.exe
+//;Regini.exe not exists at WOW64 and POSReady2009
+\Windows\System32\Regini.exe
+\Windows\System32\Regsvr32.exe
+\Windows\System32\ole32.dll
+\Windows\System32\Replace.exe
+\Windows\System32\Sc.exe
+\Windows\System32\Sort.exe
+\Windows\System32\Subst.exe
+//;Tree.com not exists at WOW64
+\Windows\System32\Tree.com
+\Windows\System32\Xcopy.exe
+//;-----------------------------------------------------
+\Windows\System32\??-??\Cmd.exe.mui
+\Windows\System32\??-??\sxs.dll.mui
+\Windows\System32\??-??\Attrib.exe.mui
+\Windows\System32\??-??\ulib.dll.mui
+\Windows\System32\??-??\Cacls.exe.mui
+\Windows\System32\??-??\Chcp.com.mui
+\Windows\System32\??-??\Chkdsk.exe.mui
+\Windows\System32\??-??\ufat.dll.mui
+\Windows\System32\??-??\untfs.dll.mui
+\Windows\System32\??-??\sxs.dll.mui
+\Windows\System32\??-??\cfgmgr32.dll.mui
+\Windows\System32\??-??\ifsutil.dll.mui
+\Windows\System32\??-??\setupapi.dll.mui
+\Windows\System32\??-??\Chkntfs.exe.mui
+\Windows\System32\??-??\Choice.exe.mui
+\Windows\System32\??-??\Cipher.exe.mui
+\Windows\System32\??-??\Comp.exe.mui
+\Windows\System32\??-??\Compact.exe.mui
+\Windows\System32\??-??\Convert.exe.mui
+\Windows\System32\??-??\cabinet.dll.mui
+\Windows\System32\??-??\cnvfat.dll.mui
+\Windows\System32\??-??\osuninst.dll.mui
+\Windows\System32\??-??\scecli.dll.mui
+\Windows\System32\??-??\userenv.dll.mui
+\Windows\System32\??-??\DiskComp.com.mui
+\Windows\System32\??-??\DiskCopy.com.mui
+\Windows\System32\??-??\Doskey.exe.mui
+\Windows\System32\??-??\Expand.exe.mui
+\Windows\System32\??-??\dpx.dll.mui
+\Windows\System32\??-??\Fc.exe.mui
+\Windows\System32\??-??\Find.exe.mui
+\Windows\System32\??-??\Findstr.exe.mui
+\Windows\System32\??-??\Format.com.mui
+\Windows\System32\??-??\FsUtil.exe.mui
+\Windows\System32\??-??\Help.exe.mui
+\Windows\System32\??-??\Label.exe.mui
+\Windows\System32\??-??\Makecab.exe.mui
+//;Lancelot: not fully checked //;Mode.com.mui not exists at WOW64
+\Windows\System32\??-??\Mode.com.mui
+\Windows\System32\??-??\ureg.dll.mui
+\Windows\System32\??-??\More.com.mui
+\Windows\System32\??-??\MountVol.exe.mui
+\Windows\System32\??-??\Net.exe.mui
+\Windows\System32\??-??\net1.exe.mui
+\Windows\System32\??-??\samlib.dll.mui
+\Windows\System32\??-??\ntdsapi.dll.mui
+\Windows\System32\??-??\ws2_32.dll.mui
+\Windows\System32\??-??\ws2help.dll.mui
+\Windows\System32\??-??\netmsg.dll.mui
+//;services.exe.mui only at System32
+\Windows\System32\??-??\services.exe.mui
+\Windows\System32\??-??\scesrv.dll.mui
+\Windows\System32\??-??\authz.dll.mui
+\Windows\System32\??-??\msvcp60.dll.mui
+\Windows\System32\??-??\ncobjapi.dll.mui
+\Windows\System32\??-??\umpnpmgr.dll.mui
+\Windows\System32\??-??\winsta.dll.mui
+//;services.exe.mui only at System32
+//;lsass.exe.mui only at System32
+\Windows\System32\??-??\lsass.exe.mui
+\Windows\System32\??-??\lsasrv.dll.mui
+\Windows\System32\??-??\samsrv.dll.mui
+\Windows\System32\??-??\dnsapi.dll.mui
+\Windows\System32\??-??\cryptdll.dll.mui
+\Windows\System32\??-??\mpr.dll.mui
+\Windows\System32\??-??\msasn1.dll.mui
+\Windows\System32\??-??\msprivs.dll.mui
+\Windows\System32\??-??\netapi32.dll.mui
+\Windows\System32\??-??\wldap32.dll.mui
+\Windows\System32\??-??\Drivers\NPFS.SYS
+\Windows\System32\??-??\Ipconfig.exe.mui
+\Windows\System32\??-??\netshell.dll.mui
+\Windows\System32\??-??\rtutils.dll.mui
+\Windows\System32\??-??\credui.dll.mui
+\Windows\System32\??-??\Atl.dll.mui
+\Windows\System32\??-??\clusapi.dll.mui
+\Windows\System32\??-??\mprapi.dll.mui
+\Windows\System32\??-??\activeds.dll.mui
+\Windows\System32\??-??\adsldpc.dll.mui
+\Windows\System32\??-??\rasapi32.dll.mui
+\Windows\System32\??-??\rasman.dll.mui
+\Windows\System32\??-??\tapi32.dll.mui
+\Windows\System32\??-??\WMI.dll.mui
+\Windows\System32\??-??\dhcpcsvc.dll.mui
+\Windows\System32\??-??\WTSAPI32.dll.mui
+\Windows\System32\??-??\esent.dll.mui
+//;[Expand_FileX_File_Netsh.exe.mui_List_3]
+\Windows\System32\??-??\netsh.exe.mui
+//;--
+//;_ML_Win10_1607 Equal Bigger Start
+\Windows\System32\??-??\dmcmnutils.dll.mui
+\Windows\System32\??-??\mdmregistration.dll.mui
+//;Only \System32\ Start
+//;mdmpostprocessevaluator.dll.mui not exists at \SysWOW64\ - Only \System32\
+\Windows\System32\??-??\mdmpostprocessevaluator.dll.mui
+//;Only \System32\ Finish
+//;_ML_Win10_1607 Equal Bigger Finish
+//;[Expand_FileX_File_Netsh.exe.mui_Helper_Win10x_List_3]
+//;-helper DLL ifmon.dll.mui
+\Windows\System32\??-??\ifmon.dll.mui
+//;-helper DLL rasmontr.dll.mui
+\Windows\System32\??-??\rasmontr.dll.mui
+\Windows\System32\??-??\mfc42u.dll.mui
+\Windows\System32\??-??\dpapi.dll.mui
+//;-helper DLL authfwcfg.dll.mui
+\Windows\System32\??-??\authfwcfg.dll.mui
+\Windows\System32\??-??\FirewallAPI.dll.mui
+\Windows\System32\??-??\FWPolicyIOMGR.dll.mui
+\Windows\System32\??-??\fwbase.dll.mui
+//;-helper DLL DhcpcMonitor.dll.mui
+\Windows\System32\??-??\DhcpcMonitor.dll.mui
+//;-helper DLL Dot3CFG.dll.mui
+\Windows\System32\??-??\Dot3CFG.dll.mui
+\Windows\System32\??-??\dot3api.dll.mui
+\Windows\System32\??-??\OneX.dll.mui
+\Windows\System32\??-??\eappcfg.dll.mui
+\Windows\System32\??-??\eappprxy.dll.mui
+//;-helper DLL fwcfg.dll.mui
+\Windows\System32\??-??\fwcfg.dll.mui
+//;-helper DLL hnetmon.dll.mui
+\Windows\System32\??-??\hnetmon.dll.mui
+\Windows\System32\??-??\nlaapi.dll.mui
+//;-helper DLL netiohlp.dll.mui
+\Windows\System32\??-??\netiohlp.dll.mui
+//;-
+//;nettrace.dll.mui NO WOW64 - Start
+\Windows\System32\??-??\nettrace.dll.mui
+\Windows\System32\??-??\ndfapi.dll.mui
+//;nettrace.dll.mui NO WOW64 - Finish
+//;-
+//;-helper DLL nshhttp.dll.mui
+\Windows\System32\??-??\nshhttp.dll.mui
+\Windows\System32\??-??\httpapi.dll.mui
+//;-helper DLL nshipsec.dll.mui
+\Windows\System32\??-??\nshipsec.dll.mui
+\Windows\System32\??-??\polstore.dll.mui
+\Windows\System32\??-??\winipsec.dll.mui
+//;-helper DLL nshwfp.dll.mui
+\Windows\System32\??-??\nshwfp.dll.mui
+//;-helper DLL p2pnetsh.dll.mui
+\Windows\System32\??-??\p2pnetsh.dll.mui
+\Windows\System32\??-??\p2p.dll.mui
+//;-helper DLL rpcnsh.dll.mui
+\Windows\System32\??-??\rpcnsh.dll.mui
+//;-
+//;wcnnetsh.dll.mui NO WOW64 Start
+//;-helper DLL wcnnetsh.dll.mui
+\Windows\System32\??-??\wcnnetsh.dll.mui
+\Windows\System32\??-??\wlanapi.dll.mui
+//;wcnnetsh.dll.mui NO WOW64 Finish
+//;-
+//;-helper DLL whhelper.dll.mui
+\Windows\System32\??-??\whhelper.dll.mui
+//;-helper DLL wlancfg.dll.mui
+\Windows\System32\??-??\wlancfg.dll.mui
+\Windows\System32\??-??\WiFiDisplay.dll.mui
+\Windows\System32\??-??\wevtapi.dll.mui
+//;-helper DLL wshelper.dll.mui
+\Windows\System32\??-??\wshelper.dll.mui
+//;-
+//;wwancfg.dll.mui NO WOW64 Start
+//;-helper DLL wwancfg.dll.mui
+\Windows\System32\??-??\wwancfg.dll.mui
+\Windows\System32\??-??\wwapi.dll.mui
+\Windows\System32\??-??\RmClient.dll.mui
+\Windows\System32\??-??\wcmapi.dll.mui
+//;wwancfg.dll.mui NO WOW64 Finish
+//;-
+//;-helper DLL peerdistsh.dll
+//;peerdistsh.dll not exists at Win10 1809 - 10.0.17763.1
+//;peerdistsh.dll NOT exists on Win7 (6.1) x86 - x64
+\Windows\System32\??-??\peerdistsh.dll.mui
+\Windows\System32\??-??\ktmw32.dll.mui
+//;[Expand_FileX_File_Netsh.exe.mui_Helper_Win7_8]
+//;Win7-8 (Can't Remember which I tested with)
+//;-helper DLL napmontr.dll.mui
+\Windows\System32\??-??\napmontr.dll.mui
+\Windows\System32\??-??\QUtil.dll.mui
+\Windows\System32\??-??\certcli.dll.mui
+//;certca.dll.mui NOT exists on Win7 (6.1) x86 - x64
+\Windows\System32\??-??\certca.dll.mui
+//;If,%_ML_TV1%,Smaller,9,\Windows\System32\??-??\DhcpQEC.dll.mui
+\Windows\System32\??-??\DhcpQEC.dll.mui
+\Windows\System32\??-??\Recover.exe.mui
+\Windows\System32\??-??\Reg.exe.mui
+//;Regini.exe.mui not exists at WOW64 and POSReady2009
+\Windows\System32\??-??\Regini.exe.mui
+\Windows\System32\??-??\Regsvr32.exe.mui
+\Windows\System32\??-??\ole32.dll.mui
+\Windows\System32\??-??\Replace.exe.mui
+\Windows\System32\??-??\Sc.exe.mui
+\Windows\System32\??-??\Sort.exe.mui
+\Windows\System32\??-??\Subst.exe.mui
+//;Tree.com.mui not exists at WOW64
+\Windows\System32\??-??\Tree.com.mui
+\Windows\System32\??-??\Xcopy.exe.mui
+
+[Require_FileList_NT6_SysWOW64_ALL]
+\Windows\SysWOW64\Cmd.exe
+\Windows\SysWOW64\sxs.dll
+\Windows\SysWOW64\Attrib.exe
+\Windows\SysWOW64\ulib.dll
+\Windows\SysWOW64\Cacls.exe
+\Windows\SysWOW64\Chcp.com
+\Windows\SysWOW64\Chkdsk.exe
+\Windows\SysWOW64\ufat.dll
+\Windows\SysWOW64\untfs.dll
+\Windows\SysWOW64\sxs.dll
+\Windows\SysWOW64\cfgmgr32.dll
+\Windows\SysWOW64\ifsutil.dll
+\Windows\SysWOW64\setupapi.dll
+\Windows\SysWOW64\Chkntfs.exe
+\Windows\SysWOW64\Choice.exe
+\Windows\SysWOW64\Cipher.exe
+\Windows\SysWOW64\Comp.exe
+\Windows\SysWOW64\Compact.exe
+\Windows\SysWOW64\Convert.exe
+\Windows\SysWOW64\cabinet.dll
+\Windows\SysWOW64\cnvfat.dll
+\Windows\SysWOW64\osuninst.dll
+\Windows\SysWOW64\scecli.dll
+\Windows\SysWOW64\userenv.dll
+\Windows\SysWOW64\Doskey.exe
+\Windows\SysWOW64\Expand.exe
+\Windows\SysWOW64\dpx.dll
+\Windows\SysWOW64\Fc.exe
+\Windows\SysWOW64\Find.exe
+\Windows\SysWOW64\Findstr.exe
+\Windows\SysWOW64\Format.com
+\Windows\SysWOW64\FsUtil.exe
+\Windows\SysWOW64\Help.exe
+\Windows\SysWOW64\Label.exe
+\Windows\SysWOW64\Makecab.exe
+\Windows\SysWOW64\More.com
+\Windows\SysWOW64\MountVol.exe
+\Windows\SysWOW64\Net.exe
+\Windows\SysWOW64\net1.exe
+\Windows\SysWOW64\samlib.dll
+\Windows\SysWOW64\ntdsapi.dll
+\Windows\SysWOW64\ws2_32.dll
+\Windows\SysWOW64\ws2help.dll
+\Windows\SysWOW64\netmsg.dll
+\Windows\SysWOW64\Ipconfig.exe
+\Windows\SysWOW64\netshell.dll
+\Windows\SysWOW64\rtutils.dll
+\Windows\SysWOW64\credui.dll
+\Windows\SysWOW64\Atl.dll
+\Windows\SysWOW64\clusapi.dll
+\Windows\SysWOW64\mprapi.dll
+\Windows\SysWOW64\activeds.dll
+\Windows\SysWOW64\adsldpc.dll
+\Windows\SysWOW64\rasapi32.dll
+\Windows\SysWOW64\rasman.dll
+\Windows\SysWOW64\tapi32.dll
+\Windows\SysWOW64\WMI.dll
+\Windows\SysWOW64\dhcpcsvc.dll
+\Windows\SysWOW64\WTSAPI32.dll
+\Windows\SysWOW64\WINSTA.dll
+\Windows\SysWOW64\esent.dll
+//;[Expand_FileX_File_Netsh.exe_List_3]
+\Windows\SysWOW64\netsh.exe
+//;--
+//;_ML_Win10_1607 Equal Bigger Start
+\Windows\SysWOW64\dmcmnutils.dll
+\Windows\SysWOW64\mdmregistration.dll
+//;_ML_Win10_1607 Equal Bigger Finish
+//;[Expand_FileX_File_Netsh.exe_Helper_Win10x_List_3]
+//;-helper DLL ifmon.dll
+\Windows\SysWOW64\ifmon.dll
+//;-helper DLL rasmontr.dll
+\Windows\SysWOW64\rasmontr.dll
+\Windows\SysWOW64\mfc42u.dll
+\Windows\SysWOW64\dpapi.dll
+//;-helper DLL authfwcfg.dll
+\Windows\SysWOW64\authfwcfg.dll
+\Windows\SysWOW64\FirewallAPI.dll
+\Windows\SysWOW64\FWPolicyIOMGR.dll
+\Windows\SysWOW64\fwbase.dll
+//;-helper DLL DhcpcMonitor.dll
+\Windows\SysWOW64\DhcpcMonitor.dll
+//;-helper DLL Dot3CFG.dll
+\Windows\SysWOW64\Dot3CFG.dll
+\Windows\SysWOW64\dot3api.dll
+\Windows\SysWOW64\OneX.dll
+\Windows\SysWOW64\eappcfg.dll
+\Windows\SysWOW64\eappprxy.dll
+//;-helper DLL fwcfg.dll
+\Windows\SysWOW64\fwcfg.dll
+//;-helper DLL hnetmon.dll
+\Windows\SysWOW64\hnetmon.dll
+\Windows\SysWOW64\nlaapi.dll
+//;-helper DLL netiohlp.dll
+\Windows\SysWOW64\netiohlp.dll
+//;-
+//;-helper DLL nshhttp.dll
+\Windows\SysWOW64\nshhttp.dll
+\Windows\SysWOW64\httpapi.dll
+//;-helper DLL nshipsec.dll
+\Windows\SysWOW64\nshipsec.dll
+\Windows\SysWOW64\polstore.dll
+\Windows\SysWOW64\winipsec.dll
+//;-helper DLL nshwfp.dll
+\Windows\SysWOW64\nshwfp.dll
+//;-helper DLL p2pnetsh.dll
+\Windows\SysWOW64\p2pnetsh.dll
+\Windows\SysWOW64\p2p.dll
+//;-helper DLL rpcnsh.dll
+\Windows\SysWOW64\rpcnsh.dll
+//;-
+//;-helper DLL whhelper.dll
+\Windows\SysWOW64\whhelper.dll
+//;-helper DLL wlancfg.dll
+\Windows\SysWOW64\wlancfg.dll
+\Windows\SysWOW64\WiFiDisplay.dll
+\Windows\SysWOW64\wevtapi.dll
+//;-helper DLL wshelper.dll
+\Windows\SysWOW64\wshelper.dll
+//;-
+//;-helper DLL peerdistsh.dll
+//;peerdistsh.dll not exists at Win10 1809 - 10.0.17763.1
+//;peerdistsh.dll NOT exists on Win7 (6.1) x86 - x64
+\Windows\SysWOW64\peerdistsh.dll
+\Windows\SysWOW64\ktmw32.dll
+//;[Expand_FileX_File_Netsh.exe_Helper_Win7_8]
+//;Win7-8 (Can't Remember which I tested with)
+//;-helper DLL napmontr.dll
+\Windows\SysWOW64\napmontr.dll
+\Windows\SysWOW64\QUtil.dll
+\Windows\SysWOW64\certcli.dll
+//;certca.dll NOT exists on Win7 (6.1) x86 - x64
+\Windows\SysWOW64\certca.dll
+//;If,%_ML_TV1%,Smaller,9,\Windows\SysWOW64\DhcpQEC.dll
+\Windows\SysWOW64\DhcpQEC.dll
+\Windows\SysWOW64\Recover.exe
+\Windows\SysWOW64\Reg.exe
+\Windows\SysWOW64\Regsvr32.exe
+\Windows\SysWOW64\ole32.dll
+\Windows\SysWOW64\Replace.exe
+\Windows\SysWOW64\Sc.exe
+\Windows\SysWOW64\Sort.exe
+\Windows\SysWOW64\Subst.exe
+\Windows\SysWOW64\Xcopy.exe
+//;-----------------------------------------------------
+\Windows\SysWOW64\??-??\Cmd.exe.mui
+\Windows\SysWOW64\??-??\sxs.dll.mui
+\Windows\SysWOW64\??-??\Attrib.exe.mui
+\Windows\SysWOW64\??-??\ulib.dll.mui
+\Windows\SysWOW64\??-??\Cacls.exe.mui
+\Windows\SysWOW64\??-??\Chcp.com.mui
+\Windows\SysWOW64\??-??\Chkdsk.exe.mui
+\Windows\SysWOW64\??-??\ufat.dll.mui
+\Windows\SysWOW64\??-??\untfs.dll.mui
+\Windows\SysWOW64\??-??\sxs.dll.mui
+\Windows\SysWOW64\??-??\cfgmgr32.dll.mui
+\Windows\SysWOW64\??-??\ifsutil.dll.mui
+\Windows\SysWOW64\??-??\setupapi.dll.mui
+\Windows\SysWOW64\??-??\Chkntfs.exe.mui
+\Windows\SysWOW64\??-??\Choice.exe.mui
+\Windows\SysWOW64\??-??\Cipher.exe.mui
+\Windows\SysWOW64\??-??\Comp.exe.mui
+\Windows\SysWOW64\??-??\Compact.exe.mui
+\Windows\SysWOW64\??-??\Convert.exe.mui
+\Windows\SysWOW64\??-??\cabinet.dll.mui
+\Windows\SysWOW64\??-??\cnvfat.dll.mui
+\Windows\SysWOW64\??-??\osuninst.dll.mui
+\Windows\SysWOW64\??-??\scecli.dll.mui
+\Windows\SysWOW64\??-??\userenv.dll.mui
+\Windows\SysWOW64\??-??\Doskey.exe.mui
+\Windows\SysWOW64\??-??\Expand.exe.mui
+\Windows\SysWOW64\??-??\dpx.dll.mui
+\Windows\SysWOW64\??-??\Fc.exe.mui
+\Windows\SysWOW64\??-??\Find.exe.mui
+\Windows\SysWOW64\??-??\Findstr.exe.mui
+\Windows\SysWOW64\??-??\Format.com.mui
+\Windows\SysWOW64\??-??\FsUtil.exe.mui
+\Windows\SysWOW64\??-??\Help.exe.mui
+\Windows\SysWOW64\??-??\Label.exe.mui
+\Windows\SysWOW64\??-??\Makecab.exe.mui
+\Windows\SysWOW64\??-??\More.com.mui
+\Windows\SysWOW64\??-??\MountVol.exe.mui
+\Windows\SysWOW64\??-??\Net.exe.mui
+\Windows\SysWOW64\??-??\net1.exe.mui
+\Windows\SysWOW64\??-??\samlib.dll.mui
+\Windows\SysWOW64\??-??\ntdsapi.dll.mui
+\Windows\SysWOW64\??-??\ws2_32.dll.mui
+\Windows\SysWOW64\??-??\ws2help.dll.mui
+\Windows\SysWOW64\??-??\netmsg.dll.mui
+\Windows\SysWOW64\??-??\Ipconfig.exe.mui
+\Windows\SysWOW64\??-??\netshell.dll.mui
+\Windows\SysWOW64\??-??\rtutils.dll.mui
+\Windows\SysWOW64\??-??\credui.dll.mui
+\Windows\SysWOW64\??-??\Atl.dll.mui
+\Windows\SysWOW64\??-??\clusapi.dll.mui
+\Windows\SysWOW64\??-??\mprapi.dll.mui
+\Windows\SysWOW64\??-??\activeds.dll.mui
+\Windows\SysWOW64\??-??\adsldpc.dll.mui
+\Windows\SysWOW64\??-??\rasapi32.dll.mui
+\Windows\SysWOW64\??-??\rasman.dll.mui
+\Windows\SysWOW64\??-??\tapi32.dll.mui
+\Windows\SysWOW64\??-??\WMI.dll.mui
+\Windows\SysWOW64\??-??\dhcpcsvc.dll.mui
+\Windows\SysWOW64\??-??\WTSAPI32.dll.mui
+\Windows\SysWOW64\??-??\WINSTA.dll.mui
+\Windows\SysWOW64\??-??\esent.dll.mui
+//;[Expand_FileX_File_Netsh.exe.mui_List_3]
+\Windows\SysWOW64\??-??\netsh.exe.mui
+//;--
+//;_ML_Win10_1607 Equal Bigger Start
+\Windows\SysWOW64\??-??\dmcmnutils.dll.mui
+\Windows\SysWOW64\??-??\mdmregistration.dll.mui
+//;_ML_Win10_1607 Equal Bigger Finish
+//;[Expand_FileX_File_Netsh.exe.mui_Helper_Win10x_List_3]
+//;-helper DLL ifmon.dll.mui
+\Windows\SysWOW64\??-??\ifmon.dll.mui
+//;-helper DLL rasmontr.dll.mui
+\Windows\SysWOW64\??-??\rasmontr.dll.mui
+\Windows\SysWOW64\??-??\mfc42u.dll.mui
+\Windows\SysWOW64\??-??\dpapi.dll.mui
+//;-helper DLL authfwcfg.dll.mui
+\Windows\SysWOW64\??-??\authfwcfg.dll.mui
+\Windows\SysWOW64\??-??\FirewallAPI.dll.mui
+\Windows\SysWOW64\??-??\FWPolicyIOMGR.dll.mui
+\Windows\SysWOW64\??-??\fwbase.dll.mui
+//;-helper DLL DhcpcMonitor.dll.mui
+\Windows\SysWOW64\??-??\DhcpcMonitor.dll.mui
+//;-helper DLL Dot3CFG.dll.mui
+\Windows\SysWOW64\??-??\Dot3CFG.dll.mui
+\Windows\SysWOW64\??-??\dot3api.dll.mui
+\Windows\SysWOW64\??-??\OneX.dll.mui
+\Windows\SysWOW64\??-??\eappcfg.dll.mui
+\Windows\SysWOW64\??-??\eappprxy.dll.mui
+//;-helper DLL fwcfg.dll.mui
+\Windows\SysWOW64\??-??\fwcfg.dll.mui
+//;-helper DLL hnetmon.dll.mui
+\Windows\SysWOW64\??-??\hnetmon.dll.mui
+\Windows\SysWOW64\??-??\nlaapi.dll.mui
+//;-helper DLL netiohlp.dll.mui
+\Windows\SysWOW64\??-??\netiohlp.dll.mui
+//;-
+//;-helper DLL nshhttp.dll.mui
+\Windows\SysWOW64\??-??\nshhttp.dll.mui
+\Windows\SysWOW64\??-??\httpapi.dll.mui
+//;-helper DLL nshipsec.dll.mui
+\Windows\SysWOW64\??-??\nshipsec.dll.mui
+\Windows\SysWOW64\??-??\polstore.dll.mui
+\Windows\SysWOW64\??-??\winipsec.dll.mui
+//;-helper DLL nshwfp.dll.mui
+\Windows\SysWOW64\??-??\nshwfp.dll.mui
+//;-helper DLL p2pnetsh.dll.mui
+\Windows\SysWOW64\??-??\p2pnetsh.dll.mui
+\Windows\SysWOW64\??-??\p2p.dll.mui
+//;-helper DLL rpcnsh.dll.mui
+\Windows\SysWOW64\??-??\rpcnsh.dll.mui
+//;-
+//;-helper DLL whhelper.dll.mui
+\Windows\SysWOW64\??-??\whhelper.dll.mui
+//;-helper DLL wlancfg.dll.mui
+\Windows\SysWOW64\??-??\wlancfg.dll.mui
+\Windows\SysWOW64\??-??\WiFiDisplay.dll.mui
+\Windows\SysWOW64\??-??\wevtapi.dll.mui
+//;-helper DLL wshelper.dll.mui
+\Windows\SysWOW64\??-??\wshelper.dll.mui
+//;-
+//;-helper DLL peerdistsh.dll
+//;peerdistsh.dll not exists at Win10 1809 - 10.0.17763.1
+//;peerdistsh.dll NOT exists on Win7 (6.1) x86 - x64
+\Windows\SysWOW64\??-??\peerdistsh.dll.mui
+\Windows\SysWOW64\??-??\ktmw32.dll.mui
+//;[Expand_FileX_File_Netsh.exe.mui_Helper_Win7_8]
+//;Win7-8 (Can't Remember which I tested with)
+//;-helper DLL napmontr.dll.mui
+\Windows\SysWOW64\??-??\napmontr.dll.mui
+\Windows\SysWOW64\??-??\QUtil.dll.mui
+\Windows\SysWOW64\??-??\certcli.dll.mui
+//;certca.dll.mui NOT exists on Win7 (6.1) x86 - x64
+\Windows\SysWOW64\??-??\certca.dll.mui
+//;If,%_ML_TV1%,Smaller,9,\Windows\SysWOW64\??-??\DhcpQEC.dll.mui
+\Windows\SysWOW64\??-??\DhcpQEC.dll.mui
+\Windows\SysWOW64\??-??\Recover.exe.mui
+\Windows\SysWOW64\??-??\Reg.exe.mui
+\Windows\SysWOW64\??-??\Regsvr32.exe.mui
+\Windows\SysWOW64\??-??\ole32.dll.mui
+\Windows\SysWOW64\??-??\Replace.exe.mui
+\Windows\SysWOW64\??-??\Sc.exe.mui
+\Windows\SysWOW64\??-??\Sort.exe.mui
+\Windows\SysWOW64\??-??\Subst.exe.mui
+\Windows\SysWOW64\??-??\Xcopy.exe.mui
+
+[Process_InterFace]
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,Process_Normal_3
+Else,Run,%ScriptFile%,Process_Normal_A
+
+[Process_Normal_3]
+//[Process_Normal]
+If,%pCheckBox_Cmd%,Equal,True,Require,File,Cmd.exe
+If,%pCheckBox_Attrib%,Equal,True,Require,File,Attrib.exe
+If,%pCheckBox_Cacls%,Equal,True,Require,File,Cacls.exe
+If,%pCheckBox_Chcp%,Equal,True,Require,File,Chcp.com
+If,%pCheckBox_Chkdsk%,Equal,True,Require,File,Chkdsk.exe
+If,%pCheckBox_Chkntfs%,Equal,True,Require,File,Chkntfs.exe
+If,%pCheckBox_Choice%,Equal,True,Require,File,Choice.exe
+If,%pCheckBox_Cipher%,Equal,True,Require,File,Cipher.exe
+If,%pCheckBox_Comp%,Equal,True,Require,File,Comp.exe
+If,%pCheckBox_Compact%,Equal,True,Require,File,Compact.exe
+If,%pCheckBox_Convert%,Equal,True,Require,File,Convert.exe
+If,%pCheckBox_Diskcomp%,Equal,True,Require,File,Diskcomp.com
+If,%pCheckBox_Diskcopy%,Equal,True,Require,File,Diskcopy.com
+If,%pCheckBox_Doskey%,Equal,True,Require,File,Doskey.exe
+If,%pCheckBox_Expand%,Equal,True,Require,File,Expand.exe
+If,%pCheckBox_Fc%,Equal,True,Require,File,Fc.exe
+If,%pCheckBox_Find%,Equal,True,Require,File,Find.exe
+If,%pCheckBox_Findstr%,Equal,True,Require,File,Findstr.exe
+If,%pCheckBox_Format%,Equal,True,Require,File,Format.com
+If,%pCheckBox_Fsutil%,Equal,True,Require,File,Fsutil.exe
+If,%pCheckBox_Help%,Equal,True,Require,File,Help.exe
+If,%pCheckBox_Label%,Equal,True,Require,File,Label.exe
+If,%pCheckBox_Makecab%,Equal,True,Require,File,Makecab.exe
+If,%pCheckBox_Mode%,Equal,True,Require,File,Mode.com
+If,%pCheckBox_More%,Equal,True,Require,File,More.com
+If,%pCheckBox_MountVol%,Equal,True,Require,File,MountVol.exe
+If,%pCheckBox_Net%,Equal,True,Require,File,Net.exe
+If,%OSFamily%%pCheckBox_Ntsd%,Equal,NT5True,Require,File,Ntsd.exe
+If,%pCheckBox_Recover%,Equal,True,Require,File,Recover.exe
+If,%pCheckBox_Reg%,Equal,True,Require,File,Reg.exe
+If,%pCheckBox_Regini%,Equal,True,Require,File,Regini.exe
+If,%pCheckBox_Regsvr32%,Equal,True,Require,File,Regsvr32.exe
+If,%pCheckBox_Replace%,Equal,True,Require,File,Replace.exe
+If,%pCheckBox_Sc%,Equal,True,Require,File,Sc.exe
+If,%pCheckBox_Sort%,Equal,True,Require,File,Sort.exe
+If,%pCheckBox_Subts%,Equal,True,Require,File,Subst.exe
+If,%pCheckBox_Tree%,Equal,True,Require,File,Tree.com
+If,%pCheckBox_Xcopy%,Equal,True,Require,File,Xcopy.exe
+//-
+If,%pCheckBox_NetSh%,Equal,True,Require,File,NetSh.exe
+If,%pCheckBox_IpConfig%,Equal,True,Require,File,IpConfig.exe
+//--
+IF,%pCheckBox_WOW64CmdFiles%-%TargetWOW64%,Equal,True-x86,Begin
+If,Not,%SourceArch%,Equal,x86,Begin
+Set,%PluginArch%,x86
+//[Process_Main_WOW64]
+If,%pCheckBox_Cmd_WOW64%,Equal,True,Require,File,Cmd.exe
+If,%pCheckBox_Attrib_WOW64%,Equal,True,Require,File,Attrib.exe
+If,%pCheckBox_Cacls_WOW64%,Equal,True,Require,File,Cacls.exe
+If,%pCheckBox_Chkdsk_WOW64%,Equal,True,Require,File,Chkdsk.exe
+If,%pCheckBox_Chkntfs_WOW64%,Equal,True,Require,File,Chkntfs.exe
+If,%pCheckBox_Choice_WOW64%,Equal,True,Require,File,Choice.exe
+If,%pCheckBox_Cipher_WOW64%,Equal,True,Require,File,Cipher.exe
+If,%pCheckBox_Comp_WOW64%,Equal,True,Require,File,Comp.exe
+If,%pCheckBox_Compact_WOW64%,Equal,True,Require,File,Compact.exe
+If,%pCheckBox_Convert_WOW64%,Equal,True,Require,File,Convert.exe
+If,%pCheckBox_Doskey_WOW64%,Equal,True,Require,File,Doskey.exe
+If,%pCheckBox_Expand_WOW64%,Equal,True,Require,File,Expand.exe
+If,%pCheckBox_Fc_WOW64%,Equal,True,Require,File,Fc.exe
+If,%pCheckBox_Find_WOW64%,Equal,True,Require,File,Find.exe
+If,%pCheckBox_Findstr_WOW64%,Equal,True,Require,File,Findstr.exe
+If,%pCheckBox_Format_WOW64%,Equal,True,Require,File,Format.com
+If,%pCheckBox_Fsutil_WOW64%,Equal,True,Require,File,Fsutil.exe
+If,%pCheckBox_Help_WOW64%,Equal,True,Require,File,Help.exe
+If,%pCheckBox_Label_WOW64%,Equal,True,Require,File,Label.exe
+If,%pCheckBox_Makecab_WOW64%,Equal,True,Require,File,Makecab.exe
+If,%pCheckBox_More_WOW64%,Equal,True,Require,File,More.com
+If,%pCheckBox_MountVol_WOW64%,Equal,True,Require,File,MountVol.exe
+If,%pCheckBox_Net_WOW64%,Equal,True,Require,File,Net.exe
+If,%OSFamily%%pCheckBox_Ntsd_WOW64%,Equal,NT5True,Require,File,Ntsd.exe
+If,%pCheckBox_Recover_WOW64%,Equal,True,Require,File,Recover.exe
+If,%pCheckBox_Reg_WOW64%,Equal,True,Require,File,Reg.exe
+If,%pCheckBox_Regsvr32_WOW64%,Equal,True,Require,File,Regsvr32.exe
+If,%pCheckBox_Replace_WOW64%,Equal,True,Require,File,Replace.exe
+If,%pCheckBox_Sc_WOW64%,Equal,True,Require,File,Sc.exe
+If,%pCheckBox_Sort_WOW64%,Equal,True,Require,File,Sort.exe
+If,%pCheckBox_Subts_WOW64%,Equal,True,Require,File,Subst.exe
+If,%pCheckBox_Xcopy_WOW64%,Equal,True,Require,File,Xcopy.exe
+//-
+If,%pCheckBox_NetSh_WOW64%,Equal,True,Require,File,NetSh.exe
+If,%pCheckBox_IpConfig_WOW64%,Equal,True,Require,File,IpConfig.exe
+End
+End
+
+[Process_Normal_A]
 IniRead,%ProjectDir%\script.project,IniVariables,LocalizeLID,%LocalizeLID%
 //--
 If,Not,ExistVar,%OS%,IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
@@ -189,7 +1286,7 @@ Set,%Dependencies_Disk_File_Common_Processed%,No
 Set,%Dependencies_ulibdll_Common%,No
 Run,%ScriptFile%,Process_Main
 //--
-IF,%pCheckBox_WOW64CmdFiles%%TargetWOW64%,Equal,Truex86,Begin
+IF,%pCheckBox_WOW64CmdFiles%-%TargetWOW64%,Equal,True-x86,Begin
 If,Not,%SourceArch%,Equal,x86,Run,%ScriptFile%,Process_WOW64
 End
 
@@ -211,6 +1308,7 @@ If,%pCheckBox_Cacls%,Equal,True,Run,%ScriptFile%,Dependencies_Cacls_EXE
 If,%pCheckBox_Chcp%,Equal,True,Run,%ScriptFile%,Dependencies_Chcp_COM
 If,%pCheckBox_Chkdsk%,Equal,True,Run,%ScriptFile%,Dependencies_Chkdsk_EXE
 If,%pCheckBox_Chkntfs%,Equal,True,Run,%ScriptFile%,Dependencies_Chkntfs_EXE
+If,%pCheckBox_Choice%,Equal,True,Run,%ScriptFile%,Dependencies_Choice_EXE
 If,%pCheckBox_Cipher%,Equal,True,Run,%ScriptFile%,Dependencies_Cipher_EXE
 If,%pCheckBox_Comp%,Equal,True,Run,%ScriptFile%,Dependencies_Comp_EXE
 If,%pCheckBox_Compact%,Equal,True,Run,%ScriptFile%,Dependencies_Compact_EXE
@@ -252,6 +1350,7 @@ If,%pCheckBox_Attrib_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Attrib_EXE
 If,%pCheckBox_Cacls_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Cacls_EXE
 If,%pCheckBox_Chkdsk_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Chkdsk_EXE
 If,%pCheckBox_Chkntfs_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Chkntfs_EXE
+If,%pCheckBox_Choice_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Choice_EXE
 If,%pCheckBox_Cipher_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Cipher_EXE
 If,%pCheckBox_Comp_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Comp_EXE
 If,%pCheckBox_Compact_WOW64%,Equal,True,Run,%ScriptFile%,Dependencies_Compact_EXE
@@ -324,6 +1423,9 @@ If,Not,ExistFile,%targetdirvalue%\untfs.dll,Require_FileQ,untfs.dll
 [Dependencies_CHKNTFS_EXE]
 If,Not,ExistFile,%targetdirvalue%\Chkntfs.exe,Require_FileQ,Chkntfs.exe
 If,Not,%Dependencies_Disk_File_Common_Processed%,Equal,Yes,Run,%ScriptFile%,Dependencies_Disk_File_Common
+
+[Dependencies_Choice_EXE]
+Require,File,Choice.exe
 
 [Dependencies_Cipher_EXE]
 If,Not,ExistFile,%targetdirvalue%\Cipher.exe,Require_FileQ,Cipher.exe
@@ -583,16 +1685,54 @@ lines=0
 0=eJztmgtMU1cYx2+BQi+0VIUIUoS+eAhkIOJEoFigvMpDRBBkMtlUxBcIlGlBhaESHzHgY1N0Cps4iE6NmXFhmpjJHBLZFF02o3PqFKfzQVCXyJj775yrNZP5QAdSFr7m19Pz3Xt7fvfcc89te8swPPLw8WHIs5Spc2GYoQzDuBNIislgHuZplLgwA2E8wXsEI7djTOS2fBNna9bEQSgwdbSyMJX2AbIXQL0kIoGpTMwS+KZO1owJ9Y8bybOM82KF0QobkVo6WBzmJBbHELRGBPXREKifVmkjinFhLaMUjDn1D3Xh24YqLexC5JbDgqUiicpZ5DzOSSg1NoKJl0omkoxTCO3ClALbcKW5iPoHSvmj/Z34KX4Sc72fhF08yoEtHTVMsNToIF6jh7OLA6WsPkTBTo5wYT2pf5KX5fKEEcJDca7WV+PcxL8Rbse6GiHu4ttRLuLraqnoYojcqibShY2j/hu1Dh1bYoejOt4ZVfFORkk14eMEGco0joh3t+4MklrUhysFU6j/wflR2DRFhZxwb+giR6IgihDdBW3fkU/IjfZFdfIbqCF9nOwpQqCz+TfhCsF06t9QXoCctAkQSVxgL/eAo9KzG3i9NuwVXhgi84IuxAM7iX8K8Sf936RRsJnU/+imErwbrwF5STADY2puXPD4nNdMP0fsTnZDipc17f+mUIP/5uXIiA175G+8ZI50wJ5JHsRf/KR/ZSkyYkL63K97/iMG/Af8B/wH/Af8X4O/Wq1GVVUVDh8+jL179yIhIeGJ5TRfXl7+1G1ra2tRVlYGGxsbrv4y0RP+GRkZ3Hu1tbVxnrSkUVxc/HgdGnRZ1239/f25Ze3t7bCzs3vcF93lv/pLpVKu/RMnTmDQoEFcjpYXLlzg8obcs6ivr+fWo/3/WsaP9kl/Q9/Tsut48vHxeW47ERERj/ve2tq6T/zpGKHxrGP5PBobG7lt9Xp9j7n3ln/X8a/VarnctWvXerTvX9afjhEaXecWul90PqLnB613nX9aWlq47XQ6XY+6v6y/wc0w39DjYDgm9Bx+2vunpqZyyy9fvgw+n9/n/nSOMeyDIeh89Kzzl87zFRUVSE9P73H3V/E3QMdKd+ad3mbGK/obCwP+xuq/tF/7N1SuwFStps/9XuwvwZ4Ur3/5n96chbplb6FgVgwK58Ri0bz410AcCrM00GeqUTQrEkVzSduzo7m6fqYGi2dH4f3sCKzMDsKqnACUztdgx3Q/bI+WYJKHEIFSi6ZQ5UP/1gpfdO5PAc6XAmcWAz8u6n3OLCEXwlXApXLSbhlwllwbz5H2L60BLpL8T8vIeiT/wwb8dXYryW3ElYpobPI3Q5KbAIEyQSPx537/bNWboa1MiM4PbNGxwQYd63uRdUMIg9FZ6QgcmQucIq4HkvBgmxtQFwS0rACa5uOPnZE4tWEiVq/ah4I1Z7Fr/Vocme2Lan8Gye7mxJ89GqYQTKP+3+cMwc+5LK7nMbiaw6A1uxeZx+AK4VoB+ez3RSZwshwPasJxc4kAdyuUwHerga/m4MZaP+zL1SAxqxHq7DvYnD8XByfaodKb+LtZIEjO7g+VCyKp/6FpI9CUaY9z2WY4n8fivE6I8/m9RJ4V18YlvS06984AGkpxtyoOrSXOuFnuR9xLyH5l4WqFGl8ujMOCBZ8jp7ARB/Kj0DBRhA99zZDqbnE7WM6uVMtY7o7w7jAR6hPtcVrnjRsbInCvajzat8T0Lh/F4/eaNNyvfRv3qifhztbxZD8SST0d93ek4c62JNzakoxL23PRUpmPxsJoNM4cgx0T3DDFW1QTJDOPDZZZ0VvdTNlYk30r1ewvVZOl+LpAhVPFUWgu0uDbXqS5KAxNugAcyxuD4++p0FwYiuP6cVz9WH4AmheqcLIoEGdLA9G0wBdVaQqsmyD7tSRCUpPoaZWgcrRyVDkMFlL/mUEmyuljmbS8ILNdlTEO52oTFDc/iXe+agzUjZff2hhlfy47wHTP1NFM5iRvnrtGzrdVy4Wsxn0Qd/90TpAJPyuAES0cZ+awNWG4fFeyq/LTRIXCGPgsyVW5Jd5RplOZOswOYMTvjDK1CHPiWUS+yeOnpJhw96/7Www1Z3j+ox/+d6CfBs/Dq1/7/2/iiS+3fwIlj7IDZc+UXHR0Kf8RfwPuCeB6eJzjT85N8XT29zOxMLHQy0zOZxgFIwrsU4XQIWzY5X8X/GBkYAIAIiwIUfYP4HUBAAAAAgAAACsAAABUBgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [DownloadXXX]
+IniRead,%ScriptFile%,Main,Interface,%InterfaceBefore%
 Call,DownloadXQ
+If,Not,%ProjectName%,Equal,Gena,Begin
+//We can not add settings to [Settings_Default] because of winbuilder MultiInterface Set Permanent bug - We also CAN NOT workaround here with P_Settings_Default - minor Workaround only change settings for Chkdsk and Chkntfs
+//--
+ChangeInterface,Write,Value,,Interface_ALL,pCheckBox_ALL_Chkdsk,True
+ChangeInterface,Write,Value,,Interface_ALL,pCheckBox_ALL_Chkntfs,True
+//------------
+//IniWrite,%ScriptFile%,Main,Interface,Interface
+//--
+//System,RefreshInterface
+//Run,%ScriptFile%,P_Settings_Default
+//--
+//IniWrite,%ScriptFile%,Main,Interface,Interface_ALL
+//------------
+End
+IniWrite,%ScriptFile%,Main,Interface,%InterfaceBefore%
+System,RefreshInterface
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1
+//We can not add settings to [Settings_Default] because of winbuilder MultiInterface Set Permanent bug - workaround Add here
+Run,%ScriptFile%,P_Settings_Default
+//-
+IniRead,%ScriptFile%,Main,Interface,%InterfaceBefore%
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web1|Web2
+IniWrite,%ScriptFile%,Main,Interface,%InterfaceBefore%
 
 [Settings_Default]
+//Limited number of Settings_Default because of winbuilder MultiInterface Set Permanent bug
+//--
+ChangeInterface,Write,Value,,Interface_ALL,pCheckBox_ALL_Chkdsk,True
+ChangeInterface,Write,Value,,Interface_ALL,pCheckBox_ALL_Chkntfs,True
+//-
+IniWrite,%ScriptFile%,Main,Interface,Interface_ALL
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[P_Settings_Default]
 Set,%pCheckBox_Chkdsk%,True,Permanent
 Set,%pCheckBox_Chkdsk_WOW64%,False,Permanent
 Set,%pCheckBox_Chkntfs%,True,Permanent
 Set,%pCheckBox_Chkntfs_WOW64%,False,Permanent
+Set,%pCheckBox_Choice%,True,Permanent
+Set,%pCheckBox_Choice_WOW64%,False,Permanent
+//--
+//ChangeInterface,Write,Value,,Interface_ALL,pCheckBox_ALL_Chkdsk,False
+//ChangeInterface,Write,Value,,Interface_ALL,pCheckBox_ALL_Chkntfs,False
 //--
 //Build PE in PE
 Set,%pCheckBox_WOW64CmdFiles%,True,Permanent
@@ -606,14 +1746,24 @@ Set,%pCheckBox_Reg%,True,Permanent
 Set,%pCheckBox_Reg_WOW64%,True,Permanent
 Set,%pCheckBox_Xcopy%,True,Permanent
 Set,%pCheckBox_Xcopy_WOW64%,True,Permanent
+//--
+IniWrite,%ScriptFile%,Main,Interface,Interface_ALL
+IniWrite,%ScriptFile%,Main,Selected,True
 
 [Settings_Default_Gena]
 //JFX: Gena - Avoid chkdsk on new disks
-Set,%pCheckBox_Chkdsk%,False,Permanent
-Set,%pCheckBox_Chkdsk_WOW64%,False,Permanent
+//Set,%pCheckBox_Chkdsk%,False,Permanent
+//Set,%pCheckBox_Chkdsk_WOW64%,False,Permanent
+ChangeInterface,Write,Value,,Interface,pCheckBox_Chkdsk,False
+ChangeInterface,Write,Value,,Interface,pCheckBox_Chkdsk_WOW64,False
 //Added Chkntfs False to avoid more ;)
-Set,%pCheckBox_Chkntfs%,False,Permanent
-Set,%pCheckBox_Chkntfs_WOW64%,False,Permanent
+//Set,%pCheckBox_Chkntfs%,False,Permanent
+//Set,%pCheckBox_Chkntfs_WOW64%,False,Permanent
+ChangeInterface,Write,Value,,Interface,pCheckBox_Chkntfs,False
+ChangeInterface,Write,Value,,Interface,pCheckBox_Chkntfs_WOW64,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
 
 [InterfaceEncoded]
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830

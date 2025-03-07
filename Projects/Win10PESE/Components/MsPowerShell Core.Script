@@ -1,0 +1,444 @@
+[Main]
+Title=PowerShell Core
+Type=Plugin
+Author=Lancelot
+Description=(NT6x) (x86/x64 v6.2.3.0 + Provide Files (RC (eg.7RC) Beta Nightly  etc.) Plugin Adds 'PowerShell Core' ( pwsh.exe ) . PowerShell Core is a cross-platform (Windows (Win7 and later), Linux, and macOS) automation and configuration tool/framework ......
+Credits=http://TheOven.org
+Version=004
+Download_Level=2
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.02.10
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Components/MsPowerShell%20Core.Script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/MsPowerShell%20Core.Script
+CertifiedBy=
+Certification=
+HistoryNotes01='PowerShell Core 6' support Win7 and Later - https://devblogs.microsoft.com/powershell/powershell-core-6-0-generally-available-ga-and-supported/
+HistoryNotes02=There are other Architectures available - macOS 32/64-bit // Linux 32/64-bit // Windows (arm) 32/64-bit // Raspbian (Stretch) 32/64-bit
+HistoryNotes03='PowerShell Core' does not require '.NET Framework' :)
+HistoryNotes04=https://aka.ms/powershell --Redirect--> https://docs.microsoft.com/en-us/powershell/
+HistoryNotes05=https://aka.ms/pscore6 -----Redirect--> https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6
+HistoryNotes06=Not powershell_ise.exe for PowerShell Core today ;) - https://stackoverflow.com/questions/52453260/powershell-ise-how-to-run-new-powershell-version -- Notepad.exe used instead
+HistoryNotes07=7.0RC2 -> Get-Disk Get-Volume commands do not work !
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2020.01.08 Plugin created
+History002=Lancelot Add to Servers - Date:2020.01.08 - Date:2020.01.10
+History003=Lancelot Add Associations // update textbox for rc.2 - Date:2020.02.09
+History004=Lancelot Add Environment // Add PowerShell cmd setting - Date:2020.02.10
+
+[Interface]
+pBevel1=pBevel1,1,12,-3,-3,83,70
+pCheckBox1=Desktop,1,3,1,1,59,14,False,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3=Quicklaunch,1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pTextBox1=,1,0,1,43,75,21,"Computer Management","__'Start Menu' Folder"
+Image_Software=,1,5,275,2,55,47
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+Button_Launch_Program=Launch,1,8,4,281,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,https://github.com/powershell/powershell
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Execution_Policy__Bevel=pBevel2,1,12,0,75,230,43
+Execution_Policy_ScrollBox=Unrestricted,1,4,72,94,150,21,Restricted,AllSigned,RemoteSigned,Unrestricted,Bypass
+Execution_Policy_CheckBox="Set Execution Policy for PowerShell Plugin:",1,3,3,76,223,18,True
+Provide_Files_TextLabel="Provide File(s): ",1,1,6,158,92,18,8,Bold
+Provide_File_Bevel=pBevel2,1,12,2,179,503,82
+ProvideFile_Opendir_Button=,1,8,4,184,20,20,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Folder"
+Button_Download_PowerShell_Core_6_x64_Web="Download PowerShell Core 6 x64",1,8,4,207,188,25,Download_PowerShell_Core_6_x64_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Download_PowerShell_Core_6_x64_P_B_,False,"__Download File"
+Button_Download_PowerShell_Core_6_x86_Web="Download PowerShell Core 6 x86",1,8,4,232,188,25,Download_PowerShell_Core_6_x86_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Download_PowerShell_Core_6_x86_P_B_,False,"__Download File"
+Custom_Bevel=pBevel2,1,12,195,184,305,73
+Custom_CheckBox="Provide Custom:",1,3,201,188,106,18,False
+Button_Download_PowerShell_Core_Custom_x64_Web=,1,8,198,208,22,22,Download_PowerShell_Core_Custom_x64_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Download_PowerShell_Core_Custom_x64_P_B_,False,"__Download x64 File"
+Button_Download_PowerShell_Core_Custom_x86_Web=,1,8,198,233,22,22,Download_PowerShell_Core_Custom_x86_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Download_PowerShell_Core_Custom_x86_P_B_,False,"__Download x86 File"
+Custom_x64_TextBox=,1,0,256,208,240,21,PowerShell-7.0.0-rc.2-win-x64.zip
+Custom_x86_TextBox=,1,0,256,233,240,21,PowerShell-7.0.0-rc.2-win-x86.zip
+Custom_x64_TextLabel="x64 :",1,1,221,212,28,18,8,Normal
+Custom_x86_TextLabel="x86 :",1,1,221,236,28,18,8,Normal
+Get_Disk_Volume_TextLabel="Some commands Requires: MMC etc.#$xeg.#$xGet-Disk#$xGet-Volume",1,1,255,54,212,60,8,Bold
+ProvideFiles_Info_TextLabel="v6: ~55 MB zip (~ 140 MB)#$xCustom ~100 MB zip (~ 225 MB)",1,1,104,147,163,27,8,Normal
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=PowerShell Core
+%ProgramEXE%=pwsh.exe
+%ProgramEXEx64%=%ProgramEXE%
+%ProgramFolder%=PowerShell_Core_x86
+%ProgramFolderx64%=PowerShell_Core_x64
+%SetupFile%=%SetupFilex86%
+%SetupFilex86%=PowerShell-6.2.3-win-x86.zip
+%SetupFilex64%=PowerShell-6.2.3-win-x64.zip
+%ProvideFiles%=%GlobalTemplates%\PowerShell_Core
+%Version_Name%=6.2.3
+
+[FileWeb]
+%FileWeb_x86%=https://github.com/PowerShell/PowerShell/releases/download/v%Version_Name%/PowerShell-%Version_Name%-win-x86.zip
+%FileWeb_x64%=https://github.com/PowerShell/PowerShell/releases/download/v%Version_Name%/PowerShell-%Version_Name%-win-x64.zip
+
+[Process]
+//There are other Architectures available - macOS 32/64-bit // Linux 32/64-bit // Windows (arm) 32/64-bit // Raspbian (Stretch) 32/64-bit
+//Arch,x86|x64
+Echo,"Processing %ScriptTitle%..."
+//-
+Call,TargetVersion,,1x
+//'PowerShell Core 6' support Win7 and Later
+If,Not,%TargetVersion1%,Bigger,5,Exit,"'%ProgramTitle%' Plugin Designed for Vista and Later - Exit"
+//--
+If,%Custom_CheckBox%,Equal,True,Run,%ScriptFile%,PluginSetCustom
+//--
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,PluginSetx64
+//-
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+If,%Custom_CheckBox%,Equal,False,Begin
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,Download_PowerShell_Core_6_x64_P
+If,%SourceArch%,Equal,x86,Run,%ScriptFile%,Download_PowerShell_Core_6_x86_P
+End
+If,%Custom_CheckBox%,Equal,True,Begin
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,Download_PowerShell_Core_Custom_x64_P
+If,%SourceArch%,Equal,x86,Run,%ScriptFile%,Download_PowerShell_Core_Custom_x86_P
+End
+End
+//--
+If,%SetupFile%-,Equal,-,Set,%SetupFile%,/
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Exit,"'%ProgramTitle%' - %ProvideFiles%\%SetupFile% Not Found - Exit"
+//--
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+//Run,%ScriptFile%,Extract
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+//DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+Run,%ScriptFile%,Extract_Target
+//--
+//PS: set-executionpolicy
+If,%Execution_Policy_CheckBox%,Equal,True,Begin
+Set,%powershell_config_json%,%Target_Prog%\%ProgramFolder%\powershell.config.json
+Run,%ScriptFile%,ExecutionPolicy_Config_json
+End
+//-
+//PS: set-executionpolicy -Scope CurrentUser
+//I guess Save settings at Users\Default\AppData\Local\Microsoft\PowerShell
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+//Registry - Use Utils\RegCPE Plugin - Copy/Paste Registry lines here.
+RegHiveLoad,Tmp_Software,%RegSoftware%
+//---------------------
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ps1,,Microsoft.PowerShellScript.1
+//-
+//RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellScript.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellScript.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-103"
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellScript.1,FriendlyTypeName,"@#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q,-103"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\DefaultIcon,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe#$q,1"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell,,Open
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\Open\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q #$q#$p1#$q"
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\0,MUIVerb,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe #$q,-108"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\0\Command,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe#$q #$q-Command#$q #$qif((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & '#$p1'#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\Edit,NoSmartScreen,
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\Edit\Command,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe#$q #$q#$p1#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\Edit\Command,,"#$qNotePad.exe#$q #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellScript.1\Shell\Open\Command,,"#$qC:\Windows\System32\notepad.exe#$q #$q#$p1#$q"
+//---------------------
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.psm1,,Microsoft.PowerShellScript.1
+//-
+//RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellModule.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellModule.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-106"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell,,Open
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Edit,NoSmartScreen,
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Edit\Command,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe#$q #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Open\Command,,"#$qC:\Windows\System32\notepad.exe#$q #$q#$p1#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Open\Command,,"#$qNotePad.exe#$q #$q#$p1#$q"
+//---------------------
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ps1xml,,Microsoft.PowerShellXMLData.1
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.ps1xml,PerceivedType,Text
+//-
+RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellXMLData.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellXMLData.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-105"
+//---------------------
+//PSC1 files are "PowerShell Console files." They are XML configuration files that tell PowerShell which snapins to load automatically. - https://stackoverflow.com/questions/7502019/so-what-is-special-about-powershell-psc1-files
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.psc1,,Microsoft.PowerShellConsole.1
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.psc1,"Content Type",application/PowerShell
+//-
+//RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellConsole.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellConsole.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-107"
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellConsole.1\Shell\0,MUIVerb,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-112"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellConsole.1\Shell\0\Command,,"#$qC:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe#$q -p #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellConsole.1\Shell\Open\Command,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe#$q -p #$q#$p1#$q"
+RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellConsole.1\Shell\Open\Command,,"#$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q -p #$q#$p1#$q"
+//---------------------
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\.psd\PersistentHandler,,{098f2470-bae0-11cd-b579-08002b30bfeb}
+//---------------------
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.psd1,,Microsoft.PowerShellData.1
+//-
+//RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellData.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellData.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-104"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellData.1\Shell,,Open
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellData.1\Shell\Edit,NoSmartScreen,
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellData.1\Shell\Edit\Command,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe#$q #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellData.1\Shell\Open\Command,,"#$qC:\Windows\System32\notepad.exe#$q #$q#$p1#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Open\Command,,"#$qNotePad.exe#$q #$q#$p1#$q"
+//---------------------
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.psm1,,Microsoft.PowerShellModule.1
+//-
+//RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellModule.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellModule.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-106"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell,,Open
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Edit,NoSmartScreen,
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Edit\Command,,"#$qC:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe#$q #$q#$p1#$q"
+//RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Open\Command,,"#$qC:\Windows\System32\notepad.exe#$q #$q#$p1#$q"
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellModule.1\Shell\Open\Command,,"#$qNotePad.exe#$q #$q#$p1#$q"
+//---------------------
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.pssc,,Microsoft.PowerShellSessionConfiguration.1
+RegWrite,HKLM,0x1,Tmp_Software\Classes\.pssc,PerceivedType,Text
+//-
+//RegWrite,HKLM,0x4,Tmp_Software\Classes\Microsoft.PowerShellSessionConfiguration.1,EditFlags,131072
+//RegWrite,HKLM,0x2,Tmp_Software\Classes\Microsoft.PowerShellSessionConfiguration.1,FriendlyTypeName,"@#$q#$psystemroot#$p\system32\windowspowershell\v1.0\powershell.exe#$q,-121"
+//Manual Add to open with Notepad
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellSessionConfiguration.1\Shell,,Open
+RegWrite,HKLM,0x1,Tmp_Software\Classes\Microsoft.PowerShellSessionConfiguration.1\Shell\Open\Command,,"#$qNotePad.exe#$q #$q#$p1#$q"
+//---------------------
+RegHiveUnLoad,Tmp_Software
+//---------------------
+RegHiveLoad,Tmp_Default,%RegDefault%
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,ColorTable05,5645313
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,ColorTable06,15789550
+//RegWrite,HKLM,0x1,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,FaceName,"Lucida Console"
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,FontFamily,54
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,FontWeight,400
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,PopupColors,243
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,QuickEdit,1
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,ScreenBufferSize,196608120
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,ScreenColors,86
+//RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_System32_WindowsPowerShell_v1.0_powershell.exe,WindowSize,3276920
+//-
+Set,%t%,%PE_Programs%\%ProgramFolder%\%ProgramEXE%
+StrFormat,Replace,%t%,\,_,%t%
+StrFormat,Replace,%t%,"%",#$p,%t%
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,ColorTable05,5645313
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,ColorTable06,15789550
+RegWrite,HKLM,0x1,Tmp_Default\Console\%t%,FaceName,"Lucida Console"
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,FontFamily,54
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,FontWeight,400
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,PopupColors,243
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,QuickEdit,1
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,ScreenBufferSize,196608120
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,ScreenColors,86
+RegWrite,HKLM,0x4,Tmp_Default\Console\%t%,WindowSize,3276920
+RegHiveUnLoad,Tmp_Default
+Require,Font,lucon.ttf
+//---------------------
+//Add PowerShell Core to Environment
+RegHiveLoad,Tmp_System,%RegSystem%
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,%t_Path_A%
+StrFormat,Replace,%t_Path_A%,%PE_Programs%\%ProgramFolder%,"",%t_Path_R%
+If,%t_Path_A%,Equal,%t_Path_R%,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x2,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,"%t_Path_A%;%PE_Programs%\%ProgramFolder%"
+End
+RegRead,HKLM,"Tmp_System\ControlSet001\Control\Session Manager\Environment",Path,%t_Path_Final%
+RegHiveUnLoad,Tmp_System
+Echo,"Path_A:%t_Path_A%"
+Echo,"Path_R:%t_Path_R%"
+Echo,"Path_Final:%t_Path_Final%"
+//---------------------
+//-
+//Test ps1 at desktop ;)
+Set,%t%,1
+Set,%t%,0
+If,%t%,Equal,1,Begin
+Call,TargetDesktop
+Set,%w%,%TargetDesktop%\Test_ps1.ps1
+FileCreateBlank,%w%
+TxtAddLine,%w%,"Get-Disk",Append
+TxtAddLine,%w%,"Get-Volume",Append
+TxtAddLine,%w%,"pause",Append
+End
+//-
+//https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6
+//RegHiveLoad,Tmp_Software,%RegSoftware%
+//RegWrite,HKLM,0x1,Tmp_Software\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell,Path,%PE_Programs%\%ProgramFolder%\%ProgramEXE%
+//RegWrite,HKLM,0x1,Tmp_Software\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell,ScriptedDiagnostics,%Execution_Policy_ScrollBox%
+//ExecutionPolicy
+//RegWrite,HKLM,0x1,Tmp_Software\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell,ExecutionPolicy,%Execution_Policy_ScrollBox%
+//RegHiveUnLoad,Tmp_Software
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+
+[ExecutionPolicy_Config_json]
+//Start this section with File Location: %powershell_config_json% (eg. %Target_Prog%\%ProgramFolder%\powershell.config.json )
+Set,%w%,%powershell_config_json%
+If,ExistFile,%w%,Begin
+Retrieve,Md5,%w%,%Before%
+//-
+//PS 6
+TxtReplace,%w%,"#$qMicrosoft.PowerShell:ExecutionPolicy#$q:#$qRemoteSigned#$q","#$qMicrosoft.PowerShell:ExecutionPolicy#$q:#$q%Execution_Policy_ScrollBox%#$q"
+//-
+//PS 7
+TxtReplace,%w%,"#$qMicrosoft.PowerShell:ExecutionPolicy#$q: #$qRemoteSigned#$q","#$qMicrosoft.PowerShell:ExecutionPolicy#$q: #$q%Execution_Policy_ScrollBox%#$q"
+//-
+Retrieve,Md5,%w%,%After%
+If,%Before%,Equal,%After%,Echo,"PowerShell Plugin - Can NOT Set ExecutionPolicy - powershell.config.json NOT CHANGED",Warn
+End
+Else,Echo,"PowerShell Plugin - Can NOT Set ExecutionPolicy - powershell.config.json NOT FOUND",Warn
+
+[Extract_Target]
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%SetupFile%#$q -y -o#$q%Target_Prog%\%ProgramFolder%#$q"
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+//Extracting-7z-Finish
+
+[PluginSetCustom]
+Set,%SetupFilex86%,%Custom_x86_TextBox%
+Set,%SetupFilex64%,%Custom_x64_TextBox%
+
+[PluginSetx64]
+Set,%ProgramFolder%,%ProgramFolderx64%
+//Set,%ProgramEXE%,%ProgramEXEx64%
+Set,%SetupFile%,%SetupFilex64%
+
+[Launch_Program]
+Call,HostOSArch
+If,%Custom_CheckBox%,Equal,True,Run,%ScriptFile%,PluginSetCustom
+//--
+If,%HostOSArch%,Equal,x64,Run,%ScriptFile%,PluginSetx64
+//--
+Run,%ScriptFile%,Extract
+//-
+//PS: set-executionpolicy
+If,%Execution_Policy_CheckBox%,Equal,True,Begin
+Set,%powershell_config_json%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\powershell.config.json
+Run,%ScriptFile%,ExecutionPolicy_Config_json
+End
+//-
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+
+[ProvideFiles_OpenDir_P_B]
+Call,OpenDir,%ProvideFiles%
+
+[Download_PowerShell_Core_6_x64_P_B]
+Run,%ScriptFile%,Download_PowerShell_Core_6_x64_P
+
+[Download_PowerShell_Core_6_x64_P]
+AddVariables,%ScriptFile%,FileWeb
+Call,Download,%ProvideFiles%\,%FileWeb_x64%
+
+[Download_PowerShell_Core_6_x86_P_B]
+Run,%ScriptFile%,Download_PowerShell_Core_6_x86_P
+
+[Download_PowerShell_Core_6_x86_P]
+AddVariables,%ScriptFile%,FileWeb
+Call,Download,%ProvideFiles%\,%FileWeb_x86%
+
+[Download_PowerShell_Core_Custom_x64_P_B]
+Run,%ScriptFile%,Download_PowerShell_Core_Custom_x64_P
+
+[Download_PowerShell_Core_Custom_x64_P]
+Set,%Custom_TextBoxV%,%Custom_x64_TextBox%
+Run,%ScriptFile%,Download_PowerShell_Core_Custom_P,x64
+
+[Download_PowerShell_Core_Custom_x86_P_B]
+Run,%ScriptFile%,Download_PowerShell_Core_Custom_x86_P
+
+[Download_PowerShell_Core_Custom_x86_P]
+Set,%Custom_TextBoxV%,%Custom_x86_TextBox%
+Run,%ScriptFile%,Download_PowerShell_Core_Custom_P,x86
+
+[Download_PowerShell_Core_Custom_P]
+//PowerShell-<version>-win-<os-arch>  ---https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6
+If,Not,%Custom_TextBoxV%,Equal,-,Begin
+StrFormat,Split,%Custom_TextBoxV%,-,2,%Version_Name%
+StrFormat,Split,%Custom_TextBoxV%,-,0,%Total%
+Set,%t%,%Total%
+StrFormat,Dec,%t%,2
+If,Not,%Version_Name%-,Equal,-,Begin
+If,%Total%,Bigger,3,Begin
+Loop,%ScriptFile%,Find_Custom_Version_Name_Loop,3,%t%
+End
+//-
+AddVariables,%ScriptFile%,FileWeb
+If,#1,Equal,x64,Set,%FileWeb%,%FileWeb_x64%
+If,#1,Equal,x86,Set,%FileWeb%,%FileWeb_x86%
+Call,Download,%ProvideFiles%\,%FileWeb%
+//-
+End
+End
+
+[Find_Custom_Version_Name_Loop]
+StrFormat,Split,%Custom_TextBoxV%,-,#c,#9
+Set,%Version_Name%,%Version_Name%-#9
+
+[AuthorEncoded]
+Logo=pwsh4848.ico
+pwsh4848.ico=2265,3020
+
+[InterfaceEncoded]
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Mazenl77-NX11-Internet-Real_016_016.bmp=909,1212
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-AuthorEncoded-pwsh4848.ico]
+lines=0
+0=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
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp]
+lines=0
+0=eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

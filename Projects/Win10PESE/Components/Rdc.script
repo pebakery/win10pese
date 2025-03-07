@@ -4,22 +4,38 @@ Type=Plugin
 Author=NightMan, JonF, Joshua, ChrisR
 Description=Adds Remote Desktop Connection client in PE1 to PE5.
 Credits=2aCD
-Version=028
+Version=036
 Download_Level=1
 Level=3
-Selected=False
+Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.02.08
+Date=2019.04.01_10:57.15 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Rdc.script
 Web2=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/Network/Rdc.script
-Web3=http://yomi.cwcodes.net/Yomi/ComponentsY/Core/1%20System/Network/Rdc.script
+Web3=http://yomi.cwcodes.net/Yomi/ComponentsY/Rdc.script
 CertifiedBy=
 Certification=
 HistoryNotes01=2aCD : NLA will not work in Win7PE. We have always disabled NLA as default on all clients and RDP works also from Win7PE for all 1000 clients (Win7,and XPSP3) RDP 6.1 must be installed on XPSP3.
+HistoryNotes02=noelBlanc: MiniNT key trick ( remove/start/create HKLM\SYSTEM\CurrentControlSet\Control\MiniNT .. ) fix RDC connect to computer with GUI - Reply 20 http://theoven.org/index.php?topic=2543.msg29084#msg29084
+HistoryNotes02a=slore: patch the Windows.UI.CredDialogController.dll for MiniNT also fix RDC connect to computer with GUI +  Bob.Omb: also works for mapping network drives. - slore Reply 29 http://theoven.org/index.php?topic=2543.msg30143#msg30143 // Bob.Omb reply 32 http://theoven.org/index.php?topic=2543.msg30156#msg30156
+HistoryNotes02b1=slore: reply 37 http://theoven.org/index.php?topic=2543.msg30167#msg30167
+HistoryNotes02b2=Network Level Authentication of RDP works by SYSTEM account with Credentials Console.
+HistoryNotes02b3=Access share folders or mstsc.exe work by Credentials Console in SYSTEM account.
+HistoryNotes02b4=___rename MiniNT key or use patched.dll make it force to use Credentials GUI, got error with missing files.
+HistoryNotes02b5=____Enable "Switch to Admin" option, the Credentials GUI will work for both SYSTEM/Administrator account.
+HistoryNotes02b6=_____So, the "Credentials GUI" plugin/option needs go with "Switch to Admin" plugin, or add the required files/registy items(which included in Swith To Admin plugin).
+HistoryNotes02b7=slore: reply 40
+HistoryNotes02b8=I just point out that if you do the MiniNT modify, it need "Switch To Admin" plugin's files/registy items(no need admin account),
+HistoryNotes02b9=if people didn't select it, don't apply the patch directly not only check the file exists, otherwise make the Credential Dialog(console one) break.
+HistoryNotes02b10=slore: reply 8 http://TheOven.org/index.php?topic=2785.msg32687#msg32687
+HistoryNotes02b11=patch: Windows.UI.CredDialogController.dll" unchecked with/without login as admin plugin, the Cred Console Dialog be OK to use.
+HistoryNotes02b12=patch: Windows.UI.CredDialogController.dll" checked without login as admin plugin  => bad effect as report
+HistoryNotes02b13=patch: Windows.UI.CredDialogController.dll" checked with login as admin plugin => Cred Window Dialog shows and work like normal Windows
+HistoryNotes03=map drives works with RDP (Patched) + "Logon As Admin" -> Drakkn http://TheOven.org/index.php?topic=2778.0
 History008=Lancelot - making Plugin compatible with pe2-3
 History016=Lancelot - made Plugin compatible to pe1/2/3 following JonF / NightMan rdc Plugin for vistape-capi // speed up by basic splitting (thanks to wb development <-- sarcasm) to ease Plugin maintance
 History017=2aCD -  RDC works without installed directx with some additional files in win7.
@@ -33,7 +49,15 @@ History024=ner0 - Added default.rdp (empty) with "authentication level:i:0" not 
 History025=ChrisR - Option for NLA support. Addition for new Windows UI Authentication on Win10 build 14393 - Date:2016.09.01
 History026=ChrisR - Add System Remote Properties (PEX) - Date:2016.09.08
 History027=Lancelot Added Components_PluginCache_Extract - Date:2016.11.09
-History028=Lanncelot Add SE Desktop.ini - Date:2017.02.08
+History028=Lancelot Add SE Desktop.ini - Date:2017.02.08
+History029=Lancelot Add BuildClass 3 support - Date:2018.10.09
+History030=Lancelot Yomi\ComponentsY - Date:2018.10.23
+History031=Bob.Omb - Updated for v1709+ following slore - http://theoven.org/index.php?topic=2543.msg30143#msg30143 - Date:2018.12.22
+History032=Lancelot continue update 031 with slore advice ... (patch optional + info for patch requirement + additional shortcut option for MiniNT trick + History notes...) - Date:2018.12.26
+History033=Bob.Omb - System/Admin compatibility fix - Date:2019.01.02
+History034=Lancelot Add BuildClass - Date:2019.01.14 - Date:2019.01.17
+History035=Lancelot Set Default True -> SE: to get Patch available on default build -- Gena: To desmonstrate RDP available. - Date:2019.02.28 // Add Drakkn topic to HistoryNotes - Date:2019.03.25
+History036=Lancelot Get NLAsupport_CheckBox first check %ProjectDir%\Finals\9-Administrator.Script Plugin available - ira http://TheOven.org/index.php?topic=2782 - Date:2019.03.28 // Add more slore HistoryNotes - Date:2019.04.01
 
 [Interface]
 pBevel1=pBevel1,1,12,6,8,161,147
@@ -42,7 +66,7 @@ pCheckBox2="Start menu shortcut",1,3,11,51,122,18,True
 pCheckBox3="Quicklaunch shortcut",1,3,11,32,122,18,False
 pTextBox1="Start Menu folder:",1,0,14,88,146,21,"Network\Remote Desktop"
 pTextBox2="Custom Shortcut name:",1,0,14,128,146,21,
-NLAsupport_CheckBox="Connections with Network Level Authentication",1,3,11,160,265,18,False
+NLAsupport_CheckBox="Connections with Network Level Authentication",1,3,11,160,265,18,True
 NLAsupport_TextLabel="* NLA support requires Logon as Admin",1,1,27,176,205,18,8,Normal
 NLAsupport_TextLabel2="To switch Online between NLA support On/Off,#$xedit Documents\Default.rdp and change enablecredsspsupport:i:[0|1]",1,1,11,190,365,28,8,Normal
 pImage1=RDC.jpg,1,5,176,8,160,97,
@@ -53,6 +77,9 @@ WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?boar
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+MiniNT_CheckBox="Use MiniNT CMD Shortcuts",1,3,192,114,151,18,False
+Patch_Windows_UI_CredDialogController_dll_CheckBox="Patch: Windows.UI.CredDialogController.dll",1,3,192,133,240,18,True
+pTextLabel2="Patch: Requires Admin plugin#$x(no need Admin Account)",1,1,301,150,149,29,8,Normal
 
 [Variables]
 %ProgramTitle%=Remote Desktop
@@ -85,10 +112,10 @@ If,%pCheckBox1%%pTextBox2%,Equal,True,Add,DesktopIni,QuickLaunch,,,%shname%.lnk,
 If,%AutoConnect_CheckBox%,Equal,True,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\mstsc.exe,RemoteConnect,,%IP_TextBox%
 
 [Process_PEX]
-If,Not,ExistFile,%Source_Sys%\mstsc.exe,Exit,"Remote Desktop Connection is NOT for Waik Builds"
 IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
 RunFrom,Ram
 Require_FileQ,mstsc.exe
+If,Not,ExistFile,%Target_Sys%\mstsc.exe,Exit,"Remote Desktop Connection is NOT for Waik Builds"
 Require_FileQ,mstscax.dll
 Require_FileQ,msacm32.dll
 // ---add 2aCD---
@@ -101,6 +128,7 @@ Call,TargetVersion
 Call,CompareVersions,%TargetVersion%,6.2.9200.00000,TC_Win80
 Call,CompareVersions,%TargetVersion%,6.3.9600.00000,TC_Win81
 Call,CompareVersions,%TargetVersion%,10.0.14392.0,TC_Win10_v1607
+Call,CompareVersions,%TargetVersion%,10.0.16299.0,TC_Win10_v1709
 // For versions before Win8.1, aaclient.dll is required to get the setting button in tab advanced
 If,%TC_Win81%,Equal,Smaller,Require_FileQ,aaclient.dll
 //--
@@ -126,11 +154,44 @@ End
 If,%TC_Win10_v1607%,Equal,Bigger,Begin
 Require_FileQ,CredentialUIBroker.exe
 Require_FileQ,Windows.UI.Cred.dll
+//-
+//Since Windows.UI.CredDialogController.dll patched better to add at each execution of current plugin:
+Call,FileDelete,%Target_Sys%\Windows.UI.CredDialogController_Original.dll
+Call,FileDelete,%Target_Sys%\Windows.UI.CredDialogController_org.dll
+Call,FileDelete,%Target_Sys%\Windows.UI.CredDialogController_Patched_NiniNT.dll
+//-
+Call,FileDelete,%Target_Sys%\Windows.UI.CredDialogController.dll
 Require_FileQ,Windows.UI.CredDialogController.dll
+//-
 Require_FileQ,Windows.Internal.UI.Logon.ProxyStub.dll
 //-
 If,Not,ExistDir,%Target_Win%\SystemResources,DirMake,%Target_Win%\SystemResources
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistDir,%Target_Win%\SystemResources\Windows.UI.Cred,DirMake,%Target_Win%\SystemResources\Windows.UI.Cred
+Require,FileList,,Require_FileList_TC_Win10_v1607_Bigger
+End
+Else,Begin
 DirCopy,%Source_Win%\SystemResources\Windows.UI.Cred,%Target_Win%\SystemResources
+End
+End
+If,%TC_Win10_v1709%,Equal,Bigger,Begin
+//-
+IniRead,%ProjectDir%\Finals\9-Administrator.Script,Main,Selected,%IsAdmin%
+If,%IsAdmin%,Equal,True,Begin
+If,%Patch_Windows_UI_CredDialogController_dll_CheckBox%,Equal,True,Begin
+//slore: Windows.UI.CredDialogController.dll patch requires files "Switch To Admin" plugin's files/registy items addition to the wim (Switching to Admin not requires only files/registry)
+If,Not,ExistFile,%ProjectTemp%\binmay_M\HostOS\binmay.exe,Run,%ScriptFile%,binmay_Ready
+//rem Patch Windows.UI.CredDialogController.dll to use the Credentials Window than Credentials  Console
+//rem M.i.n.i.N.T=> N.i.n.i.N.T
+//-
+FileCopy,%Target_Sys%\Windows.UI.CredDialogController.dll,%Target_Sys%\Windows.UI.CredDialogController_Original.dll
+FileRename,%Target_Sys%\Windows.UI.CredDialogController.dll,%Target_Sys%\Windows.UI.CredDialogController_org.dll
+ShellExecute,Hide,%ProjectTemp%\binmay_M\HostOS\binmay.exe,"-i #$q%Target_Sys%\Windows.UI.CredDialogController_org.dll#$q -o #$q%Target_Sys%\Windows.UI.CredDialogController.dll#$q -s #$q5C004D0069006E0069004E0054000000#$q -r #$q5C004E0069006E0069004E0054000000#$q"
+Call,FileDelete,%Target_Sys%\Windows.UI.CredDialogController_org.dll
+FileCopy,%Target_Sys%\Windows.UI.CredDialogController.dll,%Target_Sys%\Windows.UI.CredDialogController_Patched_NiniNT.dll
+End
+End
+//-
 End
 // Seems not required
 //FileCopy,%Source_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\Microsoft-Windows-RemoteDesktop-UserModeRDProtocol-Package*,%Target_Sys%\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\
@@ -178,8 +239,13 @@ RegHiveUnLoad,Tmp_System
 //ChrisR: For NLA support, Add Default.rdp with "authentication level:i:2" and "enablecredsspsupport:i:1" - https://msdn.microsoft.com/en-us/library/gg156129(v=winembedded.70).aspx
 ExtractFile,%ScriptFile%,Folder,Default.rdp,%TargetProfilesUserDir%\Documents
 If,%NLAsupport_CheckBox%,Equal,True,Begin
+If,ExistFile,%ProjectDir%\Finals\9-Administrator.Script,Begin
+IniRead,%ProjectDir%\Finals\9-Administrator.Script,Main,Selected,%IsAdmin%
+If,%IsAdmin%,Equal,True,Begin
 TXTReplace,%TargetProfilesUserDir%\Documents\Default.rdp,enablecredsspsupport:i:0,enablecredsspsupport:i:1
 TXTReplace,%TargetProfilesUserDir%\Documents\Default.rdp,"authentication level:i:0","authentication level:i:2"
+End
+End
 End
 //--
 //Win10 : [LocalizedFileNames] @%SystemRoot%\system32\mstsc.exe,-4000
@@ -195,6 +261,26 @@ RegHiveLoad,Tmp_Default,%RegDefault%
 RegWrite,HKLM,0x2,Tmp_Default\Software\Microsoft\Windows\CurrentVersion\RunOnce,RemoteConnect,"#$pSystemRoot#$p\system32\mstsc.exe #$q%IP_TextBox%#$q"
 RegHiveUnLoad,Tmp_Default
 End
+//---------
+If,%TC_Win10_v1709%,Equal,Bigger,Begin
+IniRead,%ProjectDir%\Finals\9-Administrator.Script,Main,Selected,%IsAdmin%
+If,%IsAdmin%,Equal,True,Begin
+If,%MiniNT_CheckBox%,Equal,True,Begin
+Call,IniExtractSectionN,,mstsc_MiniNT_CMD_Workaround,%Target_Sys%\mstsc_MiniNT.cmd
+Require,File,reg.exe
+Require,File,HideRun.exe
+//Require,File,sleep.exe
+Set,%shname%,"%shname% CMD MiniNT"
+//Set,%ProgramEXE%,mstsc_MiniNT.cmd
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,#$pSystemRoot#$p\system32\HideRun.exe,%shname%,#$q#$pSystemRoot#$p\system32#$q,"/w #$q#$pSystemRoot#$p\system32\mstsc_MiniNT.cmd#$q",#$pSystemRoot#$p\system32\mstsc.exe
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%smfname%,#$pSystemRoot#$p\system32\HideRun.exe,%shname%,#$q#$pSystemRoot#$p\system32#$q,"/w #$q#$pSystemRoot#$p\system32\mstsc_MiniNT.cmd#$q",#$pSystemRoot#$p\system32\mstsc.exe
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch,,#$pSystemRoot#$p\system32\HideRun.exe,%shname%,#$q#$pSystemRoot#$p\system32#$q,"/w #$q#$pSystemRoot#$p\system32\mstsc_MiniNT.cmd#$q",#$pSystemRoot#$p\system32\mstsc.exe
+End
+End
+End
+
+[Require_FileList_TC_Win10_v1607_Bigger]
+\Windows\SystemResources\Windows.UI.Cred\*
 
 [DownloadXXX]
 Call,DownloadXQ
@@ -202,8 +288,47 @@ Call,DownloadXQ
 [UploadXXX]
 Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2|Web3
 
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
 [Settings_Default_Yomi]
 IniWrite,%ScriptFile%,Main,Selected,False
+
+[mstsc_MiniNT_CMD_Workaround]
+:: noelBlanc "the key minint". After rename it, i can see the GUI and connect to my computer under windows 10.  reply 20 http://theoven.org/index.php?topic=2543.msg29084#msg29084
+:: slore : MiniNT key is global, be checked by many exes, dlls. changing cmd may cause unexpected results for other features when you using mstsc.exe. reply 35 http://theoven.org/index.php?topic=2543.msg30160#msg30160
+:: ---
+@Echo Off
+Reg.exe Copy HKLM\SYSTEM\CurrentControlSet\Control\MiniNT HKLM\SYSTEM\CurrentControlSet\Control\MiniNT_Backup /s /f
+Reg.exe Delete HKLM\SYSTEM\CurrentControlSet\Control\MiniNT /f
+cls
+Echo.
+Echo.
+Echo MiniNT Key trick
+Echo.
+Echo.
+Start "MiniNT_CMD_Workaround" /Wait /D "%SystemRoot%\System32" "%SystemRoot%\System32\mstsc.exe"
+::Start "MiniNT_CMD_Workaround" /D "%SystemRoot%\System32" "%SystemRoot%\System32\mstsc.exe"
+::sleep 60 seconds and revert back to MiniNT to avoid other exes effected
+::sleep 60
+::pause
+Reg.exe Copy HKLM\SYSTEM\CurrentControlSet\Control\MiniNT_Backup HKLM\SYSTEM\CurrentControlSet\Control\MiniNT /s /f
+Reg.exe Delete HKLM\SYSTEM\CurrentControlSet\Control\MiniNT_Backup /f
+Exit
+
+[binmay_Ready]
+If,ExistFile,%ProjectDir%\Utils\Utils_Tools_001.Script,Run,%ProjectDir%\Utils\Utils_Tools_001.Script,Extract_binmay,%ProjectDir%\Utils\Utils_Tools_001.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_001.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Extract_binmay,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script
+End
+If,Not,ExistFile,%ProjectTemp%\binmay_M\HostOS\binmay.exe,Call,Echo,"Halt: Can not get binmay.exe Ready.",Warn,,MessageError,,Halt
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0

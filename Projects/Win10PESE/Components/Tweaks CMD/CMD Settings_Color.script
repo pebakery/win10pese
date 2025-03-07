@@ -1,0 +1,672 @@
+[Main]
+Title=CMD Settings Color
+Type=Plugin
+Author=Lancelot
+Description=Change color of cmd screen
+Credits=CWorks
+Version=008
+Download_Level=1
+Level=3
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=388
+Date=2019.02.02
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks%20CMD/CMD%20Settings_Color.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks%20CMD/CMD%20Settings_Color.script
+Web3=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks%20CMD/CMD%20Settings_Color.script
+CertifiedBy=
+Certification=
+HistoryNotes01=PersonalChoice:Lancelot Bright White - Red - Light Aqua - Light Blue
+HistoryNotes02=With having %SystemRoot%_system32_cmd.exe option at hand, with NOT having a trustable, badly developing Winbuilder through versions, due to handling of variables where % exists, coding made in a simple way (avoiding using changed variables/parameters) which MAY increase a bit more of this Plugin's being compatible (and increase on speed), keeping in mind options for these cmd settings are solid.
+HistoryNotes03=A_Color settings are faking on cmd :).
+HistoryNotes04=A_Giving example Both color.exe (color 01) and cmd.exe (cmd /t:01) does NOT truely
+HistoryNotes05=A_make colors to Black (0) and Blue (1),
+HistoryNotes06=A_Instead they use ASSIGNED colors for Black(ColorTable00) and Blue(ColorTable01)
+HistoryNotes07=A_--> you can change Black value to White and Blue value to Green ;) Life Goes :>.
+HistoryNotes08=C_Thanks to CWorks HKEY_CURRENT_USER\Console\%SystemRoot%_system32_cmd.exe , VERRRRRRRRY nice trick where you can go back to default settings easly ;) also helped to make a test button without effecting hostos settings :>:>.
+HistoryNotes09=C_Relevant information http://support.microsoft.com/kb/105674/en-us
+HistoryNotes10=D_Color Command you can only test ScreenText vs ScreenBackground color ShellExecuteEx,Open,cmd.exe,"/c color %BackGroundCode%%ForeGroundCode%&Echo Test&Echo Test&Echo Test&Echo Test&Echo Test&pause"
+History005=Lancelot %NoWarnROW% implemented
+History006=Lancelot Added DU Buttons - Date:2015.10.11
+History007=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History008=Lancelot Add Win10PESE - Date:2019.02.02
+
+[Interface]
+Advanced_Bevel=Bevel,0,12,115,94,418,220
+Advanced_TextLabel="Advanced Color Settings",0,1,279,78,145,18,8,Bold
+Set_ColorValues_Default_Button="Set Default",0,8,310,95,80,18,Set_ColorValues_Default,True,True,False,_Set_ColorValues_Default_,True
+Label_1_Red_TextLabel=Red,0,1,184,98,23,18,8,Normal
+Label_1_Green_TextLabel=Green,0,1,228,98,34,18,8,Normal
+Label_1_Blue_TextLabel=Blue,0,1,273,98,26,18,8,Normal
+Label_2_Red_TextLabel=Red,0,1,397,98,23,18,8,Normal
+Label_2_Green_TextLabel=Green,0,1,442,98,34,18,8,Normal
+Label_2_Blue_TextLabel=Blue,0,1,490,98,26,18,8,Normal
+Black_TextLabel=Black,0,1,118,122,60,18,8,Normal
+Black_R_NumberBox=NumberBox,0,2,180,120,45,22,0,0,255,1
+Black_G_NumberBox=NumberBox,0,2,226,120,45,22,0,0,255,1
+Black_B_NumberBox=NumberBox,0,2,272,120,45,22,0,0,255,1
+Blue_TextLabel=Blue,0,1,118,146,60,18,8,Normal
+Blue_R_NumberBox=NumberBox,0,2,180,144,45,22,0,0,255,1
+Blue_G_NumberBox=NumberBox,0,2,226,144,47,24,0,0,255,1
+Blue_B_NumberBox=NumberBox,0,2,272,144,45,22,128,0,255,1
+Green_TextLabel=Green,0,1,118,170,60,18,8,Normal
+Green_R_NumberBox=NumberBox,0,2,180,168,45,22,0,0,255,1
+Green_G_NumberBox=NumberBox,0,2,226,168,45,22,128,0,255,1
+Green_B_NumberBox=NumberBox,0,2,272,168,45,22,0,0,255,1
+Aqua_TextLabel=Aqua,0,1,118,194,60,18,8,Normal
+Aqua_R_NumberBox=NumberBox,0,2,180,192,45,22,0,0,255,1
+Aqua_G_NumberBox=NumberBox,0,2,226,192,45,22,128,0,255,1
+Aqua_B_NumberBox=NumberBox,0,2,272,192,45,22,128,0,255,1
+Red_TextLabel=Red,0,1,118,218,60,18,8,Normal
+Red_R_NumberBox=NumberBox,0,2,180,216,45,22,128,0,255,1
+Red_G_NumberBox=NumberBox,0,2,226,216,45,22,0,0,255,1
+Red_B_NumberBox=NumberBox,0,2,272,216,45,22,0,0,255,1
+Purple_TextLabel=Purple,0,1,118,242,60,18,8,Normal
+Purple_R_NumberBox=NumberBox,0,2,180,240,45,22,128,0,255,1
+Purple_G_NumberBox=NumberBox,0,2,226,240,45,22,0,0,255,1
+Purple_B_NumberBox=NumberBox,0,2,272,240,45,22,128,0,255,1
+Yellow_TextLabel=Yellow,0,1,118,266,60,18,8,Normal
+Yellow_R_NumberBox=NumberBox,0,2,180,264,45,22,128,0,255,1
+Yellow_G_NumberBox=NumberBox,0,2,226,264,45,22,128,0,255,1
+Yellow_B_NumberBox=NumberBox,0,2,272,264,45,22,0,0,255,1
+White_TextLabel=White,0,1,118,290,60,18,8,Normal
+White_R_NumberBox=NumberBox,0,2,180,288,45,22,192,0,255,1
+White_G_NumberBox=NumberBox,0,2,226,288,45,22,192,0,255,1
+White_B_NumberBox=NumberBox,0,2,272,288,45,22,192,0,255,1
+Gray_TextLabel=Gray,0,1,330,122,60,18,8,Normal
+Gray_R_NumberBox=NumberBox,0,2,394,120,45,22,128,0,255,1
+Gray_G_NumberBox=NumberBox,0,2,440,120,45,22,128,0,255,1
+Gray_B_NumberBox=NumberBox,0,2,486,120,45,22,128,0,255,1
+Light_Blue_TextLabel="Light Blue",0,1,330,146,60,18,8,Normal
+Light_Blue_R_NumberBox=NumberBox,0,2,394,144,45,22,0,0,255,1
+Light_Blue_G_NumberBox=NumberBox,0,2,440,144,45,22,0,0,255,1
+Light_Blue_B_NumberBox=NumberBox,0,2,486,144,45,22,255,0,255,1
+Light_Green_TextLabel="Light Green",0,1,330,170,60,18,8,Normal
+Light_Green_R_NumberBox=NumberBox,0,2,394,168,45,22,0,0,255,1
+Light_Green_G_NumberBox=NumberBox,0,2,440,168,45,22,255,0,255,1
+Light_Green_B_NumberBox=NumberBox,0,2,486,168,45,22,0,0,255,1
+Light_Aqua_TextLabel="Light Aqua",0,1,330,194,60,18,8,Normal
+Light_Aqua_R_NumberBox=NumberBox,0,2,394,192,45,22,0,0,255,1
+Light_Aqua_G_NumberBox=NumberBox,0,2,440,192,45,22,255,0,255,1
+Light_Aqua_B_NumberBox=NumberBox,0,2,486,192,45,22,255,0,255,1
+Light_Red_TextLabel="Light Red",0,1,330,218,60,18,8,Normal
+Light_Red_R_NumberBox=NumberBox,0,2,394,216,45,22,255,0,255,1
+Light_Red_G_NumberBox=NumberBox,0,2,440,216,45,22,0,0,255,1
+Light_Red_B_NumberBox=NumberBox,0,2,486,216,45,22,0,0,255,1
+Light_Purple_TextLabel="Light Purple",0,1,330,242,60,18,8,Normal
+Light_Purple_R_NumberBox=NumberBox,0,2,394,240,45,22,255,0,255,1
+Light_Purple_G_NumberBox=NumberBox,0,2,440,240,45,22,0,0,255,1
+Light_Purple_B_NumberBox=NumberBox,0,2,486,240,45,22,255,0,255,1
+Light_Yellow_TextLabel="Light Yellow",0,1,330,266,60,18,8,Normal
+Light_Yellow_R_NumberBox=NumberBox,0,2,394,264,45,22,255,0,255,1
+Light_Yellow_G_NumberBox=NumberBox,0,2,440,264,45,22,255,0,255,1
+Light_Yellow_B_NumberBox=NumberBox,0,2,486,264,45,22,0,0,255,1
+Bright_White_TextLabel="Bright White",0,1,330,290,60,18,8,Normal
+Bright_White_R_NumberBox=NumberBox,0,2,394,288,45,22,255,0,255,1
+Bright_White_G_NumberBox=NumberBox,0,2,440,288,45,22,255,0,255,1
+Bright_White_B_NumberBox=NumberBox,0,2,486,288,45,22,255,0,255,1
+TextLabel_ScreenText="Screen Text:",1,1,3,5,100,18,8,Normal
+TextLabel_ScreenBackground="Screen Background:",1,1,3,27,100,18,8,Normal
+TextLabel_PopupText="Pop-up Text (F7):",1,1,4,51,100,18,8,Normal
+TextLabel_PopupBackground="Pop-up Background:",1,1,4,73,100,18,8,Normal
+BasicColor_ScreenText_ScrollBox="Bright White",1,4,107,2,84,21,Black,Blue,Green,Aqua,Red,Purple,Yellow,White,Gray,"Light Blue","Light Green","Light Aqua","Light Red","Light Purple","Light Yellow","Bright White"
+BasicColor_ScreenBackground_ScrollBox=Red,1,4,107,24,84,21,Black,Blue,Green,Aqua,Red,Purple,Yellow,White,Gray,"Light Blue","Light Green","Light Aqua","Light Red","Light Purple","Light Yellow","Bright White"
+BasicColor_PopupText_ScrollBox="Light Aqua",1,4,107,49,84,21,Black,Blue,Green,Aqua,Red,Purple,Yellow,White,Gray,"Light Blue","Light Green","Light Aqua","Light Red","Light Purple","Light Yellow","Bright White"
+BasicColor_PopupBackground_ScrollBox="Light Blue",1,4,107,71,84,21,Black,Blue,Green,Aqua,Red,Purple,Yellow,White,Gray,"Light Blue","Light Green","Light Aqua","Light Red","Light Purple","Light Yellow","Bright White"
+TextLabel_ScreenText_Default=W,1,1,193,3,18,18,8,Normal
+TextLabel_ScreenBackground_Default=Bla,1,1,193,24,18,18,8,Normal
+TextLabel_PopupText_Default=P,1,1,193,50,18,18,8,Normal
+TextLabel_PopupBackground_Default=BW,1,1,193,72,18,18,8,Normal
+Default_Color_Settings_CheckBox="Use Default Color Settings",0,3,385,41,153,18,True
+Default_Color_Settings_Std_CheckBox="Standart ColorTable Values",1,3,381,23,159,18,True
+Default_Color_Settings_TextLabel="    Use Default Color Settings",1,1,229,6,143,18,8,Normal
+Advanced_Hide_Button=,1,8,218,5,20,20,Advanced_Show_First_Gui,unchecked.bmp,True,False,_Advanced_Show_First_Gui_,True
+Advanced_Show_Button=,1,8,218,5,20,20,Advanced_Show_Second_Gui,checked.bmp,True,False,_Advanced_Show_Second_Gui_,True
+Default_CheckBox=HKCU\Console,1,3,262,41,94,18,True
+Default_Systemroot_CheckBox=HKCU\Console\%SystemRoot%_system32_cmd.exe,1,3,262,58,276,18,True
+Test_Button=Test,1,8,16,110,80,20,Process_Test,True,True,False,_Process_Test_,False
+Test_RegDel_Button="Delete Test Registry",1,8,4,137,106,20,Process_Test_Delete_Reg,True,True,False,_Process_Test_Delete_Reg_,False
+ColorCode_Basic_Test_Bevel=Bevel,0,12,3,238,110,76
+ColorCode_Basic_Test_Button="Test Color Command",0,8,6,242,105,25,ColorCode_Basic_Test,True,True,False,_ColorCode_Basic_Test_,False
+ColorCode_Basic_Test_TextLabel="Kept HIDDEN for#$x future Reference#$xNOT Trustable",0,1,13,269,89,41,8,Normal
+WebLabel_Homepg=MS,1,10,10,165,97,18,http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/cmd.mspx?mfr=true
+WebLabel_Plugin="Plugin Page",1,10,7,205,200,18,http://TheOven.org/index.php?topic=387
+Button_Download=,1,8,380,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ConsoleTestKey%=Testing_Cmd_Settings
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+RegHiveLoad,Tmp_Default,%RegDefault%
+If,%Default_Color_Settings_CheckBox%,Equal,True,Begin
+If,%Default_Color_Settings_Std_CheckBox%,Equal,True,Begin
+If,%Default_CheckBox%,Equal,True,Run,%ScriptFile%,Process_ColorTable_Default
+If,%Default_Systemroot_CheckBox%,Equal,True,Run,%ScriptFile%,Process_ColorTable_Default_SystemRoot
+End
+End
+Else,Begin
+Run,%ScriptFile%,Process_ColorTable_Calculate
+If,%Default_CheckBox%,Equal,True,Run,%ScriptFile%,Process_ColorTable_Result
+If,%Default_Systemroot_CheckBox%,Equal,True,Run,%ScriptFile%,Process_ColorTable_Result_SystemRoot
+End
+//--
+Run,%ScriptFile%,Process_BasicColor_Calculate
+If,%Default_CheckBox%,Equal,True,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x4,Tmp_Default\Console,ScreenColors,%ScreenColorsValue%
+RegWrite,HKLM,0x4,Tmp_Default\Console,PopupColors,%PopupColorsValue%
+End
+If,%Default_Systemroot_CheckBox%,Equal,True,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ScreenColors,%ScreenColorsValue%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,PopupColors,%PopupColorsValue%
+End
+RegHiveUnLoad,Tmp_Default
+
+[Process_ColorTable_Default]
+If,%NoWarnROW%,Equal,True,System,ErrorOff,32
+// hex value: 0x00000000
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable00,0
+// hex value: 0x00800000
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable01,8388608
+// hex value: 0x00008000
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable02,32768
+// hex value: 0x00808000
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable03,8421376
+// hex value: 0x00000080
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable04,128
+// hex value: 0x00800080
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable05,8388736
+// hex value: 0x00008080
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable06,32896
+// hex value: 0x00c0c0c0
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable07,12632256
+// hex value: 0x00808080
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable08,8421504
+// hex value: 0x00ff0000
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable09,16711680
+// hex value: 0x0000ff00
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable10,65280
+// hex value: 0x00ffff00
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable11,16776960
+// hex value: 0x000000ff
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable12,255
+// hex value: 0x00ff00ff
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable13,16711935
+// hex value: 0x0000ffff
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable14,65535
+// hex value: 0x00ffffff
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable15,16777215
+
+[Process_ColorTable_Default_SystemRoot]
+If,%NoWarnROW%,Equal,True,System,ErrorOff,32
+// hex value: 0x00000000
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable00,0
+// hex value: 0x00800000
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable01,8388608
+// hex value: 0x00008000
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable02,32768
+// hex value: 0x00808000
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable03,8421376
+// hex value: 0x00000080
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable04,128
+// hex value: 0x00800080
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable05,8388736
+// hex value: 0x00008080
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable06,32896
+// hex value: 0x00c0c0c0
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable07,12632256
+// hex value: 0x00808080
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable08,8421504
+// hex value: 0x00ff0000
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable09,16711680
+// hex value: 0x0000ff00
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable10,65280
+// hex value: 0x00ffff00
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable11,16776960
+// hex value: 0x000000ff
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable12,255
+// hex value: 0x00ff00ff
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable13,16711935
+// hex value: 0x0000ffff
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable14,65535
+// hex value: 0x00ffffff
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable15,16777215
+
+[Process_ColorTable_Result]
+If,%NoWarnROW%,Equal,True,System,ErrorOff,16
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable00,%ColorTable00Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable01,%ColorTable01Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable02,%ColorTable02Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable03,%ColorTable03Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable04,%ColorTable04Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable05,%ColorTable05Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable06,%ColorTable06Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable07,%ColorTable07Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable08,%ColorTable08Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable09,%ColorTable09Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable10,%ColorTable10Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable11,%ColorTable11Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable12,%ColorTable12Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable13,%ColorTable13Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable14,%ColorTable14Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console,ColorTable15,%ColorTable15Value%
+
+[Process_ColorTable_Result_SystemRoot]
+If,%NoWarnROW%,Equal,True,System,ErrorOff,16
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable00,%ColorTable00Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable01,%ColorTable01Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable02,%ColorTable02Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable03,%ColorTable03Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable04,%ColorTable04Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable05,%ColorTable05Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable06,%ColorTable06Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable07,%ColorTable07Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable08,%ColorTable08Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable09,%ColorTable09Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable10,%ColorTable10Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable11,%ColorTable11Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable12,%ColorTable12Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable13,%ColorTable13Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable14,%ColorTable14Value%
+RegWrite,HKLM,0x4,Tmp_Default\Console\#$pSystemRoot#$p_system32_cmd.exe,ColorTable15,%ColorTable15Value%
+
+[Process_ColorTable_Calculate]
+Run,%ScriptFile%,RGB_Values,,%Black_R_NumberBox%,%Black_G_NumberBox%,%Black_B_NumberBox%
+Set,%ColorTable00Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Blue_R_NumberBox%,%Blue_G_NumberBox%,%Blue_B_NumberBox%
+Set,%ColorTable01Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Green_R_NumberBox%,%Green_G_NumberBox%,%Green_B_NumberBox%
+Set,%ColorTable02Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Aqua_R_NumberBox%,%Aqua_G_NumberBox%,%Aqua_B_NumberBox%
+Set,%ColorTable03Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Red_R_NumberBox%,%Red_G_NumberBox%,%Red_B_NumberBox%
+Set,%ColorTable04Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Purple_R_NumberBox%,%Purple_G_NumberBox%,%Purple_B_NumberBox%
+Set,%ColorTable05Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Yellow_R_NumberBox%,%Yellow_G_NumberBox%,%Yellow_B_NumberBox%
+Set,%ColorTable06Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%White_R_NumberBox%,%White_G_NumberBox%,%White_B_NumberBox%
+Set,%ColorTable07Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Gray_R_NumberBox%,%Gray_G_NumberBox%,%Gray_B_NumberBox%
+Set,%ColorTable08Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Light_Blue_R_NumberBox%,%Light_Blue_G_NumberBox%,%Light_Blue_B_NumberBox%
+Set,%ColorTable09Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Light_Green_R_NumberBox%,%Light_Green_G_NumberBox%,%Light_Green_B_NumberBox%
+Set,%ColorTable10Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Light_Aqua_R_NumberBox%,%Light_Aqua_G_NumberBox%,%Light_Aqua_B_NumberBox%
+Set,%ColorTable11Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Light_Red_R_NumberBox%,%Light_Red_G_NumberBox%,%Light_Red_B_NumberBox%
+Set,%ColorTable12Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Light_Purple_R_NumberBox%,%Light_Purple_G_NumberBox%,%Light_Purple_B_NumberBox%
+Set,%ColorTable13Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Light_Yellow_R_NumberBox%,%Light_Yellow_G_NumberBox%,%Light_Yellow_B_NumberBox%
+Set,%ColorTable14Value%,%value%
+Run,%ScriptFile%,RGB_Values,,%Bright_White_R_NumberBox%,%Bright_White_G_NumberBox%,%Bright_White_B_NumberBox%
+Set,%ColorTable15Value%,%value%
+
+[RGB_Values]
+Set,%RedValue%,#2
+Set,%GreenValue%,#3
+Set,%BlueValue%,#4
+//Color value found by this equation: Red + (Green x 256) + (Blue x 256 x 256 )
+Set,%value%,%RedValue%
+StrFormat,Mult,%GreenValue%,256
+StrFormat,Mult,%BlueValue%,65536
+StrFormat,Inc,%value%,%GreenValue%
+StrFormat,Inc,%value%,%BlueValue%
+
+[Process_BasicColor_Calculate]
+//Selected Basic combination fuond by this equation: Text + Backgroung x 16
+//Tips: An elementary math trick to sum up values easly and shortly (back to old nice school days), reminded me a nice school math game: if one fills a pool with water everyday with doubling the water of previous content, and pool filled in 30 days, how many days passed to fill half of the pool ?
+Run,%ScriptFile%,BasicColor_Initial,%BasicColor_ScreenBackground_ScrollBox%
+Set,%ScreenColorsValue%,%BasicColorVar%
+StrFormat,Mult,%ScreenColorsValue%,16
+Run,%ScriptFile%,BasicColor_Initial,%BasicColor_ScreenText_ScrollBox%
+StrFormat,Inc,%ScreenColorsValue%,%BasicColorVar%
+//--
+Run,%ScriptFile%,BasicColor_Initial,%BasicColor_PopupBackground_ScrollBox%
+Set,%PopupColorsValue%,%BasicColorVar%
+StrFormat,Mult,%PopupColorsValue%,16
+Run,%ScriptFile%,BasicColor_Initial,%BasicColor_PopupText_ScrollBox%
+StrFormat,Inc,%PopupColorsValue%,%BasicColorVar%
+
+[BasicColor_Initial]
+If,#1,Equal,Black,Set,%BasicColorVar%,0
+If,#1,Equal,Blue,Set,%BasicColorVar%,1
+If,#1,Equal,Green,Set,%BasicColorVar%,2
+If,#1,Equal,Aqua,Set,%BasicColorVar%,3
+If,#1,Equal,Red,Set,%BasicColorVar%,4
+If,#1,Equal,Purple,Set,%BasicColorVar%,5
+If,#1,Equal,Yellow,Set,%BasicColorVar%,6
+If,#1,Equal,White,Set,%BasicColorVar%,7
+If,#1,Equal,Gray,Set,%BasicColorVar%,8
+If,#1,Equal,"Light Blue",Set,%BasicColorVar%,9
+If,#1,Equal,"Light Green",Set,%BasicColorVar%,10
+If,#1,Equal,"Light Aqua",Set,%BasicColorVar%,11
+If,#1,Equal,"Light Red",Set,%BasicColorVar%,12
+If,#1,Equal,"Light Purple",Set,%BasicColorVar%,13
+If,#1,Equal,"Light Yellow",Set,%BasicColorVar%,14
+If,#1,Equal,"Bright White",Set,%BasicColorVar%,15
+
+[Process_Test]
+If,%Default_Color_Settings_CheckBox%,Equal,True,Run,%ScriptFile%,Process_Test_ColorTable_Default
+Else,Begin
+Run,%ScriptFile%,Process_ColorTable_Calculate
+Run,%ScriptFile%,Process_Test_ColorTable_Result
+End
+//--
+Run,%ScriptFile%,Process_BasicColor_Calculate
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ScreenColors,%ScreenColorsValue%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,PopupColors,%PopupColorsValue%
+//--
+ShellExecuteEx,Hide,cmd.exe,"/c Start #$q%ConsoleTestKey%#$q cmd.exe",%scriptdir%
+//ShellExecuteEx,Hide,cmd.exe,"/c Start #$q%ConsoleTestKey%#$q cmd.exe /c Start Echo test_abcdefgh_ABCDEFGH_1234567",%scriptdir%
+
+[Process_Test_ColorTable_Default]
+// hex value: 0x00000000
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable00,0
+// hex value: 0x00800000
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable01,8388608
+// hex value: 0x00008000
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable02,32768
+// hex value: 0x00808000
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable03,8421376
+// hex value: 0x00000080
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable04,128
+// hex value: 0x00800080
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable05,8388736
+// hex value: 0x00008080
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable06,32896
+// hex value: 0x00c0c0c0
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable07,12632256
+// hex value: 0x00808080
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable08,8421504
+// hex value: 0x00ff0000
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable09,16711680
+// hex value: 0x0000ff00
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable10,65280
+// hex value: 0x00ffff00
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable11,16776960
+// hex value: 0x000000ff
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable12,255
+// hex value: 0x00ff00ff
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable13,16711935
+// hex value: 0x0000ffff
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable14,65535
+// hex value: 0x00ffffff
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable15,16777215
+
+[Process_Test_ColorTable_Result]
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable00,%ColorTable00Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable01,%ColorTable01Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable02,%ColorTable02Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable03,%ColorTable03Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable04,%ColorTable04Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable05,%ColorTable05Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable06,%ColorTable06Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable07,%ColorTable07Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable08,%ColorTable08Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable09,%ColorTable09Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable10,%ColorTable10Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable11,%ColorTable11Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable12,%ColorTable12Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable13,%ColorTable13Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable14,%ColorTable14Value%
+RegWrite,HKCU,0x4,Console\%ConsoleTestKey%,ColorTable15,%ColorTable15Value%
+
+[Process_Test_Delete_Reg]
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+If,ExistRegSection,HKCU,Console\%ConsoleTestKey%,RegDelete,HKCU,Console\%ConsoleTestKey%
+
+[Advanced_Show_Second_Gui]
+//-----------------------------------------------------------------------------------------------
+System,Cursor,Wait
+Run,%ScriptFile%,Advanced_Second_Gui
+System,RefreshInterface
+System,Cursor,Normal
+
+[Advanced_Show_First_Gui]
+System,Cursor,Wait
+Run,%ScriptFile%,Advanced_First_Gui
+System,RefreshInterface
+System,Cursor,Normal
+
+[Advanced_Second_Gui]
+Run,%ScriptFile%,Advanced_Show-Hide-First_Gui,False
+Run,%ScriptFile%,Advanced_Show-Hide-Second_Gui,True
+
+[Advanced_First_Gui]
+Run,%ScriptFile%,Advanced_Show-Hide-Second_Gui,False
+Run,%ScriptFile%,Advanced_Show-Hide-First_Gui,True
+
+[Advanced_Show-Hide-Second_Gui]
+Visible,%Advanced_Bevel%,#1,Permanent
+Visible,%Advanced_TextLabel%,#1,Permanent
+Visible,%Set_ColorValues_Default_Button%,#1,Permanent
+Visible,%Label_1_Red_TextLabel%,#1,Permanent
+Visible,%Label_1_Green_TextLabel%,#1,Permanent
+Visible,%Label_1_Blue_TextLabel%,#1,Permanent
+Visible,%Label_2_Red_TextLabel%,#1,Permanent
+Visible,%Label_2_Green_TextLabel%,#1,Permanent
+Visible,%Label_2_Blue_TextLabel%,#1,Permanent
+Visible,%Black_TextLabel%,#1,Permanent
+Visible,%Black_R_NumberBox%,#1,Permanent
+Visible,%Black_G_NumberBox%,#1,Permanent
+Visible,%Black_B_NumberBox%,#1,Permanent
+Visible,%Blue_TextLabel%,#1,Permanent
+Visible,%Blue_R_NumberBox%,#1,Permanent
+Visible,%Blue_G_NumberBox%,#1,Permanent
+Visible,%Blue_B_NumberBox%,#1,Permanent
+Visible,%Green_TextLabel%,#1,Permanent
+Visible,%Green_R_NumberBox%,#1,Permanent
+Visible,%Green_G_NumberBox%,#1,Permanent
+Visible,%Green_B_NumberBox%,#1,Permanent
+Visible,%Aqua_TextLabel%,#1,Permanent
+Visible,%Aqua_R_NumberBox%,#1,Permanent
+Visible,%Aqua_G_NumberBox%,#1,Permanent
+Visible,%Aqua_B_NumberBox%,#1,Permanent
+Visible,%Red_TextLabel%,#1,Permanent
+Visible,%Red_R_NumberBox%,#1,Permanent
+Visible,%Red_G_NumberBox%,#1,Permanent
+Visible,%Red_B_NumberBox%,#1,Permanent
+Visible,%Purple_TextLabel%,#1,Permanent
+Visible,%Purple_R_NumberBox%,#1,Permanent
+Visible,%Purple_G_NumberBox%,#1,Permanent
+Visible,%Purple_B_NumberBox%,#1,Permanent
+Visible,%Yellow_TextLabel%,#1,Permanent
+Visible,%Yellow_R_NumberBox%,#1,Permanent
+Visible,%Yellow_G_NumberBox%,#1,Permanent
+Visible,%Yellow_B_NumberBox%,#1,Permanent
+Visible,%White_TextLabel%,#1,Permanent
+Visible,%White_R_NumberBox%,#1,Permanent
+Visible,%White_G_NumberBox%,#1,Permanent
+Visible,%White_B_NumberBox%,#1,Permanent
+Visible,%Gray_TextLabel%,#1,Permanent
+Visible,%Gray_R_NumberBox%,#1,Permanent
+Visible,%Gray_G_NumberBox%,#1,Permanent
+Visible,%Gray_B_NumberBox%,#1,Permanent
+Visible,%Light_Blue_TextLabel%,#1,Permanent
+Visible,%Light_Blue_R_NumberBox%,#1,Permanent
+Visible,%Light_Blue_G_NumberBox%,#1,Permanent
+Visible,%Light_Blue_B_NumberBox%,#1,Permanent
+Visible,%Light_Green_TextLabel%,#1,Permanent
+Visible,%Light_Green_R_NumberBox%,#1,Permanent
+Visible,%Light_Green_G_NumberBox%,#1,Permanent
+Visible,%Light_Green_B_NumberBox%,#1,Permanent
+Visible,%Light_Aqua_TextLabel%,#1,Permanent
+Visible,%Light_Aqua_R_NumberBox%,#1,Permanent
+Visible,%Light_Aqua_G_NumberBox%,#1,Permanent
+Visible,%Light_Aqua_B_NumberBox%,#1,Permanent
+Visible,%Light_Red_TextLabel%,#1,Permanent
+Visible,%Light_Red_R_NumberBox%,#1,Permanent
+Visible,%Light_Red_G_NumberBox%,#1,Permanent
+Visible,%Light_Red_B_NumberBox%,#1,Permanent
+Visible,%Light_Purple_TextLabel%,#1,Permanent
+Visible,%Light_Purple_R_NumberBox%,#1,Permanent
+Visible,%Light_Purple_G_NumberBox%,#1,Permanent
+Visible,%Light_Purple_B_NumberBox%,#1,Permanent
+Visible,%Light_Yellow_TextLabel%,#1,Permanent
+Visible,%Light_Yellow_R_NumberBox%,#1,Permanent
+Visible,%Light_Yellow_G_NumberBox%,#1,Permanent
+Visible,%Light_Yellow_B_NumberBox%,#1,Permanent
+Visible,%Bright_White_TextLabel%,#1,Permanent
+Visible,%Bright_White_R_NumberBox%,#1,Permanent
+Visible,%Bright_White_G_NumberBox%,#1,Permanent
+Visible,%Bright_White_B_NumberBox%,#1,Permanent
+//--
+Visible,%Advanced_Hide_Button_Button%,#1,Permanent
+
+[Advanced_Show-Hide-First_Gui]
+Visible,%Default_Color_Settings_Std_CheckBox%,#1,Permanent
+Set,%Default_Color_Settings_CheckBox%,#1,Permanent
+//--
+Visible,%Advanced_Show_Button%,#1,Permanent
+//-----------------------------------------------------------------------------------------------
+
+[Set_ColorValues_Default]
+Set,%Black_R_NumberBox%,0,Permanent
+Set,%Black_G_NumberBox%,0,Permanent
+Set,%Black_B_NumberBox%,0,Permanent
+Set,%Blue_R_NumberBox%,0,Permanent
+Set,%Blue_G_NumberBox%,0,Permanent
+Set,%Blue_B_NumberBox%,128,Permanent
+Set,%Green_R_NumberBox%,0,Permanent
+Set,%Green_G_NumberBox%,128,Permanent
+Set,%Green_B_NumberBox%,0,Permanent
+Set,%Aqua_R_NumberBox%,0,Permanent
+Set,%Aqua_G_NumberBox%,128,Permanent
+Set,%Aqua_B_NumberBox%,128,Permanent
+Set,%Red_R_NumberBox%,128,Permanent
+Set,%Red_G_NumberBox%,0,Permanent
+Set,%Red_B_NumberBox%,0,Permanent
+Set,%Purple_R_NumberBox%,128,Permanent
+Set,%Purple_G_NumberBox%,0,Permanent
+Set,%Purple_B_NumberBox%,128,Permanent
+Set,%Yellow_R_NumberBox%,128,Permanent
+Set,%Yellow_G_NumberBox%,128,Permanent
+Set,%Yellow_B_NumberBox%,0,Permanent
+Set,%White_R_NumberBox%,192,Permanent
+Set,%White_G_NumberBox%,192,Permanent
+Set,%White_B_NumberBox%,192,Permanent
+Set,%Gray_R_NumberBox%,128,Permanent
+Set,%Gray_G_NumberBox%,128,Permanent
+Set,%Gray_B_NumberBox%,128,Permanent
+Set,%Light_Blue_R_NumberBox%,0,Permanent
+Set,%Light_Blue_G_NumberBox%,0,Permanent
+Set,%Light_Blue_B_NumberBox%,255,Permanent
+Set,%Light_Green_R_NumberBox%,0,Permanent
+Set,%Light_Green_G_NumberBox%,255,Permanent
+Set,%Light_Green_B_NumberBox%,0,Permanent
+Set,%Light_Aqua_R_NumberBox%,0,Permanent
+Set,%Light_Aqua_G_NumberBox%,255,Permanent
+Set,%Light_Aqua_B_NumberBox%,255,Permanent
+Set,%Light_Red_R_NumberBox%,255,Permanent
+Set,%Light_Red_G_NumberBox%,0,Permanent
+Set,%Light_Red_B_NumberBox%,0,Permanent
+Set,%Light_Purple_R_NumberBox%,255,Permanent
+Set,%Light_Purple_G_NumberBox%,0,Permanent
+Set,%Light_Purple_B_NumberBox%,255,Permanent
+Set,%Light_Yellow_R_NumberBox%,255,Permanent
+Set,%Light_Yellow_G_NumberBox%,255,Permanent
+Set,%Light_Yellow_B_NumberBox%,0,Permanent
+Set,%Bright_White_R_NumberBox%,255,Permanent
+Set,%Bright_White_G_NumberBox%,255,Permanent
+Set,%Bright_White_B_NumberBox%,255,Permanent
+
+[ColorCode_Basic_Test]
+//----------------------------- Basic Color Testing --- Saved for Future Reference ----- BEGIN -------
+//As written in HistoryNotes, this is NOT a trustable color test (besides it is limited), would be much suitable to careless coders, only can be used to test local color assignment visually.
+Run,%ScriptFile%,ColorCode,%BasicColor_ScreenBackground_ScrollBox%,%BackGroundCode%
+Set,%BackGroundCode%,%temp%
+Run,%ScriptFile%,ColorCode,%BasicColor_ScreenText_ScrollBox%,%ForeGroundCode%
+Set,%ForeGroundCode%,%temp%
+//both ShellExecuteEx,Open,cmd.exe lines work , I prefer color ;).
+ShellExecuteEx,Open,cmd.exe,"/c Echo color %BackGroundCode%%ForeGroundCode%&color %BackGroundCode%%ForeGroundCode%&Echo Test&Echo Test&Echo Test&Echo Test&Echo Test&pause"
+//ShellExecuteEx,Open,cmd.exe,"/t:%BackGroundCode%%ForeGroundCode%"
+
+[ColorCode]
+If,#1,Equal,Black,Set,%temp%,0
+If,#1,Equal,Blue,Set,%temp%,1
+If,#1,Equal,Green,Set,%temp%,2
+If,#1,Equal,Aqua,Set,%temp%,3
+If,#1,Equal,Red,Set,%temp%,4
+If,#1,Equal,Purple,Set,%temp%,5
+If,#1,Equal,Yellow,Set,%temp%,6
+If,#1,Equal,White,Set,%temp%,7
+If,#1,Equal,Gray,Set,%temp%,8
+If,#1,Equal,"Light Blue",Set,%temp%,9
+If,#1,Equal,"Light Green",Set,%temp%,A
+If,#1,Equal,"Light Aqua",Set,%temp%,B
+If,#1,Equal,"Light Red",Set,%temp%,C
+If,#1,Equal,"Light Purple",Set,%temp%,D
+If,#1,Equal,"Light Yellow",Set,%temp%,E
+If,#1,Equal,"Bright White",Set,%temp%,F
+//----------------------------- Basic Color Testing --- Saved for Future Reference ----- END ---------
+
+[AuthorEncoded]
+cmdICON4848_Red.ico=1519,2026
+Logo=cmdICON4848_Red.ico
+
+[EncodedFile-AuthorEncoded-cmdICON4848_Red.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+checked.bmp=165,220
+unchecked.bmp=137,183
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-checked.bmp]
+lines=0
+0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9ugKkGaDJ+NXAH4FLDgArwqME0DU0NsqvgyvD4ixg1cJNJCh88AKKGIAAAX5gbUnic407OSE3OTk3RS8otYBgFIw48Y4TQ0TjkuS4o2DAwAQA7aQa6Hu7DCgEAAAACAAAAJgAAAFsAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-unchecked.bmp]
+lines=0
+0=eJxz8n3GyAAGZkCsAcQ8UMzIIAEW3wCUP8IHwTDQ0NBw4sIV/AioxsHB4T9uMKqGSDV4AEQNQQAAw2NaE3ic4y3NS85ITc5OTdFLyi1gGAUjDDxjhNC2OOQ7ygLuMjABAB4dCHaMBl0uAQAAAAIAAAAoAAAAPQAAAAAAAAABAAAAAAAAAAAAAAA
+

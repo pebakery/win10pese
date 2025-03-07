@@ -4,14 +4,14 @@ Type=Plugin
 Author=ChrisR
 Description=(NT6x) Adds MS Snipping Tool. Only for Windows 8.1, Windows 10
 Credits=http://TheOven.org
-Version=008
+Version=011
 Download_Level=1
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.02.08
+Date=2019.11.09
 Depend=
 Disable=
 Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Components/SnippingTool.script
@@ -22,10 +22,13 @@ Certification=
 HistoryNotes01=Only for Win 8.1
 History003=ChrisR - Fix Add_Shortcut,StartMenu,Startmenu_Folder_Name - Date:2014.03.18
 History004=Lancelot - Added DU Buttons - Date:2016.01.29
-History005=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History005=Lancelot - Added Components_PluginCache_Extract - Date:2016.11.10
 History006=ChrisR - Multi Fallback Languages support - Date:2016.11.19
 History007=ChrisR - Fix endless loop - Date:2016.11.24
-History008=Lanncelot Add SE Desktop.ini - Date:2017.02.08
+History008=Lancelot Add SE Desktop.ini - Date:2017.02.08
+History009=Lancelot Add Require,FileList - Date:2018.10.09
+History010=Lancelot Add BuildClass - Date:2019.01.14
+History011=Lancelot IniRead %OS% - Date:2019.11.09
 
 [Interface]
 pBevel1=pBevel1,1,12,4,6,133,180
@@ -73,6 +76,7 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+If,Not,ExistVar,%OS%,IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
 Set,%t%,0
 If,%OS%,Equal,Win8.1,Set,%t%,1
 If,%OS%,Equal,Win10,Set,%t%,1
@@ -148,9 +152,19 @@ Require_FileQ,wisp.dll
 //-
 If,Not,ExistDir,"%TargetDir%\Program Files\Common Files\microsoft shared\ink",DirMake,"%TargetDir%\Program Files\Common Files\microsoft shared\ink"
 // Touch Keyboard and Handwriting Panel
+If,%BuildClass%,Equal,3,Require,FileList
+Else,Begin
 CopyMSsharedInkMui,tiptsf.dll
 CopyMSsharedInk,tpcps.dll
 CopyMSsharedInkMui,InkObj.dll
+End
+
+[Require_FileList]
+\Program Files\Common Files\microsoft shared\ink\tiptsf.dll
+\Program Files\Common Files\microsoft shared\ink\??-??\tiptsf.dll.mui
+\Program Files\Common Files\microsoft shared\ink\tpcps.dll
+\Program Files\Common Files\microsoft shared\ink\InkObj.dll
+\Program Files\Common Files\microsoft shared\ink\??-??\InkObj.dll.mui
 
 [AuthorEncoded]
 authorlogo.jpg=924,1232

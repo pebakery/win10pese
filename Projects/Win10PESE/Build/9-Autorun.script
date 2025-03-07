@@ -11,7 +11,7 @@ Selected=True
 Mandatory=True
 NoWarning=False
 Contact=http://TheOven.org
-Date=2016.11.01
+Date=2018.11.23_16:27.03 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Build/9-Autorun.script
@@ -25,7 +25,7 @@ History005=Lancelot - made Gena compatible
 History006=ChrisR - Remove desktop.ini on desktop
 History007=ChrisR - Win8.1 Compatibility - 2013.11.20
 History008=Lancelot syntax updated - Date:2016.02.02
-History009=Lancelot Added Basic_PluginCache_Extract - Date:2016.11.01
+History009=Lancelot Added Basic_PluginCache_Extract - Date:2016.11.01 // Minor Fix with BuildType x2 - Date:2018.11.23
 
 [Interface]
 pTextLabel2="Autorun.cmd example",1,1,10,33,172,18,8,Bold
@@ -49,7 +49,11 @@ If,Not,ExistFile,%ProjectTemp%\Basic_PluginCache_Extract.ini,Run,%ScriptFile%,Pr
 [Process_Normal]
 //Arch,x86|x64
 ExtractAllFiles,%ScriptFile%,%SourceArch%,%Target_Sys%
+//-
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
 // RunOnce
+//-
 If,%OS%%BuildType%,Equal,Win8.1OS,Begin
 RegHiveLoad,Tmp_software,%RegSoftware%
 // Load Before explorer shell

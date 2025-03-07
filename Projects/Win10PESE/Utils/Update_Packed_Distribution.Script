@@ -1,0 +1,141 @@
+[Main]
+Title=Update Packed Distribution
+Type=Plugin
+Author=Lancelot
+Description=Plugin for Admins only. A plugin only to give Date= information last time Project Packed.
+Credits=http://TheOven.org
+Version=012
+Download_Level=2
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.04.12
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Update_Packed_Distribution.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=[Main] Date= updated with Upload Button => Plugin goal is only update Date= AND add current plugin to ChangeLog (so one can easily figure out plugins after packed)
+HistoryNotes02=All Projects (SE & Gena) now packed same day (2018-12-16) -> Plugin uploads to all SE & Gena servers. Lancelot Reply 9 http://TheOven.org/index.php?topic=2023.msg29998#msg29998 Lancelot Reply 1 http://theoven.org/index.php?topic=2594.msg29591#msg29591
+HistoryNotes03=UI on plugin only to help Admins and Advanced users to see ChangeLogs. (Tip: Search (CTRL+F) Update_Packed_Distribution
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2019.01.19 Plugin created
+History002=Lancelot Add to Servers. - Date:2019.01.19
+History003=Lancelot Add [IniVariables] FlipFlop to upload easier. (without same  file warning)
+History004=Lancelot updated v004 - Date:2019.01.19
+History005=Lancelot updated v005 - Date:2019.01.19
+History006=Lancelot updated v006 - Date:2019.01.19
+History007=Lancelot updated v007 - Date:2019.02.03
+History008=Lancelot updated v008 - Date:2019.03.01
+History009=Lancelot updated v009 - Date:2019.03.16
+History010=Lancelot updated v010 - Date:2019.03.16
+History011=Lancelot updated v011 - Date:2019.04.01
+History012=Lancelot updated v012 - Date:2019.04.12
+
+[InterFace]
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Open_Win10PESE_ChangeLog_Button="Open Win10PESE ChangeLog",1,8,40,40,176,32,Open_Win10PESE_ChangeLog_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Open_Win10PESE_ChangeLog_P_B_,False
+Open_Win81SE_ChangeLog_Button="Open Win8.1SE ChangeLog",1,8,40,75,176,32,Open_Win8.1SE_ChangeLog_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Open_Win8.1SE_ChangeLog_P_B_,False
+Open_Win8PESE_ChangeLog_Button="Open Win8PESE ChangeLog",1,8,40,110,176,32,Open_Win8PESE_ChangeLog_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Open_Win8PESE_ChangeLog_P_B_,False
+Open_Win7PESE_ChangeLog_Button="Open Win7PESE ChangeLog",1,8,40,145,176,32,Open_Win7PESE_ChangeLog_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Open_Win7PESE_ChangeLog_P_B_,False
+Open_Gena_ChangeLog_Button="Open Gena ChangeLog",1,8,40,180,176,32,Open_Gena_ChangeLog_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Open_Gena_ChangeLog_P_B_,False
+Win10PESE_WebLabel_L="Log Win10PESE",1,10,235,49,74,18,http://win10se.cwcodes.net/Projects/Win10PESE/Utils/ChangeLog.Script
+Win81SE_WebLabel_L="Log Win81SE",1,10,235,84,62,18,http://win81se.cwcodes.net/Projects/Win8.1SE/Utils/ChangeLog.Script
+Win8PESE_WebLabel_L="Log Win8PESE",1,10,235,120,68,18,http://w8pese.cwcodes.net/Projects/Win8PESE/Utils/ChangeLog.Script
+Win7PESE_WebLabel_L="Log Win7PESE",1,10,235,155,68,18,http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/ChangeLog.Script
+Gena_WebLabel_L="Log Gena",1,10,235,190,45,18,http://gena.cwcodes.net/Projects/Gena/Utils/ChangeLog.Script
+
+[IniVariables]
+FlipFlop=1
+
+[Variables]
+
+[Process]
+Echo,"There is no spoon"
+
+[Open_Win10PESE_ChangeLog_P_B]
+Set,%OpenFile%,%BaseDir%\Projects\Win10PESE\Utils\ChangeLog.Script
+If,Not,ExistFile,%OpenFile%,Call,Echo,"Halt: '%OpenFile%' NOT FOUND",Warn,,MessageError,,Halt
+Call,StartDocNotePad,%OpenFile%
+
+[Open_Win8.1SE_ChangeLog_P_B]
+Set,%OpenFile%,%BaseDir%\Projects\Win8.1SE\Utils\ChangeLog.Script
+If,Not,ExistFile,%OpenFile%,Call,Echo,"Halt: '%OpenFile%' NOT FOUND",Warn,,MessageError,,Halt
+Call,StartDocNotePad,%OpenFile%
+
+[Open_Win8PESE_ChangeLog_P_B]
+Set,%OpenFile%,%BaseDir%\Projects\Win8PESE\Utils\ChangeLog.Script
+If,Not,ExistFile,%OpenFile%,Call,Echo,"Halt: '%OpenFile%' NOT FOUND",Warn,,MessageError,,Halt
+Call,StartDocNotePad,%OpenFile%
+
+[Open_Win7PESE_ChangeLog_P_B]
+Set,%OpenFile%,%BaseDir%\Projects\Win7PESE\Utils\ChangeLog.Script
+If,Not,ExistFile,%OpenFile%,Call,Echo,"Halt: '%OpenFile%' NOT FOUND",Warn,,MessageError,,Halt
+Call,StartDocNotePad,%OpenFile%
+
+[Open_Gena_ChangeLog_P_B]
+Set,%OpenFile%,%BaseDir%\Projects\Gena\Utils\ChangeLog.Script
+If,Not,ExistFile,%OpenFile%,Call,Echo,"Halt: '%OpenFile%' NOT FOUND",Warn,,MessageError,,Halt
+Call,StartDocNotePad,%OpenFile%
+
+[AuthorEncoded]
+Logo=Papirus-Team-Papirus-Mimetypes-X-office-document_0_048048.ico
+Papirus-Team-Papirus-Mimetypes-X-office-document_0_048048.ico=731,975
+
+[EncodedFile-AuthorEncoded-Papirus-Team-Papirus-Mimetypes-X-office-document_0_048048.ico]
+lines=0
+0=eJxjYGAEQgMDBiCpwLBClYFBjIGBQQOIgUIMCQwQcRBoUGUYBaNgFJAOmBkg2UqSTlgMaidVgLYwr2+tmdb+divdM22WuqeRaUrZ2ORAdoHspJb757uaPt7ib/sfhDf52fxDpill45ID2Ukt92/2s8Uwn9bu3+Rv849a7geZORCYWu7HFlYgeqOfzf/V3lb/V3pZ/gPRhNhrfayIDv/N/rY0d/+OpOD/x+fP+H9s3vR/IJoQ+1B346By/7Gq3P8g8Pfv33//oQAf+83lcwPiflzp82B+4r/Xl84Sje9uXDmo0j8tyx96hP8ab6t/052MKcIgMwYq/ElN/9jYIDOGSv4dKPfjit/tkZ7/jlblUoRBZgyV+gsbG2TGUKm/sLFBZgxU+gHFPygtU4JBZgxU+jmUn/gfVKeC6iYQTQ4bZMZApZ/R+mu0/hoJ7h+u9ddQyb9D3f244pfWmFrup2b4bwa2d1YBy0xY+wdP22jQuR/k9gXetv/XxgX825AQ9B+G1yUE/UNnb00IvDfY3L/B3+7/6Zq8/+caiv5daCr+D8PIfBD7XGPx/ePl+QrUcj+10vPOaK9/YPfhxYX3ztdTz+0gQK3w3x3thRHeKHxguFPb7XRzP43cDgK0Tz/UTzPIgKbhT8Nwp7n76eB2EKBJ+mksoovbQWBzgB1V5i/g4U9Ht4PA9giPu1sC7KDusP2HTJPCBrufTmkGGWyL9TPcGee3Hoj3U4L3pYdtP16eTle3j4JRMAoGL4CMYuChGxgYGEcIzQyl2aE0P5SWh9L2ULoeSkPDhxFKM0NpdrzhiUYDAINrBKJ4nLMNSCzILCot1g1JTczVhXF8M3NTSyoLUot1I3Tz09Iyk1N1U/KTS3NT80riDeINTCyASC8zOZ9hFAxxsE8VQqcxYZefvuVMMgMTAAz6GdErVwJwAQAAAAIAAABRAAAAZgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp=737,983
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[UploadXXX_NoQuestion]
+//Section to be  used by other Plugins
+Call,UploadXMulti,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[Upload_Default]
+IniRead,%ScriptFile%,IniVariables,FlipFlop,%t%
+If,%t%,Equal,1,IniWrite,%ScriptFile%,IniVariables,FlipFlop,0
+If,%t%,Equal,0,IniWrite,%ScriptFile%,IniVariables,FlipFlop,1
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nLPyr6hMT83T9UzOzyvWyy9K14UKOCaXZAKFdFPyk0tzU/NKdFNTMkviDeINDM2ASC8pt4BhFAx9UMYCofOZsMvvyvLyYWACAL7jF4igD6oXAQAAAAIAAABOAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

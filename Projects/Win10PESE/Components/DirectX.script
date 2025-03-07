@@ -1,23 +1,25 @@
 [Main]
-Title=DirectX 12
+Title=DirectX 11 & 12
 Type=Plugin
 Author=ChrisR
-Description=(x86/x64) DirectX 12 and LDDM Graphics Subsystem for Win10PESE
+Description=(x86/x64) "DirectX 11" for Win7PE, Win8PE, Win8.1, Win10PE. "DirectX 12" Win10PE v1709... and LDDM Graphics Subsystem.
 Credits=http://TheOven.org
-Version=015
+Version=019
 Download_Level=1
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.10.16_21:35.08 (GMT0: -1 Hours)
+Date=2020.01.08_09:24.29 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/DirectX.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/DirectX.script
 CertifiedBy=
 Certification=
-HistoryNotes=DirectX updates is not included with D3DX, XInput, XAudio, Managed DirectX 1.1 components, Microsoft.NET\DirectX for Managed Code.
+HistoryNotes01=DirectX updates is not included with D3DX, XInput, XAudio, Managed DirectX 1.1 components, Microsoft.NET\DirectX for Managed Code.
+HistoryNotes02=bob.omb : It should be noted for Win10PESE v1709 16299.15 this plugin installs ===> : DirectX 12 - Reply 10 : http://TheOven.org/index.php?topic=2251.msg25594#msg25594
 History001=ChrisR - Plugin written with the help of DirectX Happy Uninstall 6.0
 History002=ChrisR - Compatible now with Win7 and Win8pe with the same Plugin used. Check with DHU6.1
 History003=ChrisR - WriteSettings in ProjectTemp
@@ -29,7 +31,11 @@ History008=ChrisR - Call,TargetVersion - Date:2016.02.28
 History010=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
 History011=ChrisR test if dxgwdi.dll exist before copying - Date:2016.05.23 - Date:2016.11.24
 History012=ChrisR - dispci.dll does not exist in Win10 1709 build 16299.15 - Date:2017.10.13 - Date:2017.10.16
-History015=JFX - dxdiag.exe requires CompPkgSup.dll
+History015=JFX - dxdiag.exe requires CompPkgSup.dll - Reply 5 http://TheOven.org/index.php?topic=2251.msg25582#msg25582 - Date:2018.01.08 - Date:2018.01.09
+History016=Lancelot Add BuildClass 3 support - Date:2018.10.09
+History017=Lancelot Add BuildClass - Date:2019.01.14
+History018=Lancelot Add Call,HostOSArch - Date:2019.01.27
+History019=Lancelot Add to Yomi - Date:2020.01.08 // Add %OS% - Date:2020.01.08
 
 [Variables]
 %ProgramEXE%=
@@ -52,8 +58,19 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+Call,TargetVersion,,4x
+Set,%AfterVista%,0
+If,%TargetVersion1%,Equal,6,Begin
+If,%TargetVersion2%,Bigger,0,Set,%AfterVista%,1
+End
+If,%TargetVersion1%,Bigger,9,Set,%AfterVista%,1
+If,Not,%AfterVista%,Equal,1,Exit,"%ScriptTitle% Plugin Designed for Win7 and Later"
+//-
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+//-
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 //-
 Echo,"Processing %ScriptTitle% ..."
 //- Make Catroot folder if not exist
@@ -65,17 +82,25 @@ Call,CompareVersions,%TargetVersion%,10.0.10240.16383,BiggerWin10Source
 Call,CompareVersions,%TargetVersion%,10.0.15063.0,Win10_1703
 //-
 //- Copy Drivers and inf files
-Run,%ScriptFile%,DriversFiles
+If,%BuildClass%,Equal,3,Require,FileList,,DriversFiles_3
+Else,Run,%ScriptFile%,DriversFiles
 //- Copy x86 Files
 If,%SourceArch%,Equal,x86,Run,%ScriptFile%,Copyx86Files
 //- Copy 64 bit Files
 If,%SourceArch%,Equal,x64,Begin
 Run,%ScriptFile%,Copyx64bitFiles
 // SysWOW64 files
+If,%BuildClass%,Equal,2,Begin
 If,%TargetWOW64%,Equal,x86,Begin
 Set,%PluginArch%,x86
 Run,%ScriptFile%,Copyx86Files
 Set,%PluginArch%,""
+End
+End
+If,%BuildClass%,Equal,3,Begin
+If,%TargetWOW64%,Equal,x86,Begin
+Run,%ScriptFile%,Copyx86Files_3_SysWOW64
+End
 End
 End
 //-
@@ -90,6 +115,20 @@ If,%pCheckBox1%,Equal,True,Begin
 If,%SourceArch%,Equal,x86,Add_Shortcut,StartMenu,%pTextBox1%,#$pSystemRoot#$p\system32\dxdiag.exe,%pTextBox2%,#$pSystemRoot#$p\system32,"/whql:off"
 If,%SourceArch%,Equal,x64,Add_Shortcut,StartMenu,%pTextBox1%,#$pSystemRoot#$p\system32\dxdiag.exe,%pTextBox2%,#$pSystemRoot#$p\system32,"/whql:off /64bit"
 End
+
+[DriversFiles_3]
+\Windows\inf\bda.inf
+\Windows\inf\ks.inf
+\Windows\inf\kscaptur.inf
+\Windows\inf\ksfilter.inf
+\Windows\System32\Drivers\gm.dls
+\Windows\System32\Drivers\ks.sys
+\Windows\System32\Drivers\mskssrv.sys
+\Windows\System32\Drivers\mspclock.sys
+\Windows\System32\Drivers\mspqm.sys
+\Windows\System32\Drivers\mstee.sys
+\Windows\System32\Drivers\stream.sys
+\Windows\System32\Drivers\swenum.sys
 
 [DriversFiles]
 // inf files
@@ -107,7 +146,170 @@ If,ExistFile,%Source_Sys%\drivers\mstee.sys,If,Not,ExistFile,%Target_Sys%\driver
 If,ExistFile,%Source_Sys%\drivers\stream.sys,If,Not,ExistFile,%Target_Sys%\drivers\stream.sys,FileCopy,%Source_Sys%\drivers\stream.sys,%Target_Sys%\Drivers
 If,ExistFile,%Source_Sys%\drivers\swenum.sys,If,Not,ExistFile,%Target_Sys%\drivers\swenum.sys,FileCopy,%Source_Sys%\drivers\swenum.sys,%Target_Sys%\Drivers
 
+[Copyx86Files_3_SysWOW64]
+Call,IniExtractSectionN,,Copyx86Files_3,%ProjectTemp%\Copyx86Files_3_WOW64.txt
+Call,IniExtractSectionN,,Copyx86Files_3_BiggerWin10Source_Bigger,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt
+Call,IniExtractSectionN,,Copyx86Files_3_BiggerWin8Source_Bigger,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt
+TXTReplace,%ProjectTemp%\Copyx86Files_3_WOW64.txt,\Windows\System32\,\Windows\SysWOW64\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt,\Windows\System32\,\Windows\SysWOW64\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt,\Windows\System32\,\Windows\SysWOW64\
+Require,FileList,%ProjectTemp%\Copyx86Files_3_WOW64.txt
+If,%BiggerWin10Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt
+If,%BiggerWin8Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt
+//-
+TXTReplace,%ProjectTemp%\Copyx86Files_3_WOW64.txt,\Windows\SysWOW64\,\Windows\SysWOW64\??-??\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt,\Windows\SysWOW64\,\Windows\SysWOW64\??-??\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt,\Windows\SysWOW64\,\Windows\SysWOW64\??-??\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_WOW64.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_WOW64.txt,.exe,.exe.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt,.exe,.exe.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt,.exe,.exe.mui
+Require,FileList,%ProjectTemp%\Copyx86Files_3_WOW64.txt
+If,%BiggerWin10Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger_WOW64.txt
+If,%BiggerWin8Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger_WOW64.txt
+
 [Copyx86Files]
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,Copyx86Files_3
+If,%BiggerWin10Source%,Equal,Bigger,Require,FileList,,Copyx86Files_3_BiggerWin10Source_Bigger
+If,%BiggerWin8Source%,Equal,Bigger,Require,FileList,,Copyx86Files_3_BiggerWin8Source_Bigger
+//-
+Call,IniExtractSectionN,,Copyx86Files_3,%ProjectTemp%\Copyx86Files_3.txt
+Call,IniExtractSectionN,,Copyx86Files_3_BiggerWin10Source_Bigger,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger.txt
+Call,IniExtractSectionN,,Copyx86Files_3_BiggerWin8Source_Bigger,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger.txt
+TXTReplace,%ProjectTemp%\Copyx86Files_3.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\Copyx86Files_3.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3.txt,.exe,.exe.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger.txt,.exe,.exe.mui
+TXTReplace,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger.txt,.exe,.exe.mui
+Require,FileList,%ProjectTemp%\Copyx86Files_3.txt
+If,%BiggerWin10Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx86Files_3_BiggerWin10Source_Bigger.txt
+If,%BiggerWin8Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx86Files_3_BiggerWin8Source_Bigger.txt
+//-
+End
+If,%BuildClass%,Equal,2,Run,%ScriptFile%,Copyx86Files_2
+
+[Copyx86Files_3]
+\Windows\System32\amstream.dll
+\Windows\System32\bdaplgin.ax
+\Windows\System32\d2d1.dll
+\Windows\System32\d3d8.dll
+\Windows\System32\d3d8thk.dll
+\Windows\System32\d3d9.dll
+\Windows\System32\d3d10.dll
+\Windows\System32\d3d10_1.dll
+\Windows\System32\d3d10_1core.dll
+\Windows\System32\d3d10core.dll
+\Windows\System32\d3d10level9.dll
+\Windows\System32\d3d10warp.dll
+\Windows\System32\d3d11.dll
+\Windows\System32\d3dim.dll
+\Windows\System32\d3dim700.dll
+\Windows\System32\d3dramp.dll
+\Windows\System32\d3dxof.dll
+\Windows\System32\dciman32.dll
+\Windows\System32\ddraw.dll
+\Windows\System32\ddrawex.dll
+\Windows\System32\devenum.dll
+\Windows\System32\dinput.dll
+\Windows\System32\dinput8.dll
+\Windows\System32\dmband.dll
+\Windows\System32\dmcompos.dll
+\Windows\System32\dmime.dll
+\Windows\System32\dmloader.dll
+\Windows\System32\dmscript.dll
+\Windows\System32\dmstyle.dll
+\Windows\System32\dmsynth.dll
+\Windows\System32\dmusic.dll
+\Windows\System32\dplaysvr.exe
+\Windows\System32\dplayx.dll
+\Windows\System32\dpmodemx.dll
+\Windows\System32\dpnaddr.dll
+\Windows\System32\dpnathlp.dll
+\Windows\System32\dpnet.dll
+\Windows\System32\dpnhpast.dll
+\Windows\System32\dpnhupnp.dll
+\Windows\System32\dpnlobby.dll
+\Windows\System32\dpnsvr.exe
+\Windows\System32\dpwsockx.dll
+\Windows\System32\dsdmo.dll
+\Windows\System32\dsound.dll
+\Windows\System32\dswave.dll
+\Windows\System32\DWrite.dll
+\Windows\System32\dxdiag.exe
+\Windows\System32\CompPkgSup.dll
+\Windows\System32\dxdiagn.dll
+\Windows\System32\dxgi.dll
+\Windows\System32\dxtmsft.dll
+\Windows\System32\dxtrans.dll
+\Windows\System32\dxva2.dll
+\Windows\System32\encapi.dll
+\Windows\System32\gcdef.dll
+\Windows\System32\iyuv_32.dll
+\Windows\System32\joy.cpl
+\Windows\System32\ksproxy.ax
+\Windows\System32\kstvtune.ax
+\Windows\System32\ksuser.dll
+\Windows\System32\kswdmcap.ax
+\Windows\System32\ksxbar.ax
+\Windows\System32\mciqtz32.dll
+\Windows\System32\mpeg2data.ax
+\Windows\System32\mpg2splt.ax
+\Windows\System32\msdmo.dll
+\Windows\System32\MSDvbNP.ax
+\Windows\System32\msftedit.dll
+\Windows\System32\MSVidCtl.dll
+\Windows\System32\msyuv.dll
+\Windows\System32\pid.dll
+\Windows\System32\psisdecd.dll
+\Windows\System32\psisrndr.ax
+\Windows\System32\qasf.dll
+\Windows\System32\qcap.dll
+\Windows\System32\qdv.dll
+\Windows\System32\qdvd.dll
+\Windows\System32\qedit.dll
+\Windows\System32\qedwipes.dll
+\Windows\System32\quartz.dll
+\Windows\System32\vbisurf.ax
+\Windows\System32\vfwwdm32.dll
+\Windows\System32\vidcap.ax
+\Windows\System32\xinput9_1_0.dll
+\Windows\System32\opengl32.dll
+\Windows\System32\glu32.dll
+\Windows\System32\glmf32.dll
+\Windows\System32\iac25_32.ax
+\Windows\System32\ir32_32.dll
+\Windows\System32\ir41_32.ax
+\Windows\System32\ir41_qc.dll
+\Windows\System32\ir41_qcx.dll
+\Windows\System32\ir50_32.dll
+\Windows\System32\ir50_qc.dll
+\Windows\System32\ir50_qcx.dll
+
+[Copyx86Files_3_BiggerWin10Source_Bigger]
+\Windows\System32\D3D12.dll
+\Windows\System32\D3DCompiler_47.dll
+\Windows\System32\XAudio2_9.dll
+
+[Copyx86Files_3_BiggerWin8Source_Bigger]
+\Windows\System32\Require_FileQ,dxgwdi.dll
+\Windows\System32\XAudio2_8.dll
+\Windows\System32\XInput1_4.dll
+\Windows\System32\ir32_32original.dll
+\Windows\System32\ir41_32original.dll
+\Windows\System32\ir41_qcoriginal.dll
+\Windows\System32\ir41_qcxoriginal.dll
+\Windows\System32\ir50_32original.dll
+\Windows\System32\ir50_qcoriginal.dll
+\Windows\System32\ir50_qcxoriginal.dll
+
+[Copyx86Files_2]
 Require_FileQ,amstream.dll
 Require_FileQ,bdaplgin.ax
 // d2d1.dll.mui is missing in Win7 source
@@ -241,6 +443,116 @@ Require_FileQ,ir50_qcxoriginal.dll
 End
 
 [Copyx64bitFiles]
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,Copyx64bitFiles_3
+If,%BiggerWin10Source%,Equal,Bigger,Require,FileList,,Copyx64bitFiles_3_BiggerWin10Source_Bigger
+If,%BiggerWin8Source%,Equal,Bigger,Require,FileList,,Copyx64bitFiles_3_BiggerWin8Source_Bigger
+//-
+Call,IniExtractSectionN,,Copyx64bitFiles_3,%ProjectTemp%\Copyx64bitFiles_3.txt
+Call,IniExtractSectionN,,Copyx64bitFiles_3_BiggerWin10Source_Bigger,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin10Source_Bigger.txt
+Call,IniExtractSectionN,,Copyx64bitFiles_3_BiggerWin8Source_Bigger,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin8Source_Bigger.txt
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin10Source_Bigger.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin8Source_Bigger.txt,\Windows\System32\,\Windows\System32\??-??\
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin10Source_Bigger.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin8Source_Bigger.txt,.dll,.dll.mui
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3.txt,.exe,.exe.mui
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin10Source_Bigger.txt,.exe,.exe.mui
+TXTReplace,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin8Source_Bigger.txt,.exe,.exe.mui
+Require,FileList,%ProjectTemp%\Copyx64bitFiles_3.txt
+If,%BiggerWin10Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin10Source_Bigger.txt
+If,%BiggerWin8Source%,Equal,Bigger,Require,FileList,%ProjectTemp%\Copyx64bitFiles_3_BiggerWin8Source_Bigger.txt
+//-
+End
+If,%BuildClass%,Equal,2,Run,%ScriptFile%,Copyx64bitFiles_2
+
+[Copyx64bitFiles_3]
+\Windows\System32\amstream.dll
+\Windows\System32\bdaplgin.ax
+\Windows\System32\d2d1.dll
+\Windows\System32\d3d8thk.dll
+\Windows\System32\d3d9.dll
+\Windows\System32\d3d10.dll
+\Windows\System32\d3d10_1.dll
+\Windows\System32\d3d10_1core.dll
+\Windows\System32\d3d10core.dll
+\Windows\System32\d3d10level9.dll
+\Windows\System32\d3d10warp.dll
+\Windows\System32\d3d11.dll
+\Windows\System32\dciman32.dll
+\Windows\System32\ddraw.dll
+\Windows\System32\ddrawex.dll
+\Windows\System32\devenum.dll
+\Windows\System32\dinput.dll
+\Windows\System32\dinput8.dll
+\Windows\System32\dmloader.dll
+\Windows\System32\dmsynth.dll
+\Windows\System32\dmusic.dll
+\Windows\System32\dpnaddr.dll
+\Windows\System32\dpnathlp.dll
+\Windows\System32\dpnet.dll
+\Windows\System32\dpnhpast.dll
+\Windows\System32\dpnhupnp.dll
+\Windows\System32\dpnlobby.dll
+\Windows\System32\dpnsvr.exe
+\Windows\System32\dsdmo.dll
+\Windows\System32\dsound.dll
+\Windows\System32\dswave.dll
+\Windows\System32\DWrite.dll
+\Windows\System32\dxdiag.exe
+\Windows\System32\CompPkgSup.dll
+\Windows\System32\dxdiagn.dll
+\Windows\System32\dxgi.dll
+\Windows\System32\dxtmsft.dll
+\Windows\System32\dxtrans.dll
+\Windows\System32\dxva2.dll
+\Windows\System32\encapi.dll
+\Windows\System32\gcdef.dll
+\Windows\System32\iyuv_32.dll
+\Windows\System32\joy.cpl
+\Windows\System32\ksproxy.ax
+\Windows\System32\kstvtune.ax
+\Windows\System32\ksuser.dll
+\Windows\System32\kswdmcap.ax
+\Windows\System32\ksxbar.ax
+\Windows\System32\mciqtz32.dll
+\Windows\System32\mpeg2data.ax
+\Windows\System32\mpg2splt.ax
+\Windows\System32\msdmo.dll
+\Windows\System32\MSDvbNP.ax
+\Windows\System32\msftedit.dll
+\Windows\System32\MSVidCtl.dll
+\Windows\System32\msyuv.dll
+\Windows\System32\pid.dll
+\Windows\System32\psisdecd.dll
+\Windows\System32\psisrndr.ax
+\Windows\System32\qasf.dll
+\Windows\System32\qcap.dll
+\Windows\System32\qdv.dll
+\Windows\System32\qdvd.dll
+\Windows\System32\qedit.dll
+\Windows\System32\qedwipes.dll
+\Windows\System32\quartz.dll
+\Windows\System32\vbisurf.ax
+\Windows\System32\vfwwdm32.dll
+\Windows\System32\vidcap.ax
+\Windows\System32\xinput9_1_0.dll
+//- OpenGL
+\Windows\System32\opengl32.dll
+\Windows\System32\glu32.dll
+\Windows\System32\glmf32.dll
+
+[Copyx64bitFiles_3_BiggerWin10Source_Bigger]
+\Windows\System32\D3D12.dll
+\Windows\System32\D3DCompiler_47.dll
+\Windows\System32\XAudio2_9.dll
+
+[Copyx64bitFiles_3_BiggerWin8Source_Bigger]
+\Windows\System32\XAudio2_8.dll
+\Windows\System32\XInput1_4.dll
+
+[Copyx64bitFiles_2]
 Require_FileQ,amstream.dll
 Require_FileQ,bdaplgin.ax
 // d2d1.dll.mui is missing in Win7 source
@@ -344,6 +656,39 @@ RegHiveUnLoad,Tmp_Software
 DirDelete,%ProjectTemp%\DirectX
 
 [LDDM_Graphics]
+If,%BuildClass%,Equal,2,Run,%ScriptFile%,LDDM_Graphics_2
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,LDDM_Graphics_3
+Run,%ScriptFile%,LDDM_Graphics_Reg
+
+[LDDM_Graphics_3]
+Require,FileList,,LDDM_Graphics_3_Require_FileList
+If,Not,%Win10_1703%,Equal,Bigger,Require,FileList,,LDDM_Graphics_3_Require_FileList_Win10_1703_Bigger
+
+[LDDM_Graphics_3_Require_FileList]
+\Windows\System32\Drivers\dxapi.sys
+\Windows\System32\Drivers\dxg.sys
+\Windows\System32\Drivers\dxgkrnl.sys
+\Windows\System32\Drivers\dxgmms1.sys
+\Windows\System32\cdd.dll
+\Windows\System32\??-??\cdd.dll.mui
+\Windows\System32\dispex.dll
+\Windows\System32\??-??\dispex.dll.mui
+\Windows\System32\wdi.dll
+\Windows\System32\??-??\wdi.dll.mui
+\Windows\System32\control.exe
+\Windows\System32\??-??\control.exe.mui
+\Windows\System32\Display.dll
+\Windows\System32\??-??\Display.dll.mui
+\Windows\System32\shgina.dll
+\Windows\System32\??-??\shgina.dll.mui
+\Windows\System32\themeui.dll
+\Windows\System32\??-??\themeui.dll.mui
+
+[LDDM_Graphics_3_Require_FileList_Win10_1703_Bigger]
+\Windows\System32\dispci.dll
+\Windows\System32\??-??\dispci.dll
+
+[LDDM_Graphics_2]
 // Supports installing graphics card drivers
 // Drivers files
 If,ExistFile,%Source_Sys%\drivers\dxapi.sys,If,Not,ExistFile,%Target_Sys%\drivers\dxapi.sys,FileCopy,%Source_Sys%\drivers\dxapi.sys,%Target_Sys%\Drivers
@@ -361,7 +706,8 @@ Require_FileQ,control.exe
 Require_FileQ,Display.dll
 Require_FileQ,shgina.dll
 Require_FileQ,themeui.dll
-//-
+
+[LDDM_Graphics_Reg]
 //- LDDM Graphics Subsystem
 RegHiveLoad,Tmp_System,%RegSystem%
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\DXGKrnl,DisplayName,"LDDM Graphics Subsystem"
@@ -383,6 +729,38 @@ Logo=DirectX11.jpg
 lines=1
 0=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
 1=WV7AOGTbf9NPkewT58PH+AocEe0X8VwfTLBsgc4IwwBmJDn9wb058V+2t9vnOnso9/knGGe5LYgJbuLbYaMiWGe/0OU5Q2TerpGHfKduouOcW+2ifBE2+Zd7uWPV42Pn0/fMt07Plc9bkt1ewRfODLGEhhKHfzBYhe9UtpVurUBDEOcBmBr2QmdfPZMIdNEUg4iLJ11wpUnVD403nMJPpDUPiySummx+REdGIf/5DUrPt4wB0LFaNbsReh91GuHECOrRwe95JqOml4en7z8zZM3lzf6lcumpWVvCYj1tXfOYb4WIvcsjrGW/MdQTyLWxqLoKv1aV9cBiGnQLueXV5M5jqSrXyMA6Q5ci2pyRxAhAMgQfRd2IDC3buqLgGhWrZaBPntEm11iaKIoOr2WcWr352ra8GXH/qmF3sNjsAU9ieDwR8qOlzn3nfMeGMb3arYf7ozHanOSadXU0VqdaGlo1N9sDCVKnAAMajwlvWJoa3pYL2xQd6t/jDV4m9X2LrUFhwJvBkOIzfXl41ev/JQ2Cn5HPzjNzUCpJWQ5hHsy6hUkwqw5HbvFyD0jHT2AW0OcK4Uv808xdbjAKRxRL+aEgXs9kuixxCxvEgN5va7T75k97saZ3y7VH6tMKqoHO3o6mSf7O3Srd90ayQnMW4fyuFybUaVa6259rnI+qNDBpF31bbaws9nBGzTAgrYHtLx2eE1vLLOKY0yeWt5O7Nkdg+CEtYqxY3SOfjQH7sRQr5KHy52kTfREB0sU9aE26ihNJMTTFZGVcsrkT26a/Ic4EMIa5eFBgVV3oY8y3tdyQcf4VZ+LINlsjzQN2/OMOxrL6tl/mqpKanz0gTdHG9xuurnfK142M3IYE8uTzJ1CsGZ/hdmBYx2eJzjdcksSk0uiTA01MsqSGcYBSMMdPFD6Cl82OVdbqvvYGACAOVIB807IpFiAQAAAAIAAAApAAAAlA4AAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 DirectX
@@ -476,30 +854,4 @@ lines=7
 5=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
 6=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
 7=kp78wZLgN4lZPeG9NyjAMAGigfVDzKMb4Sm3NYV0JipM1V5RPEh+Gb5w7WvTlHEsWkdeTV5/xniPVFDnBUZa0PEEIwSlz0euBiCsgCXSOkpy1hRTnSK0UT/upmPTUzsNXnXTiGPknbgn4b5iYyM8tW3iwl+yxQhp/bv3zcww8MjzxVBt03P89ikORoFFKBL134z6naSi0gxi14qWZUGxIo4vr14Y6CwdHzkSPx+dRjTtxp4SSd4JmfbsGXKKGaU5fW/7CaiG4Iyc9JYhiMHlVHxicd/e9SNICtYhFmlWC5IgsUJgvQ7IBK/kUujO4dP2/Q+VDZq+dfzDSvRccjLpBaj1lhkcuHjdyBD8zx3FT0onCGTipuT4AfaIMpsiVJgTONw820GxWQi/QzGPaR8BSe1W4jZfd8p/lmcwNTuMqVuJTMCzup9S4Tj4vAJBlUipgf7Opn8g7+wpz8Y8WrlC7o3Zk8H5DKOmjqGsUnJn+WZm4YM4iymiztWEx6MMO3oXYAAQQGAAEJwEJVAAcLAQABIwMBAQVdAAAQAAzM4mEACAoBvCyFBQAABQERLQBEAGkAcgBlAGMAdABYAF8AVwBpAG4AMQAwAF8AeAA2ADQALgByAGUAZwAAABQKAQCQlZ9jIDzOARUGAQAgAAAAAAB4nBNxySxKTS6JiA/PzDM0iK8wM9Ezr2IYBSMFXAjFLz+Tb3MCIwMAoPwJtgGEmmQBAAAAAgAAACwAAADQVQAAAAAAAAEAAAAAAAAAAAAAAA
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

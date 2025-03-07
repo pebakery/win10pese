@@ -1,0 +1,133 @@
+[Main]
+Title=CMD Shortcut
+Type=Plugin
+Author=Lancelot
+Description=Create CMD Shortcut(s)
+Credits=Galapo
+Version=009
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=387.0
+Date=2019.02.02
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks%20CMD/CMD%202Shortcut.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks%20CMD/CMD%202Shortcut.script
+Web3=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks%20CMD/CMD%202Shortcut.script
+CertifiedBy=
+Certification=
+HistoryNotes01=
+History001=Lancelot 2012.11.20 Plugin created
+History005=Lancelot Added DU buttons
+History006=Lancelot syntax improved - Date:2016.02.02
+History007=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History008=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+History009=Lancelot Add Win10PESE - Date:2019.02.02
+
+[Interface]
+pBevel1=pBevel1,1,12,4,26,133,165
+pCheckBox1="Desktop shortcut",1,3,8,30,122,18,True
+pCheckBox2="Start menu shortcut",1,3,8,68,122,18,True
+pCheckBox3="Quicklaunch shortcut",1,3,8,49,122,18,False
+pCheckBox4="Startup shortcut",1,3,9,87,121,18,False
+pRadioGroup1="Start Menu:",1,14,12,110,115,56,Accessories,"Folder Name",0
+pTextBox1=,1,0,12,160,115,21,.
+pBevel1_WOW64=pBevel1,1,12,204,26,133,164
+pCheckBox1_WOW64="Desktop shortcut",1,3,208,30,122,18,False
+pCheckBox2_WOW64="Start menu shortcut",1,3,208,68,122,18,True
+pCheckBox3_WOW64="Quicklaunch shortcut",1,3,208,49,122,18,False
+pCheckBox4_WOW64="Startup shortcut",1,3,208,87,122,18,False
+pRadioGroup1_WOW64="Start Menu:",1,14,212,110,115,56,Accessories,"Folder Name",0
+pTextBox1_WOW64=,1,0,212,160,115,21,.
+pTextLabel1_WOW64="Add CMD SysWOW64 Shortcut",1,1,160,10,176,18,8,Bold
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://TheOven.org/index.php?topic=387.0
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=387.0
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+//If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,#$psystemroot#$p\System32\cmd.exe,"Command Prompt",#$psystemroot#$p\System32,,#$psystemroot#$p\System32\cmd.exe#$c1
+//If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,#$psystemroot#$p\System32\cmd.exe,"Command Prompt",#$psystemroot#$p\System32
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop,,#$psystemroot#$p\System32\cmd.exe,"Command Prompt","#$pSystemDrive#$p"
+If,%pCheckBox1%,Equal,True,Add,DesktopIni,Desktop,,,"Command Prompt.lnk",@shell32.dll#$c-22022
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch,,#$psystemroot#$p\System32\cmd.exe,"Command Prompt",#$psystemroot#$p\System32
+If,%pCheckBox3%,Equal,True,Add,DesktopIni,QuickLaunch,,,"Command Prompt.lnk",@shell32.dll#$c-22022
+If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoStart,,#$psystemroot#$p\System32\cmd.exe,"CmdStartup",#$psystemroot#$p\System32
+If,%pCheckBox2%,Equal,True,Begin
+If,%pRadioGroup1%%OSFamily%,Equal,0NT5,IniRead,%ProjectInfo%,TargetStrings,sStartmenu_Accessories,%Startmenu_Folder_Name%
+Else,Set,%Startmenu_Folder_Name%,%pTextBox1%
+If,%pRadioGroup1%,Equal,1,Set,%Startmenu_Folder_Name%,%pTextBox1%
+Add_Shortcut,StartMenu,%Startmenu_Folder_Name%,#$psystemroot#$p\System32\cmd.exe,"Command Prompt",#$psystemroot#$p\System32
+Add,DesktopIni,StartMenu,%Startmenu_Folder_Name%,#$psystemroot#$p\System32\cmd.exe,"Command Prompt.lnk",@shell32.dll#$c-22022
+End
+If,Not,%SourceArch%,Equal,x86,Begin
+If,%TargetWOW64%,Equal,x86,Run,%ScriptFile%,Process_WOW64
+End
+
+[Process_WOW64]
+Set,%PluginArch%,x86
+Require,File,Cmd.exe
+If,%pCheckBox1_WOW64%,Equal,True,Add_Shortcut,Desktop,,#$psystemroot#$p\SysWOW64\cmd.exe,"Command Prompt WOW64",#$psystemroot#$p\SysWOW64
+If,%pCheckBox3_WOW64%,Equal,True,Add_Shortcut,QuickLaunch,,#$psystemroot#$p\SysWOW64\cmd.exe,"Command Prompt WOW64",#$psystemroot#$p\SysWOW64
+If,%pCheckBox4_WOW64%,Equal,True,Add_Shortcut,AutoStart,,#$psystemroot#$p\SysWOW64\cmd.exe,"CmdStartup WOW64",#$psystemroot#$p\SysWOW64
+If,%pCheckBox2_WOW64%,Equal,True,Begin
+If,%pRadioGroup_WOW641%%OSFamily%,Equal,0NT5,IniRead,%ProjectInfo%,TargetStrings,sStartmenu_Accessories,%Startmenu_Folder_Name%
+Else,Set,%Startmenu_Folder_Name%,%pTextBox1_WOW64%
+If,%pRadioGroup_WOW641%,Equal,1,Set,%Startmenu_Folder_Name%,%pTextBox1_WOW64%
+Add_Shortcut,StartMenu,%Startmenu_Folder_Name%,#$psystemroot#$p\SysWOW64\cmd.exe,"Command Prompt WOW64",#$psystemroot#$p\SysWOW64
+End
+
+[AuthorEncoded]
+cmdICON4848.ico=1699,2266
+Logo=cmdICON4848.ico
+
+[EncodedFile-AuthorEncoded-cmdICON4848.ico]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Gena]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

@@ -1,0 +1,273 @@
+[Main]
+Title=mousemu (RH Designs)
+Type=Plugin
+Author=Lancelot
+Description=Does same things (better) with Accessibility Options-->Mouse Keys
+Credits=http://TheOven.org
+Version=011
+Download_Level=2
+Level=5
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?board=9
+Date=2019.02.24_15:41.25 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://yomi.cwcodes.net/Yomi/AppY/Accessibility/mousemu_RH_Designs.script
+Web2=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/Accessibility/mousemu_RH_Designs.script
+CertifiedBy=
+Certification=
+HistoryNotes01=old home page http://www.geocities.com/pronto4u/mouseemulator.html
+History007=Lancelot Date:2012.01.15
+History008=Lancelot Date:2015.12.11
+History009=Lancelot Add DUC Buttons - Date:2017.11.13
+History010=Lancelot Add Download zip button // Add Registry settings for mouse speed - Date:2019.01.25
+History011=Lancelot Add Win10PESE - Date:2019.02.02 // Cosmetics - Date:2019.02.24
+
+[Variables]
+%ProgramTitle%=mousemu RH Designs
+%ProgramEXE%=mousemu.exe
+%ProgramFolder%=mousemu_RH_Designs
+%SetupFile%=%SetupFilex86%
+%SetupFilex86%=mousemu.zip
+%SetupFilex64%=
+%ProvideFiles%=%GlobalTemplates%\RH_Designs_Files\Download
+%FileWeb%=%FileWeb_x86%
+%FileWeb_x86%=http://rhdesigns.browseto.org/mousemu.zip
+
+[Interface]
+pBevel1=pBevel1,1,12,4,6,133,124
+pCheckBox1="Desktop shortcut",1,3,8,10,122,18,False
+pCheckBox2="Start menu shortcut",1,3,8,67,122,18,True
+pCheckBox3="Quicklaunch shortcut",1,3,8,29,122,18,False
+pTextBox1="Start Menu folder:",1,0,11,103,119,21,Accessibility
+ScrollBox_RunFromWhere="Run from Normal",1,4,146,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+Button_Launch_Program=Launch,1,8,2,278,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False
+pTextLabel1="The program recognizes the following keys: (NumLock must be ON!)#$x#$x    Keypad 1 - Left mouse button#$x    Keypad 2 - Right mouse button#$x    Keypad 3 - Middle mouse button#$x    Keypad 4, 5, 6, 8 - Moves the mouse left, down, right and/or up respectively.#$x    Keypad 7 - Mousewheel up (Scroll)#$x    Keypad 9 - Mousewheel down (Scroll)#$x    Keypad / - Toggle Left mouse button (Useful for RSI users)#$x    Keypad * - Toggle Right mouse button (Useful for RSI users)#$x    Keypad - - Toggle Middle mouse button (Useful for RSI users)#$x#$xYou can exit Mouse Emulator by right clicking on the mouse icon in the taskbar.",1,1,157,52,347,202,8,Normal
+pCheckBox4="Startup shortcut",1,3,8,48,122,18,True
+MouseSpeed_ScrollBox=FastMouseSpeed,1,4,8,160,133,21,FastMouseSpeed,DefaultMouseSpeed,SlowMouseSpeed,None
+MouseSpeed_TextLabel="Mouse Speed:",1,1,8,143,76,18,8,Normal
+MouseSpeed_Bevel=pBevel2,1,12,4,137,142,50
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://rhdesigns.browseto.org/mouseemulator.html
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+ProvideFile_Bevel=ProvideFile_Bevel,1,12,-2,230,83,43
+ProvideFile_TextBox="Provide File",1,0,1,249,78,21,mousemu.zip
+ProvideFile_Opendir_Button=,1,8,61,231,18,18,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Folder"
+Button_Download_Web=Download,1,8,0,202,80,25,Button_Download_Web_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_P_B_,False,"__Download File"
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Process]
+Arch,x86
+Echo,"Processing %ScriptTitle%..."
+//--
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBox%,Run,%ScriptFile%,Button_Download_Web_P
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBox%,Exit,"%ProvideFiles%\%ProvideFile_TextBox% Not Found - Plugin Exit"
+//--
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+Run,%ScriptFile%,Extract
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Echo,"Directory NOT DELETED",WARN
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+//--
+//RegEdit (to get .reg files operational)
+Require,File,Regedit.exe
+//mouseemu dependencies
+Set,%PluginArch%,x86
+Require_FileQ,mfc42.dll
+Require_FileQ,wsock32.dll
+Require_FileQ,ws2_32.dll
+Require_FileQ,ws2help.dll
+Require_FileQ,usp10.dll
+//XPx64 - odbcint.dll - The application failed to initialize properly (0xc0000142).
+Require_FileQ,odbcint.dll
+//--
+RegHiveLoad,Tmp_Default,%RegDefault%
+If,%MouseSpeed_ScrollBox%,Equal,None,Begin
+If,ExistRegSection,HKLM,"Tmp_Default\Software\RH Designs\Mouse Emulator",RegDelete,HKLM,"Tmp_Default\Software\RH Designs\Mouse Emulator"
+End
+If,%MouseSpeed_ScrollBox%,Equal,DefaultMouseSpeed,Begin
+//DefaultMouseSpeed
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Delay",150
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Base Speed",18
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Max Speed",100
+End
+If,%MouseSpeed_ScrollBox%,Equal,FastMouseSpeed,Begin
+//FastMouseSpeed
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Delay",70
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Base Speed",30
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Max Speed",100
+End
+If,%MouseSpeed_ScrollBox%,Equal,SlowMouseSpeed,Begin
+//SlowMouseSpeed
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Delay",246
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Base Speed",10
+RegWrite,HKLM,0x4,"Tmp_Default\Software\RH Designs\Mouse Emulator","Mouse Max Speed",20
+End
+RegHiveUnLoad,Tmp_Default
+//--
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoStart
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%\%ProgramTitle%,%PE_Programs%\%ProgramFolder%\DefaultMouseSpeed.reg,%ProgramTitle%_DefaultMouse
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%\%ProgramTitle%,%PE_Programs%\%ProgramFolder%\FastMouseSpeed.reg,%ProgramTitle%_FastMouse
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%\%ProgramTitle%,%PE_Programs%\%ProgramFolder%\SlowMouseSpeed.reg,%ProgramTitle%_SlowMouse
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%\%ProgramTitle%,%PE_Programs%\%ProgramFolder%\mouseemulator.html,%ProgramTitle%_1_Help
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Echo,"Directory NOT DELETED",WARN
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+//Extracting-7z-Finish
+
+[Launch_Program]
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBox%,Run,%ScriptFile%,Button_Download_Web_P
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBox%,Exit,"%ProvideFiles%\%ProvideFile_TextBox% Not Found - Plugin Exit"
+//--
+Run,%ScriptFile%,Extract
+Call,Start,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%
+
+[ProvideFiles_OpenDir_P_B]
+Call,OpenDir,%ProvideFiles%
+
+[Button_Download_Web_P_B]
+Run,%ScriptFile%,Button_Download_Web_P
+
+[Button_Download_Web_P]
+If,Not,ExistDir,%ProvideFiles%,DirMake,%ProvideFiles%
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+If,ExistSection,%ScriptFile%,EncodedFile-Folder-%SetupFile%,Begin
+Echo,"ExtractFile - Wait Patiently - Start"
+ExtractFile,%ScriptFile%,Folder,%SetupFile%,%ProvideFiles%
+Echo,"ExtractFile - Wait Patiently - Finish"
+End
+End
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+If,ExistVar,%FileContainer%,Begin
+If,ExistFile,%FileContainer%,Begin
+Echo,"ExtractFile - FileContainer - Wait Patiently - Start"
+ExtractFile,%FileContainer%,Folder,%SetupFile%,%ProvideFiles%
+Echo,"ExtractFile - FileContainer - Wait Patiently - Finish"
+End
+End
+End
+//-
+StrFormat,Filename,%FileWeb%,#9
+StrFormat,Replace,#9,"#$p20"," ",#9
+Set,#8,%ProvideFiles%\#9
+//-
+Set,#7,-
+If,ExistFile,#8,Begin
+Retrieve,Md5,#8,#7
+StrFormat,Date,#4,yyyymmddhhnn
+StrFormat,Ext,#8,#5
+FileRename,#8,#8_Backup_#4#5
+End
+//-
+Echo,"Download #9 - Start"
+Call,Download,#8,%FileWeb%
+Echo,"Download #9 - Finish"
+//-
+If,Not,#7,Equal,-,Begin
+If,ExistFile,#8,Begin
+Retrieve,Md5,#8,#6
+If,#7,Equal,#6,Begin
+Message,"No new #9",Information,5
+Echo,"No new #9"
+Call,FileDelete,#8_Backup_#4#5
+End
+Else,Begin
+Message,"New #9 File UPDATED",Information,5
+Echo,"New #9 File UPDATED"
+End
+End
+Else,Begin
+Call,Echo,"Download Update Failed #9",Warn,,MessageError,5
+FileRename,#8_Backup_#4#5,#8
+End
+End
+//-
+//If,Not,ExistFile,#8,Call,Echo,"Failed downloading #9 - Exit",Warn,,MessageError,5,Exit
+If,Not,ExistFile,#8,Call,Echo,"Failed downloading #9",Warn,,MessageError,5
+
+[AuthorEncoded]
+mousemu_matroxfiles.ico=501,668
+Logo=mousemu_matroxfiles.ico
+
+[EncodedFile-AuthorEncoded-mousemu_matroxfiles.ico]
+lines=0
+0=eJy1U7FuwjAQPTeVPJI/CFPFWKTuaVGXLHQAVerEL2RLN7zFmz+hv5Ktv5FuHdnwgLi+s0NwqRjr8HJ59+5s58UQKbqhPM8Rb2mmiO6IaDqN/PuGaIncDLlc8oDkZRi6NkwUjYlBLknh1nUdMhx+xByDXJKS23m826amUGUbhIlj20oa3CJ6Zo84sTF6h9iSBmVvSDO4lLEXijrehVl1Y2VWfWXnR00Ph4wqrzZrr96qnVpSr+b3naqejXpamGy9MJrm3WROfbF5NeWqKnhTlfxCjlfVbPDoMfEJ9v6nT+loZJyp9ta2SWJrrSTqkTt2khjL4R1aTly8ZemoE84j1+J5aEi5NNTDaoGfdGxGqKxYD5vhRIfsBr2Ni0UZepvK0MUsbVs+6aHd8jYpJ+14H7mPq+MxFLh2eHcOBYMcCxp5udEcJEanxFvoiYyTtP9Fa0rN12krxgW95H/O42W9Tr9rPBJ8oJI9FTjZcro19wFZgBlAlB2BA+DFRaCHuQMKoAS2O/mnkMKUGaDxPOGvruRPmPCRoAN64AegW1hCeJwTz80vLU7NLY3PTSwpyq9Iy8xJLdbLTM5nGAUjApixQOh5jNjllxn+tGNgAgBVPQyCQQA7MAEAAAACAAAAMwAAAJ4BAAAAAAAAAQAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Mazenl77-NX11-Internet-Real_016_016.bmp=909,1212
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp]
+lines=0
+0=eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+Mouse Emulator - Emulate your mouse with a keyboard.7z=8489,11319
+
+[EncodedFile-Folder-Mouse Emulator - Emulate your mouse with a keyboard.7z]
+lines=2
+0=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
+1=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
+2=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
+

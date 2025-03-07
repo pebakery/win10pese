@@ -4,14 +4,14 @@ Type=Plugin
 Author=BlueLife, Lancelot
 Description=Plugin helps you to download 'exact' copy of 'project server' and to Update easily. Thanks to BlueLife for BLExactServer
 Credits=http://TheOven.org
-Version=046
+Version=055
 Download_Level=1
 Level=10
 Selected=None
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=159.0
-Date=2017.12.08
+Date=2020.02.27
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Update_BLexact_Gena.script
@@ -42,7 +42,7 @@ HistoryNotes16=Leopard distributed with package and only updates + additions on 
 HistoryNotes17=and Ended or Kicked or Banned projects like Multi7PESE VistaPECapi  -> for such conditions removing (hiding) download option and using pretask batches to extract package or only copy suits much better to reset ;).
 HistoryNotes18=Plugin Customization: Check [Plugin Update] [Plugin Customization]
 History004=Lancelot "Preserve SourceDir info" option enhanced to support extracted wim source settings :)
-History005=ChrisR Backup actual Project Files before download 'exact' copy of 'project server'. Message 'Continue' replaced by question (button Yes-No)
+History005=ChrisR Backup actual Project Files before download 'exact' copy of 'project server'. Message 'Continue' replaced by Question (button Yes-No)
 History008=Lancelot added Rescan_CheckBox to advanced menu (to blupdate multi projects easly with manual refresh ;) )
 History009=Lancelot fixed version-revision check
 History010=Lancelot added Win8PESE support // Link_CheckBox Default False
@@ -82,6 +82,13 @@ History042=Galapo added new PluginManager.exe v.2.16 - Date:2017.10.18
 History044=Lancelot Improve XCopy_Restore_Backup_ .cmd // Improve RemoveDirectory-BLExact_Update_Backup.cmd x 2 - Date:2017.10.19
 History045=Lancelot - Fixed Halt can have [0] ~ [1] arguments - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.09
 History046=Lancelot - Fixed missing %Tools%\7z.exe And %Tools%\x86\AU3381.exe on Gena (required During Update ex: PluginManager ) - Date:2017.12.08
+History047=Lancelot - Make sure there is 7z.exe operational for Plugin Organisations - Date:2018.10.06
+History048=Lancelot updated v048 - Date:2018.10.06
+History049=Lancelot Disabled Custom_Add_Download_Pack_ES_CheckBox - Date:2018.10.30
+History050=Lancelot Add Call,ReStart - Date:2019.01.09
+History051=Lancelot Fix Yomi update - Date:2019.01.17 // Cosmetics - Date:2019.02.25
+History054=Lancelot Psrv_Plugin_Settings_CheckBox Set to False [Settings_Default] AND invisible as default --> PluginManager.exe requires update for bugfix Line 2236  (File "...PluginManager.exe"): Error: Array variable has incorrect number of subscripts or subscript dimension range exceeded. (-> \Downloads\ Plugins ) + PluginManager.exe syntax requires to ONLY save Project Folder without link plugins and without link folders (faster) // x3 Server Failures - Date:2019.03.12
+History055=Lancelot Update Syntax with Call,DirMakeE - Date:2020.02.27
 
 [Plugin Update]
 1=Change FileName
@@ -248,7 +255,7 @@ RT_pBevel=RT_pBevel,0,12,13,59,420,311
 RT_pBevelS=RT_pBevelS,0,12,13,59,420,209
 DL_UP_Button="Update (Download + Copy)",1,8,2,21,195,147,Download_Reset,blupdatesini4848.bmp,False,False,_Download_Reset_,False,"__DOWNLOAD and COPY"
 NO_Add_Tasks_CheckBox="Restore FULL (No Additional Tasks)",1,3,18,184,188,18,False
-Psrv_Plugin_Settings_CheckBox="Preserve Plugin Settings",1,3,18,201,141,18,True
+Psrv_Plugin_Settings_CheckBox="Preserve Plugin Settings",0,3,18,201,141,18,False
 RT_Before_Copy_Bevel=pBevel1,0,12,13,218,199,50
 RT_After_Copy_Bevel=pBevel2,0,12,13,266,308,100
 blexact_pBevel=blexact_pBevel,0,12,13,2,420,124
@@ -257,13 +264,13 @@ blexact_c_ini_CheckBox="Preserve Plugin_blexactserver_Custom.ini",0,3,233,29,192
 blexact_Button="Start Download",0,8,18,7,140,48,blexact_Download_Auto,blexactserver_3636.bmp
 blexact_Custom_Button="Start Download Custom",0,8,293,8,131,20,blexact_Download_Custom,_blexact_Download_Custom_,False
 pRadioButton2=Custom:,0,11,47,96,58,20,False
-OpendirButton="Open Dir",0,8,351,66,75,51,Opendir,opendir.bmp
+OpendirButton="Open Dir",0,8,351,66,75,51,Opendir,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp
 RT_Button="Copy Project Folders",0,8,19,129,166,55,Copy_Project_Dir,copy-document.bmp,False,False,_Copy_Project_Dir_,False
 SDir_Preserve_CheckBox="Preserve SourceDir info",0,3,233,145,136,14,True
 RT_XCopy_CheckBox="Use XCopy",0,3,233,129,75,14,True
 RT_XCopy_H_CheckBox=Hide,0,3,312,129,45,14,True
 Backup_CheckBox=Backup,0,3,254,165,56,14,True
-Backup_Opendir_Button=,0,8,312,162,20,20,Opendir_Backup,opendir.bmp,False,False,"__Open Backup Folder"
+Backup_Opendir_Button=,0,8,312,162,20,20,Opendir_Backup,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,"__Open Backup Folder"
 RT_BC_TextLabel="Before Copy:",0,1,21,225,67,18,8,Normal
 RT_BC_CheckBox=Tasks10_Before_Copy.cmd,0,3,24,244,156,16,True
 RT_BC_CheckBoxH=H,0,3,179,246,28,14,True,"__Hide Tasks10_Before_Copy.cmd"
@@ -273,7 +280,7 @@ RT_AC_TextLabel="After Copy:",0,1,21,269,61,18,8,Normal
 RT_CustomFiles_CheckBox="Add Custom Files (Generally for Billy Files: Imagex etc.)",0,3,24,288,290,15,True
 RT_AC_CheckBox=Tasks50_After_Copy.cmd,0,3,24,326,149,16,True,"__Hide Tasks50_After_Copy.cmd"
 RT_AC_CheckBoxH=H,0,3,182,327,28,14,True,"__Hide Tasks10_Before_Copy.cmd"
-Custom_Add_Download_Pack_ES_CheckBox="Add 'Downloads' (Download_Pack)",0,3,24,343,200,18,True
+Custom_Add_Download_Pack_ES_CheckBox="Add 'Downloads' (Download_Pack)",0,3,24,343,200,18,False
 pButton_Show_Second_Gui="advanced menu",1,8,440,7,85,20,Show_Second_Gui,True,True,False,_Show_Second_Gui_,True
 pButton_Show_First_Gui="BASIC MENU",0,8,436,4,113,118,Show_First_Gui,baby-cot32.bmp,True,False,_Show_First_Gui_,True,"__Back to Basic Menu"
 Options_More_Button=Moreee,0,8,436,135,113,73,Show_SecondB_Gui,Matryoshka_Research.bmp,True,_Show_SecondB_Gui_,True,"__Moree features I am Advanced user :>"
@@ -294,94 +301,94 @@ Button_Upload=,0,8,556,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016
 Button_CompareEdit=,0,8,582,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
 
 [Show_SecondB_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-FirstB_Gui,False
 Run,%ScriptFile%,Show-Hide-SecondB_Gui,True
 Set,%Options_More_CheckBox%,True,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show_FirstB_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-SecondB_Gui,False
 Run,%ScriptFile%,Show-Hide-FirstB_Gui,True
 Set,%Options_More_CheckBox%,False,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show-Hide-SecondB_Gui]
-Visible,%blexact_c_Bevel%,#1,PERMANENT
-Visible,%blexact_c_ini_CheckBox%,#1,PERMANENT
-Visible,%blexact_Custom_Button%,#1,PERMANENT
-Visible,%RT_XCopy_CheckBox%,#1,PERMANENT
-Visible,%RT_XCopy_H_CheckBox%,#1,PERMANENT
-Visible,%RT_Before_Copy_Bevel%,#1,PERMANENT
-Visible,%RT_After_Copy_Bevel%,#1,PERMANENT
-Visible,%RT_BC_TextLabel%,#1,PERMANENT
-Visible,%RT_BC_CheckBox%,#1,PERMANENT
-Visible,%RT_BC_CheckBoxH%,#1,PERMANENT
-Visible,%Link_CheckBox%,#1,PERMANENT
-Visible,%ProjectSelectScrollBox%,#1,PERMANENT
-Visible,%RT_AC_TextLabel%,#1,PERMANENT
-Visible,%RT_CustomFiles_CheckBox%,#1,PERMANENT
-Visible,%RT_AC_CheckBox%,#1,PERMANENT
-Visible,%RT_AC_CheckBoxH%,#1,PERMANENT
-Visible,%Custom_Add_Download_Pack_ES_CheckBox%,#1,PERMANENT
-Visible,%RT_pBevel%,#1,PERMANENT
-Visible,%PreseverLink_CheckBox%,#1,PERMANENT
-Visible,%PreseverCodeBox_CheckBox%,#1,PERMANENT
-Visible,%Rescan_CheckBox%,#1,PERMANENT
+Visible,%blexact_c_Bevel%,#1,Permanent
+Visible,%blexact_c_ini_CheckBox%,#1,Permanent
+Visible,%blexact_Custom_Button%,#1,Permanent
+Visible,%RT_XCopy_CheckBox%,#1,Permanent
+Visible,%RT_XCopy_H_CheckBox%,#1,Permanent
+Visible,%RT_Before_Copy_Bevel%,#1,Permanent
+Visible,%RT_After_Copy_Bevel%,#1,Permanent
+Visible,%RT_BC_TextLabel%,#1,Permanent
+Visible,%RT_BC_CheckBox%,#1,Permanent
+Visible,%RT_BC_CheckBoxH%,#1,Permanent
+Visible,%Link_CheckBox%,#1,Permanent
+Visible,%ProjectSelectScrollBox%,#1,Permanent
+Visible,%RT_AC_TextLabel%,#1,Permanent
+Visible,%RT_CustomFiles_CheckBox%,#1,Permanent
+Visible,%RT_AC_CheckBox%,#1,Permanent
+Visible,%RT_AC_CheckBoxH%,#1,Permanent
+//Visible,%Custom_Add_Download_Pack_ES_CheckBox%,#1,Permanent
+Visible,%RT_pBevel%,#1,Permanent
+Visible,%PreseverLink_CheckBox%,#1,Permanent
+Visible,%PreseverCodeBox_CheckBox%,#1,Permanent
+Visible,%Rescan_CheckBox%,#1,Permanent
 //--
-Visible,%Options_Less_Button%,#1,PERMANENT
+Visible,%Options_Less_Button%,#1,Permanent
 
 [Show-Hide-FirstB_Gui]
-Visible,%RT_pBevelS%,#1,PERMANENT
+Visible,%RT_pBevelS%,#1,Permanent
 //--
-Visible,%Options_More_Button%,#1,PERMANENT
+Visible,%Options_More_Button%,#1,Permanent
 
 [Show_Second_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 If,%Options_More_CheckBox%,Equal,True,Run,%ScriptFile%,Show-Hide-SecondB_Gui,True
 If,%Options_More_CheckBox%,Equal,False,Run,%ScriptFile%,Show-Hide-FirstB_Gui,True
 Run,%ScriptFile%,Show-Hide-First_Gui,False
 Run,%ScriptFile%,Show-Hide-Second_Gui,True
 //Set,%NO_Add_Tasks_CheckBox%,False,Permanent
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show_First_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-SecondB_Gui,False
 Run,%ScriptFile%,Show-Hide-FirstB_Gui,False
 Run,%ScriptFile%,Show-Hide-Second_Gui,False
 Run,%ScriptFile%,Show-Hide-First_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show-Hide-Second_Gui]
-Visible,%blexact_pBevel%,#1,PERMANENT
-Visible,%blexact_Button%,#1,PERMANENT
-Visible,%pRadioButton1%,#1,PERMANENT
-Visible,%pRadioButton2%,#1,PERMANENT
-Visible,%Download_Folder_FileBox%,#1,PERMANENT
-Visible,%OpendirButton%,#1,PERMANENT
-Visible,%RT_Button%,#1,PERMANENT
-Visible,%SDir_Preserve_CheckBox%,#1,PERMANENT
-Visible,%Backup_CheckBox%,#1,PERMANENT
-Visible,%Backup_Opendir_Button%,#1,PERMANENT
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
+Visible,%blexact_pBevel%,#1,Permanent
+Visible,%blexact_Button%,#1,Permanent
+Visible,%pRadioButton1%,#1,Permanent
+Visible,%pRadioButton2%,#1,Permanent
+Visible,%Download_Folder_FileBox%,#1,Permanent
+Visible,%OpendirButton%,#1,Permanent
+Visible,%RT_Button%,#1,Permanent
+Visible,%SDir_Preserve_CheckBox%,#1,Permanent
+Visible,%Backup_CheckBox%,#1,Permanent
+Visible,%Backup_Opendir_Button%,#1,Permanent
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
 //--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+Visible,%pButton_Show_First_Gui%,#1,Permanent
 
 [Show-Hide-First_Gui]
-Visible,%DL_UP_Button%,#1,PERMANENT
-Visible,%RTb_Button%,#1,PERMANENT
-Visible,%Button_Download%,#1,PERMANENT
-//Visible,%RTb_Full_CheckBox%,#1,PERMANENT
-//Visible,%NO_Add_Tasks_CheckBox%,#1,PERMANENT
+Visible,%DL_UP_Button%,#1,Permanent
+Visible,%RTb_Button%,#1,Permanent
+Visible,%Button_Download%,#1,Permanent
+//Visible,%RTb_Full_CheckBox%,#1,Permanent
+//Visible,%NO_Add_Tasks_CheckBox%,#1,Permanent
 //--
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
 
 [Download_Reset]
 //20151003_Run,%ScriptFile%,Read_Info
@@ -395,42 +402,42 @@ If,%XCopy_H%,Equal,True,Set,%XCH%,Hide
 Else,Set,%XCH%,Open
 //--
 If,%pRadioButton2%,Equal,True,Set,%dl%,%Download_Folder_FileBox%
-If,%pRadioButton2%,Equal,True,StrFormat,CTRIM,%dl%,\,%dl%
+If,%pRadioButton2%,Equal,True,StrFormat,CTrim,%dl%,\,%dl%
 //--
 Echo,"%ProjectFNMain% - Copy actual Project Files for FirstRun. Please Wait.... (it can take some minutes)"
 //--
 Call,DirMake,%dl%\Projects\Tools\Languages
 //-
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\Tools\Languages\*#$q #$q%dl%\Projects\Tools\Languages#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\Tools\Languages"
 //--
 Call,DirMake,%dl%\Projects\%ProjectFNTools%
 //-
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNTools%\*#$q #$q%dl%\Projects\%ProjectFNTools%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\%ProjectFNTools%"
 //--
 Call,DirMake,%dl%\Projects\%ProjectFNMain%
 //-
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNMain%\*#$q #$q%dl%\Projects\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\%ProjectFNMain%"
 //--
 If,Not,%ProjectFNSecond%,Equal,"",Begin
 If,ExistDir,%BaseDir%\Projects\%ProjectFNSecond%,Begin
 Call,DirMake,%dl%\Projects\%ProjectFNSecond%
 //-
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNSecond%\*#$q #$q%dl%\Projects\%ProjectFNSecond%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\%ProjectFNSecond%"
 End
 End
@@ -474,7 +481,7 @@ Run,%ScriptFile%,Reset_Project_Dirs
 
 [Create_Batches]
 If,%pRadioButton2%,Equal,True,Set,%dl%,%Download_Folder_FileBox%
-If,%pRadioButton2%,Equal,True,StrFormat,CTRIM,%dl%,\,%dl%
+If,%pRadioButton2%,Equal,True,StrFormat,CTrim,%dl%,\,%dl%
 //--
 Set,%w%,%dl%\Plugin_Tasks10_Before_Copy.cmd
 If,NOT,ExistFile,%w%,Begin
@@ -623,22 +630,22 @@ TxtAddLine,%w%,"goto:EOF",Append
 //20151003_Run,%ScriptFile%,Read_Info
 Run,%ScriptFile%,Create_Batches
 If,%pRadioButton2%,Equal,True,Set,%dl%,%Download_Folder_FileBox%
-If,%pRadioButton2%,Equal,True,StrFormat,CTRIM,%dl%,\,%dl%
+If,%pRadioButton2%,Equal,True,StrFormat,CTrim,%dl%,\,%dl%
 If,%dl%,Equal,,Exit,"Folder Not Defined"
 If,Not,ExistDir,%dl%,DirMake,%dl%
 If,Not,ExistDir,%dl%,Message,"%dl%#$xNOT Created",Error
 If,Not,ExistDir,%dl%,Echo,"%dl%-NOT Created",Warn
 If,Not,ExistDir,%dl%,Halt,"%dl%-NOT Created"
 If,Not,ExistDir,%dl%\CustomFiles\Projects\%ProjectFNTools%,DirMake,%dl%\CustomFiles\Projects\%ProjectFNTools%
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,explorer.exe,/e#$c#$q%dl%#$q
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [Opendir_Backup]
 If,Not,ExistDir,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup,DirMake,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,explorer.exe,/e#$c#$q%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup#$q
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [blexact_Download_Auto]
 //20151003_Run,%ScriptFile%,Read_Info
@@ -651,14 +658,14 @@ Shellexecute,Open,Plugin_blexactserver.exe,,%dl%
 Run,%ScriptFile%,blexact_Download
 If,ExistFile,%dl%\Plugin_blexactserver_Custom.exe,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%dl%\Plugin_blexactserver_Custom.exe#$q&del /q /f /A:R /A:H /A:S /A:A #$q%dl%\Plugin_blexactserver_Custom.exe#$q"
 If,ExistFile,%dl%\Plugin_blexactserver_Custom.exe,Message,"%dl%\Plugin_blexactserver_Custom.exe #$x FILE NOT DELETED",Error
-If,ExistFile,%dl%\Plugin_blexactserver_Custom.exe,Echo,"%dl%\Plugin_blexactserver_Custom.exe FILE NOT DELETED",WARN
-If,ExistFile,%dl%\Plugin_blexactserver_Custom.exe,Exit,"%dl%\Plugin_blexactserver_Custom.exe FILE NOT DELETED",WARN
+If,ExistFile,%dl%\Plugin_blexactserver_Custom.exe,Echo,"%dl%\Plugin_blexactserver_Custom.exe FILE NOT DELETED",Warn
+If,ExistFile,%dl%\Plugin_blexactserver_Custom.exe,Exit,"%dl%\Plugin_blexactserver_Custom.exe FILE NOT DELETED",Warn
 FileRename,%dl%\Plugin_blexactserver.exe,%dl%\Plugin_blexactserver_Custom.exe
 If,Not,%blexact_c_ini_CheckBox%,Equal,True,Begin
 If,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%dl%\Plugin_blexactserver_Custom.ini#$q&del /q /f /A:R /A:H /A:S /A:A #$q%dl%\Plugin_blexactserver_Custom.ini#$q"
 If,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,Message,"%dl%\Plugin_blexactserver_Custom.ini #$x FILE NOT DELETED",Error
-If,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,Echo,"%dl%\Plugin_blexactserver_Custom.ini FILE NOT DELETED",WARN
-If,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,Exit,"%dl%\Plugin_blexactserver_Custom.ini FILE NOT DELETED",WARN
+If,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,Echo,"%dl%\Plugin_blexactserver_Custom.ini FILE NOT DELETED",Warn
+If,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,Exit,"%dl%\Plugin_blexactserver_Custom.ini FILE NOT DELETED",Warn
 FileRename,%dl%\Plugin_blexactserver.ini,%dl%\Plugin_blexactserver_Custom.ini
 End
 Else,If,Not,ExistFile,%dl%\Plugin_blexactserver_Custom.ini,FileRename,%dl%\Plugin_blexactserver.ini,%dl%\Plugin_blexactserver_Custom.ini
@@ -671,23 +678,23 @@ ShellexecuteEx,Open,Plugin_blexactserver_Custom.exe,,%dl%
 [blexact_Download]
 Run,%ScriptFile%,Create_Batches
 If,%pRadioButton2%,Equal,True,Set,%dl%,%Download_Folder_FileBox%
-If,%pRadioButton2%,Equal,True,StrFormat,CTRIM,%dl%,\,%dl%
+If,%pRadioButton2%,Equal,True,StrFormat,CTrim,%dl%,\,%dl%
 If,Not,ExistDir,%dl%,DirMake,%dl%
 If,Not,ExistDir,%dl%,Message,"Can not create #$x%dl% #$xFolder. Exiting....",Error
 If,Not,ExistDir,%dl%,Echo,"Can not create %dl% Folder. Exiting....",Warn
 If,Not,ExistDir,%dl%,Halt,"Can not create %dl% Folder. Exiting...."
 If,ExistFile,%dl%\Plugin_blexactserver.exe,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%dl%\Plugin_blexactserver.exe#$q&del /q /f /A:R /A:H /A:S /A:A #$q%dl%\Plugin_blexactserver.exe#$q"
 If,ExistFile,%dl%\Plugin_blexactserver.exe,Message,"%dl%\Plugin_blexactserver.exe #$x FILE NOT DELETED",Error
-If,ExistFile,%dl%\Plugin_blexactserver.exe,Echo,"%dl%\Plugin_blexactserver.exe FILE NOT DELETED",WARN
-If,ExistFile,%dl%\Plugin_blexactserver.exe,Exit,"%dl%\Plugin_blexactserver.exe FILE NOT DELETED",WARN
+If,ExistFile,%dl%\Plugin_blexactserver.exe,Echo,"%dl%\Plugin_blexactserver.exe FILE NOT DELETED",Warn
+If,ExistFile,%dl%\Plugin_blexactserver.exe,Exit,"%dl%\Plugin_blexactserver.exe FILE NOT DELETED",Warn
 If,ExistFile,%dl%\Plugin_blexactserver.ini,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%dl%\Plugin_blexactserver.ini#$q&del /q /f /A:R /A:H /A:S /A:A #$q%dl%\Plugin_blexactserver.ini#$q"
 If,ExistFile,%dl%\Plugin_blexactserver.ini,Message,"%dl%\Plugin_blexactserver.ini #$x FILE NOT DELETED",Error
-If,ExistFile,%dl%\Plugin_blexactserver.ini,Echo,"%dl%\Plugin_blexactserver.ini FILE NOT DELETED",WARN
-If,ExistFile,%dl%\Plugin_blexactserver.ini,Exit,"%dl%\Plugin_blexactserver.ini FILE NOT DELETED",WARN
+If,ExistFile,%dl%\Plugin_blexactserver.ini,Echo,"%dl%\Plugin_blexactserver.ini FILE NOT DELETED",Warn
+If,ExistFile,%dl%\Plugin_blexactserver.ini,Exit,"%dl%\Plugin_blexactserver.ini FILE NOT DELETED",Warn
 If,ExistFile,%dl%\blupdatesini.exe,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%dl%\blupdatesini.exe#$q&del /q /f /A:R /A:H /A:S /A:A #$q%dl%\blupdatesini.exe#$q"
 If,ExistFile,%dl%\blupdatesini.exe,Message,"%dl%\blupdatesini.exe #$x FILE NOT DELETED",Error
-If,ExistFile,%dl%\blupdatesini.exe,Echo,"%dl%\blupdatesini.exe FILE NOT DELETED",WARN
-If,ExistFile,%dl%\blupdatesini.exe,Exit,"%dl%\blupdatesini.exe FILE NOT DELETED",WARN
+If,ExistFile,%dl%\blupdatesini.exe,Echo,"%dl%\blupdatesini.exe FILE NOT DELETED",Warn
+If,ExistFile,%dl%\blupdatesini.exe,Exit,"%dl%\blupdatesini.exe FILE NOT DELETED",Warn
 ExtractFile,%ScriptFile%,Folder,Plugin_blexactserver.exe,%dl%
 ExtractFile,%ScriptFile%,Folder,Plugin_blexactserver.ini,%dl%
 IniWrite,%dl%\Plugin_blexactserver.ini,General,WebServer_Selected,%DLServer%
@@ -700,7 +707,7 @@ If,Not,ExistDir,%BaseDir%\Temp\%ProjectFNMain%,DirMake,%BaseDir%\Temp\%ProjectFN
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\script.project,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%BaseDir%\Temp\%ProjectFNMain%\script.project#$q&del /q /f /A:R /A:H /A:S /A:A #$q%BaseDir%\Temp\%ProjectFNMain%\script.project#$q"
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\script.project,Message,"%BaseDir%\Temp\%ProjectFNMain%\script.project FILE NOT DELETED #$x Exiting....",Error
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\script.project,Halt,"%BaseDir%\Temp\%ProjectFNMain%\script.project FILE NOT DELETED - Exiting...."
-StrFormat,FILENAME,%ScriptFile%,%ScriptFileName%
+StrFormat,FileName,%ScriptFile%,%ScriptFileName%
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%#$q"
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Message,"%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName% FILE NOT DELETED #$x Exiting....",Error
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Halt,"%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName% FILE NOT DELETED - Exiting...."
@@ -708,11 +715,11 @@ If,ExistFile,%BaseDir%\Projects\%ProjectFNMain%\script.project,FileCopy,%BaseDir
 FileCopy,%ScriptFile%,%BaseDir%\Temp\%ProjectFNMain%
 //-
 //20151003_Run,%ScriptFile%,Read_InfoFile
-//20151003_StrFormat,FILENAME,%IFile%,%IFile_N%
+//20151003_StrFormat,FileName,%IFile%,%IFile_N%
 //20151003_If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%IFile_N%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%BaseDir%\Temp\%ProjectFNMain%\%IFile_N%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%BaseDir%\Temp\%ProjectFNMain%\%IFile_N%#$q"
 //20151003_FileCopy,%IFile%,%BaseDir%\Temp\%ProjectFNMain%
 //--
-StrFormat,DATE,%MyDate%,yyyymmddhhnn
+StrFormat,Date,%MyDate%,yyyymmddhhnn
 Set,%BackupFolderBaseVar%,%MyDate%1
 If,ExistDir,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBaseVar%_%ProjectFNMain%,Loop,%ScriptFile%,LoopDate,1,200
 If,ExistDir,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBaseVar%_%ProjectFNMain%,Message,"Are you Happy now :>",Error
@@ -726,7 +733,7 @@ Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Backup_Project_Dirs_B,%dl%,%
 [Reset_Project_Dirs]
 //20151003_Run,%ScriptFile%,Read_Info
 If,%pRadioButton2%,Equal,True,Set,%dl%,%Download_Folder_FileBox%
-If,%pRadioButton2%,Equal,True,StrFormat,CTRIM,%dl%,\,%dl%
+If,%pRadioButton2%,Equal,True,StrFormat,CTrim,%dl%,\,%dl%
 If,Not,ExistFile,%dl%\Projects\%ProjectFNMain%\script.project,Message,"%ProjectFNMain% not found at download folder !",Error
 If,Not,ExistFile,%dl%\Projects\%ProjectFNMain%\script.project,Echo,"%ProjectFNMain% not found at download folder !",Warn
 If,Not,ExistFile,%dl%\Projects\%ProjectFNMain%\script.project,Halt,"%ProjectFNMain% not found at download folder !"
@@ -770,7 +777,7 @@ Set,%WimSettingsIVal%,""
 If,%SDir_Preserve%,Equal,True,Begin
 If,ExistFile,%BaseDir%\Projects\%ProjectFNMain%\script.project,Begin
 IniRead,%BaseDir%\Projects\%ProjectFNMain%\script.project,Main,SourceDir,%SDirInfos%
-StrFormat,REPLACE,%SDirInfos%,",",#$c,%SDirInfos%
+StrFormat,Replace,%SDirInfos%,",",#$c,%SDirInfos%
 End
 If,Not,-%WimSettings%,Equal,-,Begin
 If,ExistFile,%BaseDir%\Projects\%WimSettings%,Begin
@@ -799,9 +806,9 @@ End
 End
 //--
 If,ExistFile,%API%,Begin
-StrFormat,FILENAME,%API%,%APIFileName%
-StrFormat,PATH,%API%,%APIFolder%
-StrFormat,CTRIM,%APIFolder%,\,%APIFolder%
+StrFormat,FileName,%API%,%APIFileName%
+StrFormat,Path,%API%,%APIFolder%
+StrFormat,CTrim,%APIFolder%,\,%APIFolder%
 If,Not,ExistDir,%BaseDir%\Temp\%ProjectFNMain%,DirMake,%BaseDir%\Temp\%ProjectFNMain%
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%#$q&del /q /f /A:R /A:H /A:S /A:A #$q%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%#$q"
 FileCopy,%API%,%BaseDir%\Temp\%ProjectFNMain%
@@ -812,10 +819,10 @@ If,%RT_BC_CheckBox%,Equal,True,If,ExistFile,%dl%\Plugin_Tasks10_Before_Copy.cmd,
 Echo,"%ProjectFNMain% Making 'Plugin_Tasks10_Before_Copy.cmd' tasks"
 If,%RT_BC_CheckBoxH%,Equal,True,Set,%RT_BC_H%,Hide
 Else,Set,%RT_BC_H%,Open
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%RT_BC_H%,cmd.exe,"/C #$q%dl%\Plugin_Tasks10_Before_Copy.cmd#$q"
 Set,%ECode_RT_BC_H_Var%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECode_RT_BC_H_Var%,Equal,0,Message,"%ProjectFNMain% - Plugin_Tasks10_Before_Copy.cmd ErrorLevel=%ECode_RT_BC_H_Var%",Error
 If,Not,%ECode_RT_BC_H_Var%,Equal,0,Echo,"%ProjectFNMain% - Plugin_Tasks10_Before_Copy.cmd ErrorLevel=%ECode_RT_BC_H_Var%",Warn
 End
@@ -829,11 +836,11 @@ Call,DirDeleteMake,%BaseDir%\Temp\%ProjectFNMain%\ExactandSecure_Link
 If,%XCopy_H%,Equal,True,Set,%XCH%,Hide
 Else,Set,%XCH%,Open
 //-
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 //Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNMain%\*.Link#$q #$q%ProjectTemp%\ExactandSecure_Link#$q /i /s /e /r /v /k /f /h /y"
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNMain%\*.Link#$q #$q%BaseDir%\Temp\%ProjectFNMain%\ExactandSecure_Link#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup *.Link %BaseDir%\Temp\%ProjectFNMain%\ExactandSecure_Link"
 //-
 End
@@ -881,47 +888,47 @@ Else,Set,%XCH%,Open
 //-
 If,Not,%ProjectFNSecond%,Equal,"",Begin
 If,ExistDir,%BaseDir%\Projects\%ProjectFNSecond%,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNSecond%,%ProjectFNSecondSize%
-System,FILEREDIRECT,OFF
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNSecond%,%ProjectFNSecondSize%
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNSecond%\*#$q #$q%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNSecond%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\%ProjectFNSecond%"
 Else,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNSecond%,%TempProjectFNSecondSize%
+Retrieve,FolderSize,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNSecond%,%TempProjectFNSecondSize%
 If,Not,%ProjectFNSecondSize%,Equal,%TempProjectFNSecondSize%,Begin
-If,Not,QUESTION,"Backup %BaseDir%\Projects\%ProjectFNSecond%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNSecond% --- Size saved different from the original size"
+If,Not,Question,"Backup %BaseDir%\Projects\%ProjectFNSecond%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNSecond% --- Size saved different from the original size"
 End
 End
 End
 End
 //-
 If,ExistDir,%BaseDir%\Projects\%ProjectFNTools%,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNTools%,%ProjectFNToolsSize%
-System,FILEREDIRECT,OFF
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNTools%,%ProjectFNToolsSize%
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNTools%\*#$q #$q%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNTools%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\%ProjectFNTools%"
 Else,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNTools%,%TempProjectFNToolsSize%
+Retrieve,FolderSize,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNTools%,%TempProjectFNToolsSize%
 If,Not,%ProjectFNToolsSize%,Equal,%TempProjectFNToolsSize%,Begin
-If,Not,QUESTION,"Backup %BaseDir%\Projects\%ProjectFNTools%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNTools% --- Size saved different from the original size"
+If,Not,Question,"Backup %BaseDir%\Projects\%ProjectFNTools%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNTools% --- Size saved different from the original size"
 End
 End
 End
 //-
 If,ExistDir,%BaseDir%\Projects\%ProjectFNMain%,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNMain%,%ProjectFNMainSize%
-System,FILEREDIRECT,OFF
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNMain%,%ProjectFNMainSize%
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Projects\%ProjectFNMain%\*#$q #$q%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Xcopy_Error_Info,"Backup %BaseDir%\Projects\%ProjectFNMain%"
 Else,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNMain%,%TempProjectFNMainSize%
+Retrieve,FolderSize,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNMain%,%TempProjectFNMainSize%
 If,Not,%ProjectFNMainSize%,Equal,%TempProjectFNMainSize%,Begin
-If,Not,QUESTION,"Backup %BaseDir%\Projects\%ProjectFNMain%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNMain% --- Size saved different from the original size"
+If,Not,Question,"Backup %BaseDir%\Projects\%ProjectFNMain%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNMain% --- Size saved different from the original size"
 End
 End
 End
@@ -929,29 +936,29 @@ End
 End
 Else,Begin
 If,Not,%ProjectFNSecond%,Equal,"",Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNSecond%,%ProjectFNSecondSize%
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNSecond%,%ProjectFNSecondSize%
 System,ErrorOff,1
 FileCopy,%BaseDir%\Projects\%ProjectFNSecond%\*,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNSecond%
-Retrieve,FOLDERSIZE,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNSecond%,%TempProjectFNSecondSize%
+Retrieve,FolderSize,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNSecond%,%TempProjectFNSecondSize%
 If,Not,%ProjectFNSecondSize%,Equal,%TempProjectFNSecondSize%,Begin
-If,Not,QUESTION,"Backup %BaseDir%\Projects\%ProjectFNSecond%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNSecond% --- Size saved different from the original size"
+If,Not,Question,"Backup %BaseDir%\Projects\%ProjectFNSecond%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNSecond% --- Size saved different from the original size"
 End
 End
 //-
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNTools%,%ProjectFNToolsSize%
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNTools%,%ProjectFNToolsSize%
 System,ErrorOff,1
 FileCopy,%BaseDir%\Projects\%ProjectFNTools%\*,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNTools%
-Retrieve,FOLDERSIZE,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNTools%,%TempProjectFNToolsSize%
+Retrieve,FolderSize,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNTools%,%TempProjectFNToolsSize%
 If,Not,%ProjectFNToolsSize%,Equal,%TempProjectFNToolsSize%,Begin
-If,Not,QUESTION,"Backup %BaseDir%\Projects\%ProjectFNTools%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNTools% --- Size saved different from the original size"
+If,Not,Question,"Backup %BaseDir%\Projects\%ProjectFNTools%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNTools% --- Size saved different from the original size"
 End
 //-
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNMain%,%ProjectFNMainSize%
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNMain%,%ProjectFNMainSize%
 System,ErrorOff,1
 FileCopy,%BaseDir%\Projects\%ProjectFNMain%\*,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNMain%
-Retrieve,FOLDERSIZE,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNMain%,%TempProjectFNMainSize%
+Retrieve,FolderSize,%BaseDir%\Temp\%ProjectFNMain%\BLExact_Update_Backup\%BackupFolderBase%_%ProjectFNMain%\Projects\%ProjectFNMain%,%TempProjectFNMainSize%
 If,Not,%ProjectFNMainSize%,Equal,%TempProjectFNMainSize%,Begin
-If,Not,QUESTION,"Backup %BaseDir%\Projects\%ProjectFNMain%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNMain% --- Size saved different from the original size"
+If,Not,Question,"Backup %BaseDir%\Projects\%ProjectFNMain%#$x#$x#$xSize saved different from the original size#$x#$x#$xContinue?",Halt,"Backup %BaseDir%\Projects\%ProjectFNMain% --- Size saved different from the original size"
 End
 End
 //-
@@ -995,25 +1002,25 @@ If,Not,%ProjectFNSecond%,Equal,"",Begin
 If,ExistDir,%BaseDir%\Projects\%ProjectFNSecond%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%BaseDir%\Projects\%ProjectFNSecond%#$q"
 If,ExistDir,%BaseDir%\Projects\%ProjectFNSecond%,Call,DirDelete,%BaseDir%\Projects\%ProjectFNSecond%
 If,ExistDir,%BaseDir%\Projects\%ProjectFNSecond%,Begin
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNSecond%,%tfsize%
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNSecond%,%tfsize%
 If,Not,%RT_XCopy_CheckBox%%tfsize%,Equal,True0,Begin
-If,Not,QUESTION,"%BaseDir%\Projects\%ProjectFNSecond%#$x#$x#$xDirectory NOT DELETED#$x#$x#$xContinue?",Halt,"%BaseDir%\Projects\%ProjectFNSecond% --- Directory NOT DELETED"
+If,Not,Question,"%BaseDir%\Projects\%ProjectFNSecond%#$x#$x#$xDirectory NOT DELETED#$x#$x#$xContinue?",Halt,"%BaseDir%\Projects\%ProjectFNSecond% --- Directory NOT DELETED"
 End
 End
 End
-If,ExistDir,%BaseDir%\Projects\%ProjectFNTools%,Call,DirDeleteE,%BaseDir%\Projects\%ProjectFNTools%
+If,ExistDir,%BaseDir%\Projects\%ProjectFNTools%,Call,DirMakeE,%BaseDir%\Projects\%ProjectFNTools%
 //If,ExistDir,%BaseDir%\Projects\%ProjectFNTools%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%BaseDir%\Projects\%ProjectFNTools%#$q"
 //If,ExistDir,%BaseDir%\Projects\%ProjectFNTools%,Call,DirDelete,%BaseDir%\Projects\%ProjectFNTools%
 If,ExistDir,%BaseDir%\Projects\%ProjectFNTools%,Begin
-//Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNSecond%,%tfsize%
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNTools%,%tfsize%
+//Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNSecond%,%tfsize%
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNTools%,%tfsize%
 If,Not,%RT_XCopy_CheckBox%%tfsize%,Equal,True0,Begin
-If,Not,QUESTION,"%BaseDir%\Projects\%ProjectFNTools%#$x#$x#$xDirectory NOT DELETED#$x#$x#$xContinue?",Halt,"%BaseDir%\Projects\%ProjectFNTools% --- Directory NOT DELETED"
+If,Not,Question,"%BaseDir%\Projects\%ProjectFNTools%#$x#$x#$xDirectory NOT DELETED#$x#$x#$xContinue?",Halt,"%BaseDir%\Projects\%ProjectFNTools% --- Directory NOT DELETED"
 End
 End
 //------
 Echo,"%ProjectFNMain% - Deleting Main ProjectDirectory...."
-// See Next Begi-n with //Port MacroLibrary Call,DirDeleteE,<Directory>
+// See Next Begi-n with //Port MacroLibrary Call,DirMakeE,<Directory>
 Set,%DisableDirectRDProjectFNMain%,0
 //Set,%DisableDirectRDProjectFNMain%,1
 If,%DisableDirectRDProjectFNMain%,Equal,1,Begin
@@ -1031,10 +1038,10 @@ If,ExistDir,%BaseDir%\Projects\%ProjectFNMain%,Shellexecute,Hide,cmd.exe,"/C rd 
 //at this point there is no ML
 //If,ExistDir,%BaseDir%\Projects\%ProjectFNMain%,Call,DirDelete,%BaseDir%\Projects\%ProjectFNMain%
 If,ExistDir,%BaseDir%\Projects\%ProjectFNMain%,Begin
-//Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNMain%,%tfsize%
-Retrieve,FOLDERSIZE,%BaseDir%\Projects\%ProjectFNMain%,%tfsize%
+//Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNMain%,%tfsize%
+Retrieve,FolderSize,%BaseDir%\Projects\%ProjectFNMain%,%tfsize%
 If,Not,%RT_XCopy_CheckBox%%tfsize%,Equal,True0,Begin
-If,Not,QUESTION,"%BaseDir%\Projects\%ProjectFNMain%#$x#$x#$xDirectory NOT DELETED#$x#$x#$xContinue?",Halt,"%BaseDir%\Projects\%ProjectFNMain% --- Directory NOT DELETED"
+If,Not,Question,"%BaseDir%\Projects\%ProjectFNMain%#$x#$x#$xDirectory NOT DELETED#$x#$x#$xContinue?",Halt,"%BaseDir%\Projects\%ProjectFNMain% --- Directory NOT DELETED"
 End
 End
 //--
@@ -1045,7 +1052,7 @@ If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\script.project,FileCopy,%BaseDir%\Te
 End
 If,Not,ExistFile,%API%,Begin
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%,Begin
-//custom folder or project folder having api required since we are cautious ;)
+//custom folder or project folder having Macro Lirary required since we are cautious ;)
 If,Not,ExistDir,%APIFolder%,DirMake,%APIFolder%
 FileCopy,%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%,%APIFolder%
 End
@@ -1075,16 +1082,16 @@ End
 //---
 Set,%CallDirDeleteE_T%,%BaseDir%\Projects\%ProjectFNMain%
 //---
-StrFormat,CTRIM,%CallDirDeleteE_T%,\,%CallDirDeleteE_T%
+StrFormat,CTrim,%CallDirDeleteE_T%,\,%CallDirDeleteE_T%
 If,%CallDirDeleteE_T%-,Equal,-,Echo,"Call DirDeleteE - Parameter 2 Missing",Warn
 Else,Begin
 If,ExistDir,%CallDirDeleteE_T%,Begin
-StrFormat,DATE,%CallDirDeleteE_T_Temp%,yyyymmddhhnnsszzz
+StrFormat,Date,%CallDirDeleteE_T_Temp%,yyyymmddhhnnsszzz
 ShellExecute,Hide,cmd.exe,"/C Echo Test>DummyFileForPreJuncCheck_%CallDirDeleteE_T_Temp%.txt",%CallDirDeleteE_T%
 If,Not,ExistFile,%CallDirDeleteE_T%\DummyFileForPreJuncCheck_%CallDirDeleteE_T_Temp%.txt,Begin
 //It is Highly probably forgotten Junction that links to nowhere (junction target deleted)
 //Call,DirDelete,%CallDirDeleteE_T%
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDirDeleteE_T%#$q"
 If,ExistDir,%CallDirDeleteE_T%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDirDeleteE_T%#$q"
 If,ExistDir,%CallDirDeleteE_T%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDirDeleteE_T%#$q"
@@ -1095,15 +1102,15 @@ If,ExistDir,%CallDirDeleteE_T%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDi
 If,ExistDir,%CallDirDeleteE_T%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDirDeleteE_T%#$q"
 If,ExistDir,%CallDirDeleteE_T%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDirDeleteE_T%#$q"
 If,ExistDir,%CallDirDeleteE_T%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%CallDirDeleteE_T%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 DirMake,%CallDirDeleteE_T%
 End
 Else,Begin
 //-
 //Call,FileDelete,%CallDirDeleteE_T%\DummyFileForPreJuncCheck_%CallDirDeleteE_T_Temp%.txt
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%CallDirDeleteE_T%\DummyFileForPreJuncCheck_%CallDirDeleteE_T_Temp%.txt#$q&del /q /f /A:R /A:H /A:S /A:A #$q%CallDirDeleteE_T%\DummyFileForPreJuncCheck_%CallDirDeleteE_T_Temp%.txt#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //-
 If,Not,ExistDir,%BaseDir%\Temp\%ProjectFNMain%,DirMake,%BaseDir%\Temp\%ProjectFNMain%
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini,FileDelete,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini
@@ -1112,13 +1119,13 @@ If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini,FileDelete
 If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_Check.ini,FileDelete,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_Check.ini
 //-
 //First Delete Files at ..\Folder\*
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Hide,cmd.exe,"/C del /q /f *&del /q /f /A:R /A:H /A:S /A:A *",%CallDirDeleteE_T%
 ShellExecute,Hide,cmd.exe,"/C del /q /f *&del /q /f /A:R /A:H /A:S /A:A *",%CallDirDeleteE_T%
 ShellExecute,Hide,cmd.exe,"/C del /q /f *&del /q /f /A:R /A:H /A:S /A:A *",%CallDirDeleteE_T%
 ShellExecute,Hide,cmd.exe,"/C del /q /f *&del /q /f /A:R /A:H /A:S /A:A *",%CallDirDeleteE_T%
 ShellExecute,Hide,cmd.exe,"/C del /q /f *&del /q /f /A:R /A:H /A:S /A:A *",%CallDirDeleteE_T%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //-
 //Second Delete Folders
 //1) This Delete Folders (not hidden not system)
@@ -1127,9 +1134,9 @@ FileCreateBlank,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.cmd
 FileCreateBlank,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini
 TxtAddLine,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini,"[Process]",Append
 TxtAddLine,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.cmd,"for /d #$p#$pA in (#$q%CallDirDeleteE_T%\*#$q) do echo #$p#$p~fA >>#$q%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini#$q",Append
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Hide,cmd.exe,"/C #$q%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.cmd#$q",%CallDirDeleteE_T%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //TxtReplace,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini,%CallDirDeleteE_T%,"Call,DirDelete,%CallDirDeleteE_T%"
 TxtReplace,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini,%CallDirDeleteE_T%,"Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,DirDeleteRD,%CallDirDeleteE_T%"
 Run,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini,Process
@@ -1140,9 +1147,9 @@ Run,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders.ini,Process
 FileCreateBlank,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini
 TxtAddLine,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini,"[Process]",Append
 //Trick: Here Dir first list Folders at ..\Folder\* than goes down to sub folders
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Hide,cmd.exe,"/C dir /b /S /A >>#$q%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini#$q",%CallDirDeleteE_T%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //TxtReplace,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini,%CallDirDeleteE_T%,"Call,DirDelete,%CallDirDeleteE_T%"
 TxtReplace,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini,%CallDirDeleteE_T%,"Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,DirDeleteRD,%CallDirDeleteE_T%"
 Run,%BaseDir%\Temp\%ProjectFNMain%\DirDeleteE_Folders_SH.ini,Process
@@ -1173,17 +1180,17 @@ If,Not,%CallDirDeleteE_T_Temp%,Equal,0,Message,"%CallDirDeleteE_T%#$x#$x%Project
 //---
 //---CallDirDeleteE_Test_Check S
 If,Not,%CallDirDeleteE_T_Temp%,Equal,0,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,explorer.exe,/e#$c#$q%CallDirDeleteE_T%#$q
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 Message,"Plugin Stop - CheckFolder - Than Press OK to Continue",Information
 End
 Set,%CallDirDeleteE_Test_Check%,0
 //Set,%CallDirDeleteE_Test_Check%,1
 If,%CallDirDeleteE_Test_Check%,Equal,1,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecuteEx,Open,explorer.exe,/e#$c#$q%CallDirDeleteE_T%#$q
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 Message,"Plugin Stop - CheckFolder - Than Press OK to Continue",Information
 End
 //---CallDirDeleteE_Test_Check F
@@ -1200,29 +1207,29 @@ Echo,"%ProjectFNMain% - Copy New Project Files Please Wait.... (it can take some
 If,%XCopy%,Equal,True,Begin
 If,%XCopy_H%,Equal,True,Set,%XCH%,Hide
 Else,Set,%XCH%,Open
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 //Xcopy.exe breaks junctions
 //Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\Projects\*#$q #$q%BaseDir%\Projects#$q /i /s /e /r /v /k /f /h /y"
 //--
 If,Not,ExistDir,%BaseDir%\Projects\%ProjectFNMain%,DirMake,%BaseDir%\Projects\%ProjectFNMain%
 Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\Projects\%ProjectFNMain%\*#$q #$q%BaseDir%\Projects\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Xcopy_Error_Info,"Copy New Project Files"
 //--
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 If,Not,ExistDir,%BaseDir%\Projects\Tools\%ProjectFNMain%,DirMake,%BaseDir%\Projects\Tools\%ProjectFNMain%
 Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\Projects\Tools\%ProjectFNMain%\*#$q #$q%BaseDir%\Projects\Tools\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Xcopy_Error_Info,"Copy New Project Tools Files"
 //--
 If,Not,%ProjectFNSecond%,Equal,"",Begin
 If,Not,ExistDir,%BaseDir%\Projects\%ProjectFNSecond%,DirMake,%BaseDir%\Projects\%ProjectFNSecond%
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\Projects\%ProjectFNSecond%\*#$q #$q%BaseDir%\Projects\%ProjectFNSecond%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Run,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Xcopy_Error_Info,"Copy New Project Tools Files"
 End
 End
@@ -1240,21 +1247,21 @@ If,%XCopy_H%,Equal,True,Set,%XCH%,Hide
 Else,Set,%XCH%,Open
 //--
 If,ExistDir,%dl%\CustomFiles\Projects\%ProjectFNMain%,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 //Xcopy.exe breaks junctions
 //Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\CustomFiles\*#$q #$q%BaseDir%#$q /i /s /e /r /v /k /f /h /y"
 Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\CustomFiles\Projects\%ProjectFNMain%\*#$q #$q%BaseDir%\Projects\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Message,"%ProjectFNMain% - Custom Copy Files Projects\%ProjectFNMain% XCopy ErrorLevel=%ECodeVar%",Error
 If,Not,%ECodeVar%,Equal,0,Echo,"%ProjectFNMain% - Custom Copy Files Projects\%ProjectFNMain% XCopy ErrorLevel=%ECodeVar%",Warn
 End
 //--
 If,Existdir,%dl%\CustomFiles\Projects\Tools\%ProjectFNMain%,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%XCH%,xcopy.exe,"#$q%dl%\CustomFiles\Projects\Tools\%ProjectFNMain%\*#$q #$q%BaseDir%\Projects\Tools\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECodeVar%,Equal,0,Message,"%ProjectFNMain% - Custom Copy Files Tools\%ProjectFNMain% XCopy ErrorLevel=%ECodeVar%",Error
 If,Not,%ECodeVar%,Equal,0,Echo,"%ProjectFNMain% - Custom Copy Files Tools\%ProjectFNMain% XCopy ErrorLevel=%ECodeVar%",Warn
 End
@@ -1316,11 +1323,11 @@ If,ExistFile,%dl%\Plugin_bluelink.exe,Shellexecute,Hide,cmd.exe,"/C del /q /f #$
 If,ExistFile,%dl%\Plugin_bluelink.exe,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%dl%\Plugin_bluelink.exe#$q&del /q /f /A:R /A:H /A:S /A:A #$q%dl%\Plugin_bluelink.exe#$q"
 If,ExistFile,%dl%\Plugin_bluelink.exe,Begin
 Message,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",Error,10
-Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",WARN
-Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",WARN
-Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",WARN
-Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",WARN
-Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",WARN
+Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",Warn
+Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",Warn
+Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",Warn
+Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",Warn
+Echo,"%ProjectFNMain% - %dl%\Plugin_bluelink.exe NOT DELETED - LINKS NOT CREATED",Warn
 End
 If,Not,ExistFile,%dl%\Plugin_bluelink.exe,Begin
 ExtractFile,%BaseDir%\Temp\%ProjectFNMain%\%ScriptFileName%,Folder,Plugin_bluelink.exe,%dl%
@@ -1345,6 +1352,14 @@ If,Not,ExistDir,%GlobalTemplates%\PluginManager\UpdateSettings\%ProjectFNMain%,D
 ExtractFile,%ScriptFile%,Folder,PluginManager.exe,%GlobalTemplates%\PluginManager\UpdateSettings\%ProjectFNMain%
 If,ExistFile,%GlobalTemplates%\PluginManager\UpdateSettings\%ProjectFNMain%\PluginManager-ZivaCTT.ini,ShellExecute,Hide,%GlobalTemplates%\PluginManager\UpdateSettings\%ProjectFNMain%\PluginManager.exe,"restore #$q%BaseDir%\Projects\%ProjectFNMain%#$q #$q%BaseDir%\Projects\%ProjectFNMain%\folder.project#$q #$q%GlobalTemplates%\PluginManager\UpdateSettings\%ProjectFNMain%\PluginManager-ZivaCTT.ini#$q #$q%BaseDir%#$q NoVariables NoSaveState"
 End
+End
+End
+//--
+If,Not,ExistFile,%API%,Begin
+If,ExistFile,%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%,Begin
+//SevenZip_Latest_File requires Macro Library --> Run,%ProjectDir%\Utils\SevenZip_Latest_File.Script,Extract_7zLatest_Mini,%ProjectDir%\Utils\SevenZip_Latest_File.Script
+If,Not,ExistDir,%APIFolder%,DirMake,%APIFolder%
+FileCopy,%BaseDir%\Temp\%ProjectFNMain%\%APIFileName%,%APIFolder%
 End
 End
 //--
@@ -1377,10 +1392,10 @@ If,ExistFile,%dl%\Plugin_Tasks50_After_Copy.cmd,Begin
 Echo,"%ProjectFNMain% - Making 'Plugin_Tasks50_After_Copy.cmd' tasks"
 If,%RT_AC_CheckBoxH%,Equal,True,Set,%RT_AC_H%,Hide
 Else,Set,%RT_AC_H%,Open
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 Shellexecute,%RT_AC_H%,cmd.exe,"/C #$q%dl%\Plugin_Tasks50_After_Copy.cmd#$q"
 Set,%ECode_RT_AC_H_Var%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 If,Not,%ECode_RT_AC_H_Var%,Equal,0,Message,"%ProjectFNMain% - Plugin_Tasks50_After_Copy.cmd ErrorLevel=%ECode_RT_AC_H_Var%",Error
 If,Not,%ECode_RT_AC_H_Var%,Equal,0,Echo,"%ProjectFNMain% - Plugin_Tasks50_After_Copy.cmd ErrorLevel=%ECode_RT_AC_H_Var%",Warn
 End
@@ -1392,6 +1407,20 @@ If,%Custom_Add_Download_Pack_ES_CheckBox%,Equal,True,Begin
 //-
 If,ExistFile,"%BaseDir%\Projects\%ProjectFNMain%\Utils\Plugin Organisations.Script",Begin
 If,ExistSection,"%BaseDir%\Projects\%ProjectFNMain%\Utils\Plugin Organisations.Script",ExtractDownload,Begin
+//--
+//Make sure there is 7z.exe operational for Plugin Organisations
+If,Not,ExistDir,%BaseDir%\Projects\Tools\%ProjectFNMain%,DirMake,%BaseDir%\Projects\Tools\%ProjectFNMain%
+If,Not,ExistFile,%BaseDir%\Projects\Tools\%ProjectFNMain%\7z.exe,Set,%t%,0
+If,Not,ExistFile,%BaseDir%\Projects\Tools\%ProjectFNMain%\7z.dll,Set,%t%,0
+If,%t%,Equal,0,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Gena\Utils\SevenZip_Latest_File.Script,Call,Download,%BaseDir%\Projects\Gena\Utils\SevenZip_Latest_File.Script,http://gena.cwcodes.net/Projects/Gena/Utils/SevenZip_Latest_File.Script
+Run,%BaseDir%\Projects\Gena\Utils\SevenZip_Latest_File.Script,Extract_7zLatest_Mini,%BaseDir%\Projects\Gena\Utils\SevenZip_Latest_File.Script
+FileCopy,%ProjectTemp%\7zLatest\x86\7z.exe,%BaseDir%\Projects\Tools\%ProjectFNMain%
+FileCopy,%ProjectTemp%\7zLatest\x86\7z.dll,%BaseDir%\Projects\Tools\%ProjectFNMain%
+End
+If,Not,ExistFile,%BaseDir%\Projects\Tools\%ProjectFNMain%\7z.exe,Halt,"Not Found - %ProjectFNMain%\7z.exe"
+If,Not,ExistFile,%BaseDir%\Projects\Tools\%ProjectFNMain%\7z.dll,Halt,"Not Found - %ProjectFNMain%\7z.dll"
+//--
 Run,"%BaseDir%\Projects\%ProjectFNMain%\Utils\Plugin Organisations.Script",ExtractDownload,"%BaseDir%\Projects\%ProjectFNMain%\Utils\Plugin Organisations.Script",NoRefresh,%BaseDir%\Projects\%ProjectFNMain%,%BaseDir%\Projects\%ProjectFNTools%
 End
 End
@@ -1407,11 +1436,11 @@ If,ExistDir,%BaseDir%\Temp\%ProjectFNMain%\ExactandSecure_Link,Begin
 If,%XCopy_H%,Equal,True,Set,%XCH%,Hide
 Else,Set,%XCH%,Open
 //-
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 //Shellexecute,%XCH%,xcopy.exe,"#$q%ProjectTemp%\ExactandSecure_Link\*.Link#$q #$q%BaseDir%\Projects\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Shellexecute,%XCH%,xcopy.exe,"#$q%BaseDir%\Temp\%ProjectFNMain%\ExactandSecure_Link\*.Link#$q #$q%BaseDir%\Projects\%ProjectFNMain%#$q /i /s /e /r /v /k /f /h /y"
 Set,%ECodeVar%,%ExitCode%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup *.Link %ProjectTemp%\ExactandSecure_Link"
 If,Not,%ECodeVar%,Equal,0,Run,%ScriptFile%,Xcopy_Error_Info,"Backup *.Link %BaseDir%\Temp\%ProjectFNMain%\ExactandSecure_Link"
 //-
@@ -1424,45 +1453,46 @@ End
 End
 //--
 Echo,"%ProjectFNMain% - Saving Log"
-StrFormat,DATE,%myDate%,yyyymmdd_hhnn
-System,SAVELOG,%BaseDir%\log_%myDate%00_blupdate.html
+StrFormat,Date,%myDate%,yyyymmdd_hhnn
+System,SaveLog,%BaseDir%\log_%myDate%00_blupdate.html
 //--
 Echo,"%ProjectFNMain% - Finishing - Variables Rebuild and Plugins Rescaning"
-System,REBUILDVARS
-If,%Rescan_CheckBox%,Equal,True,System,RESCANSCRIPTS
-System,RefreshInterface
+System,ReBuildVars
 Echo,"%ProjectFNMain% - The End (FIN) (SON) :)"
+System,RefreshInterface
+//If,%Rescan_CheckBox%,Equal,True,System,RESCANSCRIPTS
+If,%Rescan_CheckBox%,Equal,True,Call,ReStart
 
 [Xcopy_Error_Info]
 Set,%ECodeDefined%,N
 If,%ECodeVar%,Equal,1,Begin
 Set,%ECodeDefined%,Y
 // Message,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xNo files were found to copy.#$x#$x#$x    Hit OK to continue",Error
-// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-No files were found to copy.",WARN
-If,Not,QUESTION,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xNo files were found to copy.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-No files were found to copy."
+// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-No files were found to copy.",Warn
+If,Not,Question,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xNo files were found to copy.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-No files were found to copy."
 End
 If,%ECodeVar%,Equal,2,Begin
 Set,%ECodeDefined%,Y
 // Message,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xThe user pressed CTRL+C to terminate xcopy.#$x(Cmd window closed manually)#$x#$x#$x    Hit OK to continue",Error
-// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-The user pressed CTRL+C to terminate xcopy.-(Cmd window closed manually)",WARN
-If,Not,QUESTION,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xThe user pressed CTRL+C to terminate xcopy.#$x(Cmd window closed manually)#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-The user pressed CTRL+C to terminate xcopy.-(Cmd window closed manually)"
+// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-The user pressed CTRL+C to terminate xcopy.-(Cmd window closed manually)",Warn
+If,Not,Question,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xThe user pressed CTRL+C to terminate xcopy.#$x(Cmd window closed manually)#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-The user pressed CTRL+C to terminate xcopy.-(Cmd window closed manually)"
 End
 If,%ECodeVar%,Equal,4,Begin
 Set,%ECodeDefined%,Y
 // Message,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue",Error
-// Echo,"#1---XCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue",WARN
-If,Not,QUESTION,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue"
+// Echo,"#1---XCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue",Warn
+If,Not,Question,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xInitialization error occurred.#$xThere is not enough memory or disk space#$xor you entered an invalid drive name#$xor invalid syntax on the command line.#$x#$x#$x    Hit OK to continue"
 End
 If,%ECodeVar%,Equal,5,Begin
 Set,%ECodeDefined%,Y
 // Message,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xDisk write error occurred.#$x#$x#$x    Hit OK to continue",Error
-// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Disk write error occurred.",WARN
-If,Not,QUESTION,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xDisk write error occurred.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Disk write error occurred."
+// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Disk write error occurred.",Warn
+If,Not,Question,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$xDisk write error occurred.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Disk write error occurred."
 End
 If,Not,%ECodeDefined%,Equal,Y,Begin
 // Message,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$x#$xUndefined Error Level!!!!.#$x#$x#$x    Hit OK to continue",Error
-// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Undefined Error Level!!!!.",WARN
-If,Not,QUESTION,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$x#$xUndefined Error Level!!!!.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Undefined Error Level!!!!."
+// Echo,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Undefined Error Level!!!!.",Warn
+If,Not,Question,"#1#$x#$x#$xXCopy not success#$x#$x ErrorLevel=%ECodeVar%#$x#$xUndefined Error Level!!!!.#$x#$x#$x    Hit OK to continue",Halt,"#1---XCopy not success-- ErrorLevel=%ECodeVar%-Undefined Error Level!!!!."
 End
 
 [Read_Info]
@@ -1484,12 +1514,12 @@ Run,%ScriptFile%,Read_Info
 System,RefreshInterface
 
 [Read_InfoFile]
-StrFormat,FILENAME,%ScriptFile%,%IFile%
+StrFormat,FileName,%ScriptFile%,%IFile%
 Strformat,RTrim,%IFile%,7,%IFile%
 Set,%IFile%,%ScriptDir%\%IFile%_Info.Script
 
 [DirDeleteRD]
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
 If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
 If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
@@ -1499,7 +1529,7 @@ If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
 If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
 If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
 If,ExistDir,#1,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [AuthorEncoded]
 blexactserver_4848.ico=3213,4284
@@ -1509,13 +1539,13 @@ Logo=blexactserver_4848.ico
 blupdatesini4848.bmp=4916,6555
 blexactserver_3636.bmp=1287,1716
 copy-document.bmp=1494,1992
-opendir.bmp=571,762
 baby-cot32.bmp=1577,2103
 Matryoshka_Research.bmp=1632,2176
 Matryoshka_Leisure.bmp=1552,2070
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
 
 [EncodedFolders]
 Folder
@@ -1546,9 +1576,9 @@ lines=0
 lines=0
 0=eJztmMtPG1cUxt11VYKTTaX+A901SiMSVEVNu+8+Qor6F1Sq1C6ySRaA1G4MOFKrhqogXguQYMeCx19QY8obIQEyb0JwEqcmhRX9PB9z9M2947GJRNVK/WSPrmfOnPndc859jL/8qumjVKAmfD/G9+bF973Uh6lQ99/nN9T5FehKnf/DSv0r9fRq1N7enslkstlsnfapMMVoPw90eHiI49HRkbYd7e3tFQqFnZ2dg4OD5yK7i4LP2dnZra2t3d3dOu0ta+TheTOGXgRSGPw8Pj4uFot63trWKTwaPnO5HEhwtU575fFjwkdDL6Iij563B1nf2V/lqcfe5zEpDBvFQMdRqX92BD/N/8zMDPJlHmraO/myTPEu6xRhXgYqhlIqc64dh898Pg8ei2dNe+VhEmlGDCdxRZFGDHIK7INvPsGHPNvb206EfXseHR7A7O/vg4q3AwYjAmfQ2A/EiFmgTEZo5VHh+fYmjsgXeJxbfHvKjw/E4OAutOGKPBjgGLO4RM+vRPzJp1g6QNLw/a2G726hASd6S6x9LI9TJ3g6GEgIKiDBAOdfB2JGEj4Nj243PPoUR7QBwLus4QfKrx+i0hI3Mss8Q37ClALhKY2Pm64FH2tcexK0w+PF1Sd3YPxa5AeqZnzYETz3TaA/A5VEeES67W5jazOO6dbmRrTbmtOtd9NtaPNn5WqlXbFphj1vjAVjlBwenlQeiwaR3ogqPD9+FvP5IfhETz74/WfY4y7rjvIYks9jw0eN0bYQkQpH+G/J/9KSf/Yg/4yNlmjjeuYePunMPbRhXC6XrS/koWdNXCyPBsey5sCQJ/lz4+nn17P3H/7xKzMFHvMAmX8bej6PVbKlyUoIfsxhOdDJyQm7zEfAjD6pCs9PXzxcqMBgWoNBsj3l82iCiKQM0NtAdE5ZqXMUM8jA+HrxNxwXFxcxkNVDrH0Cj5WxjSw+/SQQYUz2CCsJOrH1AjyYwfgzwT45PhYiTY3yvA1l/rVWLRfwubCwcMETLB817RPqR3k0IDx/enqqQ8YfO/Q/Pz+PiV2Xj2R7f3zhktUwpalhX3D17OwMR8xX8FbPcNPlw+JjwaGUZ2hoyCpHyw8kf4mYIxzBg0u0ROOyy4eOCAMDg/IQUjPl8yBNPIIHDcvjOywfWkuxPLpA6DzDsJyGIoYCX/BccvmgEx3+sTyaMh1QGh+cYQHYpPQOy4cTn2o8Ogc6Y9zAWNiKdKnlw5kbE+qH044tEDrY7SdL2tYym6CsMtU/xjvnH1s+ku2d+OjuouzJwqWToR95E3zOzc2Rh8tHTXvlsfO6gPpUftBMsTzY6zrrRYJ9tfjottCPg0+oewnbGzBf4NEJJNm+2nhXct1s6BbIwGKd0z/WL+w3StF9QoK9X8+GBGFNKZUiW2hnH6KQ2gW4wrsbfC4tLYGHa0o99j5PKdyG6f7QWQH9n1oGWNQKhQJ2GgMDAysrK6hnvSXZXnns3crZ/2udK0/JE5ZjRGNjY2N5eTmXy5EHL00+QzV7h8dBUpiaQjextdjc3AQDXpP7+voGBwfX1tZwvn575bF946uonKIy6foC50OexsbGkAgWYT32zn7D/oLQPb+9/pSir3KlcFOHI3tqIxQpmJiYGB4eXl1dRfFYESbbd3R0nIvIY69gziu/s5WlbDfOsMMDxjKqZXJycmRkBCWB139u2Grad3Z2nkel8dG/nvimb0haWjTAQ9fX11EDzPjU1BRgMFgwfhUmwb6rq+vck/FU+9/pZZyQDjjHJIOChIfp6enR0VE8CzD8/6GmfTab9WE0X0qlrvy/6fBEOEcoMFQxOuBhfHwciUA9aKcS7KvBkOeywnTRF6i3t7enp6e7uxvt/v5+DNt67HU0/a//rv4GyLdKVnicE0zOL6jUTclPLs1NzSvRS8otYBgFIwiYSUPoNlbs8oxhTzUYmAB0FQkIwiPlEQEAAAACAAAALAAAAIYFAAAAAAAAAQAAAAAAAAAAAAAA
 
-[EncodedFile-InterfaceEncoded-opendir.bmp]
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
 lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-baby-cot32.bmp]
 lines=0
@@ -1563,7 +1593,7 @@ lines=0
 0=eJzN1ltMWnccB/Auu6S7PSxpll1emi1duuypD2uyl65p2iVqVrt6ndsaZy8xvejqrVvXNvVSvCBaRcViQURBwv0iF+GIl6IpogXEiSIaUMAD5xwuQkCweHYoXZpsL7At2b75/3NO/jn/z/nl93/5n/j66Fv7nuUoNg9j8+Dz+dK+9/b9keNvJud/nd4aDbfZ3nFhXU1xM265WHdADd3XV7bFx0GTVN9AzZaKBI+0gffPW0Ud1mNHzqSF11YQZ8SbOqlnmgsvTWwb5MGF0bB1OqofiSwCO6uaqEEWtaijv6kiWrbPqIKGiY9eefnVNIqv0vIabRK8U94OydsQZWcAIAaxoe4OjXWFgM4w0OPkUjcF5BU2ZUPQBgoa7ZlfFKeIX8ttY9w1c3E2UbNzBO+RERBFu195f1t1P6h8NoC2pzIyv8rAwo3jyublNBIkrLdXFZFS9BtLhcO1K3/1x7qCQGdwjBgc68B8QbWe3ahuLJ9TJPwGe3flZIp+508Aq97Ca0r0R0rwKNoRZUfC1zLD9vmYZTI61RuXPUj6TZg/0AuJcRv0u8YU/aaSye6rSw/KVykVdlqVk14NDt2AGD8j9OvIDCs0QvAPXQ+z8ZwaI7sJ83WKjoath1et7aVzKfqcrjk5xQrQNyeYoIYFz3D9Wt62jh96zAqva1GT4qmO83SCK6x68rx+vhCZGHAISAsp+n035ph3LZwGm7DRKWn2SPGInOBXtAYf9QeM2vknqtXxzj0p6UV/+rshQZ29/6YhRZ9YpqVUmwd+sTJubbDubHFqPbw6WFgfBDjjUqBZOtqpIoG8dmGN4blPImANXOupmE/Rn5owLeg3V5bc66veTVvQtRkBnVHYHfc4vKMinnZyOuiNmQwjlTpW41jCf7wWXDd7ZmeWU/THxw0LJsfyCrS27t/YDDld0S1wF0biKIqGt3fQPeyJmowv/BlbaM0Cz85aUvQl4kdGo8NsTvgOV9jljkHwbjCQcLdAcziCJPxFYbl+qGGi7opBqrGFrMuwVruaos/hKDEfq39xzjuv8psmgxpgRzIVh536qcmH0zo26AJn5cZ28TSZLWoVz8+vbK+uwAqFNkW/tpag19stVmhaBPFrQVULXF8TOHkvjucHVJKADkBGJT6AEAFaQsqW0Gizd9ngX7FAeHxvij4WpXIO82fEkAjnlrciClKg6HasoG5vRhzTiKN9/eE5RkhFDEjxXikBWjL4zMvujIzs1P38/OLFJc9jcUDUgExQvEZZyGXZ9UF7iGcPBFHGWNQ8G9NxQ0C3T9rsXzZEyGRO6ngyuNYyKRNQ9FqMQMSxFvM44i4wvjG3s7kcM1ni4EbcZt7VCYLSHhOXTd2//7V0/TstX1K5RcPCCpttG3ajIQj1wigEoR4IjQTQbTeKeFH9E+MA7wcyI++jQ++k67d0Z1A5RQxxiVTdsGwN4qhqoxmBYdSL7LFHF5lys83uYMkusaSlfcO5x099nK5P6M16wDxLF5zjKy4RaLiD2fc6mZqAD91whE9XUjLL27nySq6itJ9bQGbmZJ45nK6PJ2VhGynsPIa4mCO7rNIAThfq8ezBEGpZj4kBIld+ni78nsLJwz47lXUoXb+JmIFtfMjOpfEKh0eKRaqqdbvNi6AIghoW1Vz5RabkXD8vD/MfMHKOfP5Bun7V7WPJ+qnc3EHRd2xZiVBVabWt6E0AR36BJf2Rxs+j8fIxv5WU9fobaVweknn/w7eJ/dmY38/LxyisWuwXEvWvAuU1jvzioOjbAUF+0j9/5Wi6eDI3753A+oP5A4ICmiCPJS3hK6/wlZeHxEV0YUFikZffQTl94N2/fx3ETjnp04WFNEHOiLqaLbtAF+YPCguxRQo792Rm2if7p7R0ZdL4CX9QVIhVjnUGe8H83qGz2Xmf/UM8mcpbx3ro31C5ibPABnk4p671q08+PfCv4P/z/A4N5/DNeJwT800sKarML87IToz3Sc0sLi1K1UvKLWAYBSMDmPFA6N2s2OV71TzCGJgA0pcLNEOPvzoBAAAAAgAAADEAAAC7BQAAAAAAAAEAAAAAAAAAAAAAAA
 
 [DownloadXXX]
-If,QUESTION,"Are you Sure you want to DOWNLOAD ?",10,False,Run,%ScriptFile%,DownloadXXX_Main_Start
+If,Question,"Are you Sure you want to DOWNLOAD ?",10,False,Run,%ScriptFile%,DownloadXXX_Main_Start
 Else,Halt,"DOWNLOAD Cancelled"
 
 [DownloadXXX_Main_Start]
@@ -1571,7 +1601,7 @@ Set,%WebReadNO%,0
 Loop,%ScriptFile%,DownloadXXX_Main_Web_Loop,1,100
 
 [DownloadXXX_Main_Web_Loop]
-StrFormat,INC,%WebReadNO%,1
+StrFormat,Inc,%WebReadNO%,1
 Set,%WebX%,""
 IniRead,%ScriptFile%,Main,Web%WebReadNO%,%WebX%
 If,%WebX%-,Equal,-,Loop,BREAK
@@ -1579,10 +1609,10 @@ Else,Run,%ScriptFile%,DownloadXXX_Main_Web_Loop_B
 
 [DownloadXXX_Main_Web_Loop_B]
 //ProjectName from web S
-StrFormat,SPLIT,%WebX%,/,4,%WebX_ProjectName%
-If,%WebX_ProjectName%,Equal,Projects,StrFormat,SPLIT,%WebX%,/,5,%WebX_ProjectName%
-If,%WebX_ProjectName%,Equal,Tools,StrFormat,SPLIT,%WebX%,/,5,%WebX_ProjectName%
-If,%WebX_ProjectName%,Equal,Tools,StrFormat,SPLIT,%WebX%,/,6,%WebX_ProjectName%
+StrFormat,Split,%WebX%,/,4,%WebX_ProjectName%
+If,%WebX_ProjectName%,Equal,Projects,StrFormat,Split,%WebX%,/,5,%WebX_ProjectName%
+If,%WebX_ProjectName%,Equal,Tools,StrFormat,Split,%WebX%,/,5,%WebX_ProjectName%
+If,%WebX_ProjectName%,Equal,Tools,StrFormat,Split,%WebX%,/,6,%WebX_ProjectName%
 StrFormat,Replace,%WebX_ProjectName%,%20," ",%WebX_ProjectName%
 //Echo,%WebX_ProjectName%,Warn
 //ProjectName from web F
@@ -1604,7 +1634,7 @@ Call,DownloadX,%ScriptFile%,%WebX%
 System,RefreshInterface
 
 [UploadXXX]
-If,QUESTION,"Are you Sure you want to UPLOAD ?",10,False,Run,%ScriptFile%,UploadXXX_Main_Start
+If,Question,"Are you Sure you want to UPLOAD ?",10,False,Run,%ScriptFile%,UploadXXX_Main_Start
 Else,Halt,"UPLOAD Cancelled"
 
 [UploadXXX_Main_Start]
@@ -1615,27 +1645,27 @@ ExtractFile,%ScriptFile%,Folder,Update_BLexact_Gena_Extra.script,%ProjectTemp%\U
 Exec,%ProjectTemp%\Upload_File_X_ExactAndSecure\UPLOAD_Update_BLexact.script,UploadXXX_Main
 
 [UploadXXX_Main]
-System,CURSOR,Wait
+System,Cursor,Wait
 Set,%WebReadNO%,0
 Loop,%ScriptFile%,UploadXXX_Main_Web_Loop,1,100
-System,CURSOR,Normal
+System,Cursor,Normal
 System,RefreshInterface
 
 [UploadXXX_Main_Web_Loop]
-StrFormat,INC,%WebReadNO%,1
+StrFormat,Inc,%WebReadNO%,1
 Set,%WebX%,""
 IniRead,%ScriptFile%,Main,Web%WebReadNO%,%WebX%
 If,%WebX%-,Equal,-,Loop,BREAK
 Else,Run,%ScriptFile%,UploadXXX_Main_Web_Loop_B
 
 [UploadXXX_Main_Web_Loop_B]
-StrFormat,SPLIT,%WebX%,/,3,%WebX_WebRoot%
+StrFormat,Split,%WebX%,/,3,%WebX_WebRoot%
 //--
 //ProjectName from web S
-StrFormat,SPLIT,%WebX%,/,4,%WebX_ProjectName%
-If,%WebX_ProjectName%,Equal,Projects,StrFormat,SPLIT,%WebX%,/,5,%WebX_ProjectName%
-If,%WebX_ProjectName%,Equal,Tools,StrFormat,SPLIT,%WebX%,/,5,%WebX_ProjectName%
-If,%WebX_ProjectName%,Equal,Tools,StrFormat,SPLIT,%WebX%,/,6,%WebX_ProjectName%
+StrFormat,Split,%WebX%,/,4,%WebX_ProjectName%
+If,%WebX_ProjectName%,Equal,Projects,StrFormat,Split,%WebX%,/,5,%WebX_ProjectName%
+If,%WebX_ProjectName%,Equal,Tools,StrFormat,Split,%WebX%,/,5,%WebX_ProjectName%
+If,%WebX_ProjectName%,Equal,Tools,StrFormat,Split,%WebX%,/,6,%WebX_ProjectName%
 StrFormat,Replace,%WebX_ProjectName%,%20," ",%WebX_ProjectName%
 //Echo,%WebX_ProjectName%,Warn
 //ProjectName from web F
@@ -1736,8 +1766,8 @@ Run,%ScriptFile%,Show_FirstB_Gui
 Run,%ScriptFile%,Show_First_Gui
 Set,%Rescan_CheckBox%,True,Permanent
 Set,%Backup_CheckBox%,True,Permanent
-Set,%Psrv_Plugin_Settings_CheckBox%,True,Permanent
-//Set,%Psrv_Plugin_Settings_CheckBox%,False,Permanent
+//Set,%Psrv_Plugin_Settings_CheckBox%,True,Permanent
+Set,%Psrv_Plugin_Settings_CheckBox%,False,Permanent
 
 [Settings_Default_Yomi]
 Set,%Backup_CheckBox%,False,Permanent

@@ -2,16 +2,16 @@
 Title=Network
 Type=Plugin
 Author=ChrisR
-Description=(Win10PESE - Win8.1SE - Win8PESE) Adds Network and Center service in your WinSE.
+Description=(Win10 - Win8.1 - Win8) Adds Network and Center service in your Win.
 Credits=http://TheOven.org
-Version=055
+Version=069
 Download_Level=1
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.23_15:33.07 (GMT0: -3 Hours)
+Date=2020.03.20
 Depend=
 Disable=
 Web1=http://w8pese.cwcodes.net/Projects/Win8PESE/Components/Network.script
@@ -67,145 +67,18 @@ History052=Lancelot - ErikW - Wlan get work with inf\vwifimp.sys (search vwifibu
 History053=Lancelot - ErikW - ONLY CopyDriverStore - netvwifibus netvwififlt netvwifimp Reply 2 http://TheOven.org/index.php?topic=1977.msg23127#msg23127 - When the files are NOT in the INF directory then the device installer gets them from the DriverStore folder that contains the correct signed versions for the current platform. -> FALSE : vwifimp.sys only works properly when vwifimp.sys file is also included in Windows\Inf folder. - Date:2017.03.24
 History054=ChrisR - Dependencies addition for Win10 1703 build 15063 - Date:2017.08.24
 History055=ChrisR - Add Option to show Network System Icon on Win10. Use SystemSetupInProgress=0 > net start netprofm > SystemSetupInProgress=1 - Date:2017.09.22 - Date:2017.09.23 - Date:2017.12.23
-
-[Variables]
-%ProgramExe%=
-%RegeditexeFolder%=
-%RegexeFolder%=
-%bw%=%BootSRC%\Windows
-%b32%=%BootSRC%\Windows\System32
-%bWow%=%BootSRC%\Windows\SysWOW64
-%iw%=%InstallSRC%\Windows
-%i32%=%InstallSRC%\Windows\System32
-%iWow%=%InstallSRC%\Windows\SysWOW64
-%tw%=%TargetDir%\Windows
-%t32%=%TargetDir%\Windows\System32
-%tWow%=%TargetDir%\Windows\SysWOW64
-//Safer to declare %MuiLang3(4)% if used to test if blank or not. %MuiLang1(2)% are at minimum declared in MuiLang section
-InstallCopy=Run,%ScriptFile%,PInstall_Copy
-InstallCopyMui=Run,%ScriptFile%,PInstall_CopyMui
-InstallCopySys32=Run,%ScriptFile%,PInstall_CopySys32
-InstallCopySys32Mui=Run,%ScriptFile%,PInstall_CopySys32Mui
-InstallCopyInf=Run,%ScriptFile%,PInstall_Inf
-InstallCopyDrivers=Run,%ScriptFile%,PInstall_Drivers
-InstallCopyDriversMui=Run,%ScriptFile%,PInstall_DriversMui
-InstallCopyDriverStore=Run,%ScriptFile%,PInstall_CopyDriverStore_%version%
-InstallCopyWbem=Run,%ScriptFile%,PInstall_CopyWbem
-InstallCopyWbemMui=Run,%ScriptFile%,PInstall_CopyWbemMui
-InstallCopySysWoW=Run,%ScriptFile%,PInstall_CopySysWoW
-InstallCopySysWoWMui=Run,%ScriptFile%,PInstall_CopySysWoWMui
-%catrootF7%=catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}
-
-[PInstall_Copy]
-// SourceFolder,File,TargetFolder
-If,ExistFile,#1\#2,Begin
-If,Not,ExistFile,#3\#2,FileCopy,#1\#2,#3\#2
-End
-
-[PInstall_CopyMui]
-// SourceFolder,File,TargetFolder
-InstallCopy,#1,#2,#3
-If,ExistFile,#3\#2,Loop,%ScriptFile%,PInstall_CopyMui_Loop,1,%NbLang%,#1,#2,#3
-
-[PInstall_CopyMui_Loop]
-StrFormat,Split,%MuiLangAll%,|,#c,#9
-If,ExistFile,#1\#9\#2.mui,Begin
-If,Not,ExistFile,#3\#9\#2.mui,FileCopy,#1\#9\#2.mui,#3\#9\#2.mui
-Loop,BREAK
-End
-
-[PInstall_CopySys32]
-If,Not,ExistFile,%t32%\#1,Begin
-If,ExistFile,%i32%\#1,FileCopy,%i32%\#1,%t32%\#1
-//Else,Echo,"%i32%\#1 not Here!",warn
-End
-
-[PInstall_CopySys32Mui]
-InstallCopySys32,#1
-If,ExistFile,%t32%\#1,Loop,%ScriptFile%,PInstall_CopySys32Mui_Loop,1,%NbLang%,#1
-
-[PInstall_CopySys32Mui_Loop]
-StrFormat,Split,%MuiLangAll%,|,#c,#9
-If,ExistFile,%i32%\#9\#1.mui,Begin
-If,Not,ExistFile,%t32%\#9\#1.mui,FileCopy,%i32%\#9\#1.mui,%t32%\#9
-Loop,BREAK
-End
-
-[PInstall_Inf]
-If,ExistFile,%iw%\inf\#1,Begin
-If,Not,ExistFile,%tw%\inf\#1,FileCopy,%iw%\inf\#1,%tw%\inf\#1
-End
-
-[PInstall_Drivers]
-If,ExistFile,%i32%\Drivers\#1,Begin
-If,Not,ExistFile,%t32%\Drivers\#1,FileCopy,%i32%\Drivers\#1,%t32%\Drivers\#1
-End
-
-[PInstall_DriversMui]
-InstallCopyDrivers,#1
-If,ExistFile,%t32%\drivers\#1,Loop,%ScriptFile%,PInstall_CopyDriversMui_Loop,1,%NbLang%,#1
-
-[PInstall_CopyDriversMui_Loop]
-StrFormat,Split,%MuiLangAll%,|,#c,#9
-If,ExistFile,%i32%\drivers\#9\#1.mui,Begin
-If,Not,ExistFile,%t32%\drivers\#9\#1.mui,FileCopy,%i32%\drivers\#9\#1.mui,%t32%\drivers\#9
-Loop,BREAK
-End
-
-[PInstall_CopyDriverStore_082]
-If,ExistDir,%i32%\DriverStore\FileRepository\#1,Begin
-If,Not,ExistDir,%t32%\DriverStore\FileRepository\#1,DirCopy,%i32%\DriverStore\FileRepository\#1,%t32%\DriverStore\FileRepository
-End
-
-[PInstall_CopyDriverStore_080]
-Call,DirCopy,%i32%\DriverStore\FileRepository\#1,%t32%\DriverStore\FileRepository
-//Echo,%ExitCode%,Warn
-
-[PInstall_CopyDriverStore_077.102]
-Call,DirCopy,%i32%\DriverStore\FileRepository\#1,%t32%\DriverStore\FileRepository
-//Echo,%ExitCode%,Warn
-
-[PInstall_CopyWbem]
-If,Not,ExistFile,%t32%\wbem\#1,Begin
-If,ExistFile,%i32%\wbem\#1,FileCopy,%i32%\wbem\#1,%t32%\wbem\#1
-//Else,Echo,"%i32%\wbem\#1 not Here!",warn
-End
-
-[PInstall_CopyWbemMui]
-InstallCopyWbem,#1
-If,ExistFile,%t32%\#1,Loop,%ScriptFile%,PInstall_CopyWbemMui_Loop,1,%NbLang%,#1
-
-[PInstall_CopyWbemMui_Loop]
-StrFormat,Split,%MuiLangAll%,|,#c,#9
-If,ExistFile,%i32%\wbem\#9\#1.mui,Begin
-If,Not,ExistFile,%t32%\wbem\#9\#1.mui,FileCopy,%i32%\wbem\#9\#1.mui,%t32%\#9
-Loop,BREAK
-End
-
-[PInstall_CopySysWoW]
-If,Not,ExistFile,%tWow%\#1,Begin
-If,ExistFile,%iWow%\#1,FileCopy,%iWow%\#1,%tWow%\#1
-//Else,Echo,"%iWow%\#1 not Here!",warn
-End
-
-[PInstall_CopySysWoWMui]
-InstallCopySysWoW,#1
-If,ExistFile,%tWow%\#1,Loop,%ScriptFile%,PInstall_CopySysWoWMui_Loop,1,%NbLang%,#1
-
-[PInstall_CopySysWoWMui_Loop]
-StrFormat,Split,%MuiLangAll%,|,#c,#9
-If,ExistFile,%iWow%\#9\#1.mui,Begin
-If,Not,ExistFile,%tWow%\#9\#1.mui,FileCopy,%iWow%\#9\#1.mui,%tWow%\#9
-Loop,BREAK
-End
-
-[MakeCopyDirsMui_Loop]
-StrFormat,Split,%MuiLangAll%,|,#c,#9
-If,ExistDir,%InstallSRC%\#1\#9,Begin
-If,Not,ExistDir,%TargetDir%\#1\#9,DirMake,%TargetDir%\#1\#9
-Filecopy,%InstallSRC%\#1\#9\*.*,%TargetDir%\#1\#9,NOREC
-Loop,BREAK
-End
+History056=ChrisR - Compatible with Win10 1803 build 17134.1 - Date:2018.05.04
+History060a=Lancelot Add BuildClass 3 support x4 - Date:2018.10.10 - Date:2018.10.12 - Date:2018.10.20 - Date:2018.10.21
+History060=Bob.Omb Changed Default settings: LmCompatibilityLevel_ScrollBox="2: Send NTLM response only" // SMBv2Client_CheckBox=False // SMB2_CheckBox=False // EnableAuthenticateUserSharing_CheckBox=False // EnableSecuritySignatureServer_CheckBox=False  - Date:2018.10.21 ////// Lancelot: More Type=3 support - Date:2018.11.12 // Lancelot: Minor Fix with BuildType - Date:2018.11.23
+History061=bob.omb updated Added SMBv1 compatibility for v1803+ - http://theoven.org/index.php?topic=2653.0 // mrxsmb10.sys not exists at index10 but exists at index1 Tested: Win10_1809_English_x64.iso - Date:2018.12.06
+History062=Lancelot attached sxsexp following JFX post and Bob.Omb request: https://github.com/hfiref0x/SXSEXP/tree/master/Binary // JFX Reply 359 : It seems like sxsexp32.exe needs to run under Windows 10 to be able to decompress that file. - http://theoven.org/index.php?topic=2421.msg29719#msg29719 // JFX Reply 339: Is your mrxsmb10.sys a valid PE file? Mine is compressed and needs decompression http://theoven.org/index.php?topic=2421.msg29697#msg29697 - Date:2018.12.08
+History063=Lancelot updated SMB1 & sxsexp extract code lines following JFX feedback + added [sxsexp_JFX_info] inside plugin // add warning for missing mrxsmb10.sys x2 - Date:2018.12.09
+History064=Lancelot Add BuildClass - Date:2019.01.14
+History065=Lancelot - Add Call,HostOSArch - Date:2019.01.27
+History066=Lancelot - Improve: SetACL_M\HostOS - Date:2019.02.01
+History067=Lancelot - JFX DCSUnpack to support Win7 Host - JFX http://TheOven.org/index.php?topic=2765 - Date:2019.03.14
+History068=Lancelot - JFX DCSUnpack: There is no way to be sure a files is uncompressed So no copy for uncompressed. -> Lancelot: Win7Host only way left for today copy file from source in case it is not uncompressed with DCSUnpack (maybe it is not compressed at first) - JFX Reply 2 http://theoven.org/index.php?topic=2765.msg32323#msg32323 - Date:2019.03.14
+History069=Lancelot - Imrpove BuildClass 3 - Date:2020.03.20
 
 [Interface]
 TextLabel_Network=Network,1,1,10,5,62,18,10,Normal
@@ -225,20 +98,20 @@ Security_TextLabel="Change Default Security",0,1,28,151,145,18,8,Bold
 Security_TextLabel2="(eg: for NAS)",0,1,174,151,74,18,8,Normal
 Security_Bevel1=pBevel1,0,12,4,166,472,193
 LmCompatibilityLevel_TextLabel="LM Compatibility Level",0,1,10,175,114,18,8,Normal
-LmCompatibilityLevel_ScrollBox="2: Send NTLM response only",0,4,125,172,342,21,"1: Send LM & NTLM - Use NTLMc2 session security if negociated","2: Send NTLM response only"
+LmCompatibilityLevel_ScrollBox="1: Send LM & NTLM - Use NTLMc2 session security if negociated",0,4,125,172,342,21,"1: Send LM & NTLM - Use NTLMc2 session security if negociated","2: Send NTLM response only"
 LanmanWorkstation_TextLabel="Lanman Workstation (Client)",0,1,10,196,220,18,8,Bold
 LanmanServer_TextLabel="Lanman Server",0,1,255,196,220,18,8,Bold
 SMBv1Client_CheckBox="Enable SMBv1 Protocol on the SMB client",0,3,10,211,240,18,True
-SMBv2Client_CheckBox="Enable SMBv2 Protocol on the SMB client",0,3,10,227,240,18,False
+SMBv2Client_CheckBox="Enable SMBv2 Protocol on the SMB client",0,3,10,227,240,18,True
 SMB1_CheckBox="Enable SMBv1 Protocol on SMB server",0,3,255,211,220,18,True
-SMB2_CheckBox="Enable SMBv2 Protocol on SMB server",0,3,255,227,220,18,False
+SMB2_CheckBox="Enable SMBv2 Protocol on SMB server",0,3,255,227,220,18,True
 AllowInsecureGuestAuth_CheckBox="Allow Insecure Guest Authentication",0,3,10,243,220,18,True
 forceguest_CheckBox="Local users authenticate as Guest",0,3,10,259,220,18,False
 EnablePlainTextPassword_CheckBox="Enable Plain Text Password",0,3,10,275,180,18,False
-EnableAuthenticateUserSharing_CheckBox="Enable Authenticate User Sharing",0,3,255,275,220,18,False
+EnableAuthenticateUserSharing_CheckBox="Enable Authenticate User Sharing",0,3,255,275,220,18,True
 EnableSecuritySignature_CheckBox="Enable Security Signature",0,3,10,291,180,18,True
 RequireSecuritySignature_CheckBox="Require Security Signature",0,3,10,307,180,18,False
-EnableSecuritySignatureServer_CheckBox="Enable Security Signature Server",0,3,255,291,220,18,False
+EnableSecuritySignatureServer_CheckBox="Enable Security Signature Server",0,3,255,291,220,18,True
 RequireSecuritySignatureServer_CheckBox="Require Security Signature Server",0,3,255,307,220,18,False
 RequireSecureNegotiate_CheckBox="Require Secure Negotiate",0,3,10,323,220,18,False
 LimitBlankPasswordUse_CheckBox="Allow network users to access without password",0,3,10,339,280,18,True
@@ -248,71 +121,74 @@ Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
 pWebLabel1="Info: Explore network path under Win SE",1,10,198,24,197,18,http://TheOven.org/index.php?topic=1976
 
-[PAdvanced]
-System,CURSOR,Wait
-If,%Advanced_CheckBox%,Equal,True,Begin
-Set,%Advanced_CheckBox%,False,PERMANENT
-Visible,%Advanced_Button%,True,PERMANENT
-Visible,%Basic_Button%,False,PERMANENT
-Run,%ScriptFile%,ShowHideGUI,False
-End
-Else,Begin
-Set,%Advanced_CheckBox%,True,PERMANENT
-Visible,%Advanced_Button%,False,PERMANENT
-Visible,%Basic_Button%,True,PERMANENT
-Run,%ScriptFile%,ShowHideGUI,True
-End
-System,RefreshInterface
-System,CURSOR,Normal
-
-[ShowHideGUI]
-Visible,%CheckBox_DisableProbes%,#1,PERMANENT
-Visible,%CheckBox_NetLocation%,#1,PERMANENT
-Visible,%CheckBox_NetIcon%,#1,PERMANENT
-//-
-Visible,%Security_CheckBox%,#1,PERMANENT
-Visible,%Security_TextLabel%,#1,PERMANENT
-Visible,%Security_TextLabel2%,#1,PERMANENT
-Visible,%Security_Bevel1%,#1,PERMANENT
-Visible,%LmCompatibilityLevel_TextLabel%,#1,PERMANENT
-Visible,%LmCompatibilityLevel_ScrollBox%,#1,PERMANENT
-Visible,%LanmanWorkstation_TextLabel%,#1,PERMANENT
-Visible,%LanmanServer_TextLabel%,#1,PERMANENT
-Visible,%SMBv1Client_CheckBox%,#1,PERMANENT
-Visible,%SMBv2Client_CheckBox%,#1,PERMANENT
-Visible,%SMB1_CheckBox%,#1,PERMANENT
-Visible,%SMB2_CheckBox%,#1,PERMANENT
-Visible,%AllowInsecureGuestAuth_CheckBox%,#1,PERMANENT
-Visible,%forceguest_CheckBox%,#1,PERMANENT
-Visible,%EnablePlainTextPassword_CheckBox%,#1,PERMANENT
-Visible,%EnableAuthenticateUserSharing_CheckBox%,#1,PERMANENT
-Visible,%EnableSecuritySignature_CheckBox%,#1,PERMANENT
-Visible,%RequireSecuritySignature_CheckBox%,#1,PERMANENT
-Visible,%EnableSecuritySignatureServer_CheckBox%,#1,PERMANENT
-Visible,%RequireSecuritySignatureServer_CheckBox%,#1,PERMANENT
-Visible,%RequireSecureNegotiate_CheckBox%,#1,PERMANENT
-Visible,%LimitBlankPasswordUse_CheckBox%,#1,PERMANENT
+[Variables]
+%ProgramTitle%=Network
+%ProgramExe%=
+%RegeditexeFolder%=
+%RegexeFolder%=
+%bw%=%BootSRC%\Windows
+%b32%=%BootSRC%\Windows\System32
+%bWow%=%BootSRC%\Windows\SysWOW64
+%iw%=%InstallSRC%\Windows
+%i32%=%InstallSRC%\Windows\System32
+%iWow%=%InstallSRC%\Windows\SysWOW64
+%tw%=%TargetDir%\Windows
+%t32%=%TargetDir%\Windows\System32
+%tWow%=%TargetDir%\Windows\SysWOW64
+//Safer to declare %MuiLang3(4)% if used to test if blank or not. %MuiLang1(2)% are at minimum declared in MuiLang section
+InstallCopy=Run,%ScriptFile%,PInstall_Copy
+InstallCopyMui=Run,%ScriptFile%,PInstall_CopyMui
+InstallCopySys32=Run,%ScriptFile%,PInstall_CopySys32_%BuildClass%
+InstallCopySys32Mui=Run,%ScriptFile%,PInstall_CopySys32Mui_%BuildClass%
+InstallCopyInf=Run,%ScriptFile%,PInstall_Inf_%BuildClass%
+InstallCopyDrivers=Run,%ScriptFile%,PInstall_Drivers_%BuildClass%
+InstallCopyDriversMui=Run,%ScriptFile%,PInstall_DriversMui_%BuildClass%
+InstallCopyDriverStore=Run,%ScriptFile%,PInstall_CopyDriverStore_%version%_%BuildClass%
+InstallCopyWbem=Run,%ScriptFile%,PInstall_CopyWbem_%BuildClass%
+InstallCopyWbemMui=Run,%ScriptFile%,PInstall_CopyWbemMui_%BuildClass%
+InstallCopySysWoW=Run,%ScriptFile%,PInstall_CopySysWoW_%BuildClass%
+InstallCopySysWoWMui=Run,%ScriptFile%,PInstall_CopySysWoWMui_%BuildClass%
+%catrootF7%=catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}
+%PInstall%=%ProjectTemp%\PInstall.txt
+%PInstall_EWait%=ex
 
 [Process]
 If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+Echo,"Processing %ProgramTitle% ..."
+//--
+If,%BuildClass%,Equal,3,Begin
+Call,FileCreateBlank,%PInstall%,OverWrite
+Call,FileCreateBlank,%PInstall%.ini,OverWrite
+TxtAddLine,%PInstall%.ini,"[Process]",Append
+IniWriteTextLine,%PInstall%.ini,Process,"Echo,[Process]_END"
+IniWriteTextLine,%PInstall%.ini,Process,"System,FileRedirect,ON"
+End
+//--
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 If,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,Set,%RegexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%SysType%,Equal,x86,Echo,"reg.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\reg.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"reg.exe MAY write wrong values",Warn
+//-
+If,Not,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe,Run,%ScriptFile%,Get_SetACL
 //-
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
 IniRead,%projectdir%\script.project,IniVariables,RegistryCache,%RegistryCache%
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
 AddVariables,%ProjectDir%\script.project,MuiLang
 StrFormat,Split,%MuiLangAll%,|,0,%NbLang%
 //-
 Call,TargetVersion
 Call,CompareVersions,%TargetVersion%,10.0.14393.0,Win10_1607
 Call,CompareVersions,%TargetVersion%,10.0.15063.0,Win10_1703
+Call,CompareVersions,%TargetVersion%,10.0.17134.1,Win10_1803
+Call,CompareVersions,%TargetVersion%,10.0.17763.1,Win10_1809
 //-
 Set,%RegSys%,False
 Set,%RegSoft%,False
@@ -333,8 +209,11 @@ ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\Network\Network_%OS%.7z#$q 
 //- wbem for wireless and other
 If,Not,ExistDir,%t32%\wbem,Begin
 DirMake,%t32%\wbem
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\System32\winsxs\wbem\*",Append
+If,%BuildClass%,Equal,2,Begin
 Filecopy,%i32%\wbem\*.*,%t32%\wbem,NOREC
-Loop,%ScriptFile%,MakeCopyDirsMui_Loop,1,%NbLang%,Windows\System32\wbem
+Loop,%ScriptFile%,MakeCopyDirsMui_Loop_2,1,%NbLang%,Windows\System32\wbem
+End
 End
 //-
 RegHiveLoad,Tmp_System,%RegSystem%
@@ -408,7 +287,16 @@ RegHiveUnLoad,Tmp_Software
 RegHiveUnLoad,Tmp_System
 //-
 Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\Network#$q"
-If,ExistDir,%ProjectTemp%\Network,Echo,"Directory NOT DELETED",WARN
+If,ExistDir,%ProjectTemp%\Network,Echo,"Directory NOT DELETED",Warn
+//-
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,%PInstall%
+IniWriteTextLine,%PInstall%.ini,Process,"System,FileRedirect,OFF"
+IniWriteTextLine,%PInstall%.ini,Process,"Echo,#$qProcess 'After Copy' Wait Patiently.....#$q"
+Run,%PInstall%.ini,Process
+Call,FileDelete,%PInstall%
+Call,FileDelete,%PInstall%.ini
+End
 
 [Copy_Net_Drivers]
 //netimm.inf,netip6.inf,netloop.inf,netmscli.inf,netnb.inf,netserv.inf,netsstpa.inf,netsstpt.inf,nettun.inf,nettcpip.inf,netbios.sys,rassstp.sys,tcpip.sys (in boot.wim) // driverstore netloop.inf_*
@@ -522,7 +410,10 @@ InstallCopySys32Mui,ipsecsnp.dll
 InstallCopySys32,winipsec.dll
 //-- netbios
 InstallCopySys32,netbios.dll
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\wshnetbs.dll,InstallCopySys32,wshnetbs.dll
+End
+If,%BuildClass%,Equal,3,InstallCopySys32,wshnetbs.dll
 //-- TcpIP, Socket, Http
 InstallCopySys32Mui,httpapi.dll
 InstallCopySys32,msafd.dll
@@ -553,7 +444,10 @@ InstallCopySys32Mui,dhcpcore.dll
 InstallCopySys32Mui,dhcpcore6.dll
 InstallCopySys32Mui,dhcpcsvc.dll
 InstallCopySys32Mui,dhcpcsvc6.dll
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\DHCPQEC.DLL,InstallCopySys32Mui,DHCPQEC.DLL
+End
+If,%BuildClass%,Equal,3,InstallCopySys32Mui,DHCPQEC.DLL
 InstallCopySys32Mui,dhcpsapi.dll
 // AllowStart dhcp service.
 If,%OS%,Equal,Win10,RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\dhcp
@@ -563,18 +457,34 @@ InstallCopySys32Mui,dnsrslvr.dll
 //-- common used files
 InstallCopySys32Mui,credui.dll
 InstallCopySys32Mui,cryptui.dll
+If,Not,%Win10_1803%,Equal,Smaller,InstallCopySys32,Mobilenetworking.dll
 
 [Copy_Wireless_Files]
 If,Not,ExistDir,%tw%\L2Schemas,DirMake,%tw%\L2Schemas
-FileCopy,%iw%\L2Schemas\*,%tw%\L2Schemas
+If,%BuildClass%,Equal,2,FileCopy,%iw%\L2Schemas\*,%tw%\L2Schemas
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\L2Schemas\*",Append
+//-
 If,Not,ExistDir,%tw%\schemas,DirMake,%tw%\schemas
-FileCopy,%iw%\schemas\*,%tw%\schemas
+If,%BuildClass%,Equal,2,FileCopy,%iw%\schemas\*,%tw%\schemas
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\schemas\*",Append
 //-
 If,Not,ExistDir,%t32%\wdi\perftrack,DirMake,%t32%\wdi\perftrack
-If,ExistFile,%i32%\wdi\perftrack\Wlansvc.ptxml,If,Not,ExistFile,%t32%\wdi\perftrack\Wlansvc.ptxml,FileCopy,%i32%\wdi\perftrack\Wlansvc.ptxml,%t32%\wdi\perftrack
+If,%BuildClass%,Equal,2,Begin
+If,ExistFile,%i32%\wdi\perftrack\Wlansvc.ptxml,Begin
+If,Not,ExistFile,%t32%\wdi\perftrack\Wlansvc.ptxml,FileCopy,%i32%\wdi\perftrack\Wlansvc.ptxml,%t32%\wdi\perftrack
+End
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistFile,%t32%\wdi\perftrack\Wlansvc.ptxml,TxtAddLine,%PInstall%,"\Windows\System32\wdi\perftrack\Wlansvc.ptxml",Append
+End
 //-
 If,Not,ExistDir,%t32%\migration,DirMake,%t32%\migration
+If,%BuildClass%,Equal,2,Begin
 If,Not,ExistFile,%t32%\migration\netiomig.dll,FileCopy,%i32%\migration\netiomig.dll,%t32%\migration
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistFile,%t32%\migration\netiomig.dll,TxtAddLine,%PInstall%,"\Windows\System32\migration\netiomig.dll",Append
+End
 // wlan.mof in addition
 InstallCopyWbem,wlan.mof
 //-
@@ -628,7 +538,10 @@ If,%OS%,Equal,Win10,Begin
 InstallCopySys32Mui,credprovhost.dll
 InstallCopySys32Mui,credprovs.dll
 // New in 14267
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\credprovslegacy.dll,InstallCopySys32Mui,credprovslegacy.dll
+End
+If,%BuildClass%,Equal,3,InstallCopySys32Mui,credprovslegacy.dll
 End
 InstallCopySys32,credssp.dll
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\SecurityProviders,SecurityProviders,credssp.dll
@@ -645,7 +558,8 @@ End
 // Add Credential manager UI Host for explorer sharing in build >=15063
 If,Not,%Win10_1703%,Equal,Smaller,Begin
 InstallCopySys32,CredentialUIBroker.exe
-DirCopy,%Source_Win%\SystemResources\Windows.UI.Cred,%Target_Win%\SystemResources
+If,%BuildClass%,Equal,2,DirCopy,%Source_Win%\SystemResources\Windows.UI.Cred,%Target_Win%\SystemResources
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\SystemResources\Windows.UI.Cred\*",Append
 End
 //-- (Optional)
 InstallCopySys32Mui,netbtugc.exe
@@ -667,13 +581,15 @@ InstallCopySys32Mui,tapi32.dll
 //-
 InstallCopyWbem,nlasvc.mof
 //--
+System,FileRedirect,OFF
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\SafeBoot\Network\NlaSvc HKLM\Tmp_System\ControlSet001\Control\SafeBoot\Network\NlaSvc /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NlaSvc HKLM\Tmp_System\ControlSet001\Services\NlaSvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\SafeBoot\Network\NlaSvc HKLM\Tmp_System\ControlSet001\Control\SafeBoot\Network\NlaSvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NlaSvc HKLM\Tmp_System\ControlSet001\Services\NlaSvc /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NlaSvcSys.reg#$q"
 End
+System,FileRedirect,ON
 // AllowStart Network Location Awareness service
 If,%OS%,Equal,Win10,RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\nlasvc
 
@@ -683,20 +599,22 @@ InstallCopySys32,wcmcsp.dll
 InstallCopySys32,wcmapi.dll
 InstallCopySys32Mui,wcmsvc.dll
 //--
+System,FileRedirect,OFF
 If,%CopyRegSoft%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{67d07935-283a-4791-8f8d-fa9117f3e6f2} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{67d07935-283a-4791-8f8d-fa9117f3e6f2} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\wcmsvc HKLM\Tmp_Software\Microsoft\wcmsvc /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Policies\Microsoft\Windows\WcmSvc HKLM\Tmp_Software\Policies\Microsoft\Windows\WcmSvc /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\SettingSync\WindowsSettingHandlers\Tethering HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\SettingSync\WindowsSettingHandlers\Tethering /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{67d07935-283a-4791-8f8d-fa9117f3e6f2} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{67d07935-283a-4791-8f8d-fa9117f3e6f2} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\wcmsvc HKLM\Tmp_Software\Microsoft\wcmsvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Policies\Microsoft\Windows\WcmSvc HKLM\Tmp_Software\Policies\Microsoft\Windows\WcmSvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\SettingSync\WindowsSettingHandlers\Tethering HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\SettingSync\WindowsSettingHandlers\Tethering /s /f"
 End
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\WcmsvcSoft.reg#$q"
 End
 //-
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\Wcmsvc HKLM\Tmp_System\ControlSet001\Services\Wcmsvc /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\Wcmsvc HKLM\Tmp_System\ControlSet001\Services\Wcmsvc /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\WcmsvcSys.reg#$q"
 End
+System,FileRedirect,ON
 // AllowStart Windows Connection Manager service
 If,%OS%,Equal,Win10,RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\wcmsvc
 
@@ -718,18 +636,20 @@ InstallCopySys32Mui,onexui.dll
 If,%OS%,Equal,Win8.1,InstallCopySys32Mui,Dot3Conn.dll
 If,%OS%,Equal,Win10,InstallCopySys32Mui,Dot3Conn.dll
 //--
-If,%CopyRegSoft%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{b92cf7fd-dc10-4c6b-a72d-1613bf25e597} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{b92cf7fd-dc10-4c6b-a72d-1613bf25e597} /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSoft%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{b92cf7fd-dc10-4c6b-a72d-1613bf25e597} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{b92cf7fd-dc10-4c6b-a72d-1613bf25e597} /s /f"
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\dot3svcSoft.reg#$q"
 End
 //--
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Winlogon\Notifications\Components\Dot3svc HKLM\Tmp_System\ControlSet001\Control\Winlogon\Notifications\Components\Dot3svc /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\dot3svc HKLM\Tmp_System\ControlSet001\Services\dot3svc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Winlogon\Notifications\Components\Dot3svc HKLM\Tmp_System\ControlSet001\Control\Winlogon\Notifications\Components\Dot3svc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\dot3svc HKLM\Tmp_System\ControlSet001\Services\dot3svc /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\dot3svcSys.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_WlanSvc]
 InstallCopySys32Mui,provcore.dll
@@ -758,19 +678,20 @@ InstallCopySys32,WlanMediaManager.dll
 End
 //--
 //-- Add Service "WlanSvc"
+System,FileRedirect,OFF
 If,%CopyRegSoft%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{9580d7dd-0379-4658-9870-d5be7d52d6de} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{9580d7dd-0379-4658-9870-d5be7d52d6de} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\WlanSvc HKLM\Tmp_Software\Microsoft\WlanSvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{9580d7dd-0379-4658-9870-d5be7d52d6de} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{9580d7dd-0379-4658-9870-d5be7d52d6de} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\WlanSvc HKLM\Tmp_Software\Microsoft\WlanSvc /s /f"
 End
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\WlanSvcSoft.reg#$q"
 End
 //--
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\NetTrace\Scenarios\WLAN HKLM\Tmp_System\ControlSet001\Control\NetTrace\Scenarios\WLAN /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Winlogon\Notifications\Components\Wlansvc HKLM\Tmp_System\ControlSet001\Control\Winlogon\Notifications\Components\Wlansvc /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\EventLog\System\Microsoft-Windows-WLAN-AutoConfig HKLM\Tmp_System\ControlSet001\Services\EventLog\System\Microsoft-Windows-WLAN-AutoConfig /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\WlanSvc HKLM\Tmp_System\ControlSet001\Services\WlanSvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\NetTrace\Scenarios\WLAN HKLM\Tmp_System\ControlSet001\Control\NetTrace\Scenarios\WLAN /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Winlogon\Notifications\Components\Wlansvc HKLM\Tmp_System\ControlSet001\Control\Winlogon\Notifications\Components\Wlansvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\EventLog\System\Microsoft-Windows-WLAN-AutoConfig HKLM\Tmp_System\ControlSet001\Services\EventLog\System\Microsoft-Windows-WLAN-AutoConfig /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\WlanSvc HKLM\Tmp_System\ControlSet001\Services\WlanSvc /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\WlanSvcSys.reg#$q"
@@ -778,37 +699,56 @@ End
 //-
 //-- Add Service "NativeWifiP"
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E475CF9A-60CD-4439-A75F-0079CE0E18A1} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E475CF9A-60CD-4439-A75F-0079CE0E18A1} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NativeWifiP HKLM\Tmp_System\ControlSet001\Services\NativeWifiP /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E475CF9A-60CD-4439-A75F-0079CE0E18A1} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E475CF9A-60CD-4439-A75F-0079CE0E18A1} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NativeWifiP HKLM\Tmp_System\ControlSet001\Services\NativeWifiP /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NativeWifiPSys.reg#$q"
 End
 //--
 //-- Add Service "vwifibus"
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\vwifibus HKLM\Tmp_System\ControlSet001\Services\vwifibus /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\vwifibus HKLM\Tmp_System\ControlSet001\Services\vwifibus /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\vwifibusSys.reg#$q"
 End
 //--
 //-- Add Service "vwififlt"
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\vwififlt HKLM\Tmp_System\ControlSet001\Services\vwififlt /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\vwififlt HKLM\Tmp_System\ControlSet001\Services\vwififlt /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\vwififltSys.reg#$q"
 End
+System,FileRedirect,ON
 //--
 //-- Fix boot.wim Wifi (WinPE-WiFi is a feature of winre.wim)
 If,%OS%,Equal,Win10,Begin
-If,Not,Existfile,%target_sys%\%catrootF7%\WinPE-WiFi-Package*.cat,Begin
-If,Existfile,%BootSRC%\Windows\System32\%catrootF7%\WinPE-WiFi-Package*.cat,FileCopy,%BootSRC%\Windows\System32\%catrootF7%\WinPE-WiFi-Package*.cat,%target_sys%\%catrootF7%
-Else,ShellExecute,Hide,%Tools%\7z.exe,"e -y #$q%Source_Sys%\Recovery\winre.wim#$q -i!#$qwindows\System32\%catrootF7%\WinPE-WiFi-Package*.cat#$q -o#$q%target_sys%\%catrootF7%#$q"
+If,Not,Existfile,%Target_Sys%\%catrootF7%\WinPE-WiFi-Package*.cat,Begin
+If,%BuildClass%,Equal,2,Begin
+If,Existfile,%BootSRC%\Windows\System32\%catrootF7%\WinPE-WiFi-Package*.cat,FileCopy,%BootSRC%\Windows\System32\%catrootF7%\WinPE-WiFi-Package*.cat,%Target_Sys%\%catrootF7%
+End
+If,%BuildClass%,Equal,3,Begin
+Require,FileListB,,AddService_WlanSvc_catrootF7_WinPE-WiFi-Package
+If,Not,Existfile,%Target_Sys%\%catrootF7%\WinPE-WiFi-Package*.cat,Require,FileList,,AddService_WlanSvc_catrootF7_WinPE-WiFi-Package
+End
+If,Not,Existfile,%Target_Sys%\%catrootF7%\WinPE-WiFi-Package*.cat,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"e -y #$q%Source_Sys%\Recovery\winre.wim#$q -i!#$qwindows\System32\%catrootF7%\WinPE-WiFi-Package*.cat#$q -o#$q%Target_Sys%\%catrootF7%#$q"
+End
 //- Fix boot.wim Wifi registry
+System,FileRedirect,OFF
 ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NetworkFixBootWifi.reg#$q"
+System,FileRedirect,ON
 End
 //--
-If,Not,Existfile,%target_sys%\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,Begin
-If,Existfile,%BootSRC%\Windows\System32\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,FileCopy,%BootSRC%\Windows\System32\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,%target_sys%\%catrootF7%
-Else,ShellExecute,Hide,%Tools%\7z.exe,"e -y #$q%Source_Sys%\Recovery\winre.wim#$q -i!#$qwindows\System32\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat#$q -o#$q%target_sys%\%catrootF7%#$q"
+If,Not,Existfile,%Target_Sys%\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,Begin
+If,%BuildClass%,Equal,2,Begin
+If,Existfile,%BootSRC%\Windows\System32\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,FileCopy,%BootSRC%\Windows\System32\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,%Target_Sys%\%catrootF7%
+End
+If,%BuildClass%,Equal,3,Begin
+Require,FileListB,,AddService_WlanSvc_catrootF7_WinPE-OneCoreUAP-WiFi-Package
+If,Not,Existfile,%Target_Sys%\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,Require,FileList,,AddService_WlanSvc_catrootF7_WinPE-OneCoreUAP-WiFi-Package
+End
+If,Not,Existfile,%Target_Sys%\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"e -y #$q%Source_Sys%\Recovery\winre.wim#$q -i!#$qwindows\System32\%catrootF7%\WinPE-OneCoreUAP-WiFi-Package*.cat#$q -o#$q%Target_Sys%\%catrootF7%#$q"
+End
 End
 //--
 // Holger: Fix WFPLWFS and both services nativewifip, wlanscv.
@@ -818,15 +758,23 @@ RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NetworkSetup2\Filters\{B70D64
 End
 //End AddService_WlanSvc
 
+[AddService_WlanSvc_catrootF7_WinPE-WiFi-Package]
+\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\WinPE-WiFi-Package*.cat
+
+[AddService_WlanSvc_catrootF7_WinPE-OneCoreUAP-WiFi-Package]
+\Windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\WinPE-OneCoreUAP-WiFi-Package*.cat
+
 [AddService_iphlpsvc]
 //-- service that offers IPv6 connectivity over an IPv4 network
 InstallCopySys32Mui,iphlpsvc.dll
 InstallCopySys32Mui,IPHLPAPI.DLL
 //--
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\iphlpsvc HKLM\Tmp_System\ControlSet001\Services\iphlpsvc /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\iphlpsvc HKLM\Tmp_System\ControlSet001\Services\iphlpsvc /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\iphlpsvcSys.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_EapHost]
 InstallCopySys32,Eap3Host.exe
@@ -850,7 +798,10 @@ If,%OS%,Equal,Win8.1,InstallCopySys32,eapprovp.dll
 If,%OS%,Equal,Win10,Begin
 InstallCopySys32,eapprovp.dll
 // New in 14267
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\eappcfgui.dll,InstallCopySys32Mui,eappcfgui.dll
+End
+If,%BuildClass%,Equal,3,InstallCopySys32Mui,eappcfgui.dll
 InstallCopySys32,msvcp110_win.dll
 End
 
@@ -863,33 +814,37 @@ InstallCopySys32Mui,WcnNetsh.dll
 InstallCopySys32Mui,wcnwiz.dll
 InstallCopySys32,fdWCN.dll
 //--
+System,FileRedirect,OFF
 If,%CopyRegSoft%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becc-d33a-4a4b-bf23-bbef4663d017} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becc-d33a-4a4b-bf23-bbef4663d017} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becf-d33a-4a4b-bf23-bbef4663d017} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becf-d33a-4a4b-bf23-bbef4663d017} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becc-d33a-4a4b-bf23-bbef4663d017} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becc-d33a-4a4b-bf23-bbef4663d017} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becf-d33a-4a4b-bf23-bbef4663d017} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{c100becf-d33a-4a4b-bf23-bbef4663d017} /s /f"
 End
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\wcncsvcSoft.reg#$q"
 End
 //--
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\EapHost HKLM\Tmp_System\ControlSet001\Services\EapHost /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\wcncsvc HKLM\Tmp_System\ControlSet001\Control\wcncsvc /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\wcncsvc HKLM\Tmp_System\ControlSet001\Services\wcncsvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\EapHost HKLM\Tmp_System\ControlSet001\Services\EapHost /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\wcncsvc HKLM\Tmp_System\ControlSet001\Control\wcncsvc /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\wcncsvc HKLM\Tmp_System\ControlSet001\Services\wcncsvc /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\EapHost.reg#$q"
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\wcncsvcSys.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_Ndisuio]
 // ndisuio.inf,ndisuio.sys (in boot.wim)
 //-- Add Service "Ndisuio"
+System,FileRedirect,OFF
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NdisuioSoft.reg#$q"
 //-
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\Ndisuio HKLM\Tmp_System\ControlSet001\Services\Ndisuio /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\Ndisuio HKLM\Tmp_System\ControlSet001\Services\Ndisuio /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NdisuioSys_%SourceArch%.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_NDIS]
 // ndisimplatform.inf, ndisimplatformmp.inf, ndis.sys, ndistapi.sys, ndiswan.sys + Win8.1 ndisvirtualbus.inf, NdisVirtualBus.sys (in boot.wim)
@@ -899,37 +854,41 @@ InstallCopyDriversMui,ndisimplatform.sys
 //-
 InstallCopySys32,ndiscapCfg.dll
 InstallCopySys32Mui,ndishc.dll
+If,%BuildClass%,Equal,2,Begin
 If,ExistFile,%Source_Sys%\NdisImPlatformNetCfg.dll,InstallCopySys32,NdisImPlatformNetCfg.dll
+End
+If,%BuildClass%,Equal,3,InstallCopySys32,NdisImPlatformNetCfg.dll
 If,%OS%,Equal,Win8,InstallCopySys32,NdisImPlatform.dll
 If,%OS%,Equal,Win8.1,InstallCopySys32,NdisImPlatform.dll
 If,%OS%,Equal,Win10,InstallCopySys32,ImplatSetup.dll
 InstallCopySys32Mui,rascfg.dll
 //-
 //-- Add Service "ndis"
-If,%CopyRegSoft%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{11c5d8ad-756a-42c2-8087-eb1b4a72a846} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{11c5d8ad-756a-42c2-8087-eb1b4a72a846} /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSoft%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{11c5d8ad-756a-42c2-8087-eb1b4a72a846} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{11c5d8ad-756a-42c2-8087-eb1b4a72a846} /s /f"
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NDISSoft.reg#$q"
 End
 //-
 //-- Add Service "ndis"
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\NetTrace\Scenarios\NDIS HKLM\Tmp_System\ControlSet001\Control\NetTrace\Scenarios\NDIS /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NDIS HKLM\Tmp_System\ControlSet001\Services\NDIS /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\NetTrace\Scenarios\NDIS HKLM\Tmp_System\ControlSet001\Control\NetTrace\Scenarios\NDIS /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NDIS HKLM\Tmp_System\ControlSet001\Services\NDIS /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NDISSys.reg#$q"
 End
 //-
 //-- Add Service "NdisTapi"
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NdisTapi HKLM\Tmp_System\ControlSet001\Services\NdisTapi /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NdisTapi HKLM\Tmp_System\ControlSet001\Services\NdisTapi /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NdisTapiSys.reg#$q"
 End
 //-
 //-- Add Service "NdisWan"
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e975-e325-11ce-bfc1-08002be10318}\{5357414E-4449-004E-7CF1-D431BBD4B8EB} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e975-e325-11ce-bfc1-08002be10318}\{5357414E-4449-004E-7CF1-D431BBD4B8EB} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NdisWan HKLM\Tmp_System\ControlSet001\Services\NdisWan /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e975-e325-11ce-bfc1-08002be10318}\{5357414E-4449-004E-7CF1-D431BBD4B8EB} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e975-e325-11ce-bfc1-08002be10318}\{5357414E-4449-004E-7CF1-D431BBD4B8EB} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NdisWan HKLM\Tmp_System\ControlSet001\Services\NdisWan /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NdisWanSys_%SourceArch%.reg#$q"
@@ -937,29 +896,30 @@ End
 //-
 //-- Add Service "NdisCap"
 If,%CopyRegSoft%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{2ed6006e-4729-4609-b423-3ee7bcd678ef} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{2ed6006e-4729-4609-b423-3ee7bcd678ef} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{2ed6006e-4729-4609-b423-3ee7bcd678ef} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{2ed6006e-4729-4609-b423-3ee7bcd678ef} /s /f"
 End
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NdisCapSoft.reg#$q"
 End
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{EA24CD6C-D17A-4348-9190-09F0D5BE83DD} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{EA24CD6C-D17A-4348-9190-09F0D5BE83DD} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\SafeBoot\Network\ndiscap HKLM\Tmp_System\ControlSet001\Control\SafeBoot\Network\ndiscap /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NdisCap HKLM\Tmp_System\ControlSet001\Services\NdisCap /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{EA24CD6C-D17A-4348-9190-09F0D5BE83DD} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{EA24CD6C-D17A-4348-9190-09F0D5BE83DD} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\SafeBoot\Network\ndiscap HKLM\Tmp_System\ControlSet001\Control\SafeBoot\Network\ndiscap /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\NdisCap HKLM\Tmp_System\ControlSet001\Services\NdisCap /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NdisCapSys.reg#$q"
 End
 //-- Add Service "Wfplwfs"
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{3BFD7820-D65C-4C1B-9FEA-983A019639EA} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{3BFD7820-D65C-4C1B-9FEA-983A019639EA} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{B70D6460-3635-4D42-B866-B8AB1A24454C} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{B70D6460-3635-4D42-B866-B8AB1A24454C} /s /f"
-If,%SourceArch%,Equal,x64,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E7C3B2F0-F3C5-48DF-AF2B-10FED6D72E7A} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E7C3B2F0-F3C5-48DF-AF2B-10FED6D72E7A} /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\WFPLWFS HKLM\Tmp_System\ControlSet001\Services\WFPLWFS /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{3BFD7820-D65C-4C1B-9FEA-983A019639EA} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{3BFD7820-D65C-4C1B-9FEA-983A019639EA} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{B70D6460-3635-4D42-B866-B8AB1A24454C} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{B70D6460-3635-4D42-B866-B8AB1A24454C} /s /f"
+If,%SourceArch%,Equal,x64,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E7C3B2F0-F3C5-48DF-AF2B-10FED6D72E7A} HKLM\Tmp_System\ControlSet001\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{E7C3B2F0-F3C5-48DF-AF2B-10FED6D72E7A} /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\WFPLWFS HKLM\Tmp_System\ControlSet001\Services\WFPLWFS /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\Wfplwfs_%SourceArch%.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_Lanman]
 // netserv.inf, srvnet.sys, srv2.sys, srv.sys, nsiproxy.sys, mup.sys, rdbss.sys, mrxsmb.sys, mrxsmb10.sys, mrxsmb20.sys, bowser.sys
@@ -1001,15 +961,18 @@ RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\BFE
 RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\dnscache
 RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\LanmanServer
 End
+//-
+System,FileRedirect,OFF
 //-- Add Service "Browser"
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\SafeBoot\Network\Browser HKLM\Tmp_System\ControlSet001\Control\SafeBoot\Network\Browser /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\Browser HKLM\Tmp_System\ControlSet001\Services\Browser /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\EventLog\System\Browser HKLM\Tmp_System\ControlSet001\Services\EventLog\System\Browser /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\SafeBoot\Network\Browser HKLM\Tmp_System\ControlSet001\Control\SafeBoot\Network\Browser /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\Browser HKLM\Tmp_System\ControlSet001\Services\Browser /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\EventLog\System\Browser HKLM\Tmp_System\ControlSet001\Services\EventLog\System\Browser /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\Browser.reg#$q"
 End
+System,FileRedirect,ON
 //-
 // Allow network users to access without password > Also display Share with in Context Menu!
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Lsa,LimitBlankPasswordUse,0
@@ -1019,15 +982,17 @@ If,ExistRegSection,HKLM,"Tmp_Software\Classes\Folder\shellex\ContextMenuHandlers
 [AddService_tcpipreg]
 InstallCopyDrivers,tcpipreg.sys
 //--
-If,%CopyRegSoft%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{017ba13c-9a55-4f1f-8200-323055aac810} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{017ba13c-9a55-4f1f-8200-323055aac810} /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSoft%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{017ba13c-9a55-4f1f-8200-323055aac810} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{017ba13c-9a55-4f1f-8200-323055aac810} /s /f"
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\tcpipregSoft.reg#$q"
 End
 //-
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\tcpipreg HKLM\Tmp_System\ControlSet001\Services\tcpipreg /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\tcpipreg HKLM\Tmp_System\ControlSet001\Services\tcpipreg /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\tcpipregSys.reg#$q"
 End
+System,FileRedirect,ON
 //-
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\TCPIPTUNNEL,NdisMajorVersion,6
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\TCPIPTUNNEL,NdisMinorVersion,40
@@ -1038,10 +1003,12 @@ RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\TCPIPTUNNEL,DriverMinorVersi
 InstallCopyDrivers,tdx.sys
 InstallCopySys32Mui,tcpipcfg.dll
 //--
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\tdx HKLM\Tmp_System\ControlSet001\Services\tdx /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\tdx HKLM\Tmp_System\ControlSet001\Services\tdx /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\tdxSys.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_netprofm]
 InstallCopySys32,netprofm.dll
@@ -1050,18 +1017,20 @@ InstallCopySys32Mui,nlmgp.dll
 InstallCopySys32,nlmproxy.dll
 InstallCopySys32,nlmsprep.dll
 InstallCopySys32,npmproxy.dll
-//
-InstallCopyWbem,netprofm.mof
-//
-If,Not,ExistDir,%t32%\networklist,DirMake,%t32%\networklist
-Filecopy,%i32%\networklist\*,%t32%\networklist
 //-
-If,%CopyRegSoft%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows NT\CurrentVersion\NetworkList HKLM\Tmp_Software\Microsoft\Windows NT\CurrentVersion\NetworkList /s /f"
+InstallCopyWbem,netprofm.mof
+//-
+If,Not,ExistDir,%t32%\networklist,DirMake,%t32%\networklist
+If,%BuildClass%,Equal,2,Filecopy,%i32%\networklist\*,%t32%\networklist
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\System32\networklist\*",Append
+//-
+System,FileRedirect,OFF
+If,%CopyRegSoft%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows NT\CurrentVersion\NetworkList HKLM\Tmp_Software\Microsoft\Windows NT\CurrentVersion\NetworkList /s /f"
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NetworkListSoft_%SourceArch%.reg#$q"
 End
 //-
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\netprofm HKLM\Tmp_System\ControlSet001\Services\netprofm /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\netprofm HKLM\Tmp_System\ControlSet001\Services\netprofm /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\netprofmSys.reg#$q"
 End
@@ -1070,27 +1039,38 @@ If,%OS%,Equal,Win10,Begin
 ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NetworkSetup2.reg#$q"
 ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\NetworkUxManager.reg#$q"
 End
+System,FileRedirect,ON
+//-
+Set,%S%,/
+If,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe,Set,%S%,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe
+If,Not,ExistFile,%S%,Begin
+If,ExistRegSection,HKLM,Tmp_Software,RegHiveUnLoad,Tmp_Software
+If,ExistRegSection,HKLM,Tmp_System,RegHiveUnLoad,Tmp_System
+If,ExistRegSection,HKLM,Tmp_InsSystem,RegHiveUnLoad,Tmp_Software
+If,ExistRegSection,HKLM,Tmp_System,RegHiveUnLoad,Tmp_System
+End
+If,Not,ExistFile,%S%,Call,Echo,"SetAcl.exe NOT FOUND",Warn,,MessageError,,Halt
 //-
 // http://blogs.technet.com/b/networking/archive/2009/06/19/missing-network-map-under-network-and-sharing-center-in-windows-vista-or-windows-server-2008.aspx
 // ex in cmdline: sc.exe showsid netprofm
 //-- Add "full" permission for "netprofm" (S-1-5-80-3635958274-2059881490-2225992882-984577281-633327304)
-ShellExecute,Hide,%Tools%\%OSArch%\SetAcl.exe,"-on #$q%t32%\networklist#$q -ot file -actn ace -ace #$qn:S-1-5-80-3635958274-2059881490-2225992882-984577281-633327304;p:full;s:y#$q"
+ShellExecute,Hide,%S%,"-on #$q%t32%\networklist#$q -ot file -actn ace -ace #$qn:S-1-5-80-3635958274-2059881490-2225992882-984577281-633327304;p:full;s:y#$q"
 // Permissions are Already In Install.wim software hive
 If,%SoftwareHive%,Equal,Boot.wim,Begin
 If,Not,%ExitCode%,Equal,0,Call,Echo,"SetAcl - netprofm permission on %t32%\networklist FAIL",Warn
-ShellExecute,Hide,%Tools%\%OSArch%\SetAcl.exe,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList#$q -ot reg -actn ace -ace #$qn:S-1-5-80-3635958274-2059881490-2225992882-984577281-633327304;p:full;s:y#$q"
+ShellExecute,Hide,%S%,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList#$q -ot reg -actn ace -ace #$qn:S-1-5-80-3635958274-2059881490-2225992882-984577281-633327304;p:full;s:y#$q"
 If,Not,%ExitCode%,Equal,0,Call,Echo,"SetAcl - netprofm permission on HKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList FAIL",Warn
 //
 //-- Add "full" permission for "NlaSvc" (S-1-5-80-3141615172-2057878085-1754447212-2405740020-3916490453)
-ShellExecute,Hide,%Tools%\%OSArch%\SetAcl.exe,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Nla#$q -ot reg -actn ace -ace #$qn:S-1-5-80-3141615172-2057878085-1754447212-2405740020-3916490453;p:full;s:y#$q"
+ShellExecute,Hide,%S%,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Nla#$q -ot reg -actn ace -ace #$qn:S-1-5-80-3141615172-2057878085-1754447212-2405740020-3916490453;p:full;s:y#$q"
 If,Not,%ExitCode%,Equal,0,Call,Echo,"SetAcl - NlaSvc permission on HKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Nla FAIL",Warn
 //
 //-- Add "full" permission for "WwanSvc" (S-1-5-80-3981856537-581775623-1136376035-2066872258-409572886) and "Network Configuration Operators" (S-1-5-80-1645897578-929754204-4184232326-1362075502-2270677228)
-ShellExecute,Hide,%Tools%\%OSArch%\SetAcl.exe,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:S-1-5-80-3981856537-581775623-1136376035-2066872258-409572886;p:full;s:y#$q"
+ShellExecute,Hide,%S%,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:S-1-5-80-3981856537-581775623-1136376035-2066872258-409572886;p:full;s:y#$q"
 If,Not,%ExitCode%,Equal,0,Call,Echo,"SetAcl - WwanSvc permission on HKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions FAIL",Warn
-//ShellExecute,Hide,%Tools%\%OSArch%\SetACL.exe,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:S-1-5-80-1645897578-929754204-4184232326-1362075502-2270677228;p:full;s:y#$q"
-//ShellExecute,Hide,%Tools%\%OSArch%\SetAcl.exe,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:S-1-5-32-556;p:full;s:y#$q"
-ShellExecute,Hide,%Tools%\%OSArch%\SetACL.exe,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:Network Configuration Operators;p:full#$q"
+//ShellExecute,Hide,%S%,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:S-1-5-80-1645897578-929754204-4184232326-1362075502-2270677228;p:full;s:y#$q"
+//ShellExecute,Hide,%S%,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:S-1-5-32-556;p:full;s:y#$q"
+ShellExecute,Hide,%S%,"-on #$qHKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions#$q -ot reg -actn ace -ace #$qn:Network Configuration Operators;p:full#$q"
 If,Not,%ExitCode%,Equal,0,Call,Echo,"SetAcl - Network Configuration Operators permission on HKLM\Tmp_software\Microsoft\Windows NT\CurrentVersion\NetworkList\Permissions FAIL",Warn
 End
 // AllowStart Network List Service! netprofm need SystemSetupInProgress=0 > net start netprofm > SystemSetupInProgress=1
@@ -1098,6 +1078,7 @@ If,%OS%,Equal,Win10,RegWrite,HKLM,0x0,Tmp_System\Setup\AllowStart\netprofm
 
 [AddService_VAN]
 If,Not,ExistDir,%TargetDir%\ProgramData\Microsoft\WwanSvc\Profiles,DirMake,%TargetDir%\ProgramData\Microsoft\WwanSvc\Profiles
+//-
 InstallCopySys32Mui,VAN.dll
 //InstallCopySys32Mui,UIAutomationCore.dll
 InstallCopySys32,WlanRadioManager.dll
@@ -1123,26 +1104,30 @@ InstallCopySys32,wlaninst.dll
 InstallCopySys32,wwaninst.dll
 End
 //--
-If,%CopyRegSoft%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{01578f96-c270-4602-ade0-578d9c29fc0c} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{01578f96-c270-4602-ade0-578d9c29fc0c} /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSoft%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{01578f96-c270-4602-ade0-578d9c29fc0c} HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{01578f96-c270-4602-ade0-578d9c29fc0c} /s /f"
 Else,Begin
 If,%RegSoft%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\VANSoft.reg#$q"
 End
 //--
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\VAN HKLM\Tmp_System\ControlSet001\Control\VAN /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\VAN HKLM\Tmp_System\ControlSet001\Control\VAN /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\VANSys.reg#$q"
 End
 //--
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\RadioManagement HKLM\Tmp_System\ControlSet001\Control\RadioManagement /s /f"
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Control\RadioManagement HKLM\Tmp_System\ControlSet001\Control\RadioManagement /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\RadioManagementSys.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddServices_ShellHWDetection]
-If,%CopyRegSys%,Equal,True,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\ShellHWDetection HKLM\Tmp_System\ControlSet001\Services\ShellHWDetection /s /f"
+System,FileRedirect,OFF
+If,%CopyRegSys%,Equal,True,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\ShellHWDetection HKLM\Tmp_System\ControlSet001\Services\ShellHWDetection /s /f"
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\ShellHWDetectionSys.reg#$q"
 End
+System,FileRedirect,ON
 
 [AddService_Firewall]
 //-- depend on Netman,WinMgmt,RasMan,BFE service
@@ -1173,16 +1158,21 @@ InstallCopyDriversMui,ipnat.sys
 InstallCopySys32Mui,ipnathlp.dll
 InstallCopySys32Mui,icsigd.dll
 InstallCopySys32,icsunattend.exe
+If,%BuildClass%,Equal,2,Begin
 If,Not,ExistDir,%t32%\icsxml,DirCopy,%i32%\icsxml,%t32%
-//
+End
+If,%BuildClass%,Equal,3,TxtAddLine,%PInstall%,"\Windows\System32\icsxml\*",Append
+//-
+System,FileRedirect,OFF
 If,%CopyRegSys%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\IPNAT HKLM\Tmp_System\ControlSet001\Services\IPNAT /s /f"
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\SharedAccess HKLM\Tmp_System\ControlSet001\Services\SharedAccess /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\IPNAT HKLM\Tmp_System\ControlSet001\Services\IPNAT /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSystem\ControlSet001\Services\SharedAccess HKLM\Tmp_System\ControlSet001\Services\SharedAccess /s /f"
 End
 Else,Begin
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\ipnat.reg#$q"
 If,%RegSys%,Equal,True,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\SharedAccessSys.reg#$q"
 End
+System,FileRedirect,ON
 // Disabled Firewall by default ((Start values 2=Automatic, 3=Manual, 4=Disabled) may be modified in Optimizations.
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\MpsSvc,Start,4,NoWarn
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\SharedAccess\Parameters\FirewallPolicy\DomainProfile,EnableFirewall,0,NoWarn
@@ -1197,9 +1187,10 @@ InstallCopySys32,xwreg.dll
 InstallCopySys32Mui,xwtpdui.dll
 InstallCopySys32Mui,xwtpw32.dll
 //--
+System,FileRedirect,OFF
 If,%CopyRegSoft%,Equal,True,Begin
-ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\XWizards HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\XWizards /s /f"
-If,%SourceArch%,Equal,x64,ShellExecute,hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Wow6432Node\Microsoft\Windows\CurrentVersion\XWizards HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\XWizards /s /f"
+ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Microsoft\Windows\CurrentVersion\XWizards HKLM\Tmp_Software\Microsoft\Windows\CurrentVersion\XWizards /s /f"
+If,%SourceArch%,Equal,x64,ShellExecute,Hide,%RegexeFolder%reg.exe,"Copy HKLM\Tmp_InsSoftware\Wow6432Node\Microsoft\Windows\CurrentVersion\XWizards HKLM\Tmp_Software\Wow6432Node\Microsoft\Windows\CurrentVersion\XWizards /s /f"
 End
 Else,Begin
 If,%RegSoft%,Equal,True,Begin
@@ -1207,6 +1198,7 @@ ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\XWw
 If,%SourceArch%,Equal,x64,ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Network\XWwizardsSoft_x64.reg#$q"
 End
 End
+System,FileRedirect,ON
 
 [Copy_Control]
 InstallCopySys32,ncobjapi.dll
@@ -1243,6 +1235,7 @@ End
 If,%OS%,Equal,Win8.1,InstallCopySys32Mui,pnidui.dll
 //- Hide pnidui wifi sytray Icon in Win10pese with boot.wim software hive (wcmsvc service does not start), more or less OK with Install.wim software
 If,%OS%%CheckBox_NetIcon%,Equal,Win10True,InstallCopySys32Mui,pnidui.dll
+//-
 // Restore Windows 8 Style Network Sidebar
 //If,%OS%,Equal,Win10,RegWrite,HKLM,0x4,"Tmp_Software\Microsoft\Windows\CurrentVersion\Control Panel\Settings\Network",ReplaceVan,2
 
@@ -1280,8 +1273,92 @@ RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,enab
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,requiresecuritysignature,0
 //--
 // EnableSMB1Protocol
-If,%SMB1_CheckBox%,Equal,True,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,SMB1,1
+If,%SMB1_CheckBox%,Equal,True,Begin
+//-
+If,Not,ExistFile,%Target_Sys%\drivers\mrxsmb10.sys,Begin
+If,%BuildClass%,2,Begin
+If,ExistFile,%Source_Sys%\drivers\mrxsmb10.sys,FileCopy,%Source_Sys%\drivers\mrxsmb10.sys,%Target_Sys%\drivers
+End
+If,%BuildClass%,3,Begin
+If,Not,ExistFile,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,Run,%ScriptFile%,WimLib_Ready
+IniRead,%ProjectDir%\script.project,IniVariables,WIMIndex,%WIMIndex%
+ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q %WIMIndex% #$q\Windows\System32\drivers\mrxsmb10.sys#$q --dest-dir=#$q%Target_Sys%\drivers#$q --no-acls"
+End
+End
+//-
+If,Not,%Win10_1803%,Equal,Smaller,Begin
+If,Not,ExistFile,%Target_Sys%\drivers\mrxsmb10.sys,Begin
+//-
+//Workaround: get mrxsmb10.sys from index 1 BUT 1) you can not extract from install.wim if mounted 2) It can be compressed file
+Set,%t%,1
+If,%BuildClass%,2,Begin
+IniRead,%ProjectDir%\script.project,IniVariables,ExtractWimFolder,%ExtractWimFolder%
+If,Not,%ExtractWimFolder%,Equal,Yes,Set,%t%,0
+If,Not,ExistFile,%SourceDir%\sources\install.wim,Set,%t%,0
+End
+//-
+If,%t%,Equal,1,Begin
+//Source not mounted and install.wim available:
+If,Not,ExistFile,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,Run,%ScriptFile%,WimLib_Ready
+//mrxsmb10.sys not exists at index10 but exists at index1 Tested: Win10_1809_English_x64.iso
+//It seems mrxsmb10.sys required to be expanded by a tool
+Call,DirDelete,%ProjectTemp%\Expand_Compressed
+DirMake,%ProjectTemp%\Expand_Compressed\Source
+//ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 1 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%Target_Sys%\drivers#$q --no-acls"
+ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 1 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%ProjectTemp%\Expand_Compressed\Source#$q --no-acls"
+//just a fallback to check some other index in case required in future...
+If,Not,ExistFile,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 2 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%ProjectTemp%\Expand_Compressed\Source#$q --no-acls"
+If,Not,ExistFile,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 3 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%ProjectTemp%\Expand_Compressed\Source#$q --no-acls"
+If,Not,ExistFile,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 4 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%ProjectTemp%\Expand_Compressed\Source#$q --no-acls"
+If,Not,ExistFile,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 5 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%ProjectTemp%\Expand_Compressed\Source#$q --no-acls"
+If,Not,ExistFile,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,ShellExecute,Hide,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,"extract #$q%SourceDir%\sources\install.wim#$q 6 #$q\Windows\WinSxS\*_microsoft-windows-smb10-minirdr_*\mrxsmb10.sys#$q --dest-dir=#$q%ProjectTemp%\Expand_Compressed\Source#$q --no-acls"
+//-
+If,ExistFile,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,Begin
+//JFX Reply 359 : It seems like sxsexp32.exe needs to run under Windows 10 to be able to decompress that file. - http://theoven.org/index.php?topic=2421.msg29719#msg29719
+If,Not,ExistFile,%ProjectTemp%\sxsexp_Ready\sxsexp.exe,Run,%ScriptFile%,sxsexp_Ready
+ShellExecute,Hide,%ProjectTemp%\sxsexp_Ready\sxsexp.exe,"#$q%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys#$q #$q%ProjectTemp%\Expand_Compressed\mrxsmb10.sys#$q"
+Set,%t%,%ExitCode%
+Echo,ErrorLevel=%t%
+//JFX: Win7: ErrorLevel 0 success even if file not compressed file copied - But Compressed file on Win7 ErrorLevel -1
+If,ExistFile,%ProjectTemp%\Expand_Compressed\mrxsmb10.sys,FileCopy,%ProjectTemp%\Expand_Compressed\mrxsmb10.sys,%Target_Sys%\drivers
+If,Not,ExistFile,%ProjectTemp%\Expand_Compressed\mrxsmb10.sys,Begin
+//JFX: DCSUnpack useful tool for Windows 7 users. http://TheOven.org/index.php?topic=2765
+If,Not,ExistFile,%ProjectTemp%\DCSUnpack_M\HostOS\DCSUnpack.exe,Run,%ScriptFile%,DCSUnpack_Ready
+ShellExecute,Hide,%ProjectTemp%\DCSUnpack_M\HostOS\DCSUnpack.exe,"#$q%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys#$q #$q%ProjectTemp%\Expand_Compressed\mrxsmb10.sys#$q"
+Set,%t%,%ExitCode%
+//JFX: %Errorlevel% is set to 1 if succeed. // 2 if error using wimlib or no file read access. // 3 if the file is not a DCS compressed one.
+Echo,ErrorLevel=%t%
+If,ExistFile,%ProjectTemp%\Expand_Compressed\mrxsmb10.sys,FileCopy,%ProjectTemp%\Expand_Compressed\mrxsmb10.sys,%Target_Sys%\drivers
+Else,Begin
+//JFX DCSUnpack: There is no way to be sure a files is uncompressed So no copy for uncompressed. -> Lancelot: Win7Host only way left for today copy file from source in case it is not uncompressed with DCSUnpack (maybe it is not compressed at first)
+FileCopy,%ProjectTemp%\Expand_Compressed\Source\mrxsmb10.sys,%Target_Sys%\drivers
+End
+End
+End
+End
+End
+If,Not,ExistFile,%Target_Sys%\drivers\mrxsmb10.sys,Echo,"'Network': SMB v1.0 Service will Not be Available. mrxsmb10.sys Driver can not be provided.",Warn
+If,ExistFile,%Target_Sys%\drivers\mrxsmb10.sys,Begin
+//--
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,SMB1,1
+//--
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\mrxsmb10,Description,"@#$psystemroot#$p\system32\wkssvc.dll,-1005"
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\mrxsmb10,DisplayName,"@#$psystemroot#$p\system32\wkssvc.dll,-1004"
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb10,ErrorControl,1
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\mrxsmb10,Group,Network
+RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\mrxsmb10,ImagePath,system32\DRIVERS\mrxsmb10.sys
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb10,Tag,6
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb10,Type,2
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\mrxsmb10,DependOnService,mrxsmb
+End
+End
+Else,Begin
+RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,SMB1,1
+End
+End
 Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,SMB1,0
+//--
 // EnableSMB2Protocol
 If,%SMB2_CheckBox%,Equal,True,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,SMB2,1
 Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters,SMB2,0
@@ -1290,20 +1367,20 @@ Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters
 // mrxsmb20 service: Mini-redirector SMB 2.0 - Start Auto=2 Demand=3 Disabled=4 (Default 3=Demand)
 // LanmanWorkstation DependOnService=Bowser/MRxSmb10/MRxSmb20/NSI (enable SMBv1 SMBv2). Default value for Mini-redirector SMB 1.x, SMB 2.0
 If,%SMBv1Client_CheckBox%%SMBv2Client_CheckBox%,Equal,TrueTrue,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\LanmanWorkstation,DependOnService,Bowser,MRxSmb10,MRxSmb20,NSI
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb10,Start,2
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb20,Start,3
 End
 // LanmanWorkstation DependOnService=Bowser/MRxSmb10/NSI (enable SMBv1 disable SMBv2). Disabled Mini-redirector SMB 2.0
 If,%SMBv1Client_CheckBox%%SMBv2Client_CheckBox%,Equal,TrueFalse,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\LanmanWorkstation,DependOnService,Bowser,MRxSmb10,NSI
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb20,Start,4
 End
 //  LanmanWorkstation DependOnService=Bowser/MRxSmb20/NSI (enable SMBv2 disable SMBv1). Disabled Mini-redirector SMB 1.x
 If,%SMBv1Client_CheckBox%%SMBv2Client_CheckBox%,Equal,FalseTrue,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF
+If,%NoWarnROW%,Equal,True,System,ErrorOff
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\LanmanWorkstation,DependOnService,Bowser,MRxSmb20,NSI
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\mrxsmb10,Start,4
 End
@@ -1354,15 +1431,419 @@ Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\LanmanServer\Parameters
 If,%LimitBlankPasswordUse_CheckBox%,Equal,True,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Lsa,LimitBlankPasswordUse,0
 Else,RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Control\Lsa,LimitBlankPasswordUse,1
 
+[WimLib_Ready]
+If,ExistFile,%ProjectDir%\Utils\WimLib_M.Script,Run,%ProjectDir%\Utils\WimLib_M.Script,Extract,%ProjectDir%\Utils\WimLib_M.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\WimLib_M.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\WimLib_M.Script,http://yomi.cwcodes.net/Yomi/UtilsY/WimLib_M.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\WimLib_M.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\WimLib_M.Script,Extract,%BaseDir%\Projects\Yomi\UtilsY\WimLib_M.Script
+End
+If,Not,ExistFile,%ProjectTemp%\WimLib_M\HostOS\wimlib-imagex.exe,Call,Echo,"Halt: Can not get wimlib-imagex.exe Ready.",Warn,,MessageError,,Halt
+
+[DCSUnpack_Ready]
+If,ExistFile,%ProjectDir%\Utils\Utils_Tools_001.Script,Run,%ProjectDir%\Utils\Utils_Tools_001.Script,Extract_DCSUnpack,%ProjectDir%\Utils\Utils_Tools_001.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,http://yomi.cwcodes.net/Yomi/UtilsY/Utils_Tools_001.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script,Extract_DCSUnpack,%BaseDir%\Projects\Yomi\UtilsY\Utils_Tools_001.Script
+End
+If,Not,ExistFile,%ProjectTemp%\DCSUnpack_M\HostOS\DCSUnpack.exe,Call,Echo,"Halt: Can not get DCSUnpack.exe Ready.",Warn,,MessageError,,Halt
+If,Not,ExistFile,%ProjectTemp%\DCSUnpack_M\HostOS\libwim-15.dll,Call,Echo,"Halt: Can not get DCSUnpack.exe Ready. - libwim-15.dll missing",Warn,,MessageError,,Halt
+
+[sxsexp_Ready]
+If,Not,ExistDir,%ProjectTemp%\sxsexp_Ready,DirMake,%ProjectTemp%\sxsexp_Ready
+ExtractFile,%ScriptFile%,Folder,sxsexp32.exe,%ProjectTemp%\sxsexp_Ready
+ExtractFile,%ScriptFile%,Folder,sxsexp64.exe,%ProjectTemp%\sxsexp_Ready
+Call,HostOSArch
+If,%HostOSArch%,Equal,x64,FileCopy,%ProjectTemp%\sxsexp_Ready\sxsexp64.exe,%ProjectTemp%\sxsexp_Ready\sxsexp.exe
+Else,FileCopy,%ProjectTemp%\sxsexp_Ready\sxsexp32.exe,%ProjectTemp%\sxsexp_Ready\sxsexp.exe
+
+[sxsexp_JFX_info]
+https://github.com/hfiref0x/SXSEXP/tree/master/Binary
+*
+JFX:Reply 339 http://TheOven.org/index.php?topic=2421.msg29697#msg29697
+Is your mrxsmb10.sys a valid PE file?
+Mine is compressed and needs decompression with https://github.com/hfiref0x/SXSEXP/tree/master/Binary
+*
+Lancelot:Reply 360 http://TheOven.org/index.php?topic=2421.msg29725#msg29725
+additional info: sxsexp copy file if not compressed (expand or copy)
+*
+JFX:Reply 361
+Header Sign: 0x44 0x43 0x53 0x01, DCS 01 (packed LZMS, can have multiple blocks)
+Cabinet.dll of Windows 7 does not have LZMS decoder.
+*
+JFX:Reply 366
+Nope cabinet.dll of Win8/10 uses api set imports, so can not be used in Win7.
+(also verified by slore at Reply 369)
+*
+Lancelot:Reply 369
+IF .sys file not compressed (as in Win10_1809_English_x64.iso index 1)
+sxsexp should only copy file with errorlevel 0 ?
+JFX:Reply 370
+Yes, errorlevel 0 (success) for non compressed and -1 (error) for compressed.
+*******
+Summary:
+There are sometimes files that does not exists at BestImage index but Exists at index1 (eg. mrxsmb10.sys)
+Such file can be compressed or not (mrxsmb10.sys on Win10_1809_English_x64.iso NOT compressed , with JFX source (German) compressed)
+Compressed Files can be decompressed by using sxsexp (Thanks to JFX)
+BUT sxsexp requires hostos after Win7 (Win10 tested ok)
+sxsexp:
+Use 'Expand or Copy".
+copy files if not compressed without error (also at Win7HostOS) (ErrorLevel:0) -> Good
+fail to decompress files at Win7HostOS (ErrorLevel:-1)
+
+[Get_SetACL]
+If,ExistFile,%ProjectDir%\Utils\SetACL_M.Script,Run,%ProjectDir%\Utils\SetACL_M.Script,Extract,%ProjectDir%\Utils\SetACL_M.Script
+Else,Begin
+If,Not,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,Call,Download,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,http://yomi.cwcodes.net/Yomi/UtilsY/SetACL_M.Script
+If,ExistFile,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,Run,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script,Extract,%BaseDir%\Projects\Yomi\UtilsY\SetACL_M.Script
+End
+If,Not,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.exe,Call,Echo,"Halt: Can not get SetACL.exe Ready.",Warn,,MessageError,,Halt
+If,Not,ExistFile,%ProjectTemp%\SetACL_M\HostOS\SetACL.dll,Call,Echo,"Halt: Can not get SetACL.exe Ready.",Warn,,MessageError,,Halt
+
 [AuthorEncoded]
 Network.jpg=2722,3630
 Logo=Network.jpg
+
+[PInstall_Copy]
+// SourceFolder,File,TargetFolder
+If,ExistFile,#1\#2,Begin
+If,Not,ExistFile,#3\#2,FileCopy,#1\#2,#3\#2
+End
+
+[PInstall_CopyMui]
+// SourceFolder,File,TargetFolder
+InstallCopy,#1,#2,#3
+If,ExistFile,#3\#2,Loop,%ScriptFile%,PInstall_CopyMui_Loop,1,%NbLang%,#1,#2,#3
+
+[PInstall_CopyMui_Loop]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,#1\#9\#2.mui,Begin
+If,Not,ExistFile,#3\#9\#2.mui,FileCopy,#1\#9\#2.mui,#3\#9\#2.mui
+Loop,Break
+End
+
+[PInstall_CopySys32_3]
+TxtAddLine,%PInstall%,"\Windows\System32\#1",Append
+
+[PInstall_CopySys32Mui_3]
+TxtAddLine,%PInstall%,"\Windows\System32\#1",Append
+If,%NbLang%,Equal,1,TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang1%\#1.mui",Append
+If,%NbLang%,Equal,2,Run,%ScriptFile%,PInstall_CopySys32Mui_II_3,#1
+If,%NbLang%,Equal,3,Run,%ScriptFile%,PInstall_CopySys32Mui_III_3,#1
+If,%NbLang%,Equal,4,Run,%ScriptFile%,PInstall_CopySys32Mui_IIII_3,#1
+If,%NbLang%,Bigger,4,Loop,%ScriptFile%,PInstall_CopySys32Mui_Loop_3,1,%NbLang%,#1
+
+[PInstall_CopySys32Mui_I_3]
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang1%\#1.mui",Append
+
+[PInstall_CopySys32Mui_II_3]
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang2%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang2%\#1.mui##$q#$q"
+
+[PInstall_CopySys32Mui_III_3]
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang2%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang3%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang2%\#1.mui##$q#$q"
+
+[PInstall_CopySys32Mui_IIII_3]
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang2%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang3%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\System32\%MuiLang4%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang3%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\%MuiLang2%\#1.mui##$q#$q"
+
+[PInstall_CopySys32Mui_Loop_3]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+TxtAddLine,%PInstall%,"\Windows\System32\#9\#1.mui",Append
+//If,Not,#c,Equal,%NbLang%,Loop,%ScriptFile%,PInstall_CopySys32Mui_Loop_Del_Mui_3,#c,%NbLang%,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,#c,Equal,1,Begin
+If,Not,#c,Equal,%NbLang%,Begin
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+If,%NbLang%,Bigger,2,IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\#8\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\#8\#1.mui##$q#$q"
+End
+End
+
+[PInstall_CopySys32Mui_Loop_Del_Mui_3]
+Echo,"Loop inside Loop VERY SLOW - DO NOT USE",Warn
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%t32%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%t32%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%t32%\#8\#1.mui##$q#$q"
+
+[PInstall_CopySys32_2]
+If,Not,ExistFile,%t32%\#1,Begin
+If,ExistFile,%i32%\#1,FileCopy,%i32%\#1,%t32%\#1
+//Else,Echo,"%i32%\#1 not Here!",Warn
+End
+
+[PInstall_CopySys32Mui_2]
+InstallCopySys32,#1
+If,ExistFile,%t32%\#1,Loop,%ScriptFile%,PInstall_CopySys32Mui_Loop_2,1,%NbLang%,#1
+
+[PInstall_CopySys32Mui_Loop_2]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%i32%\#9\#1.mui,Begin
+If,Not,ExistFile,%t32%\#9\#1.mui,FileCopy,%i32%\#9\#1.mui,%t32%\#9
+Loop,Break
+End
+
+[PInstall_Inf_3]
+TxtAddLine,%PInstall%,"\Windows\inf\#1",Append
+
+[PInstall_Inf_2]
+If,ExistFile,%iw%\inf\#1,Begin
+If,Not,ExistFile,%tw%\inf\#1,FileCopy,%iw%\inf\#1,%tw%\inf\#1
+End
+
+[PInstall_Drivers_3]
+TxtAddLine,%PInstall%,"\Windows\System32\Drivers\#1",Append
+
+[PInstall_Drivers_2]
+If,ExistFile,%i32%\Drivers\#1,Begin
+If,Not,ExistFile,%t32%\Drivers\#1,FileCopy,%i32%\Drivers\#1,%t32%\Drivers\#1
+End
+
+[PInstall_DriversMui_3]
+TxtAddLine,%PInstall%,"\Windows\System32\Drivers\#1",Append
+Loop,%ScriptFile%,PInstall_CopyDriversMui_Loop_3,1,%NbLang%,#1
+
+[PInstall_CopyDriversMui_Loop_3]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+TxtAddLine,%PInstall%,"\Windows\System32\Drivers\#9\#1.mui",Append
+
+[PInstall_DriversMui_2]
+InstallCopyDrivers,#1
+If,ExistFile,%t32%\drivers\#1,Loop,%ScriptFile%,PInstall_CopyDriversMui_Loop_2,1,%NbLang%,#1
+
+[PInstall_CopyDriversMui_Loop_2]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%i32%\drivers\#9\#1.mui,Begin
+If,Not,ExistFile,%t32%\drivers\#9\#1.mui,FileCopy,%i32%\drivers\#9\#1.mui,%t32%\drivers\#9
+Loop,Break
+End
+
+[PInstall_CopyDriverStore_082_3]
+TxtAddLine,%PInstall%,"\Windows\System32\DriverStore\FileRepository\#1",Append
+
+[PInstall_CopyDriverStore_080_3]
+TxtAddLine,%PInstall%,"\Windows\System32\DriverStore\FileRepository\#1",Append
+
+[PInstall_CopyDriverStore_077.102_3]
+TxtAddLine,%PInstall%,"\Windows\System32\DriverStore\FileRepository\#1",Append
+
+[PInstall_CopyDriverStore_082_2]
+If,ExistDir,%i32%\DriverStore\FileRepository\#1,Begin
+If,Not,ExistDir,%t32%\DriverStore\FileRepository\#1,DirCopy,%i32%\DriverStore\FileRepository\#1,%t32%\DriverStore\FileRepository
+End
+
+[PInstall_CopyDriverStore_080_2]
+Call,DirCopy,%i32%\DriverStore\FileRepository\#1,%t32%\DriverStore\FileRepository
+//Echo,%ExitCode%,Warn
+
+[PInstall_CopyDriverStore_077.102_2]
+Call,DirCopy,%i32%\DriverStore\FileRepository\#1,%t32%\DriverStore\FileRepository
+//Echo,%ExitCode%,Warn
+
+[PInstall_CopyWbem_3]
+TxtAddLine,%PInstall%,"\Windows\System32\wbem\#1",Append
+
+[PInstall_CopyWbemMui_3]
+TxtAddLine,%PInstall%,"\Windows\System32\wbem\#1",Append
+Loop,%ScriptFile%,PInstall_CopyWbemMui_Loop_3,1,%NbLang%,#1
+
+[PInstall_CopyWbemMui_Loop_3]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+TxtAddLine,%PInstall%,"\Windows\System32\wbem\#9\#1.mui",Append
+
+[PInstall_CopyWbem_2]
+If,Not,ExistFile,%t32%\wbem\#1,Begin
+If,ExistFile,%i32%\wbem\#1,FileCopy,%i32%\wbem\#1,%t32%\wbem\#1
+//Else,Echo,"%i32%\wbem\#1 not Here!",Warn
+End
+
+[PInstall_CopyWbemMui_2]
+InstallCopyWbem,#1
+If,ExistFile,%t32%\#1,Loop,%ScriptFile%,PInstall_CopyWbemMui_Loop_2,1,%NbLang%,#1
+
+[PInstall_CopyWbemMui_Loop_2]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%i32%\wbem\#9\#1.mui,Begin
+If,Not,ExistFile,%t32%\wbem\#9\#1.mui,FileCopy,%i32%\wbem\#9\#1.mui,%t32%\#9
+Loop,Break
+End
+
+[PInstall_CopySysWoW_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+
+[PInstall_CopySysWoWMui_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#1",Append
+//IniWriteTextLine,%PInstall%.ini,Process,"If,Not,ExistFile,#$q%tWow%\#1#$q,Echo,#$q%tWow%\#1 not Found!#$q,Warn"
+If,%NbLang%,Equal,1,TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+If,%NbLang%,Equal,2,Run,%ScriptFile%,PInstall_CopySysWoWMui_II_3,#1
+If,%NbLang%,Equal,3,Run,%ScriptFile%,PInstall_CopySysWoWMui_III_3,#1
+If,%NbLang%,Equal,4,Run,%ScriptFile%,PInstall_CopySysWoWMui_IIII_3,#1
+If,%NbLang%,Bigger,4,Loop,%ScriptFile%,PInstall_CopySysWoWMui_Loop_3,1,%NbLang%,#1
+
+[PInstall_CopySysWoWMui_I_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+
+[PInstall_CopySysWoWMui_II_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang2%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang2%\#1.mui##$q#$q"
+
+[PInstall_CopySysWoWMui_III_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang2%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang3%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang2%\#1.mui##$q#$q"
+
+[PInstall_CopySysWoWMui_IIII_3]
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang1%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang2%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang3%\#1.mui",Append
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\%MuiLang4%\#1.mui",Append
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang3%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang2%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang4%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang4%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang3%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang3%\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\%MuiLang1%\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\%MuiLang2%\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\%MuiLang2%\#1.mui##$q#$q"
+
+[PInstall_CopySysWoWMui_Loop_3]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+TxtAddLine,%PInstall%,"\Windows\SysWOW64\#9\#1.mui",Append
+//If,Not,#c,Equal,%NbLang%,Loop,%ScriptFile%,PInstall_CopySysWoWMui_Loop_Del_Mui_3,#c,%NbLang%,#1,#2,#3,#4,#5,#6,#7,#8,#9
+If,#c,Equal,1,Begin
+If,Not,#c,Equal,%NbLang%,Begin
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+If,%NbLang%,Bigger,2,IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#8\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\en-US\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\en-US\#1.mui##$q#$q"
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\#8\#1.mui##$q#$q"
+End
+End
+
+[PInstall_CopySysWoWMui_Loop_Del_Mui_3]
+Echo,"Loop inside Loop VERY SLOW - DO NOT USE",Warn
+StrFormat,Inc,#c,1
+StrFormat,Split,%MuiLangAll%,|,#c,#8
+IniWriteTextLine,%PInstall%.ini,Process,"If,ExistFile,#$q%tWow%\#9\#1.mui#$q,ShellExecute%PInstall_EWait%,Hide,cmd.exe,#$q/C del /q /f ##$q%tWow%\#8\#1.mui##$q&del /q /f /A:R /A:H /A:S /A:A ##$q%tWow%\#8\#1.mui##$q#$q"
+
+[PInstall_CopySysWoW_2]
+If,Not,ExistFile,%tWow%\#1,Begin
+If,ExistFile,%iWow%\#1,FileCopy,%iWow%\#1,%tWow%\#1
+//Else,Echo,"%iWow%\#1 not Here!",Warn
+End
+
+[PInstall_CopySysWoWMui_2]
+InstallCopySysWoW,#1
+If,ExistFile,%tWow%\#1,Loop,%ScriptFile%,PInstall_CopySysWoWMui_Loop_2,1,%NbLang%,#1
+
+[PInstall_CopySysWoWMui_Loop_2]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistFile,%iWow%\#9\#1.mui,Begin
+If,Not,ExistFile,%tWow%\#9\#1.mui,FileCopy,%iWow%\#9\#1.mui,%tWow%\#9
+Loop,Break
+End
+
+[MakeCopyDirsMui_Loop_2]
+StrFormat,Split,%MuiLangAll%,|,#c,#9
+If,ExistDir,%InstallSRC%\#1\#9,Begin
+If,Not,ExistDir,%TargetDir%\#1\#9,DirMake,%TargetDir%\#1\#9
+Filecopy,%InstallSRC%\#1\#9\*.*,%TargetDir%\#1\#9,NOREC
+Loop,Break
+End
 
 [EncodedFile-AuthorEncoded-Network.jpg]
 lines=0
 0=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
 
+[PAdvanced]
+System,Cursor,Wait
+If,%Advanced_CheckBox%,Equal,True,Begin
+Set,%Advanced_CheckBox%,False,Permanent
+Visible,%Advanced_Button%,True,Permanent
+Visible,%Basic_Button%,False,Permanent
+Run,%ScriptFile%,ShowHideGUI,False
+End
+Else,Begin
+Set,%Advanced_CheckBox%,True,Permanent
+Visible,%Advanced_Button%,False,Permanent
+Visible,%Basic_Button%,True,Permanent
+Run,%ScriptFile%,ShowHideGUI,True
+End
+System,RefreshInterface
+System,Cursor,Normal
+
+[ShowHideGUI]
+Visible,%CheckBox_DisableProbes%,#1,Permanent
+Visible,%CheckBox_NetLocation%,#1,Permanent
+Visible,%CheckBox_NetIcon%,#1,Permanent
+//-
+Visible,%Security_CheckBox%,#1,Permanent
+Visible,%Security_TextLabel%,#1,Permanent
+Visible,%Security_TextLabel2%,#1,Permanent
+Visible,%Security_Bevel1%,#1,Permanent
+Visible,%LmCompatibilityLevel_TextLabel%,#1,Permanent
+Visible,%LmCompatibilityLevel_ScrollBox%,#1,Permanent
+Visible,%LanmanWorkstation_TextLabel%,#1,Permanent
+Visible,%LanmanServer_TextLabel%,#1,Permanent
+Visible,%SMBv1Client_CheckBox%,#1,Permanent
+Visible,%SMBv2Client_CheckBox%,#1,Permanent
+Visible,%SMB1_CheckBox%,#1,Permanent
+Visible,%SMB2_CheckBox%,#1,Permanent
+Visible,%AllowInsecureGuestAuth_CheckBox%,#1,Permanent
+Visible,%forceguest_CheckBox%,#1,Permanent
+Visible,%EnablePlainTextPassword_CheckBox%,#1,Permanent
+Visible,%EnableAuthenticateUserSharing_CheckBox%,#1,Permanent
+Visible,%EnableSecuritySignature_CheckBox%,#1,Permanent
+Visible,%RequireSecuritySignature_CheckBox%,#1,Permanent
+Visible,%EnableSecuritySignatureServer_CheckBox%,#1,Permanent
+Visible,%RequireSecuritySignatureServer_CheckBox%,#1,Permanent
+Visible,%RequireSecureNegotiate_CheckBox%,#1,Permanent
+Visible,%LimitBlankPasswordUse_CheckBox%,#1,Permanent
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
 [EncodedFolders]
+Folder
 Reg
 
 [Reg]
@@ -1397,32 +1878,6 @@ lines=8
 7=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
 8=MThMQURFg8CmyQ37u4/HaSEFLIrZ5M5cXqCHB97IVL1Dod3p4NVsX33wt3yObFDQD8SY2ggZSb3EFrfjdq58XbhTh6rcmuF71Orr8iDwICqKGNQsZaZ/lqsgl5C+X2+kJWiQFxnpKWFZI6Tr+6PpB7sQKm3Cou7ucYFIiNMJbiUz+8mWlhgHWg9WNCHmOkLFpn+DwuXNTQvaXeLJesyKuM6MsqHacSyo7RAaYdeD8TJwFK+3YQXGDLa/kC4BCns8g1OOuxiZH+cf7pWY/EKwnYkqpcH6xdMMugof9ouyNUnQRhoZGtMjBLsyd/MEXLTT04iGjZW3ncPxevxahe2R7NgzOVJ+H4sNvijBU+T8fUe3zWPDLT3I47UPVy15Q6w3M0fsOxeQfhyHkWqC7F2Y2T+8WWWIfC8cWlGBkhW05eHWNM07Tj0wegVGrMk6EnMs7k28MxmQllF3BIYsr4YXBsBcXQEJg74ABwsBAAEjAwEBBV0AEAAADIjKCgFA/XRmAAB4nBP0Sy0pzy/Kjg/PzLPQM9Qzr2IYBSMIxCXil98e6H6DkQEA1z0I5s6jKXEBAAAAAgAAACkAAABeYQAAAAAAAAEAAAAAAAAAAAAAAA
 
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
-
 [EncodedFile-Reg-Network_Win10.7z]
 lines=13
 0=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
@@ -1439,4 +1894,24 @@ lines=13
 11=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
 12=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
 13=1eH/1Ukd2Fym6b3KLlxV2VNHfnlZZjk0B0NiiPRbIgl6DPzFVfVILdLon5z/Huro6nWWXFStd62Br7SsyNG3lkEpgqcNoQgav7ZGdGVfRTg6WE2GFLGL5ps6PnWSj7tz8V1Xcij2xS9HQ2vYRhMuM0pefa52YWECXClvOmQ36XTXCSHsJZbjhQhqpc0uH7jc157YqjwCzfkgjSaDNQeyTmZM7NhbGty/z+SwaOLM/zTCZz0fLPFpQJiuU8bGCIyO+u/bX9yJYYmG9TBMwcU524ot8AV5dmxIAfLbP0eDKyoFPt19J1r3mxBNegBahO3z9JusRqfCLUsxe9MNd8sxcLwogoeWpKpC6Xn6sAjqoNzDLrakYMgwr/Y6BByKb/eLxpozYBXQOAiAbWzNDj7LebHKYp0Pb0xXg9TU/AwoFsJ8FD24ONe8J1SCvWJILwiTHXLXqfWK+sqQUQFUBSc32snTIuB9WEphp2TmiFW10mPyF5d0xenemi5DuPX0kwscnFslxzFKZ+GfCV78Tw1WkGmkhckLCy0vtYTlyp+Pj4GkooyEujZK4Ec2wGyzNKYIZormgkqwykealJid+1xSevmTVQc5JmmYd21TVYKza4T97VLR9MKXECCGf0I4anJjkXglTM8lInF4ffYz50Zst5gcK6uHjdO6t1QwNwz/w5Vfe4rBi5JVzonuop3WSJLcFT/qKsss8qAFRYes3ptofwBDAP1NlBY6bAeG0usldg+4OI0f5N5GkZU77U1k4c8FsgLPfSRRJUxHAfTZe3kP5HiVpGDjyS703Tb3BZGMF/Yz+Ukj9Eb9w9WmpkqaVQk2/TA0onG44AhQya48i3o2srNRpmTU1oIWfWoITlxWlhbUCUNQItHov126L3WQzms0V7YBr4PRznGkfpjtqooSGHqjddXLPvq+nbKG1IXVKnm+x7W603hSyzbSkI7kkP7hcBeNWj1uBsUTVH1TwcuJ1LZMShYiosMhHCn3qZEBRt9a9fWrBhW1Jk13Rg1Hnmao/OL7WHA7A0XbjZfa+KtKogcd4unrO3H/PaUWLMfYzarYnaOzNUC9vfz9vy/i92GRhYzAfmHIUWWKKA7GVZzJt3SyP1XIvPgl1OOBl+KQPPg6L28kNJ77gA3uW6ii+YL4h98iUiIpycibsAwDlgIBWfH8wIdniboI+JTF8OmCPQAWjcYR3egUyJV4PF6AU44+9aszJqWZwB2hoEIfSU33rDQgPOScGggZvHSoxfIXYlRuEJ7fUZvyYOXBctzim2gPoc8vCosF9gY6IgsrkUzsvJzIMLTRcGwIeaAQmE8wAHCwEAASMDAQEFXQAQAAAMjP4KAQv70P8AAHicE/BLLSnPL8qOD8/MMzTQM69iGAUjCeybj1/+Ps8sSUYGAHq2CMRbqypPAQAAAAIAAAAoAAAAvp8AAAAAAAABAAAAAAAAAAAAAAA
+
+[Folder]
+sxsexp32.exe=13463,17951
+sxsexp64.exe=14646,19528
+
+[EncodedFile-Folder-sxsexp32.exe]
+lines=4
+0=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
+1=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
+2=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
+3=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
+4=aVHpLAbL/ciOZGQSNCp7UXGRtbgoX69kVflatcaQD7pvz9drbEp7kU1psxTrJ4GGVStVKq2uOF+l0xblazVWXb5FZ2fzlUq9jWVZjU1jV04CjUan0uiBjXydzQBo7O22fD2rtuVb1FqtUq3W2Q2ayTCltajtaj2ryddp2g35Wq1Wld9uMVjzbUUGm9aitRSxmiRMFcYIvDBGIxLLrkhIEv778//jAwkf/vuSU5T1ymalU9mv/KHyfyh3KJ9W/lq5R/mu8s/KDFWxao0qoNqiGlQdVh1XbVbfrrlLw2qcGq/me5oHNZs0P9Ds1KzWvqS9WfeA7gNdVdGqopGiw0VMsaw4szirOLt4VvHs4jnF64oHin9QfLz40+Jr9Qq9W9+nf0U/yzDbMMegMOQZ7jS0G540PGV4xvCs4TnDbsMLhv80VJb8tORXJTtL3i75uiS3tLC0tfSHpf9aerp0Rtmcst6yTWXfL/t12cGyj8rOl2WWzyrPLdeXN5U/Wj5S/lr5R+VTK+QVHRVcxSMVL1TurXyv8jNMBBUMsxSSwDTlVGWO8nplnnKB8nnli8o/KE8ov1GmqeSqHNWNqrmqF1R7Ve+pPlOlqaeqc9TXq/PUC9Qd6ofVH6o/U0/TXKGZo1FqjJrbNC2a1UQOHs0/a7Zr/lXzkeZTzUzt9dpc7QJtkbZV26vt1/5SG9YqdE7d/Tq/7kndQd2o7htdftGaIm/RtqKhov7iD4r/XPx1sVx/s/67eo3eoF+kr9X79N/X/1Z/QP+2/oL+epDOQkORYZGhzvBDw+OGnxv+avibIWxYVtJUsrrk3hJ/yW9LXik5VHIGZJReekuptrS01FTKlvaU9pf+tPSXpXtK3yn9FCSmLdOXlZVVlRnLlpbVld0B0nu3LFyWUX5d+S3lBeUN5c5yT/n/Lr++Yn5FsOKlivcrPq9QVhZV1leaK/srf17568oXK49WHq/8tPILlKOSyjFfqVEuU65QNqvWqjpUXap+1Q9VvwLpvaLKVl+trlU3qNeqbeo/qo+rz6uv0ag19Zq14LG6wG4e1XyjadLu0I5pM3Q36G7RFesqdOt0D+t43Y91O3RP63bqhnT7dW+ANR3XfaL7TPc33dc6E0jtvSJd8W3FbLGzuLeYL/6X4l8U/3vxruKh4pHiLP1V+gX6Sr1Zf7ue1d+t5/T36p/Wv65PMWQY5IarDdcb5hkKDFqDwbAYJNlkuN1gMzxs+JHh3wyvGD4ynAaJ5pbML9GWVJU0l3SWuEq+V9JfEijZUrKtZHvJL0qeLdlVcmWFsmJZRWuFvcJdcV/F/6r4TcW+itcqjlb8qSJckV45vfKKymsqb6jMq1xQqa40VFZVLqlcXtlSubbSXumpvBek+HDllsofVf6ycrDy1cr/qPwI5VjFMAvholUuUbJKr/Jm9Sp1G0isU+1Ud6v3q6drsjWzNLPB3hiy6cK92QHlMeVx3IDcResydbZ6tvryl///BWAz7hR4nOMprihOrSgwNtJLrUhlGAUjDrRAKB8T7NL3NXa3MjABANgjB9qs6c82AQAAAAIAAAAnAAAATDQAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-sxsexp64.exe]
+lines=4
+0=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
+1=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
+2=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
+3=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
+4=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
 

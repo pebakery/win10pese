@@ -11,7 +11,7 @@ Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.02.25
+Date=2018.11.23_16:52.47 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Finals/1-Pin.script
@@ -29,7 +29,7 @@ History011=ChrisR - Exception: remove SIB+ StartScreen in PE buildType (only for
 History012=Lancelot - Added DU Buttons
 History013=ChrisR - SE projects uses Firefox now as default browser
 History015=ChrisR - Pin to Ex7ForW8 works now. Default value Pin to Start Menu changed for Win8pese - Date:2016.07.06 // Lancelot Add Compare Button - Date:2017.01.10
-History016=Lancelot - Added "Add Pin" Macro library topic instead of .htm to have latest info about pin after this topic. http://TheOven.org/index.php?topic=2052 - Date:2017.02.25
+History016=Lancelot - Added "Add Pin" Macro library topic instead of .htm to have latest info about pin after this topic. http://TheOven.org/index.php?topic=2052 - Date:2017.02.25 // Minor Fix with BuildType - Date:2018.11.23
 
 [Variables]
 %ProgramEXE%=
@@ -83,12 +83,14 @@ pScrollBox9=NO,1,4,50,325,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
 pScrollBox19=NO,1,4,115,325,55,21,NO,AUTO,0,1,2,3,4,5,6,7,8,9
 pTextBox9=,1,0,185,325,345,20,
 pWebLabel2="Plugin Page",1,10,395,4,55,18,http://TheOven.org/index.php?board=9
+pWebLabel3="Add Pin Syntax and Info",1,10,255,4,117,18,http://TheOven.org/index.php?topic=37
 Button_Download=,1,8,453,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,453,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,475,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
-pWebLabel3="Add Pin Syntax and Info",1,10,255,8,117,18,http://TheOven.org/index.php?topic=37
 
 [Process]
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
 If,%pCheckBox0%,Equal,True,Run,%ScriptFile%,Process-Pin,0
 If,%pCheckBox1%,Equal,True,Run,%ScriptFile%,Process-Pin,1
 If,%pCheckBox2%,Equal,True,Run,%ScriptFile%,Process-Pin,2

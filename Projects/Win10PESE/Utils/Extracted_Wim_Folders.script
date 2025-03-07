@@ -4,15 +4,16 @@ Type=Plugin
 Author=Lancelot, ChrisR
 Description=Extract boot.wim and install.wim(esd) to folders and get ready to build :) (Thanks ChrisR for 'Images Configuration'->'Extract Wim' option on WinPESE)
 Credits=Homes32, ChrisR, JFX, yahoouk, amalux
-Version=050
+Version=057
 Download_Level=0
 Level=10
 Selected=None
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=228
-Date=2017.12.10
+Date=2020.03.09
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/Extracted_Wim_Folders.script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/Extracted_Wim_Folders.script
 Web1C=
 WebRootSubSub=Utils
 WebRootFile=Extracted_Wim_Folders.script
@@ -22,6 +23,21 @@ CertifiedBy=
 Certification=
 HistoryNotes01=In order to function, it needs wim tools with wimmount driver installed. What is done after a first building.
 HistoryNotes02=Folder compress before is not enough with imagex /Apply, this is why I also do it after.
+HistoryNotes03=Extract with WimBoot Pointer fails "wimlib Extract winre.wim return : 47" - Also related Steff topic http://TheOven.org/index.php?topic=2684.0 How to remove "WIM-Start" mark from partition after using Win10PE SE?
+HistoryNotes03a=-> Reproduce:
+HistoryNotes03b=---1) On new folder Win10_1809_English_x64 Use current plugin
+HistoryNotes03c=---2) Delete \Sources\install_wim \Sources\winre_wim folders
+HistoryNotes03d=---3) Use current plugins again for Win10_1809_English_x64
+HistoryNotes03e=---> Failure
+HistoryNotes03f=->Solution1 (Tested Working):
+HistoryNotes03g=---1) Delete Folders manually (eg: Remove_Directory_winre_wim.cmd Remove_Directory_install_wim.cmd)
+HistoryNotes03h=---2) Restart Computer
+HistoryNotes03i=---3) Use Extracted Wim Folders
+HistoryNotes03j=->Solution2:
+HistoryNotes03k=Disable "Extract Wimboot ''pointer files'' to WIM files." should work but It seems not.
+HistoryNotes03l=It cause my Windows react very bad I had to restart.
+HistoryNotes03m=I guess Disabled "Extract Wimboot ''pointer files'' to WIM files." need to be updated....
+HistoryNotes04=Steps to ReExtract without WimPointer: Lancelot Reply 6 - http://TheOven.org/index.php?topic=2684.msg30235#msg30235
 History016=ChrisR - Win8pese. The old Winpese history is stored in the section [History]
 History016=ChrisR - 7z 9.30 used for extract win8 wim files (not perfect with a message at the end. Operates on manual)
 History016=ChrisR - Extaction for Win8pese with ImageX or Wimutil /Apply and rights.
@@ -57,6 +73,12 @@ History047=Lancelot - added "%~dp0" to " [Remove_Batch] + Extract_Wim.cmd :Remov
 History048=ChrisR - Apply wimboot files also for Install.esd - Date:2016.11.01
 History049=ChrisR - Updated wimlib v1.10.0, 7zip v16.04 and wiminfo v1.3.0. Use IndexInstall(IndexWinre) Folder=N,2,3 whatever the extraction tools. There is no subfolder if only one index with 7-Zip - Date:2016.11.15
 History050=Lancelot Update instruction step 1 - Momie0 Reply 109 http://TheOven.org/index.php?topic=2271.msg24933#msg24933 - Date:2017.12.10
+History052=Lancelot Update index number from 1 to 10 (Win10PESE - 1809 - Search Plugin - query.exe not exists.) - Date:2018.10.23 ---> Revert back to 1 since 1 is most common and make sure one get at least bootable iso. - Date:2018.11.06
+History053=Lancelot "Detect and Use the best image index" improved to detect N --> "Detect and Use the best image index" set default - Date:2018.11.06
+History054=Lancelot Workaround: winbuilder hang gui bug // Added History notes HistoryNotes03=Extract with WimBoot Pointer fails "wimlib Extract winre.wim return : 47" - Date:2018.11.12 // Add HistoryNotes info to Steff - Date:2018.12.31 - Date:2019.01.20
+History055=Lancelot - Add Call,HostOSArch - Date:2019.01.26 // Cosmetics - Date:2019.02.24
+History056=Lancelot - Improve [Best_Image_Index_Workaround_A_Loop] - No Workstation No Education - Date:2020.01.03
+History057=Lancelot Fix: No empty Title with "cmd.exe Start" - even HDM6 with Start QuoteQuote can crash see Malok Reply-8 Topic: http://TheOven.org/index.php?topic=3088.0 Malok Reply 8: http://TheOven.org/index.php?topic=3088.msg36827#msg36827 - Date:2020.03.09
 
 [Infos]
 Extracted Folders for CD:
@@ -80,7 +102,7 @@ C:\Program Files\Windows AIK\winpe_wim_IA64
 //%Extract_Tool%=wimlib (automatically done if compact is not selected and not ESD file. Compact must be done after extraction with wimlib and it is too long in this case)
 
 [Interface]
-Button_Info=,0,8,329,2,26,26,Extract_Wim_Folders_Info_Htm,Exclamation.bmp,False,False,_Extract_Wim_Folders_Info_Htm_,False
+Button_Info=,0,8,329,2,26,26,Extract_Wim_Folders_Info_Htm,Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp,False,False,_Extract_Wim_Folders_Info_Htm_,False
 Prep_TextLabel="Prepare (Extract) Source Folder :) :",1,1,11,8,201,18,8,Bold
 pBevel_Prepare_1=pBevel_Prepare_1,1,12,6,29,423,54
 pBevel_Prepare_2=pBevel_Prepare_2,0,12,6,81,423,56
@@ -95,10 +117,10 @@ Prep1_TextLabel1="Choose Source Folder via 'Config Source' plugin +'Select Sourc
 Prep1_TextLabel2="Source Folder MUST be a folder on HARDDISK with ~10GB available Space#$x (Using a root\sub folder strickly adviced ex: D:\MyWinDVD)",1,1,42,51,381,27,8,Normal
 Prep2_TextLabel=2,0,1,10,90,18,38,20,Normal
 Prep2_TextLabel1=Image#$xIndex,0,1,33,93,32,32,8,Normal
-pRadioButton1="Detect and Use the best image index",0,11,70,88,197,16,False,_Custom_Visible_Noo_,True
+pRadioButton1="Detect and Use the best image index",0,11,70,88,197,16,True,_Custom_Visible_Noo_,True
 Basewim_TextLabel=Use,0,1,323,89,22,18,8,Normal
 Basewim_ScrollBox=winre.wim,0,4,346,85,78,21,boot.wim,winre.wim,_Basewim_Selected_,True
-pRadioButton2="Choose manually",0,11,113,115,107,16,True,_Custom_Visible_Yes_,True
+pRadioButton2="Choose manually",0,11,113,115,107,16,False,_Custom_Visible_Yes_,True
 InstallWim_TextLabel=install.wim,0,1,235,115,50,18,8,Normal
 InstallWim_NumberBox=NumberBox_IWim,0,2,286,111,40,22,1,1,20,
 WinreWim_TextLabel=winre.wim,0,1,333,115,50,18,8,Normal
@@ -134,28 +156,28 @@ CheckBox_Wof="Extract Wimboot ''pointer files'' to WIM files.",1,3,11,227,246,18
 TextLabel_Wof="Instead of extracting the files themselves",1,1,29,241,220,18,8,Normal
 TextLabel_Wof2="The Wof (Win8,10) driver or WofADK (Win7) driver must be Loaded and Running",1,1,11,257,418,18,8,Normal
 TextLabel_Wof_Notes="This results into significant disk space savings in addition to a faster extraction :)",1,1,11,271,418,18,8,Normal
-Button_Download=,1,8,476,21,24,24,Plugin_Download,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_Plugin_Download_,False,"__Download (Update) Plugin"
-Button_Upload=,0,8,476,-1,24,24,Plugin_Upload,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_Plugin_Upload_,False,"__Upload Plugin (Admins Only)"
+Button_Download=,1,8,476,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__Download (Update) Plugin"
+Button_Upload=,0,8,476,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__Upload Plugin (Admins Only)"
 pButton_Show_Second_Gui=a,1,8,456,3,16,16,Show_Second_Gui,True,True,False,_Show_Second_Gui_,True,__Options
 pButton_Show_First_Gui="<-- BASIC MENU",0,8,377,2,96,25,Show_First_Gui,True,True,False,_Show_First_Gui_,True,"__Back to Basic Menu"
 SecondGUI_TextLabel=2,1,1,8,182,19,33,20,Bold
 Button_CompareEdit=,0,8,498,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
 
 [Show_Second_Gui]
-System,CURSOR,Wait
-Run,%scriptfile%,Second_Gui
+System,Cursor,Wait
+Run,%ScriptFile%,Second_Gui
 Run,%ScriptFile%,Custom_Visible_Noo
 Run,%ScriptFile%,Custom_Visible_Yes
 If,%pRadioButton1%,Equal,True,Run,%ScriptFile%,Custom_Visible_Noo
 If,%pRadioButton2%,Equal,True,Run,%ScriptFile%,Custom_Visible_Yes
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show_First_Gui]
-System,CURSOR,Wait
-Run,%scriptfile%,First_Gui
+System,Cursor,Wait
+Run,%ScriptFile%,First_Gui
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Second_Gui]
 Run,%ScriptFile%,Show-Hide-First_Gui,False
@@ -166,68 +188,68 @@ Run,%ScriptFile%,Show-Hide-Second_Gui,False
 Run,%ScriptFile%,Show-Hide-First_Gui,True
 
 [Show-Hide-Second_Gui]
-Visible,%Button_Info%,#1,PERMANENT
-//Visible,%Prep_TextLabel%,#1,PERMANENT
-//Visible,%pBevel_Prepare_1%,#1,PERMANENT
-Visible,%pBevel_Prepare_2%,#1,PERMANENT
-Visible,%pBevel_Prepare_2b%,#1,PERMANENT
-Visible,%pBevel_Prepare_3%,#1,PERMANENT
-//Visible,%pBevel_Prepare_4%,#1,PERMANENT
-Visible,%pBevel_Use_1%,#1,PERMANENT
-Visible,%pBevel_Use_2%,#1,PERMANENT
-Visible,%pBevel_Use_3%,#1,PERMANENT
-//Visible,%Prep1_TextLabel%,#1,PERMANENT
-//Visible,%Prep1_TextLabel1%,#1,PERMANENT
-//Visible,%Prep1_TextLabel2%,#1,PERMANENT
-Visible,%Prep2_TextLabel%,#1,PERMANENT
-Visible,%Prep2_TextLabel1%,#1,PERMANENT
-Visible,%pRadioButton1%,#1,PERMANENT
-Visible,%Basewim_TextLabel%,#1,PERMANENT
-Visible,%Basewim_ScrollBox%,#1,PERMANENT
-Visible,%pRadioButton2%,#1,PERMANENT
-Visible,%InstallWim_TextLabel%,#1,PERMANENT
-Visible,%InstallWim_NumberBox%,#1,PERMANENT
-Visible,%WinreWim_TextLabel%,#1,PERMANENT
-Visible,%pBevel_WinReWim%,#1,PERMANENT
-Visible,%WinreWimNum_TextLabel%,#1,PERMANENT
-Visible,%BootWim_TextLabel%,#1,PERMANENT
-Visible,%BootWim_NumberBox%,#1,PERMANENT
-Visible,%Prep3_TextLabel%,#1,PERMANENT
-Visible,%Prep3_TextLabel1%,#1,PERMANENT
-Visible,%Prep4_TextLabel%,#1,PERMANENT
-//Visible,%Button_Gooo%,#1,PERMANENT
-Visible,%CheckBox_Images_Write%,#1,PERMANENT
-Visible,%Prepare_Option_TextLabel%,#1,PERMANENT
-Visible,%pBevel_Prepare_Option%,#1,PERMANENT
-Visible,%CheckBox_Compact%,#1,PERMANENT
-Visible,%TextLabel_Compact%,#1,PERMANENT
-Visible,%Prev_TextLabel%,#1,PERMANENT
-Visible,%Prev_1TextLabel%,#1,PERMANENT
-Visible,%Prev_1TextLabel1%,#1,PERMANENT
-Visible,%Prev_2TextLabel%,#1,PERMANENT
-Visible,%Prev_3TextLabel1%,#1,PERMANENT
-Visible,%Prev_3TextLabel%,#1,PERMANENT
-Visible,%Button_Booo%,#1,PERMANENT
-Visible,%OpenFolder_Bevel%,#1,PERMANENT
-Visible,%OpenFolder_Button%,#1,PERMANENT
-Visible,%OpenFolder_RadioGroup%,#1,PERMANENT
-Visible,%OpenFolderRE_RadioGroup%,#1,PERMANENT
-Visible,%Waik_Arch_Bevel%,#1,PERMANENT
-Visible,%Waik_Arch_TextLabel%,#1,PERMANENT
-Visible,%Waik_Arch_ScrollBox%,#1,PERMANENT
-//Visible,%Button_Download%,#1,PERMANENT
-Visible,%Button_Upload%,#1,PERMANENT
-Visible,%Button_CompareEdit%,#1,PERMANENT
+Visible,%Button_Info%,#1,Permanent
+//Visible,%Prep_TextLabel%,#1,Permanent
+//Visible,%pBevel_Prepare_1%,#1,Permanent
+Visible,%pBevel_Prepare_2%,#1,Permanent
+Visible,%pBevel_Prepare_2b%,#1,Permanent
+Visible,%pBevel_Prepare_3%,#1,Permanent
+//Visible,%pBevel_Prepare_4%,#1,Permanent
+Visible,%pBevel_Use_1%,#1,Permanent
+Visible,%pBevel_Use_2%,#1,Permanent
+Visible,%pBevel_Use_3%,#1,Permanent
+//Visible,%Prep1_TextLabel%,#1,Permanent
+//Visible,%Prep1_TextLabel1%,#1,Permanent
+//Visible,%Prep1_TextLabel2%,#1,Permanent
+Visible,%Prep2_TextLabel%,#1,Permanent
+Visible,%Prep2_TextLabel1%,#1,Permanent
+Visible,%pRadioButton1%,#1,Permanent
+Visible,%Basewim_TextLabel%,#1,Permanent
+Visible,%Basewim_ScrollBox%,#1,Permanent
+Visible,%pRadioButton2%,#1,Permanent
+Visible,%InstallWim_TextLabel%,#1,Permanent
+Visible,%InstallWim_NumberBox%,#1,Permanent
+Visible,%WinreWim_TextLabel%,#1,Permanent
+Visible,%pBevel_WinReWim%,#1,Permanent
+Visible,%WinreWimNum_TextLabel%,#1,Permanent
+Visible,%BootWim_TextLabel%,#1,Permanent
+Visible,%BootWim_NumberBox%,#1,Permanent
+Visible,%Prep3_TextLabel%,#1,Permanent
+Visible,%Prep3_TextLabel1%,#1,Permanent
+Visible,%Prep4_TextLabel%,#1,Permanent
+//Visible,%Button_Gooo%,#1,Permanent
+Visible,%CheckBox_Images_Write%,#1,Permanent
+Visible,%Prepare_Option_TextLabel%,#1,Permanent
+Visible,%pBevel_Prepare_Option%,#1,Permanent
+Visible,%CheckBox_Compact%,#1,Permanent
+Visible,%TextLabel_Compact%,#1,Permanent
+Visible,%Prev_TextLabel%,#1,Permanent
+Visible,%Prev_1TextLabel%,#1,Permanent
+Visible,%Prev_1TextLabel1%,#1,Permanent
+Visible,%Prev_2TextLabel%,#1,Permanent
+Visible,%Prev_3TextLabel1%,#1,Permanent
+Visible,%Prev_3TextLabel%,#1,Permanent
+Visible,%Button_Booo%,#1,Permanent
+Visible,%OpenFolder_Bevel%,#1,Permanent
+Visible,%OpenFolder_Button%,#1,Permanent
+Visible,%OpenFolder_RadioGroup%,#1,Permanent
+Visible,%OpenFolderRE_RadioGroup%,#1,Permanent
+Visible,%Waik_Arch_Bevel%,#1,Permanent
+Visible,%Waik_Arch_TextLabel%,#1,Permanent
+Visible,%Waik_Arch_ScrollBox%,#1,Permanent
+//Visible,%Button_Download%,#1,Permanent
+Visible,%Button_Upload%,#1,Permanent
+Visible,%Button_CompareEdit%,#1,Permanent
 //--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+Visible,%pButton_Show_First_Gui%,#1,Permanent
 
 [Show-Hide-First_Gui]
 //--
-Visible,%SecondGUI_TextLabel%,#1,PERMANENT
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+Visible,%SecondGUI_TextLabel%,#1,Permanent
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
 
 [Custom_Visible_Noo]
-System,CURSOR,WAIT
+System,Cursor,WAIT
 Visible,%InstallWim_TextLabel%,False,Permanent
 Visible,%InstallWim_NumberBox%,False,Permanent
 Visible,%WinreWim_TextLabel%,False,Permanent
@@ -236,11 +258,11 @@ Visible,%WinreWimNum_TextLabel%,False,Permanent
 Visible,%BootWim_TextLabel%,False,Permanent
 Visible,%BootWim_NumberBox%,False,Permanent
 Visible,%pBevel_Prepare_2b%,False,Permanent
-System,CURSOR,Normal
+System,Cursor,Normal
 System,RefreshInterface
 
 [Custom_Visible_Yes]
-System,CURSOR,WAIT
+System,Cursor,WAIT
 Visible,%InstallWim_TextLabel%,True,Permanent
 Visible,%InstallWim_NumberBox%,True,Permanent
 If,%Basewim_ScrollBox%,Equal,winre.wim,Begin
@@ -253,11 +275,11 @@ Visible,%BootWim_TextLabel%,True,Permanent
 Visible,%BootWim_NumberBox%,True,Permanent
 End
 Visible,%pBevel_Prepare_2b%,True,Permanent
-System,CURSOR,Normal
+System,Cursor,Normal
 System,RefreshInterface
 
 [Basewim_Selected]
-System,CURSOR,WAIT
+System,Cursor,WAIT
 If,%Basewim_ScrollBox%,Equal,winre.wim,Begin
 Visible,%WinreWim_TextLabel%,True,Permanent
 Visible,%pBevel_WinReWim%,True,Permanent
@@ -276,7 +298,7 @@ Visible,%BootWim_NumberBox%,True,Permanent
 Visible,%OpenFolder_RadioGroup%,True,Permanent
 Visible,%OpenFolderRE_RadioGroup%,False,Permanent
 End
-System,CURSOR,Normal
+System,Cursor,Normal
 System,RefreshInterface
 
 [Process]
@@ -284,7 +306,7 @@ Echo,"Gooooooooooooooooooo"
 
 [Gooooo]
 Echo,"%ScriptTitle% For %ProjectName%"
-If,%OSArch%-,Equal,-,Call,HostOSArch,OSArch
+Call,HostOSArch
 Run,%ScriptFile%,PreCheck
 //--
 Run,%ScriptFile%,Extract_Package
@@ -303,12 +325,12 @@ If,ExistDir,%SourceDir%\winpe_wim_%Waik_Arch_ScrollBox%\%IndexBoot%,Set,%ExtFold
 If,%ExtFolderExists%,Equal,Yes,Run,%ScriptFile%,Extract_Folders_Exists_Question
 //--
 FileCreateBlank,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd
-TxtAddLine,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd,"Start #$q#$q /LOW Extract_Wim.cmd #$q%SourceDir%#$q winpe.wim %IndexBoot% %Waik_Arch_ScrollBox% %Extract_Tool% %CheckBox_Compact%",Append
+TxtAddLine,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd,"Start #$qExtractWim#$q /LOW Extract_Wim.cmd #$q%SourceDir%#$q winpe.wim %IndexBoot% %Waik_Arch_ScrollBox% %Extract_Tool% %CheckBox_Compact%",Append
 Echo,"Follow cmd instruction and Wait (2 minutes or more) patiently - Disabling AntiVirus etc. adviced."
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 //Shellexecute,Open,cmd.exe,"/C #$qExtract_Wim_1Script.cmd#$q",%ProjectTemp%\Extract_Wim
 Shellexecute,Open,cmd.exe,"/C Extract_Wim.cmd #$q%SourceDir%#$q winpe.wim %IndexBoot% %Waik_Arch_ScrollBox% %Extract_Tool% %CheckBox_Compact%",%ProjectTemp%\Extract_Wim
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [Gooooo_CD]
 Run,%ScriptFile%,FindIndex
@@ -341,14 +363,14 @@ If,%ExtFolderExists%,Equal,Yes,Run,%ScriptFile%,Extract_Folders_Exists_Question
 //--
 // Use IndexInstall(IndexWinre) Folder=N,2,3 with 7-Zip. There is no subfolder if only one index
 FileCreateBlank,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd
-If,%Basewim_ScrollBox%,Equal,boot.wim,TxtAddLine,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd,"Start #$q#$q /LOW Extract_Wim.cmd #$q%SourceDir%#$q boot.wim %IndexBoot% %Installwim% %IndexInstallDir% %Extract_Tool% %CheckBox_Compact%",Append
-If,%Basewim_ScrollBox%,Equal,winre.wim,TxtAddLine,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd,"Start #$q#$q /LOW Extract_Wim.cmd #$q%SourceDir%#$q winre.wim %IndexWinreDir% %Installwim% %IndexInstallDir% %Extract_Tool% %CheckBox_Compact%",Append
+If,%Basewim_ScrollBox%,Equal,boot.wim,TxtAddLine,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd,"Start #$qExtractWim#$q /LOW Extract_Wim.cmd #$q%SourceDir%#$q boot.wim %IndexBoot% %Installwim% %IndexInstallDir% %Extract_Tool% %CheckBox_Compact%",Append
+If,%Basewim_ScrollBox%,Equal,winre.wim,TxtAddLine,%ProjectTemp%\Extract_Wim\Extract_Wim_1Script.cmd,"Start #$qExtractWim#$q /LOW Extract_Wim.cmd #$q%SourceDir%#$q winre.wim %IndexWinreDir% %Installwim% %IndexInstallDir% %Extract_Tool% %CheckBox_Compact%",Append
 Echo,"Follow cmd instruction and Wait looooooooong (45 minutes or more) patiently - Disabling AntiVirus etc. adviced."
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 //Shellexecute,Open,cmd.exe,"/C #$qExtract_Wim_1Script.cmd#$q",%ProjectTemp%\Extract_Wim
 If,%Basewim_ScrollBox%,Equal,boot.wim,Shellexecute,Open,cmd.exe,"/C Extract_Wim.cmd #$q%SourceDir%#$q boot.wim %IndexBoot% %Installwim% %IndexInstallDir% %Extract_Tool% %CheckBox_Compact%",%ProjectTemp%\Extract_Wim
 If,%Basewim_ScrollBox%,Equal,winre.wim,Shellexecute,Open,cmd.exe,"/C Extract_Wim.cmd #$q%SourceDir%#$q winre.wim %IndexWinreDir% %Installwim% %IndexInstallDir% %Extract_Tool% %CheckBox_Compact%",%ProjectTemp%\Extract_Wim
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 End
 
@@ -405,17 +427,17 @@ If,ExistFile,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoBoot.ini,FileCopy,%Project
 Run,%ScriptFile%,Remove_Batch,%IndexBoot%,boot_wim
 //-
 Echo,"Extract boot.wim with wimlib. Be patient..."
-ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract boot.wim. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\boot.wim#$q %IndexBoot% --no-acls --dest-dir=#$q%SourceDir%\sources\boot_wim\%IndexBoot%#$q",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract boot.wim. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\boot.wim#$q %IndexBoot% --no-acls --dest-dir=#$q%SourceDir%\sources\boot_wim\%IndexBoot%#$q",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract boot.wim return : %ExitCode%"
 //-
 If,%ExitCode%,Equal,0,Begin
 If,%CheckBox_Compact%,Equal,True,Begin
 Echo,"Compact boot_wim\%IndexBoot% folder, be patient..."
-StrFormat,DATE,%myDate1%,hh:nn
+StrFormat,Date,%myDate1%,hh:nn
 TxtAddline,%wt%,"Compact      Start %myDate1%",Append
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Open,%compactexeFolder%compact.exe,"/c /s:#$q%SourceDir%\sources\boot_wim\%IndexBoot%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 Run,%ScriptFile%,Extract_Wim_Time_End
 End
@@ -432,17 +454,17 @@ If,ExistFile,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoInstall.ini,FileCopy,%Proj
 Run,%ScriptFile%,Remove_Batch,%IndexInstallDir%,install_wim
 //-
 Echo,"Extract %Installwim% with wimlib. Be patient..."
-ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract %Installwim%. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\%Installwim%#$q %IndexInstall% --no-acls --dest-dir=#$q%SourceDir%\sources\install_wim\%IndexInstallDir%#$q",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract %Installwim%. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\%Installwim%#$q %IndexInstall% --no-acls --dest-dir=#$q%SourceDir%\sources\install_wim\%IndexInstallDir%#$q",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract %Installwim% return : %ExitCode%"
 //-
 If,%ExitCode%,Equal,0,Begin
 If,%CheckBox_Compact%,Equal,True,Begin
 Echo,"Compact install_wim\%IndexInstallDir% folder, be patient..."
-StrFormat,DATE,%myDate1%,hh:nn
+StrFormat,Date,%myDate1%,hh:nn
 TxtAddline,%wt%,"Compact      Start %myDate1%",Append
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Open,%compactexeFolder%compact.exe,"/c /s:#$q%SourceDir%\sources\install_wim\%IndexInstallDir%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 Run,%ScriptFile%,Extract_Wim_Time_End
 End
@@ -458,17 +480,17 @@ If,Not,ExistDir,%SourceDir%\sources\winre_wim\%IndexWinreDir%,DirMake,%SourceDir
 Run,%ScriptFile%,Remove_Batch,%IndexWinreDir%,winre_wim
 //-
 Echo,"Extract winre.wim with wimlib. Be patient..."
-ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract Winre.wim. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\install_wim\%IndexInstallDir%\Windows\System32\Recovery\winre.wim#$q %IndexWinre% --no-acls --dest-dir=#$q%SourceDir%\sources\winre_wim\%IndexWinreDir%#$q",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract Winre.wim. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\install_wim\%IndexInstallDir%\Windows\System32\Recovery\winre.wim#$q %IndexWinre% --no-acls --dest-dir=#$q%SourceDir%\sources\winre_wim\%IndexWinreDir%#$q",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract winre.wim return : %ExitCode%"
 //-
 If,%ExitCode%,Equal,0,Begin
 If,%CheckBox_Compact%,Equal,True,Begin
 Echo,"Compact winre_wim\%IndexWinreDir% folder, be patient..."
-StrFormat,DATE,%myDate1%,hh:nn
+StrFormat,Date,%myDate1%,hh:nn
 TxtAddline,%wt%,"Compact      Start %myDate1%",Append
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Open,%compactexeFolder%compact.exe,"/c /s:#$q%SourceDir%\sources\winre_wim\%IndexWinreDir%#$q"
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 Run,%ScriptFile%,Extract_Wim_Time_End
 End
@@ -534,7 +556,7 @@ If,ExistFile,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoBoot.ini,FileCopy,%Project
 Run,%ScriptFile%,Remove_Batch,%IndexBoot%,boot_wim
 //-
 Echo,"Extract boot.wim wimboot files with wimlib. Be patient..."
-ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract boot.wim wimboot files. Be patient...&Echo.&wimlib-imagex.exe apply #$q%SourceDir%\sources\boot.wim#$q %IndexBoot% #$q%SourceDir%\sources\boot_wim\%IndexBoot%#$q --no-acls --wimboot",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract boot.wim wimboot files. Be patient...&Echo.&wimlib-imagex.exe apply #$q%SourceDir%\sources\boot.wim#$q %IndexBoot% #$q%SourceDir%\sources\boot_wim\%IndexBoot%#$q --no-acls --wimboot",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract boot.wim wimboot files return : %ExitCode%"
 //-
 If,%ExitCode%,Equal,0,Begin
@@ -553,7 +575,7 @@ If,ExistFile,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoInstall.ini,FileCopy,%Proj
 Run,%ScriptFile%,Remove_Batch,%IndexInstallDir%,install_wim
 //-
 Echo,"Extract %Installwim% wimboot files with wimlib. Be patient..."
-ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract %Installwim% wimboot files. Be patient...&Echo.&wimlib-imagex.exe apply #$q%SourceDir%\sources\%Installwim%#$q %IndexInstall% #$q%SourceDir%\sources\install_wim\%IndexInstallDir%#$q --no-acls --wimboot",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract %Installwim% wimboot files. Be patient...&Echo.&wimlib-imagex.exe apply #$q%SourceDir%\sources\%Installwim%#$q %IndexInstall% #$q%SourceDir%\sources\install_wim\%IndexInstallDir%#$q --no-acls --wimboot",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract %Installwim% wimboot files return : %ExitCode%"
 //-
 If,%ExitCode%,Equal,0,Begin
@@ -568,7 +590,7 @@ End
 Echo,"Extract winre.wim with wimlib. Be patient..."
 If,ExistFile,%SourceDir%\sources\Winre.wim,FileDelete,%SourceDir%\sources\Winre.wim
 If,ExistFile,%SourceDir%\sources\Winre.wim,Call,FileDelete,%SourceDir%\sources\Winre.wim
-ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C Echo Extract winre.wim from %Installwim%. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\%Installwim%#$q %IndexInstall% \Windows\System32\Recovery\Winre.wim --no-acls --dest-dir=#$q%SourceDir%\sources#$q",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Hide,%CmdexeFolder%cmd.exe,"/C Echo Extract winre.wim from %Installwim%. Be patient...&Echo.&wimlib-imagex.exe extract #$q%SourceDir%\sources\%Installwim%#$q %IndexInstall% \Windows\System32\Recovery\Winre.wim --no-acls --dest-dir=#$q%SourceDir%\sources#$q",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract winre.wim return : %ExitCode%"
 //-
 If,Not,%ExitCode%,Equal,0,Begin
@@ -583,7 +605,7 @@ If,Not,ExistDir,%SourceDir%\sources\winre_wim\%IndexWinreDir%,DirMake,%SourceDir
 Run,%ScriptFile%,Remove_Batch,%IndexWinreDir%,winre_wim
 //-
 Echo,"Extract winre.wim wimboot files with wimlib. Be patient..."
-ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract Winre.wim wimboot files. Be patient...&Echo.&wimlib-imagex.exe apply #$q%SourceDir%\sources\winre.wim#$q %IndexWinre% #$q%SourceDir%\sources\winre_wim\%IndexWinreDir%#$q --no-acls --wimboot",%ProjectTemp%\Extract_Wim\%OSArch%
+ShellExecute,Open,%CmdexeFolder%cmd.exe,"/C Echo Extract Winre.wim wimboot files. Be patient...&Echo.&wimlib-imagex.exe apply #$q%SourceDir%\sources\winre.wim#$q %IndexWinre% #$q%SourceDir%\sources\winre_wim\%IndexWinreDir%#$q --no-acls --wimboot",%ProjectTemp%\Extract_Wim\%HostOSArch%
 Echo,"wimlib Extract winre.wim wimboot files return : %ExitCode%"
 //-
 If,%ExitCode%,Equal,0,Begin
@@ -627,12 +649,12 @@ TxtAddline,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopy.cmd,"attrib.exe -R 
 //-
 TxtAddline,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopy.cmd,Exit,Append
 //-
-If,ExistFile,%Tools%\%SysType%\AU3381.exe,Begin
+If,ExistFile,%Tools%\%HostOSArch%\AU3381.exe,Begin
 FileCreateBlank,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopyCMD.au3
 TxtAddline,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopyCMD.au3,"#NoTrayIcon",Append
 TxtAddline,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopyCMD.au3,"#RequireAdmin",Append
 TxtAddline,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopyCMD.au3,"RunWait(@ComSpec & #$q /c #$q & '#$q%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopy.cmd#$q', #$q#$q, @SW_HIDE)",Append
-ShellExecute,Hide,%Tools%\%SysType%\AU3381.exe,"#$q%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopyCMD.au3#$q"
+ShellExecute,Hide,%Tools%\%HostOSArch%\AU3381.exe,"#$q%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopyCMD.au3#$q"
 End
 Else,ShellExecute,Hide,%ProjectTemp%\Extract_Wim\HostOSTools\1HostOSCopy.cmd
 //-
@@ -655,11 +677,11 @@ TxtAddline,%wt%,"======  Extract #1  ======",Append
 TxtAddline,%wt%,"",Append
 TxtAddline,%wt%,"%SourceDir%\sources\#1",Append
 TxtAddline,%wt%,"",Append
-StrFormat,DATE,%myDate1%,hh:nn
+StrFormat,Date,%myDate1%,hh:nn
 TxtAddline,%wt%,"Extract      Start %myDate1%",Append
 
 [Extract_Wim_Time_End]
-StrFormat,DATE,%myDate1%,hh:nn
+StrFormat,Date,%myDate1%,hh:nn
 TxtAddline,%wt%,"Extract     Finish %myDate1%",Append
 TxtAddline,%wt%,"",Append
 
@@ -748,7 +770,12 @@ Set,%IndexWinreDir%,N
 Run,%ScriptFile%,FindIndexWimInfo
 If,%pRadioButton1%,Equal,True,Begin
 Set,%IndexBoot%,2
-If,%IndexInstallCount%,Bigger,1,Set,%IndexInstall%,%IndexInstallCount%
+//If,%IndexInstallCount%,Bigger,1,Set,%IndexInstall%,%IndexInstallCount%
+Set,%IndexInstall%,-
+If,%IndexInstallCount%,Bigger,1,Begin
+Loop,%ScriptFile%,Best_Image_Index_Workaround_A_Loop,1,%IndexInstallCount%
+End
+If,%IndexInstall%,Equal,-,Set,%IndexInstall%,%IndexInstallCount%
 Set,%IndexInstallDir%,%IndexInstall%
 // Use IndexInstall Folder=N if only one index. There is no subfolder 1,2,3 (index) with 7-Zip extraction. With /Apply we use the index
 If,%IndexInstallCount%,Equal,1,Begin
@@ -769,6 +796,32 @@ End
 End
 End
 
+[Best_Image_Index_Workaround_A_Loop]
+//Mostly same section 'Images Configuration' and 'Extract Wim Folders' - Only difference %IndexInstall% %WIMIndex%
+StrFormat,Dec,#c,%IndexInstallCount%
+StrFormat,Inc,#c,-1
+StrFormat,Mult,#c,-1
+IniRead,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoInstall.ini,#c,EDITIONID,#9
+StrFormat,Dec,#c,1
+IniRead,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoInstall.ini,#c,EDITIONID,#8
+StrFormat,Right,#9,1,#7
+If,#7,Equal,N,Begin
+StrFormat,RTrim,#9,1,#7
+If,#7,Equal,#8,Begin
+StrFormat,Replace,#7,Workstation,-,#6
+StrFormat,Replace,#6,Education,-,#6
+If,#6,Equal,#7,Set,%IndexInstall%,#c
+End
+End
+Else,Begin
+If,Not,%IndexInstall%,Equal,-,Begin
+StrFormat,Replace,#9,Workstation,-,#6
+StrFormat,Replace,#6,Education,-,#6
+If,#9,Equal,#7,Set,%IndexInstall%,#c
+End
+End
+If,Not,%IndexInstall%,Equal,-,Loop,Break
+
 [FindIndexWimInfo]
 Set,%IndexInstall%,""
 Set,%IndexInstallCount%,""
@@ -776,10 +829,10 @@ Set,%InstallWimCompression%,""
 Set,%InstallWimEncrypted%,""
 //WimInfoInstall_Script.ini
 // JFX rewrote new wiminfo.exe from scratch and that doesn't require any other tool :)
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Hide,WimInfo.exe,"-wim:#$q%SourceDir%\sources\%Installwim%#$q -ini:#$qWimInfoInstall.ini#$q",%ProjectTemp%\Extract_Wim\wiminfo
 ShellExecute,Hide,WimInfo.exe,"-wim:#$q%SourceDir%\sources\boot.wim#$q -ini:#$qWimInfoBoot.ini#$q",%ProjectTemp%\Extract_Wim\wiminfo
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 //IniRead,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoInstall_Script.ini,Attributes,ImageCount,%IndexInstallCount%
 IniRead,%ProjectTemp%\Extract_Wim\wiminfo\WimInfoInstall.ini,Attributes,ImageCount,%IndexInstallCount%
 If,%IndexInstallCount%,Equal,"",Call,Echo,"Automatic Detection of finding install.wim index Failed. - (wiminfo.exe failure)",Warn,,MessageError,10,Halt
@@ -878,8 +931,38 @@ If,ExistDir,%SourceDir%\sources\winre_wim\%IndexWinreDir%,Echo,"Please Wait - De
 If,ExistDir,%SourceDir%\sources\winre_wim\%IndexWinreDir%,Run,%ScriptFile%,Extract_WimDir_Delete_p,%SourceDir%\sources\winre_wim\%IndexWinreDir%
 
 [Extract_WimDir_Delete_p]
-DirDelete,#1
+//DirDelete Alone cause winbuilder hang gui bug - DirDelete,#1
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+System,FileRedirect,ON
+//
+//Tried to solve " Extract with WimBoot Pointer fails "wimlib Extract winre.wim return : 47" " with following but did not help:
+//Trial-DirMake,#1
+//Trial-ShellExecute,Open,%compactexeFolder%compact.exe,"/u /s:#$q#1#$q"
+System,FileRedirect,OFF
+//Trial-ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+If,ExistDir,#1,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q#1#$q"
+System,FileRedirect,ON
+// When there is trouble with " Extract with WimBoot Pointer fails "wimlib Extract winre.wim return : 47" " Call,DirDelete gives warning but MessageError do not (wb can not see folder !)
 If,ExistDir,#1,Call,DirDelete,#1
+If,ExistDir,#1,DirDelete,#1
 If,ExistDir,#1,Call,Echo,"WARN WARN WARN - ERROR ERROR ERROR Deleting #1 FAILED",Warn,,MessageError
 
 [DelFile]
@@ -889,10 +972,10 @@ If,ExistFile,#1,Call,Echo,"#1 CAN NOT BE DELETED #$x (maybe an active process or
 
 [Extract_Wim_Folders_Info_Htm]
 If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
-ExtractFile,%scriptfile%,Folder,Extract_Wim_Folders_Info.htm,%ProjectTemp%
-System,FILEREDIRECT,OFF
+ExtractFile,%ScriptFile%,Folder,Extract_Wim_Folders_Info.htm,%ProjectTemp%
+System,FileRedirect,OFF
 ShellExecuteex,Hide,cmd.exe,"/C #$q%ProjectTemp%\Extract_Wim_Folders_Info.htm#$q",%ProjectTemp%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 
 [Open_Ext_Folder]
 Run,%ScriptFile%,PreCheck
@@ -924,10 +1007,10 @@ History006=Lancelot: Brad's findings implemented: Additional feature for Gooo bu
 History007=ChrisR - wiminfo.exe unupxed to avoid idiot AV false positive ;)
 History008=Lancelot capi version check fixed
 History009=Lancelot updated Extract_Wim.7z to support Waik source // many Plugin improvments mostly to support Waik Source // Interface cosmetics
-History010=Lancelot - IniVariables BootSRC InstallSRC added //  %Source_Win% %Source_Sys% permanent after change (=> to easly change source and get things operational without restarting builder)
+History010=Lancelot - IniVariables BootSRC InstallSRC added //  %Source_Win% %Source_Sys% Permanent after change (=> to easly change source and get things operational without restarting builder)
 History011=ChrisR - fix Install.wim Extraction for single index
 History013=ChrisR - JFX make a fix in wiminfo.exe for single index wim files - use now 7-Zip 9.2 or higher
-History014=ChrisR - call wiminfo with x86 Instead of %OSArch% not defined at the beginning of the project.
+History014=ChrisR - call wiminfo with x86 Instead of OSArch not defined at the beginning of the project.
 History015=ChrisR - renamed Win8PESE folder
 
 [AuthorEncoded]
@@ -941,14 +1024,32 @@ lines=0
 [InterfaceEncoded]
 Magic-hat_3232_bmp.bmp=1039,1386
 Magic-hat_1616_bmp.bmp=450,600
-Exclamation.bmp=452,603
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
+Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp=748,998
 
-[EncodedFile-InterfaceEncoded-Exclamation.bmp]
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[Settings_Default]
+Run,%ScriptFile%,Show_First_Gui
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0
-0=eJxz8hViYgADMyDWAGJOIBYEYkYGCQYYOMwHwTDwHwx+/PixZMmSgoKCtLS0wsLClStXAkX+//v3b/Wpx4FrryusOK8y65hF9dTIiKjo6OhTp079X3f5Dc+JHzyX/sORRfHUmJiYM2fO/O95+R9ZAoicJ2zbuHHj79+//9/98d/g0l+oxPm/hpufPHj0+j8c/P3778G3v7s+/d9y8PT+gwcvX732Hxm8fvX++o1nCSnFYeGx2bnZ34GOhHrgzz/5aeeALuI/8sU/Ki0uPubWrVtQuaPv/iAcktMcExm9adNGqFzLY4Scdv+2qIiozs5OqJz77X9wOfEtj0KjwjMzMz9//vz/3a9/wuf/Ivx38Z9fXG5sbOyVK1f+b3/zG83vtgWdUVFRq1at+l957xeanMaUPVFR0U2NTf/Nrv9DkxM+9C4qIr6vt/+/wml0fTLrH+3Yvufr16//d7z67XjjH/95kG7+078cj77feeoh1AMA+kpMA3ic43etSM5JzE0syczP00vKLWAYBSMKCDFB6FJG7PLT0jXWMDABALBlCE/6kIw0AQAAAAIAAAArAAAAdQEAAAAAAAABAAAAAAAAAAAAAAA
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-help-about_0_016016.bmp]
+lines=0
+0=eJylkt9LU2Ecxt+W0vBC6kphF3axiwQHuovAu+hyEEh/gYh3RpvVNnfUmJWKLkGDflBhKMSKIiiUoiwNhU7kdLqtOc85m7rtHGVuQdr6xXx63zM9Wq0u6gsfzvvj+zznOe95j59wFBG1jlKOUA5SDlH2kcPq+rHt/b0F4L/I5XLIZrPIZDJIJpMQRRHBYBA+nw88z6uwMVtje6yH9TIN0+712traQno1Dn7IDv+FSijuAyps/HbYoe6xnj9l2fR7kbpUitRFPeQeA5SBKhU2ZmvrXaXIznkL6j/OeJHgdFBaCZa5YvxaibZirLsJUm7dbx6f0jJi7aVYchKstORZaCaaVjxHsNZOtefzsByfPyiax9oIh8gZAuEsUXujdqLOd0qia0mOQKbZVtvyXhvPOU0f6TYhaCV4byMI0/cuUC2b7xTLsuSg37WdL+GiPv0mTe87rcdsE4H/FMG8VYeAbT+mm3SaPthcBMFRBNGug0SzRanXEqfX9HyTHtPWEvhbyjHPGTDjKPvp7AKuMiy6DRA6DBDd5RBcJdRvVz/dUQ1/pxnzlEAXo4b+cxOlCnOUcE8NIh4zBIp42Qypjz57qzW98ICDr7MWgQELglcsCDGu1iEdeolMeBwLN05i8ZoFAkW8bsFiXy2Sj3fPb2NdwURzBUK36xEebFCJj9/U8suTdyAONUAaZtRjtrUC7J/vvQPxKS8m7JWI3HeC5RGfdCP37Qty378iNtqL6CMO0YdOvGurxBpf+A6uTHoxZjVi7lYjYk/7IY14II16sPysH6HBRkzZjZDfFNZq9zglI3CXwyunGS+o15jNiNcuM8L3OGymlb9q/4Ufplsb/XicM/evqExPzdP1TM7PK9bLL0rXhQo4JpdkAoV0M1JzCnQTk/JLS+IN4g0MzYBILym3gGEUDAtQxgKha5mwy998b+HKwAQAS90W3QJIqjYBAAAAAgAAAEsAAAB9AgAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-Magic-hat_3232_bmp.bmp]
 lines=0
@@ -958,23 +1059,6 @@ lines=0
 lines=0
 0=eJxz8jVjZgADMyDWAGIBKGZkkGCAAQduCMYG+Pn5tTTVIkOD/bw9RUWFsCuCAWZmZgF+fh1N9czUpPiYSFERYYLq+fn4NNVVk+NjwkODBAUF8KsHAh4eHqD6lMTYsOBAbm4u/IoVleV0tDWsLU19vFz9vN0tTI30tLRwGevq4ujq7CguJsrLw8PFySEkwKenphTk6+Hm4oCpXlxcPNjb3crIgIuTk4mJCSjCxMompK4T5O8T5OuO1YrEH/+S1+9x8vQ0NTIwdXT2bOkvfPXXeuEmXI7PePov980/CDv337/pb/+tu/ck5N+/qHv/sKrnu/JP6OK/iPs/o57/U73578m1a0Xx0SZV7cX/sKuHgMKnf+v//Ze68jP8CUgZHxsLHsVAYHDrk8XdX2a3/qU8/goOB0FxcTF5UVH8upCBpKSkrIy0ujCBtIEM5ORklJUUQonXwMCgpqKkpaFqpqJCvBZtTTUDbW0gAwAN0V7+eJwT801Mz0zWzUgsiTc0MzSLT8ot0ANihlEwMoAZM4TOY8Qun2a3r4eBCQAcZAoyrzWcngEAAAACAAAAMAAAAG4BAAAAAAAAAQAAAAAAAAAAAAAA
 
-[EncodedFolders]
-Folder
-
-[Folder]
-Extract_Wim_Folders_Info.htm=1268,1691
-Extract_Wim.7z=1831528,2442038
-
-[Plugin_Download]
-Call,DownloadXQ
-
-[Plugin_Upload]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
-
-[Settings_Default]
-Run,%ScriptFile%,Show_First_Gui
-
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
 0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
@@ -983,16 +1067,16 @@ lines=0
 lines=0
 0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
 
+[EncodedFolders]
+Folder
+
+[Folder]
+Extract_Wim_Folders_Info.htm=1268,1691
+Extract_Wim.7z=1831528,2442038
+
 [EncodedFile-Folder-Extract_Wim_Folders_Info.htm]
 lines=0
 0=eJydVl1v4kYUfS4S/+GWhwQkwJBkkwoMEgEnQSJAidNs+jbgMR7FnvHORxz60N/eO7Yh7DarRn2wAc/9Oueee43762Qx9p+XHtz59zNYPl7PpmOotRzn6XzsOBN/UhxctDvgS8IV00xwEjuON68NqxXXnuaf3miCn7+4954/Qh9/2fJ+f5z+MaiNF3Pfm/stm6UG5a9BTdM37UQ6ifuwiYhUVA8yxgORqVb37MtFLQ/mT/2ZN3xiSUo2L3DDYqpgykPhOsXJIeF8dO8Narfe3FuN/MXqKM8ipXwRhmxD20Ju4ax9DlB/Yvz8rFH70X+88ka+Nzny7vQ7/7a6G81vvcn185HdQ4K17Yo7/MleyV+Eb8XPXI8czzrdbueye9XvXnYuvlz+dpaz6pR0uteLyTPM0AkJky0fgU2mq0Ftht/s8XLoXg+9Ny3JRgPSBDciDqgsSOq5zvXQfViO5vDgP88wfSi4bmWUbSPdg4QGzCQ1jLDKr2plbKSkXEMamy3jwBQIHu9ACyBGi4Ro6q4l2p26ZvioKJSJaWBTu44ZnoJIrT7QD6zRNCFbCmPBQ7Y1ktij0iwE17GVWRA/rfCqg+Rjq75+ffBK80/AyUvMIraJLIJXKnfAsfuAzOwgpEQbSW0Bpx9Udwr1W4km4EeEvygL/bN1jiPJ1OrTZTaKOnWEySIapwoU23KGOiXYAZVSZNWkEBjJ+BbWhsVBG+oZSxJh0KBa2WNTscigTt96kEWUQ3al0i4oYSRCNooGjTJTcX9UNtzm+0Yv5mPPckW5MNsI04QitlEpUTs4+WaE7i8lTYmkxQ9QmqaqjDvVkLE4Bk1eKOZNKGhmbwJoqcvQjm0TMWggoaYSctA7YQrHLcES/u52EFPCuNE44nhMCfYvhw29Ru9kq/vvt/ZesqPZw6Jnv9RTFL3dS4VcMX8ilGUJGQhNDFi7bljDaZgnjkiQk4OlIO6ShmplTUOB4siYjqBEXGAFfA6kpLVpAz1Zsm0okwY4GLCXKR4JWYzTwSSgGxbklIxRVqg5xtdUZxSPldkcUgVlfLWHd1O04dCBVyaMQoTVyt7juB8FrZkwSBl2Du0S2xIdUbtgMa2Cdwr3KeyVqh6GnHIIsVvN/QgzG5AiARi0SPPBvJT5C3ZigdLCwYspcJE1gfCgkBDKXMCm9CvoO+FrlfatJBiqndJEgeFcaJT/Oi7Uw/MW4S5brPIEubZwOLHPGHF/jEWzWOGDNKfEqpse1lJYbsNiPKStD18x9A1E4YcmpTFiabzX9YMs0n1/jjah7Ry2SqG6kGkLlfGNrY6WbBGcTo4GJUW4cEiM57iD6BtTtrpqZb+NUileGT5Z7+A/F8j/WTbwPjYFwOM71lHnAjgtAAZMbQTWbtcJRWZJPp/ZXssR4sJeI2coKyKLWQkJDpvlIBHIN9+79hsYu3EstSeJ/x9sF2zHrF6aSBvCtx3AgJ7daMi9bSIKpwl3NltoeBtmhG9oLDTUXQKRpOGgFmmd9hwHVYr1cvt2d2pDH+VerSzwgeuQ4XfJP7xKCg/vQNdZ5nf74i3exPYPzj/32+3LeJyTca0oKUpMLokPz8yNd8vPSUktKo73zEvL18soyWUYBcMdqHNC6Bks2OU78zIfMTABAFM5DiTke0T4AQAAAAIAAAA4AAAAmAQAAAAAAAABAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-Folder-Extract_Wim.7z]
 lines=597

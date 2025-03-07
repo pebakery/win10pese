@@ -4,14 +4,14 @@ Type=Plugin
 Author=Ludovici, dera, ChrisR
 Description=BitLocker Drive Encryption is a full disk encryption feature included with the Ultimate and Enterprise editions of Microsoft's Windows Vista, Windows 7, and with Pro and Enterprise editions of Windows 8, 8.1, 10 desktop operating systems.
 Credits=http://TheOven.org
-Version=021
+Version=023
 Download_Level=1
 Level=3
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.06
+Date=2019.02.03_11:05.38 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/BitLocker.script
@@ -47,6 +47,8 @@ History018=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
 History019=ChrisR - Multi Fallback Languages support - Date:2016.11.18
 History020=ChrisR - Add ShellHWDetection service to display the Locked, Encrypted icon on drive. New dependencies appinfoext.dll for appinfo service. Add Windows.Storage.Search.dll with NaturalLanguage6.dll and ContentIndex registry for the basic build - Date:2017.09.17
 History021=Tsjippy - Add swprv.dll - when you try to encrypt a device BitLocker hangs Win10 1709 - http://TheOven.org/index.php?topic=2307 - Date:2017.12.06
+History022=Lancelot - Add BuildClass 3 support - Date:2018.10.09 // Minor Fix with BuildType - Date:2018.11.23
+History023=Lancelot - Add BuildClass - Date:2019.01.14 - Date:2019.01.17 - Date:2019.02.03
 
 [Interface]
 Lite_CheckBox="Lite version: the Unlock feature should be enough in PE.",1,3,5,10,320,18,True
@@ -85,7 +87,7 @@ If,ExistFile,%Target_Sys%\#1,Loop,%ScriptFile%,PInstall_CopySys32Mui_Loop,1,%NbL
 StrFormat,Split,%MuiLangAll%,|,#c,#9
 If,ExistFile,%Source_Sys%\#9\#1.mui,Begin
 FileCopy,%Source_Sys%\#9\#1.mui,%Target_Sys%\#9
-Loop,BREAK
+Loop,Break
 End
 
 [PInstall_CopySys32MuiW]
@@ -96,7 +98,7 @@ If,ExistFile,%Target_Sys%\#1,Loop,%ScriptFile%,PInstall_CopySys32MuiW_Loop,1,%Nb
 StrFormat,Split,%MuiLangAll%,|,#c,#9
 If,ExistFile,%Source_Sys%\#9\#1,Begin
 FileCopy,%Source_Sys%\#9\#1,%Target_Sys%\#9
-Loop,BREAK
+Loop,Break
 End
 
 [PInstall_CopyDrivers]
@@ -113,7 +115,7 @@ If,ExistFile,%Target_Sys%\drivers\#1,Loop,%ScriptFile%,PInstall_CopyDriversMui_L
 StrFormat,Split,%MuiLangAll%,|,#c,#9
 If,ExistFile,%Source_Sys%\drivers\#9\#1.mui,Begin
 FileCopy,%Source_Sys%\drivers\#9\#1.mui,%Target_Sys%\drivers\#9
-Loop,BREAK
+Loop,Break
 End
 
 [Process]
@@ -122,7 +124,262 @@ If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFil
 
 [Process_Normal]
 Echo,"Processing %ScriptTitle%..."
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
+If,%BuildClass%,Equal,2,Run,%ScriptFile%,Process_Normal_2
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,Process_Normal_3
+
+[Process_Normal_3]
+Require,FileList,,Require_FileList_BitLockerTest
+Set,%t1%,1
+Set,%t2%,1
+If,Not,ExistFile,%Target_Sys%\BitLockerWizard.exe,Set,%t1%,0
+If,Not,ExistFile,%Target_Sys%\bdeunlock.exe,Set,%t2%,0
+If,%t1%%t2%,Equal,00,Exit,"BitLocker not found in the current source. Exit."
+Call,FileDelete,%Target_Sys%\BitLockerWizard.exe
+Call,FileDelete,%Target_Sys%\bdeunlock.exe
 //--
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+AddVariables,%ProjectDir%\script.project,MuiLang
+StrFormat,Split,%MuiLangAll%,|,0,%NbLang%
+//-
+Call,TargetVersion
+Call,CompareVersions,%TargetVersion%,6.2.9200.00000,TC_Win80
+Call,CompareVersions,%TargetVersion%,6.3.9600.00000,TC_Win81
+Call,CompareVersions,%TargetVersion%,10.0.10240.0,TC_Win10
+//-
+//- Copy Drivers
+Require,FileList,,CopyDrivers_3
+//- Copy System32 File
+Run,%ScriptFile%,CopySys32Files_3
+// Full, with others bitlocker components System32 File
+//If,%Lite_CheckBox%,Equal,False,Run,%ScriptFile%,CopySys32FilesMore_3
+If,%Togo_CheckBox%,Equal,True,Run,%ScriptFile%,BitLockerToGo_3
+// Write Registry
+Run,%ScriptFile%,WriteRegistry
+
+[CopyDrivers_3]
+\Windows\Drivers\fvevol.sys
+\Windows\Drivers\??-??\fvevol.sys
+\Windows\Drivers\dumpfve.sys
+\Windows\Drivers\ksecdd.sys
+\Windows\Drivers\ksecpkg.sys
+
+[CopySys32Files_3]
+Require,FileList,,CopySys32Files_3_Main
+If,%TC_Win10%,Equal,Bigger,Require_FileQ,dsreg.dll
+//- maybe usefull to create a shortcut on bdeunlock.exe or BdeUnlockWizard.exe
+If,%TC_Win80%,Equal,Bigger,Require_FileQ,bdeunlock.exe
+Else,Require_FileQ,BdeUnlockWizard.exe
+//-
+If,%TC_Win80%,Equal,Smaller,Begin
+Require,FileList,,CopySys32Files_3_TC_Win80_Smaller
+If,Not,ExistFile,%Target_Sys%\fveupdate.exe,Require,FileList,,CopySys32Files_3_TC_Win80_Smaller_B
+End
+If,%TC_Win80%,Equal,Bigger,Require,FileList,,CopySys32Files_3_TC_Win80_Bigger
+If,Not,%TC_Win10%,Equal,Smaller,Require,FileList,,CopySys32Files_3_TC_Win10_NOT_Smaller
+//--
+If,%Lite_CheckBox%,Equal,False,Begin
+Require,FileList,,CopySys32FilesMore_3
+If,%TC_Win80%,Equal,Bigger,Require,FileList,,CopySys32FilesMore_3_TC_Win80_Bigger
+If,%TC_Win81%,Equal,Bigger,Require,FileList,,CopySys32FilesMore_3_TC_Win81_Bigger
+If,Not,ExistFile,%Target_Sys%\BdeHdCfg.exe,Begin
+Require,FileList,,CopySys32FilesMore_3_NO_BdeHdCfg_exe
+Run,%ScriptFile%,CopySys32FilesMore_3_NO_BdeHdCfg_exe_Step2
+End
+If,Not,ExistFile,%Target_Sys%\BdeHdCfgLib.dll,Begin
+Require,FileList,,CopySys32FilesMore_3_NO_BdeHdCfgLib_dll
+Run,%ScriptFile%,CopySys32FilesMore_3_NO_BdeHdCfgLib_dll_Step2
+End
+End
+
+[CopySys32Files_3_TC_Win80_Smaller]
+\Windows\System32\fveRecover.dll
+\Windows\System32\??-??\fveRecover.dll.mui
+\Windows\System32\fveupdate.exe
+\Windows\System32\??-??\fveupdate.exe.mui
+
+[CopySys32Files_3_TC_Win80_Smaller_B]
+\Windows\winsxs\x86_microsoft-windows-s..otservicing-utility_31bf3856ad364e35_6.1.7600.16385_none_751b074aed0a5d09\fveupdate.exe
+\Windows\winsxs\amd64_microsoft-windows-s..otservicing-utility_31bf3856ad364e35_6.1.7600.16385_none_d139a2cea567ce3f\fveupdate.exe
+\Windows\winsxs\x86_microsoft-windows-s..g-utility.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_3db3b8685ab3ff79\fveupdate.exe.mui
+\Windows\winsxs\amd64_microsoft-windows-s..g-utility.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_99d253ec131170af\fveupdate.exe.mui
+
+[CopySys32Files_3_TC_Win80_Bigger]
+\Windows\System32\TpmTasks.dll
+\Windows\System32\??-??\TpmTasks.dll.mui
+\Windows\System32\tpmvsc.dll
+\Windows\System32\??-??\tpmvsc.dll.mui
+\Windows\System32\tpmvscmgr.exe
+\Windows\System32\??-??\tpmvscmgr.exe.mui
+\Windows\System32\tpmvscmgrsvr.exe
+\Windows\System32\??-??\tpmvscmgrsvr.exe.mui
+\Windows\System32\profsvcext.dll
+
+[CopySys32Files_3_TC_Win10_NOT_Smaller]
+\Windows\System32\NaturalLanguage6.dll
+\Windows\System32\Windows.Storage.Search.dll
+\Windows\System32\??-??\Windows.Storage.Search.dll.mui
+
+[CopySys32Files_3_Main]
+\Windows\System32\bcd.dll
+\Windows\System32\bcrypt.dll
+\Windows\System32\??-??\bcrypt.dll.mui
+\Windows\System32\bcryptprimitives.dll
+\Windows\System32\bderepair.dll
+\Windows\System32\bdesvc.dll
+\Windows\System32\??-??\bdesvc.dll.mui
+\Windows\System32\bdeui.dll
+\Windows\System32\fveapi.dll
+\Windows\System32\??-??\fveapi.dll.mui
+\Windows\System32\fveapibase.dll
+\Windows\System32\fvecerts.dll
+\Windows\System32\fvenotify.exe
+\Windows\System32\??-??\fvenotify.exe.mui
+\Windows\System32\fveui.dll
+\Windows\System32\??-??\fveui.dll.mui
+\Windows\System32\manage-bde.exe
+\Windows\System32\??-??\manage-bde.exe.mui
+\Windows\System32\repair-bde.exe
+\Windows\System32\??-??\repair-bde.exe.mui
+\Windows\System32\TpmInit.exe
+\Windows\System32\??-??\TpmInit.exe.mui
+\Windows\System32\tpm.msc
+\Windows\System32\??-??\tpm.msc
+\Windows\System32\tpmcompc.dll
+\Windows\System32\??-??\tpmcompc.dll.mui
+\Windows\System32\appinfo.dll
+\Windows\System32\??-??\appinfo.dll.mui
+\Windows\System32\appinfoext.dll
+\Windows\System32\profapi.dll
+\Windows\System32\profext.dll
+\Windows\System32\??-??\profext.dll.mui
+\Windows\System32\profprov.dll
+\Windows\System32\profsvc.dll
+\Windows\System32\??-??\profsvc.dll.mui
+\Windows\System32\credui.dll
+\Windows\System32\??-??\credui.dll.mui
+\Windows\System32\DWrite.dll
+\Windows\System32\??-??\DWrite.dll.mui
+\Windows\System32\StructuredQuery.dll
+\Windows\System32\Windows.UI.Immersive.dll
+\Windows\System32\??-??\Windows.UI.Immersive.dll.mui
+\Windows\System32\swprv.dll
+\Windows\System32\??-??\swprv.dll.mui
+
+[CopySys32FilesMore_3_TC_Win80_Bigger]
+\Windows\System32\bdechangepin.exe
+\Windows\System32\??-??\bdechangepin.exe.mui
+\Windows\System32\fveskybackup.dll
+
+[CopySys32FilesMore_3_TC_Win81_Bigger]
+\Windows\System32\BitLockerDeviceEncryption.exe
+
+[CopySys32FilesMore_3]
+\Windows\System32\BdeUISrv.exe
+\Windows\System32\BitLockerWizard.exe
+\Windows\System32\??-??\BitLockerWizard.exe.mui
+\Windows\System32\BitLockerWizardElev.exe
+\Windows\System32\??-??\BitLockerWizardElev.exe.mui
+\Windows\System32\fvecpl.dll
+\Windows\System32\??-??\fvecpl.dll.mui
+\Windows\System32\fveprompt.exe
+\Windows\System32\??-??\fveprompt.exe.mui
+\Windows\System32\fvewiz.dll
+\Windows\System32\??-??\fvewiz.dll.mui
+\Windows\System32\manage-bde.wsf
+\Windows\System32\BdeHdCfg.exe
+\Windows\System32\??-??\BdeHdCfg.exe.mui
+\Windows\System32\BdeHdCfgLib.dll
+\Windows\System32\??-??\BdeHdCfgLib.dll.mui
+
+[CopySys32FilesMore_3_NO_BdeHdCfg_exe]
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_a0c7dd7eca510f1b\BdeHdCfg.exe
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_a2f8f146c73f92b5\BdeHdCfg.exe
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_9d9c933c3a643e6b\BdeHdCfg.exe
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_35914be284970ee8\BdeHdCfg.exe
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_fce6790282ae8051\BdeHdCfg.exe
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_ff178cca7f9d03eb\BdeHdCfg.exe
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_f9bb2ebff2c1afa1\BdeHdCfg.exe
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_91afe7663cf4801e\BdeHdCfg.exe
+\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_??-??_ead945b5085b3539\BdeHdCfg.exe.mui
+\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_??-??_e7adfb72786e6489\BdeHdCfg.exe.mui
+\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_??-??_dd1fe135cfa82cff\BdeHdCfg.exe.mui
+\Windows\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_??-??_46f7e138c0b8a66f\BdeHdCfg.exe.mui
+\Windows\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_??-??_43cc96f630cbd5bf\BdeHdCfg.exe.mui
+\Windows\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_??-??_dbc14f9c7afea63c\BdeHdCfg.exe.mui
+//\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_hu-hu_3249c5fcecbb0455\BdeHdCfg.exe.mui
+//\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_en-us_485672d215622d32\BdeHdCfg.exe.mui
+
+[CopySys32FilesMore_3_NO_BdeHdCfg_exe_Step2]
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_a0c7dd7eca510f1b\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_a0c7dd7eca510f1b\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_a2f8f146c73f92b5\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_a2f8f146c73f92b5\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_9d9c933c3a643e6b\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_9d9c933c3a643e6b\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_35914be284970ee8\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_35914be284970ee8\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_fce6790282ae8051\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_fce6790282ae8051\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_ff178cca7f9d03eb\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_ff178cca7f9d03eb\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_f9bb2ebff2c1afa1\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_f9bb2ebff2c1afa1\BdeHdCfg.exe,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_91afe7663cf4801e\BdeHdCfg.exe,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_91afe7663cf4801e\BdeHdCfg.exe,%Target_Sys%
+// mui file the identifier number changes depending on language, it is not very serious if not copied here (same identifier for Win7SP0 and Win7SP1)
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_ead945b5085b3539\BdeHdCfg.exe.mui,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_ead945b5085b3539\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_e7adfb72786e6489\BdeHdCfg.exe.mui,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_e7adfb72786e6489\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dd1fe135cfa82cff\BdeHdCfg.exe.mui,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dd1fe135cfa82cff\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_46f7e138c0b8a66f\BdeHdCfg.exe.mui,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_46f7e138c0b8a66f\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_43cc96f630cbd5bf\BdeHdCfg.exe.mui,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_43cc96f630cbd5bf\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dbc14f9c7afea63c\BdeHdCfg.exe.mui,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dbc14f9c7afea63c\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+//FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_hu-hu_3249c5fcecbb0455\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+//FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_en-us_485672d215622d32\BdeHdCfg.exe.mui,%Target_Sys%\%DistLang%
+
+[CopySys32FilesMore_3_NO_BdeHdCfgLib_dll]
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_a0c7dd7eca510f1b\BdeHdCfgLib.dll
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_a2f8f146c73f92b5\BdeHdCfgLib.dll
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_9d9c933c3a643e6b\BdeHdCfgLib.dll
+\Windows\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_35914be284970ee8\BdeHdCfgLib.dll
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_fce6790282ae8051\BdeHdCfgLib.dll
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_ff178cca7f9d03eb\BdeHdCfgLib.dll
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_f9bb2ebff2c1afa1\BdeHdCfgLib.dll
+\Windows\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_91afe7663cf4801e\BdeHdCfgLib.dll
+\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_??-??_ead945b5085b3539\BdeHdCfgLib.dll.mui
+\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_??-??_e7adfb72786e6489\BdeHdCfgLib.dll.mui
+\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_??-??_dd1fe135cfa82cff\BdeHdCfgLib.dll.mui
+\Windows\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_??-??_46f7e138c0b8a66f\BdeHdCfgLib.dll.mui
+\Windows\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_??-??_43cc96f630cbd5bf\BdeHdCfgLib.dll.mui
+\Windows\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_??-??_dbc14f9c7afea63c\BdeHdCfgLib.dll.mui
+//\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_hu-hu_3249c5fcecbb0455\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+//\Windows\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_en-us_485672d215622d32\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+
+[CopySys32FilesMore_3_NO_BdeHdCfgLib_dll_Step2]
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_a0c7dd7eca510f1b\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_a0c7dd7eca510f1b\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_a2f8f146c73f92b5\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_a2f8f146c73f92b5\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_9d9c933c3a643e6b\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_9d9c933c3a643e6b\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_35914be284970ee8\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_35914be284970ee8\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_fce6790282ae8051\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7600.16385_none_fce6790282ae8051\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_ff178cca7f9d03eb\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.1.7601.17514_none_ff178cca7f9d03eb\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_f9bb2ebff2c1afa1\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.2.9200.16384_none_f9bb2ebff2c1afa1\BdeHdCfgLib.dll,%Target_Sys%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_91afe7663cf4801e\BdeHdCfgLib.dll,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..up-drivepreparation_31bf3856ad364e35_6.3.9600.16384_none_91afe7663cf4801e\BdeHdCfgLib.dll,%Target_Sys%
+// mui file the identifier number changes depending on language, it is not very serious if not copied here (same identifier for Win7SP0 and Win7SP1)
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_ead945b5085b3539\BdeHdCfgLib.dll.mui,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_ead945b5085b3539\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_e7adfb72786e6489\BdeHdCfgLib.dll.mui,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_e7adfb72786e6489\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dd1fe135cfa82cff\BdeHdCfgLib.dll.mui,FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dd1fe135cfa82cff\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_46f7e138c0b8a66f\BdeHdCfgLib.dll.mui,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_%DistLang%_46f7e138c0b8a66f\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_43cc96f630cbd5bf\BdeHdCfgLib.dll.mui,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.2.9200.16384_%DistLang%_43cc96f630cbd5bf\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+If,ExistFile,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dbc14f9c7afea63c\BdeHdCfgLib.dll.mui,FileCopy,%Target_Win%\winsxs\amd64_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.3.9600.16384_%DistLang%_dbc14f9c7afea63c\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+//FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_hu-hu_3249c5fcecbb0455\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+//FileCopy,%Target_Win%\winsxs\x86_microsoft-windows-s..eparation.resources_31bf3856ad364e35_6.1.7600.16385_en-us_485672d215622d32\BdeHdCfgLib.dll.mui,%Target_Sys%\%DistLang%
+
+[BitLockerToGo_3]
+If,Not,ExistDir,%Target_Win%\BitLockerDiscoveryVolumeContents,DirMake,%Target_Win%\BitLockerDiscoveryVolumeContents
+Require,FileList,,BitLockerToGo_3_RF
+
+[BitLockerToGo_3_RF]
+\Windows\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe
+\Windows\BitLockerDiscoveryVolumeContents\??-??_BitLockerToGo.exe.mui
+
+[Require_FileList_BitLockerTest]
+\Windows\System32\BitLockerWizard.exe
+\Windows\System32\bdeunlock.exe
+
+[Process_Normal_2]
 Set,%t1%,1
 Set,%t2%,1
 If,Not,ExistFile,%Source_Sys%\BitLockerWizard.exe,Set,%t1%,0
@@ -307,14 +564,14 @@ RegWrite,HKLM,0x2,Tmp_System\ControlSet001\services\BDESVC\Parameters,ServiceDll
 RegWrite,HKLM,0x3,Tmp_System\ControlSet001\services\BDESVC\Security,Security,01,00,14,80,90,00,00,00,9c,00,00,00,14,00,00,00,30,00,00,00,02,00,1C,00,01,00,00,00,02,80,14,00,FF,00,0F,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,60,00,04,00,00,00,00,00,14,00,FF,00,0E,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,FF,00,0E,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,18,00,9D,00,02,00,01,02,00,00,00,00,00,05,20,00,00,00,21,02,00,00,00,00,14,00,9D,00,02,00,01,01,00,00,00,00,00,05,0B,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\BDESVC\State
 If,%TC_Win10%,Equal,Smaller,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF,1
+If,%NoWarnROW%,Equal,True,System,ErrorOff,1
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\services\BDESVC,RequiredPrivileges,SeChangeNotifyPrivilege,SeImpersonatePrivilege
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\BDESVC\TriggerInfo\0,Type,20
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\BDESVC\TriggerInfo\0,Action,1
 RegWrite,HKLM,0x3,Tmp_System\ControlSet001\services\BDESVC\TriggerInfo\0,GUID,57,e1,6a,9e,f7,d9,e5,47,8c,6d,b1,7b,b6,c8,2a,27
 End
 Else,Begin
-If,%NoWarnROW%,Equal,True,System,ERROROFF,1
+If,%NoWarnROW%,Equal,True,System,ErrorOff,1
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\BDESVC,RequiredPrivileges,SeChangeNotifyPrivilege,SeImpersonatePrivilege,SeTcbPrivilege,SeAssignPrimaryTokenPrivilege,SeIncreaseQuotaPrivilege,SeSystemEnvironmentPrivilege,SeBackupPrivilege,SeRestorePrivilege
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\BDESVC\TriggerInfo\0,Type,7
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\BDESVC\TriggerInfo\0,Action,1
@@ -348,7 +605,7 @@ RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\ShellHWDetection,Type,32
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\ShellHWDetection,Description,"@#$pSystemRoot#$p\System32\shsvcs.dll,-12289"
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\ShellHWDetection,ObjectName,LocalSystem
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\ShellHWDetection,ServiceSidType,1
-If,%NoWarnROW%,Equal,True,System,ERROROFF,3
+If,%NoWarnROW%,Equal,True,System,ErrorOff,3
 RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\ShellHWDetection,ImagePath,"#$pSystemRoot#$p\System32\svchost.exe -k netsvcs"
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\ShellHWDetection,DependOnService,RpcSs
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\ShellHWDetection,RequiredPrivileges,SeImpersonatePrivilege
@@ -385,7 +642,7 @@ RegWrite,HKLM,0x1,Tmp_System\ControlSet001\services\Appinfo,ObjectName,LocalSyst
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\Appinfo,ErrorControl,1
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\Appinfo,Start,3
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\services\Appinfo,Type,32
-If,%NoWarnROW%,Equal,True,System,ERROROFF,3
+If,%NoWarnROW%,Equal,True,System,ErrorOff,3
 RegWrite,HKLM,0x2,Tmp_System\ControlSet001\services\Appinfo,ImagePath,"#$pSystemRoot#$p\system32\svchost.exe -k netsvcs"
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\services\Appinfo,DependOnService,RpcSs,ProfSvc
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\services\Appinfo,RequiredPrivileges,SeAssignPrimaryTokenPrivilege,SeIncreaseQuotaPrivilege,SeTcbPrivilege,SeBackupPrivilege,SeRestorePrivilege,SeDebugPrivilege,SeAuditPrivilege,SeChangeNotifyPrivilege,SeImpersonatePrivilege
@@ -401,7 +658,7 @@ RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\ProfSvc,Start,2
 RegWrite,HKLM,0x4,Tmp_System\ControlSet001\Services\ProfSvc,Type,32
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\ProfSvc,Description,"@#$psystemroot#$p\system32\profsvc.dll,-301"
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Services\ProfSvc,ObjectName,LocalSystem
-If,%NoWarnROW%,Equal,True,System,ERROROFF,3
+If,%NoWarnROW%,Equal,True,System,ErrorOff,3
 RegWrite,HKLM,0x2,Tmp_System\ControlSet001\Services\ProfSvc,ImagePath,"#$psystemroot#$p\system32\svchost.exe -k netsvcs"
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\ProfSvc,DependOnService,RpcSs
 RegWrite,HKLM,0x7,Tmp_System\ControlSet001\Services\ProfSvc,RequiredPrivileges,SeBackupPrivilege,SeRestorePrivilege,SeTakeOwnershipPrivilege,SeDebugPrivilege,SeImpersonatePrivilege
@@ -449,7 +706,7 @@ If,ExistRegSection,HKLM,Tmp_Software\Classes\Drive\shell\resume-bde,RegDelete,HK
 If,ExistRegSection,HKLM,Tmp_Software\Classes\Drive\shell\resume-bde-elev,RegDelete,HKLM,Tmp_Software\Classes\Drive\shell\resume-bde-elev
 End
 // Context menu Icon
-If,ExistFile,%Source_Sys%\bdeunlock.exe,RegWrite,HKLM,0x1,Tmp_software\Classes\Drive\shell\unlock-bde,Icon,bdeunlock.exe
+If,ExistFile,%Target_Sys%\bdeunlock.exe,RegWrite,HKLM,0x1,Tmp_software\Classes\Drive\shell\unlock-bde,Icon,bdeunlock.exe
 RegHiveUnLoad,Tmp_Software
 
 [ReadMETxt]

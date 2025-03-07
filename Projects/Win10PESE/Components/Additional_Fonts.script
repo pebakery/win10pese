@@ -4,14 +4,14 @@ Type=Plugin
 Author=ChrisR
 Description=(SE) Additional fonts and codepage files - Uses AddFonts to make sure all the fonts inside a PE are installed and registered - Windows Control Panel Fonts and Windows Font Cache
 Credits=beakmyn, Gena people, Ludovici, ChrisR
-Version=010
+Version=012
 Download_Level=1
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=206.0
-Date=2017.02.02
+Date=2019.01.17_10:21.44 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Additional_Fonts.script
@@ -31,6 +31,8 @@ History007=Lancelot - Added DU Buttons
 History008=Lancelot updated v008 - Date:2016.06.13
 History009=ChrisR - fontcache Service is included in Win10 boot.wim. Do not write the registry, there is some differences in keys and datas - Date:2016.09.08 // Lancelot - Added Compare button - Date:2017.01.09
 History010=Lancelot - Added Components_PluginCache_Extract // Added to Yomi Server - Date:2017.02.02
+History011=Lancelot - Add BuildClass 3 support - Date:2018.10.09 // Minor Fix with BuildType - Date:2018.11.23
+History012=Lancelot - Add BuildClass - Date:2019.01.14 - Date:2019.01.17
 
 [Cache_SCD_Info_Additional_Plugin]
 IniRead,%ScriptFile%,Main,Selected,%t%
@@ -117,6 +119,8 @@ If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFil
 Echo,"Add font control panel and Windows Font Cache Service..."
 IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
 IniRead,%projectdir%\script.project,IniVariables,SoftwareHive,%SoftwareHive%
+IniRead,%ProjectDir%\Script.Project,IniVariables,BuildType,%BuildType%
+If,%BuildType%-,Equal,-,Set,%BuildType%,PE
 //-
 Require_FileQ,FntCache.dll
 Require_FileQ,fontext.dll
@@ -130,62 +134,122 @@ If,%OS%%BuildType%,Equal,Win8.1OS,Set,%AddRegFontCacheService%,No
 If,%AddRegFontCacheService%,Equal,Yes,Run,%ScriptFile%,RegFontCacheService
 If,Not,%SoftwareHive%,Equal,Install.wim,Run,%ScriptFile%,RegFontFolder
 //
+If,%BuildClass%,Equal,2,Begin
 Echo,"Adding Fonts Files..."
-If,%pCheckBox1%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\serife.fon,FileCopy,%InstallSRC%\Windows\Fonts\serife.fon,%target_win%\Fonts
-If,%pCheckBox2%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\sserife.fon,FileCopy,%InstallSRC%\Windows\Fonts\sserife.fon,%target_win%\Fonts
+If,%pCheckBox1%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\serife.fon,FileCopy,%InstallSRC%\Windows\Fonts\serife.fon,%Target_Win%\Fonts
+If,%pCheckBox2%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\sserife.fon,FileCopy,%InstallSRC%\Windows\Fonts\sserife.fon,%Target_Win%\Fonts
 If,%pCheckBox3%,Equal,True,Begin
-If,Not,ExistFile,%target_win%\Fonts\arial.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arial.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\arialbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arialbd.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\arialbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arialbi.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\ariali.ttf,FileCopy,%InstallSRC%\Windows\Fonts\ariali.ttf,%target_win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\arial.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arial.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\arialbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arialbd.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\arialbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\arialbi.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\ariali.ttf,FileCopy,%InstallSRC%\Windows\Fonts\ariali.ttf,%Target_Win%\Fonts
 End
-If,%pCheckBox4%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\coure.fon,FileCopy,%InstallSRC%\Windows\Fonts\coure.fon,%target_win%\Fonts
+If,%pCheckBox4%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\coure.fon,FileCopy,%InstallSRC%\Windows\Fonts\coure.fon,%Target_Win%\Fonts
 If,%pCheckBox5%,Equal,True,Begin
-If,Not,ExistFile,%target_win%\Fonts\cour.ttf,FileCopy,%InstallSRC%\Windows\Fonts\cour.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\courbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\courbd.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\courbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\courbi.ttf,%target_win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\cour.ttf,FileCopy,%InstallSRC%\Windows\Fonts\cour.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\courbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\courbd.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\courbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\courbi.ttf,%Target_Win%\Fonts
 End
-If,%pCheckBox6%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\modern.fon,FileCopy,%InstallSRC%\Windows\Fonts\modern.fon,%target_win%\Fonts
-If,%pCheckBox7%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\roman.fon,FileCopy,%InstallSRC%\Windows\Fonts\roman.fon,%target_win%\Fonts
-If,%pCheckBox8%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\script.fon,FileCopy,%InstallSRC%\Windows\Fonts\script.fon,%target_win%\Fonts
-If,%pCheckBox9%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\smalle.fon,FileCopy,%InstallSRC%\Windows\Fonts\smalle.fon,%target_win%\Fonts
+If,%pCheckBox6%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\modern.fon,FileCopy,%InstallSRC%\Windows\Fonts\modern.fon,%Target_Win%\Fonts
+If,%pCheckBox7%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\roman.fon,FileCopy,%InstallSRC%\Windows\Fonts\roman.fon,%Target_Win%\Fonts
+If,%pCheckBox8%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\script.fon,FileCopy,%InstallSRC%\Windows\Fonts\script.fon,%Target_Win%\Fonts
+If,%pCheckBox9%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\smalle.fon,FileCopy,%InstallSRC%\Windows\Fonts\smalle.fon,%Target_Win%\Fonts
 If,%pCheckBox10%,Equal,True,Begin
-// in boot.wim If,Not,ExistFile,%target_win%\Fonts\times.ttf,FileCopy,%InstallSRC%\Windows\Fonts\times.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\TIMESBD.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TIMESBD.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\TIMESBI.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TIMESBI.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\TIMESI.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TIMESI.ttf,%target_win%\Fonts
+// in boot.wim If,Not,ExistFile,%Target_Win%\Fonts\times.ttf,FileCopy,%InstallSRC%\Windows\Fonts\times.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\TIMESBD.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TIMESBD.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\TIMESBI.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TIMESBI.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\TIMESI.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TIMESI.ttf,%Target_Win%\Fonts
 End
-// in boot.wim If,%pCheckBox20%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\micross.ttf,FileCopy,%InstallSRC%\Windows\Fonts\micross.ttf,%target_win%\Fonts
-// in boot.wim If,%pCheckBox21%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\TAHOMA.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TAHOMA.ttf,%target_win%\Fonts
-// in boot.wim If,%pCheckBox22%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\TAHOMABD.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TAHOMABD.ttf,%target_win%\Fonts
-// in boot.wim If,%pCheckBox24%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\lucon.ttf,FileCopy,%InstallSRC%\Windows\Fonts\lucon.ttf,%target_win%\Fonts
-If,%pCheckBox11%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\l_10646.ttf,FileCopy,%InstallSRC%\Windows\Fonts\l_10646.ttf,%target_win%\Fonts
+// in boot.wim If,%pCheckBox20%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\micross.ttf,FileCopy,%InstallSRC%\Windows\Fonts\micross.ttf,%Target_Win%\Fonts
+// in boot.wim If,%pCheckBox21%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\TAHOMA.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TAHOMA.ttf,%Target_Win%\Fonts
+// in boot.wim If,%pCheckBox22%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\TAHOMABD.ttf,FileCopy,%InstallSRC%\Windows\Fonts\TAHOMABD.ttf,%Target_Win%\Fonts
+// in boot.wim If,%pCheckBox24%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\lucon.ttf,FileCopy,%InstallSRC%\Windows\Fonts\lucon.ttf,%Target_Win%\Fonts
+If,%pCheckBox11%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\l_10646.ttf,FileCopy,%InstallSRC%\Windows\Fonts\l_10646.ttf,%Target_Win%\Fonts
 If,%pCheckBox12%,Equal,True,Begin
-If,Not,ExistFile,%target_win%\Fonts\verdana.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdana.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\verdanab.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdanab.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\verdanai.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdanai.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\verdanaz.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdanaz.ttf,%target_win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\verdana.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdana.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\verdanab.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdanab.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\verdanai.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdanai.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\verdanaz.ttf,FileCopy,%InstallSRC%\Windows\Fonts\verdanaz.ttf,%Target_Win%\Fonts
 End
 If,%pCheckBox13%,Equal,True,Begin
-// in boot.wim If,Not,ExistFile,%target_win%\Fonts\trebuc.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebuc.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\trebucbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebucbd.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\trebucbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebucbi.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\trebucit.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebucit.ttf,%target_win%\Fonts
+// in boot.wim If,Not,ExistFile,%Target_Win%\Fonts\trebuc.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebuc.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\trebucbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebucbd.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\trebucbi.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebucbi.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\trebucit.ttf,FileCopy,%InstallSRC%\Windows\Fonts\trebucit.ttf,%Target_Win%\Fonts
 End
 If,%pCheckBox14%,Equal,True,Begin
-If,Not,ExistFile,%target_win%\Fonts\comic.ttf,FileCopy,%InstallSRC%\Windows\Fonts\comic.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\comicbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\comicbd.ttf,%target_win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\comic.ttf,FileCopy,%InstallSRC%\Windows\Fonts\comic.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\comicbd.ttf,FileCopy,%InstallSRC%\Windows\Fonts\comicbd.ttf,%Target_Win%\Fonts
 End
 If,%pCheckBox15%,Equal,True,Begin
-If,Not,ExistFile,%target_win%\Fonts\georgia.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgia.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\georgiab.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgiab.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\georgiai.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgiai.ttf,%target_win%\Fonts
-If,Not,ExistFile,%target_win%\Fonts\georgiaz.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgiaz.ttf,%target_win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\georgia.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgia.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\georgiab.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgiab.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\georgiai.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgiai.ttf,%Target_Win%\Fonts
+If,Not,ExistFile,%Target_Win%\Fonts\georgiaz.ttf,FileCopy,%InstallSRC%\Windows\Fonts\georgiaz.ttf,%Target_Win%\Fonts
 End
-If,%pCheckBox16%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\impact.ttf,FileCopy,%InstallSRC%\Windows\Fonts\impact.ttf,%target_win%\Fonts
-If,%pCheckBox17%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\simsun.ttc,FileCopy,%InstallSRC%\Windows\Fonts\simsun.ttc,%target_win%\Fonts
-If,%pCheckBox18%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\webdings.ttf,FileCopy,%InstallSRC%\Windows\Fonts\webdings.ttf,%target_win%\Fonts
-If,%pCheckBox19%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\wingding.ttf,FileCopy,%InstallSRC%\Windows\Fonts\wingding.ttf,%target_win%\Fonts
+If,%pCheckBox16%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\impact.ttf,FileCopy,%InstallSRC%\Windows\Fonts\impact.ttf,%Target_Win%\Fonts
+If,%pCheckBox17%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\simsun.ttc,FileCopy,%InstallSRC%\Windows\Fonts\simsun.ttc,%Target_Win%\Fonts
+If,%pCheckBox18%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\webdings.ttf,FileCopy,%InstallSRC%\Windows\Fonts\webdings.ttf,%Target_Win%\Fonts
+If,%pCheckBox19%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\wingding.ttf,FileCopy,%InstallSRC%\Windows\Fonts\wingding.ttf,%Target_Win%\Fonts
+End
+Else,Begin
+Echo,"Adding Fonts Files..."
+If,%pCheckBox1%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\serife.fon,Require,Font,serife.fon
+If,%pCheckBox2%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\sserife.fon,Require,Font,sserife.fon
+If,%pCheckBox3%,Equal,True,Begin
+If,Not,ExistFile,%Target_Win%\Fonts\arial.ttf,Require,Font,arial.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\arialbd.ttf,Require,Font,arialbd.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\arialbi.ttf,Require,Font,arialbi.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\ariali.ttf,Require,Font,ariali.ttf
+End
+If,%pCheckBox4%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\coure.fon,Require,Font,coure.fon
+If,%pCheckBox5%,Equal,True,Begin
+If,Not,ExistFile,%Target_Win%\Fonts\cour.ttf,Require,Font,cour.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\courbd.ttf,Require,Font,courbd.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\courbi.ttf,Require,Font,courbi.ttf
+End
+If,%pCheckBox6%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\modern.fon,Require,Font,modern.fon
+If,%pCheckBox7%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\roman.fon,Require,Font,roman.fon
+If,%pCheckBox8%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\script.fon,Require,Font,script.fon
+If,%pCheckBox9%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\smalle.fon,Require,Font,smalle.fon
+If,%pCheckBox10%,Equal,True,Begin
+// in boot.wim If,Not,ExistFile,%Target_Win%\Fonts\times.ttf,Require,Font,times.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\TIMESBD.ttf,Require,Font,TIMESBD.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\TIMESBI.ttf,Require,Font,TIMESBI.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\TIMESI.ttf,Require,Font,TIMESI.ttf
+End
+// in boot.wim If,%pCheckBox20%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\micross.ttf,Require,Font,micross.ttf
+// in boot.wim If,%pCheckBox21%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\TAHOMA.ttf,Require,Font,TAHOMA.ttf
+// in boot.wim If,%pCheckBox22%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\TAHOMABD.ttf,Require,Font,TAHOMABD.ttf
+// in boot.wim If,%pCheckBox24%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\lucon.ttf,Require,Font,lucon.ttf
+If,%pCheckBox11%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\l_10646.ttf,Require,Font,l_10646.ttf
+If,%pCheckBox12%,Equal,True,Begin
+If,Not,ExistFile,%Target_Win%\Fonts\verdana.ttf,Require,Font,verdana.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\verdanab.ttf,Require,Font,verdanab.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\verdanai.ttf,Require,Font,verdanai.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\verdanaz.ttf,Require,Font,verdanaz.ttf
+End
+If,%pCheckBox13%,Equal,True,Begin
+// in boot.wim If,Not,ExistFile,%Target_Win%\Fonts\trebuc.ttf,Require,Font,trebuc.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\trebucbd.ttf,Require,Font,trebucbd.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\trebucbi.ttf,Require,Font,trebucbi.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\trebucit.ttf,Require,Font,trebucit.ttf
+End
+If,%pCheckBox14%,Equal,True,Begin
+If,Not,ExistFile,%Target_Win%\Fonts\comic.ttf,Require,Font,comic.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\comicbd.ttf,Require,Font,comicbd.ttf
+End
+If,%pCheckBox15%,Equal,True,Begin
+If,Not,ExistFile,%Target_Win%\Fonts\georgia.ttf,Require,Font,georgia.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\georgiab.ttf,Require,Font,georgiab.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\georgiai.ttf,Require,Font,georgiai.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\georgiaz.ttf,Require,Font,georgiaz.ttf
+End
+If,%pCheckBox16%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\impact.ttf,Require,Font,impact.ttf
+If,%pCheckBox17%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\simsun.ttc,Require,Font,simsun.ttc
+If,%pCheckBox18%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\webdings.ttf,Require,Font,webdings.ttf
+If,%pCheckBox19%,Equal,True,If,Not,ExistFile,%Target_Win%\Fonts\wingding.ttf,Require,Font,wingding.ttf
+End
 //--
 //----RegHiveLoad,Tmp_Software,%RegSoftware%
 //----//SERIFE.fon-SSERIFE.fon-COURE.fon-SMALLE.fon Language specific fonts (ex: String: MS Sans Serif 8,10,12,14,18,24 (VGA res) - SSERIFET.fon)
@@ -205,33 +269,52 @@ If,%pCheckBox19%,Equal,True,If,Not,ExistFile,%target_win%\Fonts\wingding.ttf,Fil
 Echo,"Adding Fonts Files from your folder..."
 If,%pCheck_Font%,Equal,True,Begin
 If,ExistDir,%pFontSrcBox%,Begin
-Retrieve,FOLDERSIZE,%pFontSrcBox%,%pFontSrcBoxSize%
+Retrieve,FolderSize,%pFontSrcBox%,%pFontSrcBoxSize%
 If,%pFontSrcBoxSize%,Bigger,0,Begin
-If,Not,ExistDir,%target_win%\fonts\,DirMake,%target_win%\fonts\
-//FileCopy,%pFontSrcBox%\*,%target_win%\fonts\,PRESERVE,NOWARN,NOREC,SHOW
-FileCopy,%pFontSrcBox%\*,%target_win%\fonts\,PRESERVE
+If,Not,ExistDir,%Target_Win%\fonts\,DirMake,%Target_Win%\fonts\
+//FileCopy,%pFontSrcBox%\*,%Target_Win%\fonts\,PRESERVE,NOWARN,NOREC,SHOW
+FileCopy,%pFontSrcBox%\*,%Target_Win%\fonts\,PRESERVE
 End
 End
 End
 // Add AddFonts & Register fonts at startup with AddFonts.exe
-ExtractFile,%ScriptFile%,AddFonts_%SourceArch%,AddFonts.exe,%target_sys%
+ExtractFile,%ScriptFile%,AddFonts_%SourceArch%,AddFonts.exe,%Target_Sys%
 If,%pAddFontsBox%,Equal,True,AddPostConfig,AddFonts,%SystemRoot%\system32\AddFonts.exe,,4
 //--
+If,%BuildClass%,Equal,2,Begin
 Echo,"Adding Nls CodePage..."
 RegHiveLoad,Tmp_System,%RegSystem%
 If,%pCheckBox_c_932_nls%,Equal,True,Begin
-If,Not,ExistFile,%target_sys%\c_932.nls,CopyOrExpand,%source_sys%\c_932.nls,%target_sys%
+If,Not,ExistFile,%Target_Sys%\c_932.nls,CopyOrExpand,%Source_Sys%\c_932.nls,%Target_Sys%
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NLS\CodePage,932,c_932.nls
 End
 If,%pCheckBox_c_1251_nls%,Equal,True,Begin
-If,Not,ExistFile,%target_sys%\c_1251.nls,CopyOrExpand,%source_sys%\c_1251.nls,%target_sys%
+If,Not,ExistFile,%Target_Sys%\c_1251.nls,CopyOrExpand,%Source_Sys%\c_1251.nls,%Target_Sys%
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NLS\CodePage,1251,c_1251.nls
 End
 If,%pCheckBox_c_1252_nls%,Equal,True,Begin
-If,Not,ExistFile,%target_sys%\c_1252.nls,CopyOrExpand,%source_sys%\c_1252.nls,%target_sys%
+If,Not,ExistFile,%Target_Sys%\c_1252.nls,CopyOrExpand,%Source_Sys%\c_1252.nls,%Target_Sys%
 RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NLS\CodePage,1252,c_1252.nls
 End
 RegHiveUnLoad,Tmp_System
+End
+Else,Begin
+Echo,"Adding Nls CodePage..."
+RegHiveLoad,Tmp_System,%RegSystem%
+If,%pCheckBox_c_932_nls%,Equal,True,Begin
+Require_FileQ,c_932.nls
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NLS\CodePage,932,c_932.nls
+End
+If,%pCheckBox_c_1251_nls%,Equal,True,Begin
+Require_FileQ,c_1251.nls
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NLS\CodePage,1251,c_1251.nls
+End
+If,%pCheckBox_c_1252_nls%,Equal,True,Begin
+Require_FileQ,c_1252.nls
+RegWrite,HKLM,0x1,Tmp_System\ControlSet001\Control\NLS\CodePage,1252,c_1252.nls
+End
+RegHiveUnLoad,Tmp_System
+End
 
 [RegFontCacheService]
 // FontCache service is included in Win10 boot.wim now, with some differences in keys and datas

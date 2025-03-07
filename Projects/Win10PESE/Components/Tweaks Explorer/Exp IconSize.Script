@@ -1,0 +1,146 @@
+[Main]
+Title=Explorer IconSize
+Type=Plugin
+Author=Lancelot
+Description=Change \Control Panel\Desktop\WindowMetrics --> 'IconSpacing' 'IconVerticalspacing' 'Shell Icon Size'
+Credits=http://TheOven.org
+Version=003
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=413
+Date=2019.03.05_14:43.40 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks%20Explorer/Exp%20IconSize.Script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks%20Explorer/Exp%20IconSize.Script
+Web3=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks%20Explorer/Exp%20IconSize.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=A Theme plugin or another plugin or tool (ex: PECMD) may override this setting
+HistoryNotes02=ex: Reply 7 "Windows 10 color control" http://TheOven.org/index.php?topic=2185
+HistoryNotes03=ex: Reply 6 PECMD Changes WallPaperStyle value http://theoven.org/index.php?topic=2209.msg23864#msg23864
+HistoryNotes04=SE: 1-Explorer plugin also have IconSpacing setting
+HistoryNotes05=SE: //- Horizontal IconSpacing: Standard - IconSpacing,-1710
+HistoryNotes06=SE: //- Smaller Icon Spacing IconSpacing,-1392
+HistoryNotes07=SE: //- bob.omb preferredvalue conSpacing,-1128
+HistoryNotes08=Gena: //Multilanguage sources need to be checked widely to see how these WindowMetrics values change with different locals - for now english values thinking it will (more or less) work in most cases
+HistoryNotes09=Gena: Large: ,IconSpacing,-1365 IconVerticalspacing,-1365 "Shell Icon Size",48 // Normal: IconSpacing,-1125 IconVerticalspacing,-1125 "Shell Icon Size",32
+History001=Lancelot 2017.10.07 Plugin created
+History002=Lancelot Add to server - Date:2017.10.08
+History003=Lancelot Add Win10PESE - Date:2019.02.02 // Fix Interface Info // Cosmetics x3 - Date:2019.03.05
+
+[InterFace]
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?topic=413
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+IconSelect_RadioGroup=,1,14,19,51,150,99,"IconSize Large","IconSize Small","IconSize Custom",2
+IconSpacing_CheckBox=IconSpacing,1,3,45,167,120,18,True
+IconSpacing_TextBox=,1,0,174,163,50,21,-1365
+IconVerticalspacing_CheckBox=IconVerticalspacing,1,3,45,190,120,18,False
+IconVerticalspacing_TextBox=,1,0,174,186,50,21,-1365
+Shell_Icon_Size_CheckBox="Shell Icon Size:",1,3,45,213,120,18,False
+Shell_Icon_Size_TextBox=,1,0,175,210,50,21,48
+pWebLabel1="INFO MS",1,10,284,172,42,18,https://support.microsoft.com/en-us/help/2422164
+pWebLabel2=TenForums,1,10,285,192,53,18,https://www.tenforums.com/tutorials/16941-change-desktop-icon-spacing-windows-10-a.html
+pWebLabel3=softwareok.com,1,10,285,214,77,18,http://www.softwareok.com/?seite=faq-Windows-10&faq=109
+pTextLabel1="Tip: Also See Plugin:#$x\AppY\Supplementary\Tweaks\'DesktopOK'",1,1,197,126,280,26,8,Normal
+pTextLabel2="Tip:#$x1. Clear the desktop.#$x2. Hover the mouse over an empty space.#$x3. Hold down the Ctrl key and scroll your mouse wheel up and down to scale the icons. #$x",1,1,197,46,244,71,8,Normal
+
+[Variables]
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+IniRead,%ProjectDir%\script.project,IniVariables,NoWarnRegOverWrite,%NoWarnROW%
+RegHiveLoad,Tmp_Default,%RegDefault%
+//RegHiveLoad,Tmp_Software,%RegSoftware%
+//RegHiveLoad,Tmp_System,%RegSystem%
+//--
+Echo,"Explorer's IconSize option.."
+If,%IconSelect_RadioGroup%,Equal,0,Begin
+If,%OSFamily%,Equal,NT5,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconSpacing,-1365
+End
+If,%OSFamily%,Equal,NT6,Begin
+//- Info from 1-Explorer Plugin Win10PESE: Smaller Icon Spacing (default is -1710) -- // Small Value: -1392
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconSpacing,-1710
+End
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconVerticalspacing,-1365
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics","Shell Icon Size",48
+End
+If,%IconSelect_RadioGroup%,Equal,1,Begin
+If,%OSFamily%,Equal,NT5,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconSpacing,-1125
+End
+If,%OSFamily%,Equal,NT6,Begin
+//- Info from 1-Explorer Plugin Win10PESE: Smaller Icon Spacing (default is -1710) -- // Small Value: -1392
+If,%NoWarnROW%,Equal,True,System,ErrorOff
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconSpacing,-1392
+End
+If,%NoWarnROW%,Equal,True,System,ErrorOff,2
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconVerticalspacing,-1125
+RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics","Shell Icon Size",32
+End
+If,%IconSelect_RadioGroup%,Equal,2,Begin
+If,%NoWarnROW%,Equal,True,System,ErrorOff,3
+If,%IconSpacing_CheckBox%,Equal,True,RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconSpacing,%IconSpacing_TextBox%
+If,%IconVerticalspacing_CheckBox%,Equal,True,RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics",IconVerticalspacing,%IconVerticalspacing_TextBox%
+If,%Shell_Icon_Size_CheckBox%,Equal,True,RegWrite,HKLM,0x1,"Tmp_Default\Control Panel\Desktop\WindowMetrics","Shell Icon Size",%Shell_Icon_Size_TextBox%
+End
+//--
+RegHiveUnLoad,Tmp_Default
+//RegHiveUnLoad,Tmp_Software
+//RegHiveUnLoad,Tmp_System
+
+[AuthorEncoded]
+Logo=Papirus-Team-Papirus-Places-Folder-yellow-development_0_048048.ico
+Papirus-Team-Papirus-Places-Folder-yellow-development_0_048048.ico=1004,1339
+
+[EncodedFile-AuthorEncoded-Papirus-Team-Papirus-Places-Folder-yellow-development_0_048048.ico]
+lines=0
+0=eJztVl1IFFEUnvIhcjct3WJ3XGe3QFh8MN986cfEfAjMNpM0qKSwJC0w6Cm2DROCSl3zJwmEyl8oTFc3dBEnCnrIyoICg8pcfO+1h7i3cyZnHGeTnXHUmWiOfN4zZ8+3883Zc88dhtkAf7m5DPz3MgNZDLODYRgfAEJMJfMnjnY9i7HMMsssM7ttTnJ5izZl51UBzhmMKtSCmtSKTymrqfYOz/7aORKj3uHvBFcR4rU8rsdXk4daUsovVavV73k8E0WumeB58jmqVj/k84lqtZ71X/B5S796/dsqr9KtJy4TgOCvt35d/fr0G7Ht95PkPcUC0MeYzj2wpvV33uilXPc09fR/JI6Lt6lt72EqaIcVkV57i3gGPlGuZ5o663tNVf+M1ijqhDofIfbC41LdlbAXlgs5mIscM9TfOzRLU/znpTpLNd9XQlNLLxCA4Mt/C/SBI3CN3r9syxgVai/TtuXQKerueiXloA+xuGdErhn6h20cIbYDpVKfsM2R+ByISfsZctnGsCn6R/TtB8ul2sKsia/f4Bep/pBrrvkPs9FeVCHp53o/xHG5nveL+osqiNj7RvdP5sMpklpWu2TO4KxU5jkgJs9BDnKN7p/MB68pnk/KvZl2JkBxX7BNozTtbIAmK/Y4cASuGfrHUdccPz8T+I66kCn6BwHv2zAzT5P0mptk+5V2Yss/Gnd22fL98FmbkIO5yDHT/PEOLc4crvsd1LlkyVnGPXor2+9fzTV/lM8SnqP2gmOSfntB2b/1/glw3+NJRtuEAPT1ft961l+Lb8b+MVo/nJW6+2e1AWe6av3O+j7eff8FzRuaof7JOeLnY1SCeC2P6/ET5KEG1OJs6FOt39UY5p0N/TQQfkljsRiZn5+nIsRreVyPnygPNaAW152wBv2jPLzv0sD4G+P1gwbUgpq06HfBu0tx93MyB98RMwh4b9SAWrTqx2dGIB9rcE3E2BRZsur1l/kM74n3FnW4m1amH59d9OXX8vhyPqvGV5HnDkWor328S2v/rBSZLZEfOZ1RfnUwwe/ujHb5WgfT1epn9dZfw2+9FsaFIpN69CPfSP3ZHWPBXXefEU8oohnIQ76R+plgcGNOR/Qk9F8QkStDjmJVxpCHfEP1W2aZZZZZltCoYOrXn0jy/I9r0sLz/33VWkdx/Q0U2uO3eJxzCkgsyCwqLdYNSU3M1YVxAnISk1OLdd3yc1JSi3QrU3Ny8st1U1LLUnPyC3JT80riDeINTCyASC8zOZ9hFAxdsE8VQhcxY5ef23e8n4EJAA+3G/1uwI6pAQAAAAIAAABWAAAAcgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

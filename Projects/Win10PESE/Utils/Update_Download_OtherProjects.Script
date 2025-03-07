@@ -4,17 +4,19 @@ Type=Plugin
 Author=Lancelot
 Description=Download other projects via plugin instruction.
 Credits=Galapo , JFX , ChrisR  http://TheOven.org
-Version=005
+Version=007
 Download_Level=1
 Level=10
 Selected=None
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.18
+Date=2019.01.10
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Utils/Update_Download_OtherProjects.Script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/Update_Download_OtherProjects.Script
+WebHardLink=True
 CertifiedBy=
 Certification=
 HistoryNotes01=
@@ -23,6 +25,11 @@ History002=Lancelot Added to servers - Date:2016.11.20
 History003=Lancelot Improve Macro Lilbrary File location - Date:2016.11.21
 History004=Lancelot update Download_Level - Date:2017.10.01
 History005=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+History006=Lancelot Add To Yomi Server - Date:2018.10.24
+History007=Lancelot Update ReStart_Button - Date:2019.01.10
+
+[Info_Download_Yomi]
+Call,DownloadX,"%BaseDir%\Projects\Yomi\UtilsY\Update_Download_OtherProjects.Script"
 
 [Interface]
 Download_Min_Gena_Button=Gena,1,8,25,117,70,25,Download_Gena_Minimum,0,False,False,_Download_Gena_Minimum_,False
@@ -35,7 +42,7 @@ Step1_TextLabel2="Prepare:#$xSelect Other Project#$x  to Download:#$x(~3 MB down
 Step1_Bevel=pBevel1,1,12,13,49,140,195
 Step2_TextLabel=2),1,1,189,52,26,28,14,Bold
 Step2_TextLabel2="ReScan Plugins",1,1,225,57,74,18,8,Normal
-ReScan_Button=,1,8,305,52,27,27,ReScan_P_B,Double-J-Design-Ravenna-3d-Reload024024.bmp,False,_ReScan_P_B_,False,"__ReScan (RefResh) Plugins"
+ReStart_Button=,1,8,305,52,27,27,ReStart_P_B,Double-J-Design-Ravenna-3d-Reload024024.bmp,False,_ReStart_P_B_,False,"__ReScan (RefResh) Plugins"
 Step2_Bevel=Bevel,1,12,180,49,191,36
 Step3_TextLabel=3),1,1,189,96,21,28,14,Bold
 Step3_TextLabel2="Hit 'Other Pojrect' Update Button:",1,1,223,101,172,18,8,Normal
@@ -144,8 +151,8 @@ If,Not,ExistFile,%BaseDir%\BuildGena.ini,Call,Echo,"CAN NOT FIND#$x#$x%BaseDir%\
 If,Not,ExistFile,%BaseDir%\BuildGena.exe,Call,Download,%BaseDir%\,http://gena.cwcodes.net/Projects/Tools/Gena/BuildGena.exe
 If,Not,ExistFile,%BaseDir%\BuildGena.exe,Call,Echo,"CAN NOT FIND#$x#$x%BaseDir%\BuildGena.exe#$x#$x#$xDOWNLOAD FAILURE.......",Warn,,MessageError,,Halt
 
-[ReScan_P_B]
-System,ReScanScripts
+[ReStart_P_B]
+Call,ReStart
 
 [Ex_Win7PESE_SeePic]
 Run,%ScriptFile%,See_Picture_M,Update_Win7PESE.gif
@@ -221,7 +228,9 @@ lines=16
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0

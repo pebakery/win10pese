@@ -4,18 +4,19 @@ Type=Plugin
 Author=ChrisR, JFX, (John Adamopoulos (NT5))
 Description=Will add Calculator to the PE compilation.
 Credits=http://TheOven.org
-Version=031
+Version=036
 Download_Level=1
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.09.27
+Date=2019.01.14
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Calculator.Script
 Web2=http://gena.cwcodes.net/Projects/Gena/Components/Core/1%20System/Accessories/Calculator.Script
+Web3=http://yomi.cwcodes.net/Yomi/ComponentsY/Calculator.Script
 CertifiedBy=
 Certification=
 HistoryNotes01=
@@ -39,8 +40,12 @@ History025=Lancelot syntax update - Date:2016.10.21
 History027=Lancelot Added Components_PluginCache_Extract x 2 - Date:2016.11.09 - Date:2016.11.10
 History028=Lancelot - Multi Fallback Languages support with Call,FileCopyMUI-Source - Date:2016.11.20
 History029=ChrisR - Added XP PowerTay Calc as a fallback for Win10 modern calc or as an option - Date:2017.01.30
-History030=Lanncelot Add Default Accessories Folder Localized - Date:2017.02.08
-History031=Lanncelot Add BetaTest_CheckBox to test "modern" metro application. - Reply 11 12 13 14 .... http://TheOven.org/index.php?topic=2225.msg24140#msg24140 - Date:2017.09.27
+History030=Lancelot Add Default Accessories Folder Localized - Date:2017.02.08
+History031=Lancelot Add BetaTest_CheckBox to test "modern" metro application. - Reply 11 12 13 14 .... http://TheOven.org/index.php?topic=2225.msg24140#msg24140 - Date:2017.09.27
+History033=Lancelot Add Type 3 support x3 - Date:2018.10.09 - Date:2018.10.12
+History034=APT Fix If,%OS%,Win10, -> If,%OS%,Equal,Win10, - Date:2018.10.15
+History035=Lancelot Add To Yomi Server - Date:2018.10.23
+History036=Lancelot Add BuildClass - Date:2019.01.14
 
 [Cache_SCD_Info_Additional_Plugin]
 If,%OSFamily%,Equal,NT6,Begin
@@ -101,11 +106,19 @@ If,%BetaTest_CheckBox%,Equal,False,Run,%ScriptFile%,Process_Normal_B
 If,ExistFile,%Target_Sys%\calc.exe,Call,FileDelete,%Target_Sys%\calc.exe
 Require_FileQ,calc.exe
 //-
+If,Not,ExistVar,%OS%,IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+If,%OS%,Equal,Win10,Begin
 //ChrisR calc desktop version exist in win10 enterprise with name Win32calc.exe
 If,ExistFile,%Target_Sys%\Win32calc.exe,Call,FileDelete,%Target_Sys%\Win32calc.exe
-If,ExistFile,%Source_Sys%\Win32calc.exe,Require_FileQ,Win32calc.exe
+If,%BuildClass%,Equal,3,Require,FileList,,Require_FileList_Win32calc.exe
+Else,If,ExistFile,%Source_Sys%\Win32calc.exe,Require_FileQ,Win32calc.exe
+End
 //-
 Add_Shortcut,Desktop,,%ProgramFolder%\calc.exe,"TEST Calculator"
+
+[Require_FileList_Win32calc.exe]
+\Windows\System32\Win32calc.exe
+\Windows\System32\??-??\Win32calc.exe.mui
 
 [Process_Normal_B]
 If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,Files_NT5x
@@ -113,8 +126,8 @@ Else,Run,%ScriptFile%,Files_NT6x
 //--
 // NT6 family only
 If,%OSFamily%,Equal,NT6,Begin
-If,Not,ExistFile,%target_win%\Fonts\consola.ttf,Require,Font,consola.ttf
-If,Not,ExistFile,%target_win%\Fonts\seguisym.ttf,Require,Font,seguisym.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\consola.ttf,Require,Font,consola.ttf
+If,Not,ExistFile,%Target_Win%\Fonts\seguisym.ttf,Require,Font,seguisym.ttf
 //-
 RegHiveLoad,Tmp_Default,%RegDefault%
 If,%History_CheckBox%,Equal,True,RegWrite,HKLM,0x4,Tmp_Default\Software\Microsoft\Calc,ShowHistory,1
@@ -161,7 +174,7 @@ Require_FileQ,calc.exe
 // NT6x
 //-
 If,%System32_CheckBox%,Equal,True,Begin
-Set,%TargetF%,%target_sys%
+Set,%TargetF%,%Target_Sys%
 Set,%ProgramFolder%,#$pSystemRoot#$p\system32
 End
 Else,Begin
@@ -177,7 +190,7 @@ Call,CompareVersions,%TargetVersion%,6.4.0.0,TC_6400
 Call,CompareVersions,%TargetVersion%,6.3.0.0,TC_6300
 Call,CompareVersions,%TargetVersion%,10.0.0.0,TC_10000
 //-
-//Collect Files to Provide Files Folder
+//Collect Files to Provide Files Folder - Start
 If,Not,ExistFile,%ProvideFiles%\%SourceArch%\calc.exe,Begin
 //6.3.9600.17415, 6.3.9600.17667
 If,%TC_6400%,Equal,Smaller,Begin
@@ -186,6 +199,8 @@ If,Not,ExistDir,%ProvideFiles%\x86\%DistLang%,DirMake,%ProvideFiles%\x86\%DistLa
 If,Not,ExistDir,%ProvideFiles%\x86\en-US,DirMake,%ProvideFiles%\x86\en-US
 If,Not,ExistDir,%ProvideFiles%\x64\%DistLang%,DirMake,%ProvideFiles%\x64\%DistLang%
 If,Not,ExistDir,%ProvideFiles%\x64\en-US,DirMake,%ProvideFiles%\x64\en-US
+If,%BuildClass%,Equal,3,Call,FileCopyMUI-Source,%Source_Sys%\calc.exe,%ProvideFiles%\%SourceArch%
+Else,Begin
 If,ExistFile,%Source_Sys%\calc.exe,FileCopy,%Source_Sys%\calc.exe,%ProvideFiles%\%SourceArch%
 If,ExistFile,%Source_Sys%\%DistLang%\calc.exe.mui,FileCopy,%Source_Sys%\%DistLang%\calc.exe.mui,%ProvideFiles%\%SourceArch%\%DistLang%
 If,Not,%DistLang%,Equal,en-US,Begin
@@ -193,9 +208,25 @@ If,ExistFile,%Source_Sys%\en-US\calc.exe.mui,FileCopy,%Source_Sys%\en-US\calc.ex
 End
 End
 End
+End
 Else,Begin
 // 10.0 calc desktop version exist in win10 enterprise with name Win32calc.exe
 If,%TC_10000%,Equal,Bigger,Begin
+If,%BuildClass%,Equal,3,Begin
+Require,FileList,,Require_FileList_Win32calc.exe
+If,ExistFile,%Target_Sys%\Win32calc.exe,Begin
+If,Not,ExistDir,%ProvideFiles%\x86\%DistLang%,DirMake,%ProvideFiles%\x86\%DistLang%
+If,Not,ExistDir,%ProvideFiles%\x86\en-US,DirMake,%ProvideFiles%\x86\en-US
+If,Not,ExistDir,%ProvideFiles%\x64\%DistLang%,DirMake,%ProvideFiles%\x64\%DistLang%
+If,Not,ExistDir,%ProvideFiles%\x64\en-US,DirMake,%ProvideFiles%\x64\en-US
+FileCopy,%Target_Sys%\Win32calc.exe,%ProvideFiles%\%SourceArch%\calc.exe
+If,ExistFile,%Target_Sys%\%DistLang%\Win32calc.exe.mui,FileCopy,%Target_Sys%\%DistLang%\Win32calc.exe.mui,%ProvideFiles%\%SourceArch%\%DistLang%\calc.exe.mui
+If,Not,%DistLang%,Equal,en-US,Begin
+If,ExistFile,%Target_Sys%\en-US\Win32calc.exe.mui,FileCopy,%Target_Sys%\en-US\Win32calc.exe.mui,%ProvideFiles%\%SourceArch%\en-US\calc.exe.mui
+End
+End
+End
+Else,Begin
 If,ExistFile,%Source_Sys%\Win32calc.exe,Begin
 If,Not,ExistDir,%ProvideFiles%\x86\%DistLang%,DirMake,%ProvideFiles%\x86\%DistLang%
 If,Not,ExistDir,%ProvideFiles%\x86\en-US,DirMake,%ProvideFiles%\x86\en-US
@@ -210,6 +241,8 @@ End
 End
 End
 End
+End
+//Collect Files to Provide Files Folder - Finish
 //-
 Set,%ProvideFilesOK%,True
 If,Not,ExistFile,%ProvideFiles%\%SourceArch%\calc.exe,Set,%ProvideFilesOK%,False
@@ -228,19 +261,22 @@ End
 //-
 //-------------------
 // waik ;)
+If,Not,ExistVar,%OS%,IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+If,%OS%_%BuildClass%,Equal,Waik_2,Begin
 Set,%t%,0
-If,Not,ExistFile,%source_sys%\calc.exe,Begin
+If,Not,ExistFile,%Source_Sys%\calc.exe,Begin
 If,Not,ExistFile,%TargetF%\calc.exe,Begin
 If,%ProvideFilesOK%,Equal,False,Set,%t%,1
 End
 End
 If,%t%,Equal,1,Call,Echo,"%ScriptTitle% - calc.exe and Calc.exe.mui are required for use with WAIK, ADK source",Warn,,MessageError,,Exit
-If,Not,ExistFile,%source_sys%\calc.exe,Begin
+If,Not,ExistFile,%Source_Sys%\calc.exe,Begin
 If,Not,ExistFile,%TargetF%\calc.exe,Begin
 If,ExistFile,%ProvideFiles%\%SourceArch%\calc.exe,FileCopy,%ProvideFiles%\%SourceArch%\calc.exe,%TargetF%
 If,ExistFile,%ProvideFiles%\%SourceArch%\%DistLang%\calc.exe.mui,FileCopy,%ProvideFiles%\%SourceArch%\%DistLang%\calc.exe.mui,%TargetF%\%DistLang%
 If,Not,%DistLang%,Equal,en-US,Begin
 If,ExistFile,%ProvideFiles%\%SourceArch%\en-US\calc.exe.mui,FileCopy,%ProvideFiles%\%SourceArch%\en-US\calc.exe.mui,%TargetF%\en-US
+End
 End
 End
 End
@@ -285,14 +321,20 @@ End
 //-------------------
 //Nt6x
 If,Not,ExistFile,%TargetF%\calc.exe,Begin
-If,ExistFile,%Source_Sys%\calc.exe,Begin
-Call,FileCopyMUI-Source,%Source_Sys%\calc.exe,%TargetF%
+If,%BuildClass%,Equal,2,Begin
+If,ExistFile,%Source_Sys%\calc.exe,Call,FileCopyMUI-Source,%Source_Sys%\calc.exe,%TargetF%
+End
+If,%BuildClass%,Equal,3,Begin
+Require_FileQ,calc.exe
+If,ExistFile,%Target_Sys%\calc.exe,Begin
+If,%TargetF%,Equal,"%TargetDir%\Program Files\Windows NT\Accessories",Call,FileCopyMUI-Source,%Target_Sys%\calc.exe,%TargetF%,%DistLang%,en-US
+End
 End
 End
 
 [UsePowerCalc]
-If,%SourceArch%,Equal,x86,Set,%Targetchm%,%target_sys%
-Else,Set,%Targetchm%,%target_win%\SysWOW64
+If,%SourceArch%,Equal,x86,Set,%Targetchm%,%Target_Sys%
+Else,Set,%Targetchm%,%Target_Win%\SysWOW64
 If,ExistFile,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\PowerCalc.exe,Begin
 FileCopy,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\PowerCalc.exe,%TargetF%\calc.exe
 If,ExistFile,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\calcpt.chm,Begin
@@ -301,11 +343,14 @@ End
 End
 Else,Begin
 Echo,"Download PowerCalc from XP Power Tools ..."
+//If,Not,ExistFile,%ProjectDir%\Utils\GetWaikTools.script,Call,Download,%ProjectDir%\Utils\GetWaikTools.script,http://w7pese.cwcodes.net/Projects/Win7PESE/Utils/GetWaikTools.script
+If,ExistFile,%ProjectDir%\Utils\GetWaikTools.script,Begin
 Run,%ProjectDir%\Utils\GetWaikTools.script,Launch_Program,%ProjectDir%\Utils\GetWaikTools.script,"-xppowercalc -Silent"
 If,ExistFile,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\PowerCalc.exe,Begin
 FileCopy,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\PowerCalc.exe,%TargetF%\calc.exe
 If,ExistFile,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\calcpt.chm,Begin
 If,Not,ExistFile,%Targetchm%\calcpt.chm,FileCopy,%GlobalTemplates%\GetWaikTools\XP_PowerCalc\calcpt.chm,%Targetchm%
+End
 End
 End
 Else,Run,%ScriptFile%,UseAlternative_Process
@@ -383,13 +428,18 @@ lines=1
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2|Web3
 
 [Settings_Default]
 Set,%BetaTest_CheckBox%,False,Permanent
 IniWrite,%ScriptFile%,Main,Selected,True
 
 [Settings_Default_Win10PESE]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
 IniWrite,%ScriptFile%,Main,Selected,False
 
 [InterfaceEncoded]

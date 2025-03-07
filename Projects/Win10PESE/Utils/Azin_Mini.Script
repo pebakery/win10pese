@@ -1,0 +1,486 @@
+[Main]
+Title=Azin Mini
+Type=Plugin
+Author=Lancelot
+Description=Plugin Adds Azin Mini
+Credits=http://TheOven.org
+Version=009
+Download_Level=2
+Level=0
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.03.28
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Utils/Azin_Mini.Script
+Web1C=http://win10se.cwcodes.net/Projects/Win10PESE/Utils/Azin_Mini_File.Packed
+CertifiedBy=
+Certification=
+HistoryNotes01=Azin Mini Created to ease Personal Plugins continue working with Win10PE-1809 and later.
+HistoryNotes02=Azin Mini is small as much as possible to decrease file size by using plugins already available at Win10PESE
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2020.02.02 Plugin created
+History002=Add to Server - Date:2020.02.04
+History003=Lancelot Syntax Update - Date:2020.02.13
+History004=Lancelot updated v004 - Date:2020.02.25
+History005=Lancelot Update Syntax - Date:2020.03.09
+History006=Lancelot Add Compare_Container Button - Date:2020.03.16
+History007=Lancelot Update VirtualTestY - Date:2020.03.16
+History008=Lancelot updated v008 - Date:2020.03.27
+History009=Lancelot updated v009 - Date:2020.03.28
+
+[Info]
+1) Use "Update File Container" Button --> This Will update Plugins
+2) To update .Link Files use "Open File Container" and copy .Link files manually to \Azin_Links\
+
+[Interface]
+Image_Software=,1,5,28,23,48,48
+Button_Add_Azin_Mini="Add 'Azin Mini'",1,8,2,206,106,22,Add_Azin_Mini_P_B,media_controls_dark_play_splashyIcons_016016.bmp,False,_Add_Azin_Mini_P_B_,False
+WebLabel_Homepg=HomePage,1,10,326,20,51,18,http://theoven.org/index.php?topic=3052.0
+WebLabel_Plugin="Plugin Page",1,10,321,4,55,18,http://TheOven.org/index.php?board=9
+ReStart_Button=,1,8,442,-1,27,27,ReStart_P_B,Double-J-Design-Ravenna-3d-Reload024024.bmp,False,_ReStart_P_B_,False,"__ReStart (RefResh) Plugins"
+Update_Container_Test_OpenDir_Button=,1,8,478,129,20,20,Update_Container_Test_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_Update_Container_Test_OpenDir_P_B_,False,"__Open Folder"
+Test_Button="Test At Temp",1,8,411,168,80,25,Test_P_B,0,False,False,_Test_P_B_,False
+Button_Download=,1,8,385,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,385,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,408,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Open_Container=,1,8,477,67,24,24,Open_Container_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_P_B_,False,"__Open 'File Container'"
+Button_Download_Container=,1,8,477,21,24,24,DownloadXXX_Container_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_P_Q_B_,False,"__Download Container"
+Button_Compare_Container=,1,8,477,44,24,24,Compare_Container_P_B,AmperossQetto2Move0016016.bmp,False,False,_Compare_Container_P_B_,False,"__DOWNLOAD and Compare 'File Container'"
+Button_Upload_Container=,1,8,477,-1,24,24,UploadXXX_Container,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_,False,"__UPLOAD Container (Admins Only)"
+Button_Update_Container_Button=,1,8,477,90,24,24,Button_Update_Container_P_B,Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp,False,False,_Button_Update_Container_P_B_,False,"__Update 'File Container'"
+
+[Variables]
+%ProgramTitle%=Azin Mini
+%ProgramEXE%=BuildAzin.exe
+%ProgramFolder%=Azin_Mini
+%FileContainer%=%FileContainer_Solo%
+%FileContainer_Solo%=%ScriptDir%\Azin_Mini_File.Packed
+%dl%=%GlobalTemplates%\Download_Azin
+%ProjectFNMain%=Azin
+%ProjectFNTools%=Tools\Azin
+
+[Process]
+Echo,"There is no spoon"
+
+[Test_P_B]
+Call,DirMakeE,%ProjectTemp%\1Test
+DirMake,%ProjectTemp%\1Test\Projects
+DirMake,%ProjectTemp%\1Test\Projects\Tools
+DirCopy,%GlobalTemplates%\Download_Win10PESE\Projects\Win10PESE,%ProjectTemp%\1Test\Projects
+DirCopy,%GlobalTemplates%\Download_Win10PESE\Projects\Tools\Win10PESE,%ProjectTemp%\1Test\Projects\Tools
+//-
+FileCopy,%ScriptFile%,%ProjectTemp%\1Test\Projects\Win10PESE\Utils
+FileCopy,%FileContainer%,%ProjectTemp%\1Test\Projects\Win10PESE\Utils
+//-
+If,Not,ExistVar,%EngineVersion%,Begin
+Call,ParentProcess
+Call,ParentProcessFileNameNoExt
+//-
+If,ExistFile,%ParentProcessFileNameNoExt%.ini,FileCopy,%ParentProcessFileNameNoExt%.ini,%ProjectTemp%\1Test
+//  FileCopy - Failed to copy [%BaseDir%\....exe] to: [%BaseDir%\Temp\Win10PESE\1Test\.....exe]: The process cannot access the file because it is being used by another process.
+//FileCopy,%ParentProcess%,%ProjectTemp%\1Test
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C copy /y #$q%ParentProcess%#$q #$q%ProjectTemp%\1Test#$q",%BaseDir%
+System,FileRedirect,OFF
+End
+//-
+Call,OpenDir,%ProjectTemp%\1Test
+
+[Button_Update_Container_P_B]
+Run,%ScriptFile%,Button_Update_Container_P
+
+[Button_Update_Container_P]
+If,Not,ExistFile,%dl%\Projects\%ProjectFNMain%\script.project,Call,Echo,"Halt:#$x#$xFile Not Found: %dl%\Projects\%ProjectFNMain%\script.project#$x#$xYou must first have backup of Azin before 'Update Container'#$x#$x#$xAzin\Utils\'Update Project (Exact and Secure)' Plugin#$x#$x---- Click ---> 'Update (Download + Copy) Button",Warn,,MessageError,,Halt
+//-
+//First Delete \Projects\ inside FileContainer Tip: So you can add other files to FileContaier for Plugin ;) like premade Link Files \Azin_Links\ etc. Tip: use OpenContainer Button :>
+Call,DirDelete,%ProjectTemp%\Azin_Mini_Container
+Call,PackedExtractFolder,%FileContainer%,%ProjectTemp%\Azin_Mini_Container
+Call,DirDelete,%ProjectTemp%\Azin_Mini_Container\Projects
+Call,PackedNewFile,%FileContainer%
+Call,PackedAddFolder,%FileContainer%,%ProjectTemp%\Azin_Mini_Container
+//Call,OpenDir,%ProjectTemp%\Azin_Mini_Container
+//Halt,-
+//-
+Call,DirDelete,%ProjectTemp%\Azin_Mini
+DirMake,%ProjectTemp%\Azin_Mini\Projects
+DirCopy,%dl%\Projects\%ProjectFNMain%,%ProjectTemp%\Azin_Mini\Projects
+//-
+//15 MB
+Call,DirDeleteMake,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Basic\Build\LiveSystemPro
+Call,WriteInterfaceVisible,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Azin_040.Script,,RadioButton_LiveSystemPro,False
+Call,WriteInterfaceVisible,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Azin_040.Script,,Configure_LiveSystemPro_Button,False
+Call,WriteInterfaceVisible,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Azin_040.Script,,Delete_LiveSystemPro_Button,False
+Call,WriteInterfaceVisible,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Azin_040.Script,,WebLabel_LiveSystemPro,False
+//25 MB
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\AutoIT_3381_File.Script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\AutoIT_33145_File.Script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\BootIcePauly.script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\SetACL_M.Script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\SevenZip_920_File.Script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\SevenZip_Latest_File.Script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\Utils_Tools_001.Script
+Call,FileDelete,%ProjectTemp%\Azin_Mini\Projects\%ProjectFNMain%\Utils\WimLib_M.Script
+//-
+//Here we extract other files of Container to \Azin_Mini\
+Call,PackedExtractFolder,%FileContainer%,%ProjectTemp%\Azin_Mini
+//-
+//Copy ready Links to Project folder - Links from Azin-2020-02-01 ;)
+If,ExistDir,%ProjectTemp%\Azin_Mini\Azin_Links,DirCopy,%ProjectTemp%\Azin_Mini\Azin_Links\Projects\*,%ProjectTemp%\Azin_Mini\Projects
+//-
+Call,PackedAddFolder,%FileContainer%,%ProjectTemp%\Azin_Mini
+//-
+If,Not,ExistVar,%EngineVersion%,Begin
+Call,ParentProcess
+Call,ParentProcessFileNameNoExt
+//-
+If,ExistFile,%ParentProcessFileNameNoExt%.ini,FileCopy,%ParentProcessFileNameNoExt%.ini,%ProjectTemp%\Azin_Mini
+//  FileCopy - Failed to copy [%BaseDir%\....exe] to: [%BaseDir%\Temp\Win10PESE\Azin_Mini\.....exe]: The process cannot access the file because it is being used by another process.
+//FileCopy,%ParentProcess%,%ProjectTemp%\Azin_Mini
+System,FileRedirect,OFF
+ShellExecute,Hide,cmd.exe,"/C copy /y #$q%ParentProcess%#$q #$q%ProjectTemp%\Azin_Mini#$q",%BaseDir%
+System,FileRedirect,OFF
+End
+
+[Add_Azin_Mini_P_B]
+If,Not,ExistFile,%BaseDir%\Projects\Azin\script.project,Run,%ScriptFile%,Add_Azin_Mini_P_Win10PESE
+
+[Add_Azin_Mini_P_Win10PESE]
+Call,PackedExtractFolder,%FileContainer%,%BaseDir%,Projects
+//-
+//Files known exists at Win10PESE copied to Azin Mini \Utils\
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\AutoIT_3381_File.Script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\AutoIT_33145_File.Script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\BootIcePauly.script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\SetACL_M.Script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\SevenZip_920_File.Script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\SevenZip_Latest_File.Script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\Utils_Tools_001.Script
+Run,%ScriptFile%,Add_Azin_Mini_M,Utils\WimLib_M.Script
+//-
+//Azin use Yomi Files with .Link on Azin-Package distriubtion -- Most also exists with Win10PESE:
+If,Not,ExistDir,%BaseDir%\Projects\Yomi\UtilsY,DirMake,%BaseDir%\Projects\Yomi\UtilsY
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,55-RegEdit.script
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,Aria2c_M.Script
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,Plugin_Creator_10_Packed.script
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,Plugin_Creator_Innounp.script
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,"Proxy Settings - Setup.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,"Proxy Settings - WinHTTP.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,RegCPE.script
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,"SFX Constructor.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,WGet_M.Script
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Utils\,\UtilsY,WinContig.script
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Accessibility",DirMake,"%BaseDir%\Projects\Yomi\AppY\Accessibility"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\CDVD",DirMake,"%BaseDir%\Projects\Yomi\AppY\CDVD"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\File Tasks\Compression",DirMake,"%BaseDir%\Projects\Yomi\AppY\File Tasks\Compression"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\File Tasks\File Copy",DirMake,"%BaseDir%\Projects\Yomi\AppY\File Tasks\File Copy"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\File Tasks\File Find",DirMake,"%BaseDir%\Projects\Yomi\AppY\File Tasks\File Find"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\File Tasks\File Unlock",DirMake,"%BaseDir%\Projects\Yomi\AppY\File Tasks\File Unlock"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Defrag",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Defrag"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Diagnostic",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Diagnostic"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Erase",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Erase"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\File Undelete",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\File Undelete"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Imaging",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Imaging"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\MBR",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\MBR"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Recover",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\Recover"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\UEFI",DirMake,"%BaseDir%\Projects\Yomi\AppY\HD Tasks\UEFI"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Network\Firewall",DirMake,"%BaseDir%\Projects\Yomi\AppY\Network\Firewall"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Network\Remote Connect",DirMake,"%BaseDir%\Projects\Yomi\AppY\Network\Remote Connect"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Portable",DirMake,"%BaseDir%\Projects\Yomi\AppY\Portable"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Security\AntiSpyware",DirMake,"%BaseDir%\Projects\Yomi\AppY\Security\AntiSpyware"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Security\AntiVirus",DirMake,"%BaseDir%\Projects\Yomi\AppY\Security\AntiVirus"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Security\KeyFinders",DirMake,"%BaseDir%\Projects\Yomi\AppY\Security\KeyFinders"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Security\Passwords",DirMake,"%BaseDir%\Projects\Yomi\AppY\Security\Passwords"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Security\Unlockers",DirMake,"%BaseDir%\Projects\Yomi\AppY\Security\Unlockers"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Forensic",DirMake,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Forensic"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Games",DirMake,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Games"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Graphics",DirMake,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Graphics"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Supplementary\MultiMedia",DirMake,"%BaseDir%\Projects\Yomi\AppY\Supplementary\MultiMedia"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Office",DirMake,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Office"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Tweaks",DirMake,"%BaseDir%\Projects\Yomi\AppY\Supplementary\Tweaks"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\System Tools\Debug",DirMake,"%BaseDir%\Projects\Yomi\AppY\System Tools\Debug"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\System Tools\Explorer Addons",DirMake,"%BaseDir%\Projects\Yomi\AppY\System Tools\Explorer Addons"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\System Tools\HW Info",DirMake,"%BaseDir%\Projects\Yomi\AppY\System Tools\HW Info"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\System Tools\Registry",DirMake,"%BaseDir%\Projects\Yomi\AppY\System Tools\Registry"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\System Tools\Windows Setup",DirMake,"%BaseDir%\Projects\Yomi\AppY\System Tools\Windows Setup"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\AppY\Virtualization",DirMake,"%BaseDir%\Projects\Yomi\AppY\Virtualization"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Accessibility",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Accessibility"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Accessories",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Accessories"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Games",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Games"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Network",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Core\1 System\Network"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Tweaks",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Tweaks"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Tweaks CMD",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Tweaks CMD"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\ComponentsY\Tweaks Explorer",DirMake,"%BaseDir%\Projects\Yomi\ComponentsY\Tweaks Explorer"
+//-
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\DownloadsY",DirMake,"%BaseDir%\Projects\Yomi\DownloadsY"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\DriversY",DirMake,"%BaseDir%\Projects\Yomi\DriversY"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\Final_Y",DirMake,"%BaseDir%\Projects\Yomi\Final_Y"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\OtherOSY",DirMake,"%BaseDir%\Projects\Yomi\OtherOSY"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\TweaksY\Mouse Cursors",DirMake,"%BaseDir%\Projects\Yomi\TweaksY\Mouse Cursors"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\TweaksY\Theme",DirMake,"%BaseDir%\Projects\Yomi\TweaksY\Theme"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\UtilsY",DirMake,"%BaseDir%\Projects\Yomi\UtilsY"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\VirtualTestY",DirMake,"%BaseDir%\Projects\Yomi\VirtualTestY"
+If,Not,ExistDir,"%BaseDir%\Projects\Yomi\WriteMediaY",DirMake,"%BaseDir%\Projects\Yomi\WriteMediaY"
+//-
+//Following Yomi Plugins and .Link Files at Azin - Start
+Run,%ScriptFile%,Add_Azin_Mini_M2,,,"zy_Basic Project.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,\Apps\Accessibility\,\AppY\Accessibility,"mousemu_RH_Designs.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\File Tasks\","\AppY\File Tasks","Q-Dir_Nenad.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\File Tasks\","\AppY\File Tasks","Total Commander.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\File Tasks\Compression\","\AppY\File Tasks\Compression","7-Zip_File_Manager_SJL.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\","\AppY\HD Tasks","Active Partition Manager_vX.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\Imaging\","\AppY\HD Tasks\Imaging","Acronis_Backup_Prz42.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\Imaging\","\AppY\HD Tasks\Imaging","Acronis_TrueImage_Prz42_2019.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\Imaging\","\AppY\HD Tasks\Imaging","Acronis_Universal_Restore.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\Imaging\","\AppY\HD Tasks\Imaging","AOMEI_Backupper_Stand_Pro_Prz42.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\Imaging\","\AppY\HD Tasks\Imaging","HDClone.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\MBR\","\AppY\HD Tasks\MBR","BootIce.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\HD Tasks\MBR\","\AppY\HD Tasks\MBR","BootIce_B.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","Flash_Add.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","Free_Download_Manager_3_Lite.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","Free_Download_Manager_3_Lite_File.Packed"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","Free_Download_Manager_5.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","Mozilla_Firefox_ESR.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","QtWeb.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\","\AppY\Network","QtWeb_x86_File.Packed"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Network\Firewall\","\AppY\Network\Firewall","Simplewall.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Security\Passwords\","\AppY\Security\Passwords","PassReset_simplix.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Security\Passwords\","\AppY\Security\Passwords","Windows Login Unlocker_Joker2013.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Supplementary\","\AppY\Supplementary","mht2htm_Goran Atanasijevic.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Supplementary\Graphics\","\AppY\Supplementary\Graphics","Desktop Clock Plus-7.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Supplementary\Graphics\","\AppY\Supplementary\Graphics","Rotate_slore.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Supplementary\MultiMedia\","\AppY\Supplementary\MultiMedia","mpc-be.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Supplementary\Office\","\AppY\Supplementary\Office","SumatraPDF.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\Supplementary\Office\","\AppY\Supplementary\Office","xCHM.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Dism_PlusPlus.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","LetterSwap.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","NSudo_L.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","OfflineSFC.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Portable Finder CMD.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Portable Finder Startup.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Portable Finder Startup_CD.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Serviwin.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Switch Keyboard.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\","\AppY\System Tools","Test Plugin.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Debug\","\AppY\System Tools\Debug","Sysinternals_Process_Monitor.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Explorer Addons\","\AppY\System Tools\Explorer Addons","ExeProperties_ExtraBit.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Explorer Addons\","\AppY\System Tools\Explorer Addons","HashTab_olegpov_v5_vX.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Explorer Addons\","\AppY\System Tools\Explorer Addons","InspectExe.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Explorer Addons\","\AppY\System Tools\Explorer Addons","VersionTabXP.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\HW Info\","\AppY\System Tools\HW Info","AIDA64 Business.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\HW Info\","\AppY\System Tools\HW Info","AIDA64 Engineer.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\HW Info\","\AppY\System Tools\HW Info","AIDA64 Extreme.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\HW Info\","\AppY\System Tools\HW Info","AIDA64 Network Audit.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\HW Info\","\AppY\System Tools\HW Info","BatteryPE.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\HW Info\","\AppY\System Tools\HW Info","CoolMon1_Amalux.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Registry\","\AppY\System Tools\Registry","RegShot2_ru_Unicode.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Registry\","\AppY\System Tools\Registry","Runscanner.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Registry\","\AppY\System Tools\Registry","Runscanner2.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\System Tools\Windows Setup\","\AppY\System Tools\Windows Setup","WinNTSetup3.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","Additional_Files.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","Additional_Fonts.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","Calculator.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","CMD Adds.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","DirectX.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","DotNet_S.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","IscsI.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MBR2GPT.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MBR2GPT_BobOmb_CMD.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MSMediaPlayer.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MSMediaVSFilter_DirectShow Subtitle Filter.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MsPaint.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MsPowerShell Core.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MsPowerShell.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MSViewer.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","MsWordPad.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","NotePad.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","Rdc.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","Search.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","SlideToShutDown.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","SnippingTool.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","Steps Recorder.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","VcRunTimes.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","WallPaper_Login.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Core\1 System\","\ComponentsY\Core\1 System","IE_Favorites_url.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Core\1 System\Accessibility\","\ComponentsY\Core\1 System\Accessibility","Accessibility_Mouse.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Core\1 System\Accessibility\","\ComponentsY\Core\1 System\Accessibility","Magnify.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Core\1 System\Accessibility\","\ComponentsY\Core\1 System\Accessibility","On Screen Keyboard.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Additional_Files_Other.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Mouse_Cursors.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Mouse_Tordex Wheel.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Nircmd_SetDisplay.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","NumLock_Setting.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Run_MRU.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Tweak DPI.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Tweak Mouse.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Tweak UserPreferencesMask.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks\","\ComponentsY\Tweaks","Tweak Visual Effects.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks CMD\","\ComponentsY\Tweaks CMD","CMD 2Shortcut.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks CMD\","\ComponentsY\Tweaks CMD","CMD Settings_Color.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks CMD\","\ComponentsY\Tweaks CMD","CMD Settings_Console.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks CMD\","\ComponentsY\Tweaks CMD","CMD Settings_Options Layout.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp Appearance_5 High Contrast Black.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp ContextMenu_CMD Here.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp ContextMenu_Format On Drives.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp ContextMenu_SendTo_Compressed (zipped) folder.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp ContextMenu_SendTo_Desktop.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp ContextMenu_SendTo_yyMisc.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp ContextMenu_ShellNew.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp IconSize.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp StartMenu General.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\Tweaks Explorer\","\ComponentsY\Tweaks Explorer","Exp yzMisc.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_51_App.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_52_App.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_53_App.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_54_App.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_55_App.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_70.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_Y_Plugins_71.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Downloads\","\DownloadsY","Download_z_Gena-Sweets.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Drivers\","\DriversY","Double Driver.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Drivers\","\DriversY","Nvidia GeForce.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Drivers\","\DriversY","zz_Drivers.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Drivers\","\DriversY","zz_DrvInstPatch.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\","\TweaksY","1-wallpaper.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\","\TweaksY","PowerOptions.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Mouse Cursors\","\TweaksY\Mouse Cursors","Mouse_Cursors_Breeze Cursors by niivu.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Mouse Cursors\","\TweaksY\Mouse Cursors","Mouse_Cursors_Cursor Sans Family v1.5.1 by RandomAcronym.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Mouse Cursors\","\TweaksY\Mouse Cursors","Mouse_Cursors_Material Design Cursors by Manga737.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Mouse Cursors\","\TweaksY\Mouse Cursors","Mouse_Cursors_MonoSoftly by tchiro.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Mouse Cursors\","\TweaksY\Mouse Cursors","Mouse_CursorsCapitaine cursors by krourke.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Theme\","\TweaksY\Theme","Theme_MediaPlayer_WIEBENOR_1.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Tweaks\Theme\","\TweaksY\Theme","Theme_Win_100_Ades Theme for Windows 10 by unisira.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\VirtualTest\","\VirtualTestY","AA_Best_Emulation.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\VirtualTest\","\VirtualTestY","qEmu.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\VirtualTest\","\VirtualTestY","qEmu_X.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\VirtualTest\","\VirtualTestY","VirtualBox.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\VirtualTest\","\VirtualTestY","VMWare.script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\WriteMedia\","\WriteMediaY","Rufus.script"
+//Following Yomi Plugins and .Link Files at Azin - Finish
+//-
+//Addiitonal Files Available at Win10PESE - Start
+//List can change in time after testing other Plugins and Improvments with Azin (eg. WriteMedia Plugins)
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Apps\File Tasks\File Find\","\AppY\File Tasks\File Find","AgentRansack_2016.Script"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Components\","\ComponentsY","VcRunTimes_File.Packed"
+Run,%ScriptFile%,Add_Azin_Mini_M2,"\Drivers\","\DriversY","Nvidia GeForce_File.Script"
+//Addiitonal Files Available at Win10PESE - Finish
+
+[Add_Azin_Mini_M]
+If,ExistFile,%BaseDir%\Projects\Win10PESE\#1,FileCopy,%BaseDir%\Projects\Win10PESE\#1,%BaseDir%\Projects\Azin\#1
+
+[Add_Azin_Mini_M2]
+If,ExistFile,%BaseDir%\Projects\Win10PESE\#1#3,FileCopy,%BaseDir%\Projects\Win10PESE\#1#3,%BaseDir%\Projects\Yomi#2
+
+[Update_Container_Test_OpenDir_P_B]
+Call,OpenDir,%ProjectTemp%\Azin_Mini
+
+[Open_Container_P_B]
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_Solo%
+
+[ReStart_P_B]
+Call,ReStart
+
+[AuthorEncoded]
+Elegantthemes-Beautiful-Flat-Sail-boat_0_048048.ico=1878,2504
+Logo=Elegantthemes-Beautiful-Flat-Sail-boat_0_048048.ico
+
+[EncodedFile-AuthorEncoded-Elegantthemes-Beautiful-Flat-Sail-boat_0_048048.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp=701,935
+Double-J-Design-Ravenna-3d-Reload024024.bmp=1230,1640
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+
+[DownloadXXX]
+IniRead,%ScriptFile%,Main,Level,%LevelBefore%
+Call,DownloadXQ
+IniWrite,%ScriptFile%,Main,Level,%LevelBefore%
+
+[UploadXXX]
+IniRead,%ScriptFile%,Main,Level,%LevelBefore%
+Call,UploadXQ
+IniWrite,%ScriptFile%,Main,Level,%LevelBefore%
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Level,0
+
+[DownloadXXX_Container_P_Q_B]
+//IniRead,%ScriptFile%,Container_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_Solo%,%WebFileContainer%
+
+[UploadXXX_Container]
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_Solo%,%WebFileContainer%
+
+[Compare_Container_P_B]
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,CompareEdit,%FileContainer_Solo%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-ark-2_1_016_016.bmp]
+lines=0
+0=eJyt0t9PUmEcx3Hb+gOqv6DLtu66aLV10fq53Cy5aQ2zbpxaaYCpzViZWR1+JPFDhUQIKDAhBFFIQEtBFJm55uLHAQ4LhK3VdfNKPz2dSUsPri56ttfO9n32Puc823OqpnNvFbuOEoeIfcR+Yk/VQXZ+cmv/zwXgvwjMRiAZNEFKyLRmllRrqsCMZCaHnb3U6ofYlwE1twZJqAjZfAnPyiIlyMmTms1D/I6B3R/m9L0GN7q8DNrH6Yo6PDTaXCncD+RhnYpw+m7jBNrcGdwYTfx2y5FktRA37Qk0v4mjczKHobEgpxcbfWi0xVFvXGFdNXxE3Q58/TKE7iw0b6e39Zubm2jXe3HlRQxnpNM4y5rhOE0F0TjyGZRlclu/sbGBe5YZtDpp8v4MhOMMRFvaiNuuLARuht1vdWbw2Ozl/L/Ou4DLUgeqxUO42G3AJaJZ8xr8p8PgPTSilqh5YECDzo9XgSinn1tJ4Fq/D8dFGhwTqnFBrobzewyDdBAnuhRkRuYCNVosYSRya5z+x/o6OkYWUD/gwTnbAPgFFcTfbLjz1YTqlAw1ejPqNG48ckTw67yV7uDSahw8Ww+O0EKcL/SAX1KAV5TgMCPEgZXrELxUIV3gfruMsj9H8+oTtKb70JQj8ko0fSGycghSfaidF+DDcmjXfupTEMqwDg0Td0FlhkExRsKAXloHka8HypAWqSK9a1+mdPXDyozBmnOxTOlRRNOxv3ZlGmc/IsVFREpRYhGz+TlEk0v/3HuiHihnlFC9V7EUQQWypWzF/idbaCAaeJzTcy1LLUrMScnXdS6qLC5JzNF1zklNLNJ1LCjQTSzK1jWKN4w3MDQDYb2k3AKGUTC8QBkLhA5iwi4v1713EQMTAC02El3ZoiKsAQAAAAIAAABHAAAAUgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Double-J-Design-Ravenna-3d-Reload024024.bmp]
+lines=0
+0=eJzdlHtQVGUYxu0vWCKDWGBZKG5K4BKXkL1fWfbsroQikMCCtUqZ3FFQtCxXxxTUBbkoEEERhJITE4XaUNroP9VA1pgWmBqkaJcBJ3S5LfD0nQPDyGAThn95Zp45O3u+87zP+d7v/UVEH2EtYi4+kT8Rh8iN6LFFXsz/xunn914AHml193Wh7mwddrbuxvaWHdjbVojmr5vR138DC/Ht/bMHOcfzoDmaCOojA7knQNPwIiLfj4W6NgaqwyuQ35SPq7euPHCd0x3tWL4lDNqWtaCOJ4M6lgjNh2sQWR8Hdd1qRNSsRERlFFQVeqiLKTSda5x3jdpPq+Gqs4eTxhYhJj6o5iRomhIQ2RAP9XvT3tUvMPmVZVooSiIh269EaVvxvGq0nmsBm2LhqUgbsLUsCMwqiA6p4ZftDQ+jIzxedoBvmjtCd4Qy3oqDasiLlJDukaLpbMO8ahxo3Mvkp7XE4AbqDQlUBXx4G53AMdiBk0SUyILXOheI90gg3yeHjNwVJgku93X/Z43JyUlkHdyAyo/LYBmxzKy/fWcAlW2lWGrkwDWeBZdYFjySHCHeJYJ0lxiStwTIqHx1QeeKVtdvPyEo1RfOq1hwjraF7zp3SE1CSHaEQ7TteXRf/3nBNb6/3AluzGKwo2zhHMVC+NZgiF9fDtHWUJS0FC3Yn1Z+RRbYetInnQ38X/GEmGQXbQlGcmHsQ/H/4ZfzYOuIv9YG3gYXJrswLwjyzaGwjlvn1Lh49QJqvqjGqfMncan3RwwM9oPu9b/5j46NwjPGifH3TGBDlB8M4aZACLMCMWgZnPUefSbdViyGpJxi5pSeI2W5FrrSKKRUrUXjV/Vz6tC1eUlejP+SFA6Em4MgyOFBmLkMd4fuzKy3Wq14Jprk0NhAWqFl5lT97qrpOdUjpz4bw6NDc/yHRobgsdKB2aOgjb4Q5gZCkBUA1aYwTExM4N7v5OifYOZJRvsTfkW8Ew0VYYzcrMbF3gv33aPTne2M99PxjiT7cxBk8yDI8McGc8qs9ZZhC5wpO8ZfTvIyjKmayk4zhjJr8VlH66xMY9Yx6HIVcI9zQHgubyY7P80Px858MMt/4O9+hjlOFO2vg/KIHgriqywnvw9pGMbIChWIN6+G+ZP9TC/SSteD95oPhHRPp7PzSXZNHh+W4buz/G/9dXOKN8RfUqKGp9EV3qlcyIsJv4jkB1TTjJESDoggeVMwNUsFoRDlBU9lzwyAIO1ZtHeenLOXPX3XGF5yo56EoTCO4YprnB28jORM0/wqUkD2tgzS3WJId05xQLwtjMxSCDmPdPZlEKT7o+5U1X37dO3GFeQWp6Pn5q8YHx/HvqMmcBPswVnDAjfJHrzspRATvkhNdHb+DAdEZJaEOYHQb5fiy+8+f6CZ7ej+BjEmDdwMjzNM5ibbwyfVFQFpnghM90FIph82lr6EE9+2YmRs5H/zoOv6JVSfKENeTToyDq9HQW02Gs/U4Y/bvz8UxixU/wDOLxv7eJzTdskvTcpJ1fXSdUktzkzP0w1KLEvNy0vUNU7RDUrNyU9MMTAyASK9pNwChlEw7MA0TgidyoJd/rnmIwEGJgDhFxFq3jfyRwEAAAACAAAARQAAAGUEAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+

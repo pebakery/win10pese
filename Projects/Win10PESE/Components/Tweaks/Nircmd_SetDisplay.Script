@@ -1,0 +1,172 @@
+[Main]
+Title=Nircmd SetDisplay
+Type=Plugin
+Author=Lancelot
+Description=Change Display Resolution via NirCmd
+Credits=http://TheOven.org
+Version=004
+Download_Level=2
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.02.02
+Depend=
+Disable=
+Web1=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks/Nircmd_SetDisplay.Script
+Web2=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks/Nircmd_SetDisplay.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=ADD: cd /d "%~dp0"   top of your cmd files -- end Exit to the end;)
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2015.08.27 Plugin created
+History002=Lancelot Update hiderun lines - Date:2017.09.24
+History003=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+History004=Lancelot Add Win10PESE - Date:2019.02.02
+
+[Interface]
+pBevel1=pBevel1,1,12,4,6,133,126
+pCheckBox1="Desktop shortcut",1,3,8,10,105,18,False
+pCheckBox2="Start Menu shortcut",1,3,8,48,122,18,True
+pCheckBox3="Quicklaunch shortcut",1,3,8,29,122,18,False
+pCheckBox4="Startup shortcut",1,3,8,109,122,18,True
+pTextBox1="Start Menu folder:",1,0,11,85,119,18,
+Edit_TextFile=Nircmd_SetDisplay.cmd,1,6,142,49,376,251
+ScrollBox_RunFromWhere="Run from Normal",1,4,143,6,130,21,"Run from Normal","Run from RAM","Run from CD"
+RunFromSys32_CheckBox="Run From System32",1,3,144,29,116,18,True
+Button_Launch_Program=Edit,1,8,13,207,80,25,Launch_Program
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://www.nirsoft.net/utils/nircmd.html
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=Nircmd_SetDisplay
+%ProgramEXE%=Nircmd_SetDisplay.cmd
+%ProgramFolder%=Nircmd_SetDisplay_Prg
+%SetupFile%=%SetupFilex86%
+%SetupFilex86%=Nircmd_SetDisplay.cmd
+%SetupFilex64%=Nircmd_SetDisplay.cmd
+
+[Process]
+Echo,"Processing %ScriptTitle%..."
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+If,%pCheckBox4%,Equal,True,Begin
+If,Not,ExistFile,%Target_Sys%\HideRun.exe,Require,File,HideRun.exe
+End
+//--
+Run,%ScriptFile%,Extract
+//--
+Run,%ProjectDir%\Utils\NirSoft_NirCmd.Script,Extract%SourceArch%
+FileCopy,%NirCMDFiles%\nircmd.exe,%Target_Sys%
+//FileCopy,%NirCMDFiles%\nircmdc.exe,%target_sys%
+//--
+If,%RunFromSys32_CheckBox%,Equal,True,Begin
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%,%target_sys%
+Set,%Target_Prog%,%target_sys%
+Set,%ProgramFolder%,""
+Set,%PE_Programs%,%systemroot%\system32
+End
+//--
+If,%RunFromSys32_CheckBox%,Equal,False,Begin
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+End
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+//Registry - Use Utils\RegCPE
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun
+If,%pCheckBox4%%RunFromSys32_CheckBox%,Equal,TrueFalse,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\hiderun.exe,%ProgramTitle%,#$q%PE_Programs%\%ProgramFolder%#$q,"/w #$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+If,%pCheckBox4%%RunFromSys32_CheckBox%,Equal,TrueTrue,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\hiderun.exe,%ProgramTitle%,#$q%PE_Programs%#$q,"/w #$q%PE_Programs%\%ProgramEXE%#$q"
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%ScriptFile%,InterfaceEncoded,%SetupFile%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+//Extracting-7z-Finish
+
+[Launch_Program]
+Run,%ScriptFile%,Extract
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+Echo,"Close Editor. Waiting......."
+Call,StartDocWaitNotepad,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%
+System,RefreshInterface
+
+[AuthorEncoded]
+cmd4848.ico=494,659
+Logo=cmd4848.ico
+
+[EncodedFile-AuthorEncoded-cmd4848.ico]
+lines=1
+0=eJztlr9OwzAQxq+kokggtQMCxEKFVIkFlIWZTH0ONtY+AhIDj5CZjXfIko3HCG8S4vxRr1bOOZPESar7qq+fFPvsX2wnLcAs+/g+ZN9r+N4AXAHAQ+bsErxCcV3pfQOicWvu0F4LLkpLhz634NdrKV079KWF9VpK9xMxpceJmNLzRHysSidi4Rf+xMJj5I8MHE1cwj+s/8uvzuIT6l93Nqt+1Jimtr74E0ONUmjBGJbXbx3x6+wR7N8LWAlRQ81N7V3X/FvUrq8zfga562maq2t+vI67hrG46+mSP0Rtbfabc6764N91NJ8+3nbk/NQ6V2q7l1x+/HzazNnE33YfufyYw/T8fgHv/anU5r1vy6/8htpNv1NNZ7rqGznmN/Xn1FbeMvv1wZ8YapT0fTHNOQQ/vg/O/zeq1qZ/H/xjsfALfx/8omE19LmYyvmvm5N7TfiFv8v7PyZ+kUgkcqY01z5/AWbp50ECLDrJ+vFOvZM87z7mefpxkUFQJhQZw0WZZ0V6hxmU463jVZ4vZS5hZcOJ1kFvX9z81GZtPTf/ANs6/Cp4nONOzk0xsTCx0MtMzmcYBSMO7FOF0IsZscsbODW2MjABAK19BoKMYALxAQAAAAIAAAAnAAAAowEAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Launch.bmp=913,1218
+Nircmd_SetDisplay.cmd=147,196
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_SE]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Launch.bmp]
+lines=0
+0=eJxN0WtMFFcUAGCM/W/SXzSxaZOmTX8YtdLSJk1jQsIPpUZNSGMTWk1tKvFVMDVGCaIWRKWGgrLaRbq4AruwT92XWoshUVAhKtFAYVmWZXdgdmdnZ+beedy587gdXJr05JyTm3O/5J7kVuywrS15E+VWfWzVOqvetmpNSemb+b7V+/8HI5vLgggx+K73x2/sP1Tb9+QBRXEwrxAG4qyk0lClgcxAhRBi+RN/L1T9efTM+OUQgZ38qyvceHW0YWNrVe2z7M/j7OGXuYNP0keD443PmcHnScvvdbbXPTz4gtBVd2sqQ19vi+yqffHb7uBPW7tPHM+QujjfEOdqwzORR8PR0IDlNzeXX50fmCTshp7yj65vXt/xbmVg//6RptIDa05myeEptmGG/d73OjI3N70wY/myXze1TfXO6sInPV+WXn7vw65Pz0LSkHy67tuSJo7Uz3Dn4uze4GSMQs8oYPmd16p33N3zWX/F5wNbKz3bym5u6dZIa+r+O4fWnufI8Vm+dY7bd2fyr2X5ZZqx/BGvw5/wD9H3jzz6pe5xfWcieo/I2/u/qLhxqjlLTs0LzQnu2IPpO6zqja/4jleZGm99cMo3QWanyNI0EWsCu8u6djUmwOkkbEyClhRoHk20zxUuTaQs75wHLlY8FLF91bLlgwNvbTr9flVf04UMOk+pZ5LCSqbAxTgT/mcJIGz53oVCRCFejUTISt4mpEckXTncRsELadCyCFsWhba0NEbxxf9yLhRCkuli8S3esBc0O610MehqDlm9dRFepJQ2ClxKwdF0oehdiyAsmR6o9YtGH685AHEUkJ3F13JKO610LMPfl8ROGo1luKJ3Z8CwSvyi7gG6W8C3CoqTQw5e6ykgW06x5dCVnGzLCKOZ1X2GKPAAkaho+CTNJ+o+qLtFw5lXbuZRd16+zqAbednBoKdLQtEPUmAYkduyFlRwUMbWYh5Bc0tmn/WWbHQzkp03/qClCRoWvUdQR1RzBJv3kBlTjZhihJDmFbWAZAwJ2MXjQQH7eXWCWfVuWgwDHBNxTDKioh6GWgjggIADvOrnsItTvSyyZ+Wx7KoHmlFM0TBF3YS6aZ3hf0Pe6lhnNUPWjKL/F4rXcD14nOPySSzNS87QS8otYBgFIw9MY4bQ7szY5SXNdJ4zMAEARyYGGuVhjnsBAAAAAgAAACYAAABHAwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[Folder]
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[EncodedFile-InterfaceEncoded-Nircmd_SetDisplay.cmd]
+lines=0
+0=eJyzssrLLErOTdFLrUhVKE4tScksLshJrFSwMDBQMANiIxNeLiscagwNjEwUzM0swIoIKDE24uVKrcgsAQDK+CIseJwT9cssSs5NiQ9OLXHJLC7ISazUA3IZRsEIAQVQ2gmH/G/pc8EMTABusQsh2t7hVAEAAAACAAAALQAAAEIAAAAAAAAAAQAAAAAAAAAAAAAA
+

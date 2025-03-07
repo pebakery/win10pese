@@ -4,20 +4,21 @@ Type=Plugin
 Author=Dera, ChrisR
 Description=The Volume Shadow Copy Service (VSS) is a set of COM interfaces that implements a framework to allow volume backups to be performed while applications on a system continue to write to the volumes.#$xSome apps may need this service.
 Credits=JFX - http://forum.sanbarrow.com/viewtopic.php?f=85&t=49
-Version=012
+Version=017
 Download_Level=1
 Level=3
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://forum.sanbarrow.com/viewtopic.php?f=85&t=49
-Date=2016.11.18_20:51.06 (GMT0: -1 Hours)
+Date=2019.01.30_18:55.12 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Components/Vss.script
 CertifiedBy=
 Certification=
 HistoryNotes01=Lancelot - Vss is NOT vital for Windows and is definately NOT required by All application on PE or portable windows. Ex: DriveImage XML normally requires Vss, but not on PE ;)
+HistoryNotes02=ChrisR - For info, the Volume Shadow Copy Service or VSS is already included in winre.wim, you don't need an additional plugin
 History001=Dera - Creation
 History002=ChrisR - Add for x64 - AddAutoRun
 History003=ChrisR - deleting a wrong Line coming from a copy-paste
@@ -30,6 +31,10 @@ History009=ChrisR - Win8.1SE RamoS seems to need the patched files, I have misse
 History010=ChrisR - Added Test for Wow64 support. On x64 build add the respected x86 version in SysWOW64 folder if Wow64 support enabled - 2015.07.25
 History011=ChrisR - Added DU Buttons - Date:2016.01.28
 History012=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10 - Date:2016.11.18
+History014=Lancelot Add BuildClass 3 support - Date:2018.10.09
+History015=Bob.Omb added compatibility for Win10 v1809 - Date:2018.10.14
+History016=Lancelot Add BuildClass - Date:2019.01.14
+History017=Lancelot Add Call,HostOSArch - Date:2019.01.27 - Date:2019.01.30
 
 [Variables]
 %ProgramTitle%=
@@ -54,8 +59,9 @@ If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components P
 If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
 
 [Process_Normal]
+Call,HostOSArch
 If,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,Set,%RegeditexeFolder%,%ProjectTemp%\HostOSTools\
-If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%SysType%,Equal,x86,Echo,"regedit.exe MAY write wrong values",WARN
+If,Not,ExistFile,%ProjectTemp%\HostOSTools\regedit.exe,If,Not,%HostOSArch%,Equal,x86,Echo,"regedit.exe MAY write wrong values",Warn
 //-
 Echo,"Processing file copy..."
 Require_FileQ,es.dll
@@ -69,12 +75,13 @@ Require_FileQ,VSSVC.exe
 Require_FileQ,xolehlp.dll
 If,%OS%,Equal,Win8.1,Require_FileQ,bcd.dll
 If,%OS%,Equal,Win10,Require_FileQ,bcd.dll
+If,ExistFile,%InstallSRC%\System32\vssadmin.exe,Require_FileQ,vssadmin.exe
 // x64 add the respected x86 version in SysWOW64 folder if Wow64 support enabled
 If,%SourceArch%,Equal,x64,If,%TargetWOW64%,Equal,x86,Begin
 Set,%PluginArch%,x86
 Require_FileQ,es.dll
 Require_FileQ,eventcls.dll
-Require_FileQ,vssadmin.exe
+If,ExistFile,%InstallSRC%\SysWOW64\vssadmin.exe,Require_FileQ,vssadmin.exe
 Require_FileQ,vss_ps.dll
 Require_FileQ,vssapi.dll
 Require_FileQ,vsstrace.dll
@@ -85,7 +92,8 @@ Set,%PluginArch%,""
 End
 //-
 If,Not,ExistDir,%Target_Win%\VSS,DirMake,%Target_Win%\VSS
-FileCopy,%Source_Win%\VSS\*,%Target_Win%\VSS
+If,%BuildClass%,Equal,3,Require,FileList
+Else,FileCopy,%Source_Win%\VSS\*,%Target_Win%\VSS
 //-
 If,Not,ExistDir,%ProjectTemp%\Vss,DirMake,%ProjectTemp%\Vss
 ExtractAllFiles,%ScriptFile%,Patch,%ProjectTemp%\Vss
@@ -96,23 +104,26 @@ Run,%ScriptFile%,Patch_Vss
 Echo,"Processing registry..."
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegHiveLoad,Tmp_System,%RegSystem%
-ShellExecute,hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Vss\EventSystem.reg#$q"
+ShellExecute,Hide,%RegeditexeFolder%regedit.exe,"/s #$q%ProjectTemp%\Vss\EventSystem.reg#$q"
 RegHiveUnLoad,Tmp_Software
 RegHiveUnLoad,Tmp_System
 //-
 Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\Vss#$q"
-If,ExistDir,%ProjectTemp%\Vss,Echo,"ProjectTemp\Vss Directory NOT DELETED",WARN
+If,ExistDir,%ProjectTemp%\Vss,Echo,"ProjectTemp\Vss Directory NOT DELETED",Warn
 //-
 If,%CheckBox_SC%,Equal,True,Add_Shortcut,StartMenu,%TextBox_SMF%,#$pSystemRoot#$p\system32\start_vss.cmd,%TextBox_SCN%,#$pSystemRoot#$p\system32,,#$pSystemRoot#$p\system32\filemgmt.dll#$c0
 If,%CheckBox_LoadVss%,Equal,True,AddAutoRun,Start_Vss,#$pSystemRoot#$p\System32\start_vss.cmd,,4
+
+[Require_FileList]
+\Windows\VSS\*
 
 [Patch_Vss]
 Echo,"Patch Vss files..."
 If,Not,ExistFile,%Tools%\gsar.exe,ExtractFile,%ScriptFile%,Patch,gsar.exe,%Tools%
 If,Not,ExistFile,%Tools%\gsar.exe,Filecopy,%ProjectTemp%\Vss\gsar.exe,%Tools%
-ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x54 -r:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x58 #$q%Target_Sys%\vssadmin.exe#$q"
-ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x54 -r:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x58 #$q%Target_Sys%\vssadmin.exe#$q"
-ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Sys%\vssadmin.exe#$q"
+If,ExistFile,%Target_Sys%\vssadmin.exe,ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x54 -r:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x58 #$q%Target_Sys%\vssadmin.exe#$q"
+If,ExistFile,%Target_Sys%\vssadmin.exe,ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x54 -r:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x58 #$q%Target_Sys%\vssadmin.exe#$q"
+If,ExistFile,%Target_Sys%\vssadmin.exe,ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Sys%\vssadmin.exe#$q"
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x54 -r:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x58 #$q%Target_Sys%\vssapi.dll#$q"
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x54 -r:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x58 #$q%Target_Sys%\vssapi.dll#$q"
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Sys%\vssapi.dll#$q"
@@ -121,13 +132,47 @@ ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x0
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Sys%\VSSVC.exe#$q"
 //-
 If,%SourceArch%,Equal,x64,Begin
-ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x54 -r:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x58 #$q%Target_Win%\SysWOW64\vssadmin.exe#$q"
-ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x54 -r:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x58 #$q%Target_Win%\SysWOW64\vssadmin.exe#$q"
-ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Win%\SysWOW64\vssadmin.exe#$q"
+If,ExistFile,%Target_Win%\SysWOW64\vssadmin.exe,ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x54 -r:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x58 #$q%Target_Win%\SysWOW64\vssadmin.exe#$q"
+If,ExistFile,%Target_Win%\SysWOW64\vssadmin.exe,ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x54 -r:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x58 #$q%Target_Win%\SysWOW64\vssadmin.exe#$q"
+If,ExistFile,%Target_Win%\SysWOW64\vssadmin.exe,ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Win%\SysWOW64\vssadmin.exe#$q"
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x54 -r:x4D:x00:x69:x00:x6E:x00:x69:x00:x4E:x00:x58 #$q%Target_Win%\SysWOW64\vssapi.dll#$q"
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x54 -r:x4D:x00:x49:x00:x4E:x00:x49:x00:x4E:x00:x58 #$q%Target_Win%\SysWOW64\vssapi.dll#$q"
 ShellExecute,Hide,%Tools%\gsar.exe,"-o -s:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x73 -r:x53:x00:x79:x00:x73:x00:x74:x00:x65:x00:x6D:x00:x53:x00:x65:x00:x74:x00:x75:x00:x70:x00:x49:x00:x6E:x00:x50:x00:x72:x00:x6F:x00:x67:x00:x72:x00:x65:x00:x73:x00:x74 #$q%Target_Win%\SysWOW64\vssapi.dll#$q"
 End
+
+[AuthorEncoded]
+Vss.jpg=2714,3619
+Logo=Vss.jpg
+
+[EncodedFile-AuthorEncoded-Vss.jpg]
+lines=0
+0=eJydkns80/sfx7+zzUZKc0kuUYpQkUsph+2QXBJCCjkWElPjNISoRXK/REZuZwe5K7k31tzm3s0YIZethMSZS7PTtvabfud3fv/8/vj9fq/P+/3+vB+Pz/vz+byfj89H8E4wC+w8Y2FtAYBAIOCycAACBuB3OgxzFQBsbQEtAADgAASkAECFGUjoSJDi37kFSAMA/8hFhEF3KwIIodsB/9Tlv+p+zOc8MQHB2nanz++9qa99TPuE8KZJ4BQgAgJt2V8CQ8FbEoVAwFCYKAy25XCxbWJwuDgcBhPfLi6+TUIomNgOye0SO7byrUO2tm/tEpoEHAaX+J8laAcQcOAocBQMUgVEECAwAiSgAirCrqGgH/oLCACJgCFQUWFL4tuEBY07he2DwSLCZqEQiHD1tnAdgCCgUvt0TUWlHTxhqjdk9KLSC+H7zWo7ZB2HWAf0vXDRYuK75HbLK6ipH9TQ1DI4dtzwxEmjU+anLSytrM84nXe+cNHF1c37is9VXz+Mf1BwyM3QsPBb92Lux8bFJyRmPMwkZGU/ysktKn5cUlpWXlFZV9/Q2NT8nNTS2UXt7unt6x+gDY/QR8fejU8wmB8+zn2aX1j8vLq2vvGVvcn589sWFwgAg/6l/8iFEHKJCN8AAtviAomEbhUgINB9uqJSpg4wzxvSqnpRcBmz9MLaDrH9+o4sWS/ckPiuAwYMtdUttB9k/x1Y9P9F9jfYv7kmAAmw8CMiwAgABfBXVnUSggWAKOfOujM9cO+z4QZObkRSQt71X4uSM2zDjq4Su1ETTwp4Kqo8fdaBlPiQwUmH47WVZZuzzYFZMia5ZzMkp2Q/Elnn/pgs7kKJUQ75GVnGb0yhqQqHFXIx367GYaQPKKuNdsTEX82vSPG+t7yLk/Yp/MojbEoMTraiJsyQXcKv3cAGjFGn1Z/xiZEHTXq/7cgrnrxd5k5q2raWoG6dWbTScbjO/NXAoyHLNzNxgyWOxKYKNXhoIN6qqp9HaG0ID6uekKnku2WqOZayE4fwiXZv04oJM+b9bf6BcSr1ll9mit0/oxR4EUz73UtWdylEPPOnpAK75fg+xPiknl7FUkFlUn4WOPctB8S6xPbnDGOg8x3oBIWauGMX3btEE5gVTEozrrWpH4N7OZu6sGCktFFDoOwTAB3qX2eipg8+H1GjPaUcMDX2wI7F76szdGyV0Cdn/ZzjQNrnegHnfElPxExFl98oAC7HI3dG7qjnNDKGdHWtwTOnroscKSA/Dg/diZMXIbmXD6ro/8otbTvxmmfZj1vZ28ladgspPHyWpOmcL4Oh5zUWQ/IwTbSL9Kaa3e83n4V7qM05vqoNKe9+4mNt3ZI52vLaVqMRi9ZOr9/M+fYgErNqz3a+gt9t1SZtLKbohcUNjJyqxljz/1wem8uB3UyDgN6OkcOuUVvwyWSUb+XixQfoxYkYG5MX1CMtJ9NjTUXb8t/cI7Lc0Klt9WY2oikfkl5F2Lv3GOhI/xziRN5AF8QMfSS21AGht5htbm2zuWh5pJo147b0BU46a4qyaxEtpaNus13pF/nLzWTE4aUgGfPAhtjFsx3YOTX68nh9wnnJkXpt5V6fDU+0nKysCWFM72vKSptdk++rObJp9Eut11lSdu55rUj0w0biEm2+NRLCiSiM9OZnNAzipRe+Bbwo4bBHba85NlCaXYvI3OCUoPUqcAYkEWR8t+peew0BaXiHtmvmmWG81/B3ec67SEtWso2SdJjcJcLTJxthxdjk3JuVrSVST71F6N3t5154DsyHfpC8/13tM7p+vqvA0JREyW5H7sRzLI09vR/Xl5b5sjVzYSSNx4qPzHXx5e9/z77gk44rnmjz+SOGKH6dIlPSG+VNi7QvWtIlS/lnxD/9NHIu31iSZKal0X68db/zeOd8rosVo3zIuarZYKa9Ac1eX+C6ekw5rOdQdIx6PkkP4vp6Jfsesukm84eqJggGY3q2E475GUnDGW76Wfw8/GzxDBzvH1U+vujGDbOkss/W4BltcloYtwLStud1VQX1GkpZFl5kn4eqFH9+K8qPKHaHpryfHiwp/jlrWp1VsPam0N+R8X3wRnClMd0iwAM1bW6eRAg4k6VEPM+vaZtNU4byf/9AItOKn9FKsy6sH9Heu/06yZbyC/nR+uE13hfsatBaZT5iNTtVAPhOEsdvTQdC3P2+Zd+fVgxXj13oUKOmcuMzFuOmn6/Livrcz/NzdpQDJF/zzs7eMnayh2V91HLs5vrR72ViFZQS7ZwIvzyka2hQrn5diHivyZThuHoFaRsXwhmatHw1DRRmec4BZ+pUtlqa94loEO5FKPo4YR/6Hf5hFj3exQ7gxD2WTFg36e2xCj2eF1LVU8/Bd30BvGUzC3PMZwxfGXyurhYvPIfEj7yZyHauowuAq1hf6rcQeuMXD5XmNOqo4U1aAoLSt4Tbs8cOfkhR4l6fNzp5GsKyK9uznJXEsFXAXqLeUcdrD2zaEXTmx45Wf3eumzPfC/V6s9fFaxtp/NWdpEglfkIZPxXvNbPLryW1JgjPrEmoEE254Rl44yAbG9PsaKCq6GetdUUFQyghguYvuz53dubHJer5Pz9jsPTJpQaTmOE+5FDnkbuoPDC6qFgStN62PYzLxct5pDpkt7jePj6iRbqmGdLS9OTrZn7W+hzWnC0Adi5hucd4gSS6Diit/Tdkrn4oznptA3teI9mKx/AucJZpBowk+J/7ObVc1WmXsKY/eonwY4qScE6rY3pAyG2jsIQhY3fYT4GqDpkP5mqNvcO0qSsH90/ybBhPUD0eKmRa46UTOhvLZurRzGmfKaW+LgjCY7sAgPt2o8ZtH6NhPUh1jtTxl0Z7lt/GudAech/YzRzu++nwo707SinHCRjH0DSepMWd2uT2oW5Ts8rxKYMvwyu5dJRdtr3FIB4mAPwjUIphv813UrSeEdvRiOC+NGKRv5yGG0M06EjycmPgk+/u86BMxAO9Q/Ntk0FsQjO/ZIXJ0WVtnh7meao3/lpeb/ESST8QYGPtJwDWlrEqojZv36FzvN7PWa8IAD/ha89e7EWB+xnE5Gn5VXzMY1OCESUqaM/rAs12HShVnHNy90D+0dloMdkkriYvnLOPi1xozkJJHEGq8pxXlau5T4+Zv72S50DZdj91Vw4zSkqmXfyuVrR1x1Wv29d36MPiAqX7pk6zunmaAkA/ojU46c+mtASmRBryZSaO4HG0c+D7aBGtoVAAIJlPBuXUQrQSpnRidQOW3qE8BcC7Uxb8NLKJydcpeinpg60FCLpStae8qbm+2Yl0fVm1fw07ctf+pZuF4ntWZZ6y8ugkO5Mzg610vXcwyhhsEEv7KD23ZFThJJ9+sstSpL48wDT0BLfxjQDolF91Ylf7jfUgarp0RKzG807VtUhfU6jGv/+Nccfl3KbLmpXJ6Yg3seRjZRzDLvatCwRfaGxBGfXZpcnOVu/7MpeBQ4NUZiXTv4X+ce5gq+/4XI6HtHZnFzSqtGI4usGrwRrv1tx664W9YPwf0t8gYHicYw8rLtbLKkhnGAUjEnBwQ+gQLuzymUwyVgxMANNuA+cQLyxCAQAAAAIAAAAiAAAAVAoAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFolders]
 Patch
@@ -152,41 +197,7 @@ lines=2
 lines=0
 0=eJxLL04sUtDNV9AttqowcbGqMDCwqjCzhNKuqHwTKN/UREG3iATlFgplxcWJKbmZeXqpFam8XOlY7DRB04TOR7OToHJ8dpoaQxSZQzWZw/gmUA+YQmmoZTD1MHGYOnMY3wDVEbCAMIWKmxtBxd2gtDmauCmaO4zBfh30zjQhIl5pk5YKMvVScnLomZKw2TjoI2hIpSN8cUr9VBQWHBzmTM/iCIeFgz5yhkwaQgpgXi4Ak3ro93icYy3QS85NYRgFIxRcZ4PQW3HI636XesrABAAvpwWP3Z1QNgEAAAACAAAAIAAAALUAAAAAAAAAAQAAAAAAAAAAAAAA
 
-[EncodedFile-AuthorEncoded-Vss.jpg]
-lines=0
-0=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
-
-[AuthorEncoded]
-Vss.jpg=2714,3619
-Logo=Vss.jpg
-
 [EncodedFile-Patch-EventSystem.reg]
 lines=0
 0=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
-
-[DownloadXXX]
-Call,DownloadXQ
-
-[UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
-
-[InterfaceEncoded]
-DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
-BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
-lines=0
-0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
-lines=0
-0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
-
-[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
-lines=0
-0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
 

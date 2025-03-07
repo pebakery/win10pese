@@ -1,0 +1,584 @@
+[Main]
+Title=QtWeb
+Type=Plugin
+Author=Altorian
+Description=(v3.8.5.108) lightweight, secure and portable browser having unique user interface and privacy features.
+Credits=http://TheOven.org
+Version=007
+Download_Level=2
+Level=5
+Selected=True
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2020.03.09
+Depend=
+Disable=
+Web1=http://yomi.cwcodes.net/Yomi/AppY/Network/QtWeb.script
+Web1C_x86=http://yomi.cwcodes.net/Yomi/AppY/Network/QtWeb_x86_File.Packed
+Web2=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/Network/QtWeb.script
+Web2C_x86=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/Network/QtWeb_x86_File.Packed
+CertifiedBy=
+Certification=
+HistoryNotes01=
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+HistoryNotes52=To add Registry see line starting with //Registry
+History002=Lancelot Add DUC Buttons - Date:2011.08.10
+History003=Lancelot updated to v3.8.5 - Date:2016.01.05
+History004=Lancelot fixed failure mydeardiary reply 36 http://TheOven.org/index.php?topic=175.msg20858#msg20858 - Date:2016.07.21
+History005=Lancelot ReWrite Plugin with FileContainer and Download options - Date:2020.01.17
+History006=Lancelot Update with more options - Date:2020.01.17 // Cosmetics - Date:2020.01.17
+History007=Lancelot Update Syntax - Date:2020.03.09
+
+[Info]
+ALL QtWeb Downloads: http://www.qtweb.net/download.html
+--
+Windows Installer (win32/pe): QtWeb-setup.exe   (8 MB)
+http://www.qtweb.net/downloads/QtWeb-setup.exe
+MacOS X Application (carbon): QtWeb.app.zip   (12.7 MB)
+http://www.qtweb.net/downloads/QtWeb.app.zip
+Linux & Unix Application (elf386): QtWeb-elf386.zip   (12.3 MB)
+http://www.qtweb.net/downloads/QtWeb-elf386.zip
+Windows Portable executable in zipped archive: QtWeb.zip   (7.4 MB)
+http://www.qtweb.net/downloads/QtWeb.zip
+Windows stand-alone portable executable: QtWeb.exe   (7.5 MB)
+http://www.qtweb.net/downloads/QtWeb.exe
+//-
+Call,Download,%ProvideFiles%\,http://www.qtweb.net/downloads/QtWeb-setup.exe
+Call,Download,%ProvideFiles%\,http://www.qtweb.net/downloads/QtWeb.app.zip
+Call,Download,%ProvideFiles%\,http://www.qtweb.net/downloads/QtWeb-elf386.zip
+Call,Download,%ProvideFiles%\,http://www.qtweb.net/downloads/QtWeb.zip
+Call,Download,%ProvideFiles%\,http://www.qtweb.net/downloads/QtWeb.exe
+
+[Interface]
+pBevel1=pBevel1,1,12,-3,-3,83,70
+pCheckBox1=Desktop,1,3,1,1,59,14,True,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pTextBox1=,1,0,1,43,75,21,,"__'Start Menu' Folder"
+Image_Software=QtWeb_TheOven.gif,1,5,85,47,390,218
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+Button_Launch_Program=Launch,1,8,2,206,60,22,Launch_Program,media_controls_dark_play_splashyIcons_016016.bmp,False,_Launch_Program_,False
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://www.qtweb.net/
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Open_Container_x86=,0,8,541,44,24,24,Open_Container_x86_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_x86_P_B_,False,"__Open 'File Container x86'"
+Button_Download_Container_x86=,1,8,541,21,24,24,DownloadXXX_Container_x86_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_x86_P_Q_B_,False,"__Download Container x86"
+Button_Upload_Container_x86=,1,8,541,-1,24,24,UploadXXX_Container_x86,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_x86_,False,"__UPLOAD Container x86 (Admins Only)"
+ProvideFile_Bevel=ProvideFile_Bevel,0,12,-2,130,83,43
+ProvideFile_x86_TextBox="Provide File",0,0,1,150,78,21,QtWeb.zip
+ProvideFile_Opendir_Button=,1,8,61,132,18,18,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Folder"
+Button_Download_Web_x86=Download,1,8,0,104,80,25,Button_Download_Web_x86_P_B,Mazenl77-NX11-Internet-Real_016_016.bmp,False,_Button_Download_Web_x86_P_B_,False,"__Download or Update"
+Advanced_UI_Button="Show Proxy",1,8,-1,238,64,25,Show_Advanced_UI_P_B,0,True,_Show_Advanced_UI_P_B_,True
+Simple_UI_Button="Hide Proxy",0,8,-1,238,64,25,Show_Simple_UI_P_B,0,True,_Show_Simple_UI_P_B_,True
+Proxy_NoProxy_RadioButton=NoProxy,0,11,3,263,68,20,True
+Proxy_enabled_RadioButton="Enable Proxy",0,11,3,285,100,20,False
+Proxy_enabled_Bevel=pBevel2,0,12,15,304,461,176
+Proxy_type_TextLabel=Type:,0,1,49,313,33,18,8,Normal
+Proxy_type_ScrollBox=Socks5,0,4,83,307,150,21,Socks5,Http
+Proxy_hostName_TextLabel=Host:,0,1,51,333,31,18,8,Normal
+Proxy_hostName_TextBox=,0,0,83,329,304,21,
+Proxy_Port_TextLabel=Port:,0,1,393,331,30,18,8,Normal
+Proxy_Port_NumberBox=pNumberBox1,0,2,423,328,48,22,1080,0,999999999,
+Proxy_UserName_TextLabel="User Name:",0,1,21,354,60,18,8,Normal
+Proxy_UserName_TextBox=,0,0,83,351,200,21,
+Proxy_Password_TextLabel=Password:,0,1,27,376,55,18,8,Normal
+Proxy_Password_TextBox=,0,0,83,373,200,21,
+Proxy_Exceptions_CheckBox=Exceptions,0,3,86,398,77,18,True
+Proxy_Exceptions_TextBox=,0,0,87,432,327,21,
+Proxy_Exceptions_Info1_TextLabel="Do not use proxy server for address beginnin with:",0,1,89,416,270,18,8,Normal
+Proxy_Exceptions_Info2_TextLabel="Use semicolons (;) to seperate entries",0,1,91,457,230,18,8,Normal
+Proxy_Exceptions_Bevel=pBevel2,0,12,80,397,349,79
+Proxy_AutoProxy_RadioButton="Enable Auto-proxy (use Internet Connection proxy settings)",0,11,4,480,316,20,False
+
+[Variables]
+%ProgramTitle%=QtWeb
+%ProgramEXE%=QtWeb.exe
+%ProgramFolder%=QtWeb_WebKit
+%SetupFile%=%SetupFile_x86%
+%SetupFile_x86%=QtWeb.zip
+%SetupFile_x64%=QtWeb.zip
+%FileContainer%=%FileContainer_x86%
+%FileContainer_x86%=%ScriptDir%\QtWeb_x86_File.Packed
+%ProgramSourceFiles%=QtWeb_ProvideFile
+%ProvideFiles%=%GlobalTemplates%\%ProgramSourceFiles%
+%ProvideFile_TextBoxV%=%ProvideFile_x86_TextBox%
+%DownloadMessage%=No
+%FileWeb%=%FileWeb_x86%
+%FileWeb_x86%=http://www.qtweb.net/downloads/QtWeb.zip
+
+[Process]
+Arch,x86
+Echo,"Processing %ProgramTitle%..."
+//--
+Set,%t1%,1
+Set,%t2%,1
+If,Not,ExistFile,%FileContainer%,Set,%t1%,0
+If,Not,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Set,%t2%,0
+//--
+If,%t1%%t2%,Equal,00,Run,%ScriptFile%,Download_Web_x86_P
+If,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Set,%t2%,1
+//--
+If,%t1%%t2%,Equal,00,Exit,"%ProgramTitle% - %FileContainer% OR %ProvideFiles%\%ProvideFile_TextBoxV% Not Found - Plugin Exit"
+//--
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+Run,%ScriptFile%,Extract
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+//--
+//Install Mode: {localappdata}\QtWeb.NET\QtWeb Internet Browser
+//Call,TargetLocalSettingsAppdata
+//Call,DirDeleteMake,"%TargetLocalSettingsAppdata%\QtWeb.NET\QtWeb Internet Browser"
+//FileCopy,"%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings\QtWeb.NET\Icons","%TargetLocalSettingsAppdata%\QtWeb.NET\QtWeb Internet Browser"
+//-
+//'Install Mode' not available for now -- For now 'Portable Mode2
+//Portable Mode: .\QtWebSettings\QtWeb.NET\QtWeb Internet Browser.ini
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings,%Target_Prog%\%ProgramFolder%
+//--
+//Dependencies - Require,FileList [Require_FileList] http://TheOven.org/index.php?topic=1466.0 - Require_FileQ - : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+//Registry - Use Utils\RegCPE Plugin - Copy/Paste Registry lines here.
+//Not working for now - maybe flag file for Install Mode required ! Run,%ScriptFile%,Registry
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+
+[Registry]
+RegHiveLoad,Tmp_Default,%RegDefault%
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\AdBlock",useAdBlock,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\AdBlockEx",useAdBlockEx,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\ApprovedSSL",pagead2.googlesyndication.com,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\ApprovedSSL",ApproveAll,true
+RegWrite,HKLM,0x3,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\BrowserMainWindow",defaultState,40,00,42,00,79,00,74,00,65,00,41,00,72,00,72,00,61,00,79,00,28,00,fe,00,ef,00,fe,00,ef,00,00,00,00,00,00,00,06,00,ff,00,ff,00,ff,00,ff,00,01,00,00,00,00,00,00,00,00,00,2e,00,01,00,d9,00,d0,00,cb,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,d0,00,00,00,00,00,00,00,4a,00,00,00,00,00,03,00,89,00,00,00,00,00,02,00,70,00,00,00,00,00,00,00,d8,00,00,00,00,00,00,00,69,00,00,00,00,00,03,00,81,00,00,00,00,00,02,00,68,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,a2,00,00,00,00,00,00,00,ff,00,00,00,00,00,00,00,06,00,fd,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,3b,00,00,00,00,00,01,00,c7,00,00,00,00,00,00,00,04,00,00,00,00,00,00,00,04,00,00,00,00,00,00,00,08,00,00,00,00,00,00,00,08,00,fc,00,00,00,00,00,00,00,03,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,1a,00,00,00,42,00,00,00,6f,00,00,00,6f,00,00,00,6b,00,00,00,6d,00,00,00,61,00,00,00,72,00,00,00,6b,00,00,00,73,00,00,00,20,00,00,00,42,00,00,00,61,00,00,00,72,00,03,00,00,00,00,00,00,00,00,00,ff,00,ff,00,ff,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,1c,00,00,00,4e,00,00,00,61,00,00,00,76,00,00,00,69,00,00,00,67,00,00,00,61,00,00,00,74,00,00,00,69,00,00,00,6f,00,00,00,6e,00,00,00,20,00,00,00,42,00,00,00,61,00,00,00,72,00,01,00,00,00,00,00,00,00,00,00,ff,00,ff,00,ff,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,2e,00,01,00,d9,00,d0,00,cb,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,15,00,00,00,00,00,02,00,a9,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,15,00,00,00,00,00,02,00,a9,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,2e,00,01,00,d9,00,d0,00,cb,00,00,00,01,00,00,00,00,00,00,00,00,00,02,00,3b,00,00,00,00,00,00,00,39,00,00,00,00,00,02,00,a9,00,00,00,00,00,01,00,ff,00,00,00,00,00,02,00,3b,00,00,00,00,00,00,00,39,00,00,00,00,00,02,00,a9,00,00,00,00,00,01,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,1e,00,00,00,00,00,00,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,00,00,00,00,02,00,14,00,00,00,00,00,00,00,50,00,01,00,00,00,00,00,00,00,05,00,01,00,00,00,00,00,00,00,01,00,29,00
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\cookies",acceptCookies,AcceptOnlyFromSitesNavigatedTo
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\cookies",keepCookiesUntil,KeepUntilExpire
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\downloadmanager",downloadDirectory,X:\
+//RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\downloadmanager",downloadDirectory,Desktop
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\downloadmanager",full_cleanup,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\downloadmanager",askForFileName,true
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\general",openLinksIn,0
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\general",hideMenuIcons,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\general",ShowMenu,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\general",Language,en_US
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\history",historyExpire,7
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",first_start,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",restoring,false
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",onStartup,2
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",quitDontAsk,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",downloadAudioVideo,false
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",mouseweelClickAction,1
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",style,"Windows .NET"
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",home,http://www.google.com
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\MainWindow",newTabAction,0
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",enabled,false
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",type,0
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",hostName,
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",port,1080
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",userName,
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",password,
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",useExceptions,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",Exceptions,
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\proxy",autoProxy,false
+RegWrite,HKLM,0x3,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\sessions",lastSession,40,00,42,00,79,00,74,00,65,00,41,00,72,00,72,00,61,00,79,00,28,00,00,00,00,00,00,00,ec,00,00,00,00,00,00,00,02,00,00,00,00,00,00,00,01,00,00,00,00,00,01,00,ae,00,fe,00,ef,00,fe,00,ef,00,00,00,00,00,00,00,06,00,00,00,00,00,00,00,42,00,00,00,00,00,00,00,aa,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,02,00,00,00,00,00,00,00,2a,00,00,00,68,00,00,00,74,00,00,00,74,00,00,00,70,00,00,00,3a,00,00,00,2f,00,00,00,2f,00,00,00,77,00,00,00,77,00,00,00,77,00,00,00,2e,00,00,00,71,00,00,00,74,00,00,00,77,00,00,00,65,00,00,00,62,00,00,00,2e,00,00,00,6e,00,00,00,65,00,00,00,74,00,00,00,2f,00,ff,00,ff,00,ff,00,ff,00,00,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,2e,00,01,00,d9,00,d0,00,cb,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,d0,00,00,00,00,00,00,00,4a,00,00,00,00,00,03,00,89,00,00,00,00,00,02,00,70,00,00,00,00,00,00,00,d8,00,00,00,00,00,00,00,69,00,00,00,00,00,03,00,81,00,00,00,00,00,02,00,68,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,a2,00,00,00,00,00,00,00,ff,00,00,00,00,00,00,00,06,00,fd,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,3b,00,00,00,00,00,01,00,c7,00,00,00,00,00,00,00,04,00,00,00,00,00,00,00,04,00,00,00,00,00,00,00,08,00,00,00,00,00,00,00,08,00,fc,00,00,00,00,00,00,00,03,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,1a,00,00,00,42,00,00,00,6f,00,00,00,6f,00,00,00,6b,00,00,00,6d,00,00,00,61,00,00,00,72,00,00,00,6b,00,00,00,73,00,00,00,20,00,00,00,42,00,00,00,61,00,00,00,72,00,03,00,00,00,00,00,00,00,00,00,ff,00,ff,00,ff,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,1c,00,00,00,4e,00,00,00,61,00,00,00,76,00,00,00,69,00,00,00,67,00,00,00,61,00,00,00,74,00,00,00,69,00,00,00,6f,00,00,00,6e,00,00,00,20,00,00,00,42,00,00,00,61,00,00,00,72,00,01,00,00,00,00,00,00,00,00,00,ff,00,ff,00,ff,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,2e,00,01,00,d9,00,d0,00,cb,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,15,00,00,00,00,00,02,00,a9,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,15,00,00,00,00,00,02,00,a9,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,2e,00,01,00,d9,00,d0,00,cb,00,00,00,01,00,00,00,00,00,00,00,00,00,02,00,3b,00,00,00,00,00,00,00,39,00,00,00,00,00,02,00,a9,00,00,00,00,00,01,00,ff,00,00,00,00,00,02,00,3b,00,00,00,00,00,00,00,39,00,00,00,00,00,02,00,a9,00,00,00,00,00,01,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,1e,00,00,00,00,00,00,00,ff,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,00,00,00,00,00,02,00,14,00,00,00,00,00,00,00,50,00,01,00,00,00,00,00,00,00,05,00,01,00,00,00,00,00,00,00,01,00,29,00
+//--
+//Set,%regreadscripttemp%,
+//If,ExistRegKey,HKLM,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch",recentSearches,RegRead,HKLM,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch",recentSearches,%regreadscripttemp%
+//If,%regreadscripttemp%,Equal,,ShellExecute,Hide,Reg.exe,"Delete #$qHKLM\Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch#$q /v #$qrecentSearches#$q /f"
+//If,%version%,Smaller,80,ShellExecute,Hide,Reg.exe,"add #$qHKLM\Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch#$q /v #$qrecentSearches#$q /t REG_MULTI_SZ /f"
+//Else,RegWrite,HKLM,0x7,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch",recentSearches,
+//--
+RegWrite,HKLM,0x4,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch",maximumSaved,10
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\toolbarsearch",searcher,Google
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",ZoomRatio,1
+RegWrite,HKLM,0x3,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",fixedFont,40,00,56,00,61,00,72,00,69,00,61,00,6e,00,74,00,28,00,00,00,00,00,00,00,40,00,00,00,00,00,00,00,16,00,00,00,43,00,00,00,6f,00,00,00,75,00,00,00,72,00,00,00,69,00,00,00,65,00,00,00,72,00,00,00,20,00,00,00,4e,00,00,00,65,00,00,00,77,00,40,00,2a,00,00,00,00,00,00,00,00,00,00,00,00,00,ff,00,ff,00,ff,00,ff,00,05,00,01,00,00,00,32,00,10,00,29,00
+RegWrite,HKLM,0x3,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",standardFont,40,00,56,00,61,00,72,00,69,00,61,00,6e,00,74,00,28,00,00,00,00,00,00,00,40,00,00,00,00,00,00,00,1e,00,00,00,54,00,00,00,69,00,00,00,6d,00,00,00,65,00,00,00,73,00,00,00,20,00,00,00,4e,00,00,00,65,00,00,00,77,00,00,00,20,00,00,00,52,00,00,00,6f,00,00,00,6d,00,00,00,61,00,00,00,6e,00,40,00,30,00,00,00,00,00,00,00,00,00,00,00,00,00,ff,00,ff,00,ff,00,ff,00,05,00,01,00,00,00,32,00,10,00,29,00
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",enableJavascript,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",enablePlugins,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",autoLoadImages,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",blockPopups,true
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",savePasswords,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",enableDiskCache,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",enableLocalStorage,false
+RegWrite,HKLM,0x3,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",userStyleSheet,40,00,56,00,61,00,72,00,69,00,61,00,6e,00,74,00,28,00,00,00,00,00,00,00,11,00,ff,00,ff,00,ff,00,ff,00,29,00
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",customUserStyleSheet,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",useExtViewer,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",ExtViewer,NOTEPAD.EXE
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",customUserAgent,false
+RegWrite,HKLM,0x1,"Tmp_Default\Software\QtWeb.NET\QtWeb Internet Browser\websettings",UserAgent,
+//-
+RegHiveUnLoad,Tmp_Default
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//--
+If,ExistFile,%ProvideFiles%\%ProvideFile_TextBoxV%,Begin
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProvideFiles%\%ProvideFile_TextBoxV%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+End
+Else,Begin
+Call,PackedExtractFile,%FileContainer%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,%SetupFile%
+If,Not,ExistFile,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile%,Call,Echo,"%ProgramTitle% - File Not Found: %SetupFile% missing at %FileContainer% - Plugin Exit",Warn,,MessageError,5,Exit
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%SetupFile%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+End
+//--
+//Extracting-7z-Finish
+//-
+//-----------
+ExtractFile,%ScriptFile%,Folder,QtWebSettings.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings_7z#$q"
+//-----------
+ExtractFile,%ScriptFile%,Folder,QtWebCache.7z,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+//ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebCache.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebCache.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebCache_7z#$q"
+//-----------
+//-
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings\QtWeb.NET
+//-
+ExtractFile,%ScriptFile%,Folder,Icons,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings\QtWeb.NET
+//-
+Set,%w%,"%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings\QtWeb.NET\QtWeb Internet Browser.ini"
+FileCreateBlank,%w%
+IniWrite,%w%,#$pGeneral,Language,en-US
+IniWrite,%w%,#$pGeneral,openLinks,0
+IniWrite,%w%,#$pGeneral,hideMenuIcons,false
+IniWrite,%w%,#$pGeneral,ShowMenu,true
+//-
+//IniWrite,%w%,MainWindow,home,http://www.TheOven.org
+IniWrite,%w%,MainWindow,home,http://www.google.com
+IniWrite,%w%,MainWindow,first_start,false
+IniWrite,%w%,MainWindow,restoring,true
+//onStartup,2 - Last Session
+//onStartup,0 - HomePage
+IniWrite,%w%,MainWindow,onStartup,0
+IniWrite,%w%,MainWindow,quitDontAsk,true
+IniWrite,%w%,MainWindow,downloadAudioVideo,True
+IniWrite,%w%,MainWindow,mouseweelClickAction,1
+IniWrite,%w%,MainWindow,style,"Windows .NET"
+IniWrite,%w%,MainWindow,newTabAction,0
+//-
+IniWrite,%w%,ApprovedSSL,ApproveAll,true
+//-
+//better ask where to download ;)
+//IniWrite,"%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\QtWebSettings\QtWeb.NET\QtWeb Internet Browser.ini",downloadmanager,askForFileName,True
+IniWrite,%w%,downloadmanager,askForFileName,true
+//-
+//IniWrite,"%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings\QtWeb.NET\QtWeb Internet Browser.ini",downloadmanager,downloadDirectory,%DL_Dir_TextBox%
+IniWrite,%w%,downloadmanager,downloadDirectory,X:\
+//IniWrite,%w%,downloadmanager,downloadDirectory,Desktop
+IniWrite,%w%,downloadmanager,full_cleanup,false
+//-
+IniWrite,%w%,cookies,acceptCookies,AcceptOnlyFromSitesNavigatedTo
+IniWrite,%w%,cookies,keepCookiesUntil,KeepUntilExpire
+//-
+IniWrite,%w%,websettings,ZoomRatio,1
+//IniWrite,%w%,websettings,customUserAgent,true
+//IniWrite,%w%,websettings,UserAgent,Chrome
+//-
+IniWrite,%w%,toolbarsearch,recentSearches,@Invalid()
+IniWrite,%w%,toolbarsearch,maximumSaved,50
+IniWrite,%w%,toolbarsearch,searcher,Google
+//-
+//IniWrite,%w%,lastSession,"#$q@ByteArray(\0\0\0\xec\0\0\0\x2\0\0\0\x1\0\0\x1\xd4\xfe\xef\xfe\xef\0\0\0\x6\0\0\0h\0\0\0\xaa\0\0\0\x1\0\0\0\x2\0\0\0P\0h\0t\0t\0p\0:\0/\0/\0w\0w\0w\0.\0g\0o\0o\0g\0l\0\x65\0.\0\x63\0o\0m\0/\0#\0s\0p\0\x66\0=\0\x31\0\x35\0\x37\0\x39\0\x32\0\x34\0\x36\0\x30\0\x35\0\x34\0\x32\0\x33\0\x34\xff\xff\xff\xff\0\0\0\0\x1\0\0\0\0.\x1\xd9\xd0\xcb\0\x1\0\0\0\0\0\x42\0\0\0#\0\0\x2\xfb\0\0\x2I\0\0\0J\0\0\0\x42\0\0\x2\xf3\0\0\x2\x41\0\0\0\0\0\0\0\0\0\xa2\0\0\0\xff\0\0\0\x6\xfd\0\0\0\0\0\0\x2\xaa\0\0\x1\xc7\0\0\0\x4\0\0\0\x4\0\0\0\b\0\0\0\b\xfc\0\0\0\x3\0\0\0\x1\0\0\0\x1\0\0\0\x1a\0\x42\0o\0o\0k\0m\0\x61\0r\0k\0s\0 \0\x42\0\x61\0r\x2\0\0\0\0\xff\xff\xff\xff\0\0\0\0\0\0\0\0\0\0\0\x2\0\0\0\x1\0\0\0\x1c\0N\0\x61\0v\0i\0g\0\x61\0t\0i\0o\0n\0 \0\x42\0\x61\0r\x1\0\0\0\0\xff\xff\xff\xff\0\0\0\0\0\0\0\0\0\0\0\x2\0\0\0\0\0\0\0.\x1\xd9\xd0\xcb\0\x1\0\0\0\0\0\0\0\0\0\x15\0\0\x2\xa9\0\0\0\x38\0\0\0\0\0\0\0\x15\0\0\x2\xa9\0\0\0\x38\0\0\0\0\0\0\0\0\0.\x1\xd9\xd0\xcb\0\x1\0\0\0\0\x2;\0\0\0\x39\0\0\x2\xa9\0\0\x1\xff\0\0\x2;\0\0\0\x39\0\0\x2\xa9\0\0\x1\xff\0\0\0\0\0\0\0\0\0\x1e\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x2\x14\0\0\0P\x1\0\0\0\x5\x1\0\0\0\x1)#$q"
+//-
+IniWrite,%w%,BrowserMainWindow,defaultState,"#$q@ByteArray(\xfe\xef\xfe\xef\0\0\0\x6\xff\xff\xff\xff\x1\0\0\0\0.\x1\xd9\xd0\xcb\0\x1\0\0\0\0\0\x42\0\0\0#\0\0\x2\xfb\0\0\x2I\0\0\0J\0\0\0\x42\0\0\x2\xf3\0\0\x2\x41\0\0\0\0\0\0\0\0\0\xa2\0\0\0\xff\0\0\0\x6\xfd\0\0\0\0\0\0\x2\xaa\0\0\x1\xc7\0\0\0\x4\0\0\0\x4\0\0\0\b\0\0\0\b\xfc\0\0\0\x3\0\0\0\x1\0\0\0\x1\0\0\0\x1a\0\x42\0o\0o\0k\0m\0\x61\0r\0k\0s\0 \0\x42\0\x61\0r\x2\0\0\0\0\xff\xff\xff\xff\0\0\0\0\0\0\0\0\0\0\0\x2\0\0\0\x1\0\0\0\x1c\0N\0\x61\0v\0i\0g\0\x61\0t\0i\0o\0n\0 \0\x42\0\x61\0r\x1\0\0\0\0\xff\xff\xff\xff\0\0\0\0\0\0\0\0\0\0\0\x2\0\0\0\0\0\0\0.\x1\xd9\xd0\xcb\0\x1\0\0\0\0\0\0\0\0\0\x15\0\0\x2\xa9\0\0\0\x38\0\0\0\0\0\0\0\x15\0\0\x2\xa9\0\0\0\x38\0\0\0\0\0\0\0\0\0.\x1\xd9\xd0\xcb\0\x1\0\0\0\0\x2;\0\0\0\x39\0\0\x2\xa9\0\0\x1\xff\0\0\x2;\0\0\0\x39\0\0\x2\xa9\0\0\x1\xff\0\0\0\0\0\0\0\0\0\x1e\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x2\x14\0\0\0P\x1\0\0\0\x5\x1\0\0\0\x1)#$q"
+//-
+IniWrite,%w%,AdBlock,useAdBlock,true
+IniWrite,%w%,AdBlock,useAdBlockEx,true
+//-
+IniWrite,%w%,proxy,enabled,%Proxy_enabled_RadioButton%
+Set,%t%,0
+If,%Proxy_type_ScrollBox%,Equal,Http,Set,%t%,1
+IniWrite,%w%,proxy,type,%t%
+IniWrite,%w%,proxy,hostName,%Proxy_hostName_TextBox%
+IniWrite,%w%,proxy,port=%Proxy_Port_NumberBox%
+IniWrite,%w%,proxy,userName,%Proxy_UserName_TextBox%
+IniWrite,%w%,proxy,password,%Proxy_Password_TextBox%
+IniWrite,%w%,proxy,useExceptions,%Proxy_Exceptions_CheckBox%
+IniWrite,%w%,proxy,Exceptions,%Proxy_Exceptions_TextBox%
+IniWrite,%w%,proxy,autoProxy,%Proxy_AutoProxy_RadioButton%
+
+[Launch_Program]
+Run,%ScriptFile%,Extract
+//Portable Mode: .\QtWebSettings\QtWeb.NET\QtWeb Internet Browser.ini
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\QtWebSettings,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+
+[Open_Container_x86_P_B]
+If,Not,ExistFile,%FileContainer_x86%,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%FileContainer_x86%#$xNot Found#$xDo You Want to Create File Container ?",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+If,ExistFile,%ProvideFiles%\%ProvideFile_x86_TextBox%,Begin
+Call,PackedNewFile,%FileContainer_x86%
+Call,PackedAddFile,%FileContainer_x86%,%ProvideFiles%\%ProvideFile_x86_TextBox%
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x86%
+End
+Else,Begin
+Set,%Answer%,No
+If,Question,"Open FileContainer:#$x#$x%ProvideFiles%\%ProvideFile_x86_TextBox%#$xNot Found#$xDo You Want to Create an EMPTY File Container ?#$x#$x#$xTip:#$x Later Add Files Manually ;)#$x  OR#$x   If Available See relevant 'Update File Container' Button",Set,%Answer%,Yes
+If,%Answer%,Equal,Yes,Begin
+Call,PackedNewFile,%FileContainer_x86%
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x86%
+End
+End
+End
+End
+Else,Begin
+Echo,"Wait - Change Files and Close to Continue"
+Call,FileOpenWait,%FileContainer_x86%
+End
+
+[ProvideFiles_OpenDir_P_B]
+Call,OpenDir,%ProvideFiles%
+
+[AuthorEncoded]
+Logo=QtWeb4848.ico
+QtWeb4848.ico=5536,7382
+
+[EncodedFile-AuthorEncoded-QtWeb4848.ico]
+lines=1
+0=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
+1=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
+
+[InterfaceEncoded]
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
+media_controls_dark_play_splashyIcons_016016.bmp=446,595
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Mazenl77-NX11-Internet-Real_016_016.bmp=909,1212
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+QtWeb_TheOven.gif=18085,24114
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Win10PESE]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[DownloadXXX_Container_x86_P_Q_B]
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x86%,%WebFileContainer%
+
+[DownloadXXX_Container_x86_P]
+IniRead,%ScriptFile%,Main,Web1C_x86,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_x86%,%WebFileContainer%
+
+[Container_x86_Main]
+Web1=http://yomi.cwcodes.net/Yomi/AppY/Network/QtWeb_x86_File.Packed
+Web2=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/Network/QtWeb_x86_File.Packed
+WebHardLink=True
+
+[UploadXXX_Container_x86]
+Call,UploadXMultiQ,%FileContainer_x86%,|Container_x86_Main
+
+[Button_Download_Web_x86_P_B]
+Set,%DownloadMessage%,Yes
+Run,%ScriptFile%,Download_Web_x86_P
+
+[Download_Web_x86_P]
+Run,%ScriptFile%,Download_Process
+
+[Download_Process]
+//Download_Process_Type_1
+//Use PluginSet_xXXXX --> %ProvideFiles% - %SetupFile% - %FileContainer% - %FileWeb% (Optional: %DownloadMessage% Yes NO)
+//-
+If,Not,ExistVar,%DownloadMessage%,Set,%DownloadMessage%,Yes
+//-
+If,Not,ExistDir,%ProvideFiles%,DirMake,%ProvideFiles%
+//-
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+If,ExistVar,%FileContainer%,Begin
+If,ExistFile,%FileContainer%,Begin
+Echo,"ExtractFile - FileContainer - Wait Patiently - Start"
+Call,PackedExtractFile,%FileContainer%,%ProvideFiles%,%SetupFile%
+Echo,"ExtractFile - FileContainer - Wait Patiently - Finish"
+End
+End
+End
+If,Not,ExistFile,%ProvideFiles%\%SetupFile%,Begin
+Echo,"ExtractFile - Wait Patiently - Start"
+If,ExistSection,%ScriptFile%,EncodedFile-Folder-%SetupFile%,ExtractFile,%ScriptFile%,Folder,%SetupFile%,%ProvideFiles%
+Echo,"ExtractFile - Wait Patiently - Finish"
+End
+//-
+StrFormat,Filename,%FileWeb%,#9
+StrFormat,Replace,#9,"#$p20"," ",#9
+Set,#8,%ProvideFiles%\#9
+//-
+StrFormat,Date,#4,yyyy_mm_dd_hhnn_ss_zzz
+StrFormat,Ext,#8,#5
+//-
+If,ExistFile,#8,Begin
+Retrieve,Md5,#8,#7
+FileRename,#8,#8_Backup_#4#5
+End
+//-
+Echo,"Download #9 - Start"
+Call,Download,#8,%FileWeb%
+Echo,"Download #9 - Finish"
+//-
+If,%CallDownloadFileName%-,Equal,-,Begin
+If,ExistFile,#8_Backup_#4#5,FileRename,#8_Backup_#4#5,#8
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"Can NOT Download #9 - %FileWeb%",Warning,5
+Echo,"Can NOT Download #9 - %FileWeb%",Warn
+End
+End
+Else,Begin
+Retrieve,Md5,#8,#6
+If,#7,Equal,#6,Begin
+Call,FileDelete,#8_Backup_#4#5
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"No new #9",Information,5
+Echo,"No new #9"
+End
+End
+Else,Begin
+If,%DownloadMessage%,Equal,Yes,Begin
+Message,"New #9 File UPDATED",Information,5
+Echo,"New #9 File UPDATED"
+End
+End
+End
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-media_controls_dark_play_splashyIcons_016016.bmp]
+lines=0
+0=eJyl07FqwlAUxnEL3bqUvoAFIXTRCIIP0L2IKAEfSn0FdwlKRnFwyWBwcBAcFJWIhgwOKkpChk/PqecSWitoL/yG5J5/4F7I51f+OcErf/Zx9nrxlHhPyHp7+Sar0WjoZ3gQt9PpVBmNRjfFZ+U78/kc/X6fdbvdm2SOGukXiwUGg4HS6/Wuis9QI/1yucRwOGSlUgnNZhO2bf8iM4Qa6VerlTqfpmkol8uoVqtotVpwHEeJ3wM10nueh/F4zFKpFHK5HKtUKqjVarAsS+0LaqT3fR+TyYTFe1EsFlGv19HpdNQcNdLvdjvMZjN2rdd1Xd2LzFEj/X6/h+u6LN5nMhm+C9M01b6gRvrD4YD1es2SySTS6TQMw0C73Vbvf6JG+uPxyOchhUKB70ue/0KN9EEQYLPZ3IUa6cMwxHa7vQs10kdR9JBLn/3H/5s9Afp3L6N4nDPITU3JTIxPzs8rKcrPKY5PSSzKji/ISayMLwaSxRmVnkCp4ngDQzMg0kvKLWAYBcMJmLFA6CBG7PKVS54aMjABABymFTUBlJEsAQAAAAIAAABIAAAAUgEAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Mazenl77-NX11-Internet-Real_016_016.bmp]
+lines=0
+0=eJytk/1Pk2cUhl3iH7Ali8skRtQlzrGZGRFmCML8ZBFkW8h0GKhTXIyTmWkQdUZQiHzW1YG1CIgfWFChlOAQEAoqUWDC2/SDdg0SxmpFSwcFim1JuPb6xpBtsuwXn+RKnpwn950755xnbcyhuXOkEyLyvsibIm+JvDEnUKpHvnz/+wFeKz6fj5GREQYHB7FYLPT29jIwMIDL5cLr9TI9Pc1suhd1t9uNyWRC9VMahSkbuXoklKO5X7LyYgb7zuUhCILk/V8eZqEL9YEIapMC0XyzEO2uRews20NAVzHzu0tJrDmFodcwq3bI+isVCUtQbZmH4osAFFve5XDqehbdzGFhQz4LGuUEiPf9l7/HOdz/D4/J8VHKZR+hiHqbxB+jCbp2guXVmQTVZrGsNpul2lO8p8kksCKNGGUSfeo4pvzeGY/uinwKNr/D8eTVrPxFTojuLJ/cVREqskpXyMe3ThMkZl+qPs7i4hQKj4XhMl6f0V//bg2l8YGoTqwlvOsinxorWWepkog0VBDWWUZwSwHLRY/P82QkH/0MQRUv6f3ivC5sXYD24Ie0/xzBfv15oh23iXW2Efusjc32RjbYagjvvsz2KymsEDPE5Muo27tM0nvG3VTuWsyd7BD6bmzC1rWX1FEdu/16jozfpcOagcp4mszWk0TcKyK4LpcNim/JlgUx5HJKs6z7YQU9qnCeNMfh/u0wJyf0CM4mLMO1NPWXoDIoyWvPIqKnnNX1csJKDrAmfTs+v1/K0KHcjbE0kqftMib+yMU+aUMz6aBy7BE5HhPpI80UPpSzSSgntFUpzWdb1ZmZ/ln1OprPRfGkLYHxQTlWp4n77mfUPB8iy9/PjkmBr36vZ535BqE6JR+o07hp65nR+6em2FdfhFkTx7AxlbGn1ThGDZx39FBqv0X8xEOi7U1ECmqCGxQkNZW9soNOzxjHGgtIuZ1LyYMz/GlNo8p+jT2OFr62N7DRqiHsXjGJrZdwP/fMusMen5ci0x1i9dXktGTQqU2gszqeZG06UR1XKLI9wCdm/b8//MLH/vgRA2JfzOb7dD7uw/uy1//mLx+nGpl4nFP3TaxKzcsxN9f1izA01PXMK0ktykst0Q1KTcyJNzA0A2G9pNwChlEwLEEZC4TWZMYuX3LvUQMDEwB1nRAO9/276QEAAAACAAAAQAAAACkDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-QtWeb_TheOven.gif]
+lines=5
+0=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
+1=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
+2=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
+3=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
+4=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
+5=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
+
+[Show_Advanced_UI_P_B]
+System,Cursor,Wait
+//-
+Visible,%Advanced_UI_Button%,False,Permanent
+//Run,%ScriptFile%,Show-Hide-Simple_UI,False
+//-
+Run,%ScriptFile%,Show-Hide-Advanced_UI,True
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show_Simple_UI_P_B]
+System,Cursor,Wait
+//-
+Visible,%Advanced_UI_Button%,True,Permanent
+//Run,%ScriptFile%,Show-Hide-Simple_UI,True
+//-
+Run,%ScriptFile%,Show-Hide-Advanced_UI,False
+System,RefreshInterface
+System,Cursor,Normal
+
+[Show-Hide-Simple_UI]
+Visible,%Advanced_UI_Button%,#1,Permanent
+
+[Show-Hide-Advanced_UI]
+Visible,%Simple_UI_Button%,#1,Permanent
+//-
+Visible,%Proxy_NoProxy_RadioButton%,#1,Permanent
+Visible,%Proxy_enabled_RadioButton%,#1,Permanent
+Visible,%Proxy_enabled_Bevel%,#1,Permanent
+Visible,%Proxy_type_TextLabel%,#1,Permanent
+Visible,%Proxy_type_ScrollBox%,#1,Permanent
+Visible,%Proxy_hostName_TextLabel%,#1,Permanent
+Visible,%Proxy_hostName_TextBox%,#1,Permanent
+Visible,%Proxy_Port_TextLabel%,#1,Permanent
+Visible,%Proxy_Port_NumberBox%,#1,Permanent
+Visible,%Proxy_UserName_TextLabel%,#1,Permanent
+Visible,%Proxy_UserName_TextBox%,#1,Permanent
+Visible,%Proxy_Password_TextLabel%,#1,Permanent
+Visible,%Proxy_Password_TextBox%,#1,Permanent
+Visible,%Proxy_Exceptions_CheckBox%,#1,Permanent
+Visible,%Proxy_Exceptions_TextBox%,#1,Permanent
+Visible,%Proxy_Exceptions_Info1_TextLabel%,#1,Permanent
+Visible,%Proxy_Exceptions_Info2_TextLabel%,#1,Permanent
+Visible,%Proxy_Exceptions_Bevel%,#1,Permanent
+Visible,%Proxy_AutoProxy_RadioButton%,#1,Permanent
+
+[EncodedFolders]
+Folder
+
+[Folder]
+QtWebSettings.7z=1227,1636
+QtWebCache.7z=4503,6004
+Icons=6836,9115
+
+[EncodedFile-Folder-QtWebSettings.7z]
+lines=0
+0=N3q8ryccAANf0onzPAQAAAAAAAAjAAAAAAAAACbWNqAALZNIiMVnWnKeLlVXcgfj8oaO6+YVty9HaObgOra3Gp7ONw3uS5xw5/TEGgVEMvRpFauNUSND2FsGsWtpa+T5dDWfP+xN6GF5DRQD5Q25Ve67cEmAI6BycyDY/XyWU8hy5lXmZNz6zQWL6WM1c8gBAHneGVbFfclXp8QAR//4g+TX2dAXYswGVVkddOehz9otXwByzFOMv/I4Ni+BHvnkyJ4PybBFIffJ+qz98wUXK5zHBdOy0UY5v3RzDew5pjt+2pgWIYLdvbhy5PrcPlBJb2PoZ+LWrR6kkuJ0r9N/URRiyCru5XQQZCtbEh19B6jppeIei+rfD+h07JqDeihf2Lx9vu5LkbIHRp87ktAVTIEbBE7bmkmvLWijjj7GuJ5hQuNsVbCQTRSVkaSf2koR60Kx+9JnHxQeOYXAR3LkXNwHekUrFYxWdxq53hhWSNyxTgh9fI3j+KjWryDSWZ2/IA0UtiKJuspjZZh6VTddOx9sFCdwlPCv1EfHPEh9wB7FhuvKmuxO2NA7qWO1kMk38UEbFYF1Mcg33gUbaKkucUR0Qrz0jyexAgFzzDjhCqX7dIzu60H4faBLTP82jw7fNxWobJz7ss2UkmezA1nCsApYZZmXCkiY9xDOzBE/Ta57j0vFp31aGC6OgTznZqWWNu/etccnRcGkngE1cwfrxn2mCX/hbnaOu4iBhhRbuBcPor5yRUujmje6iMAoHb0OpBTl9/wKr7ivfmmFgit34HfP6AlZlThthTcoyaVdEYiOPipimhKCbS7rqnmF05zAzgaJk7SsG/MHbRZpgd5SL3AY6qkM6aHAxbzHuDpsFoulLAytLor2uXCBGHM58whzQiti7PVQemOtQGUtAyuH0oXKUFYbj+WwPRTR1YggKPqnUPh1iF/okXQPJtNqbhbPr5UeVpDNQNkyMLpRT4gp7ITrLZzkz0jwBO61w02oQHoKajY7LQlQ/98JWItV6JToxHPKGD1BReUS/mQDtAbDHuRBE8v8BQK/YaH2TNSaVt6nJ7aDzsLMcRk3+0MmWRe7EwlpS8U+/VwwJ9fuqUa8A/MiN+pW9WeftPnYcxDU3gr3tjXz2ZF03YeOu+f3rteNKAUUlUEQvgYYiDFPpnAERGbPiYTByvZqetknYBfO97agLv1I1Z7y6nCpzqEGCwxKICAIm+h74AapiDtAQgYMFxAQ9owFILVFgyStrKS6ww1jkQC633w6CtcYNWJPW5+qhpcgPgi1Uzh9LAAAgTMHrg/VUZczlyTT/rN+L4mSvr49CrGQnDkAvilI0iCXZuT2KD10DH14vvSB8/kXCUjdCcRWMfse+3rECRFNx0L5nypimX1G9TPXnVcva2jdHcfFEJ57duuV2F04knpnIZNYLzYwxEy+W1u/pts31wlmjgvo1jP6LlhrhF8zpzayQZxvzY6fB5WIqcWvgYAgFwaDqgEJgJIABwsBAAEjAwEBBV0AEAAADIEOCgE1iafXAAB4nBMILAlPTQpOLSnJzEsv1jOvYhgFIwnUs+CX3/fk7xZGBgAhggn7IPA91gEAAAACAAAAKAAAAH8EAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-QtWebCache.7z]
+lines=1
+0=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
+1=WwPweHxoY60BFzbXfLcOImh2GtqF7y0cQ9wDvuPn85Vb3B/4RC4vrT/p8WP4+bsPajJHOlKqvDCMMEc7/riOF1/P7ypXzD+/6My3pKUvKpK1XyeUXpiAU8UGofM4vL6hjBrvCros4+b2SMipLckJ7QXYhcMhiH7tJ9wzOPdzOna+KZyjnY1E+Sgi1VMzRCA4UVz1ZOv5AEkQnR7g1UMDa0IIpxR7w2a1+WQcp/j+PIdXfTnK8OCABu/lktGZV6PTSx9iFJwiC2n73l0WJaNEkjN7kvLFYl6AZE/WJMDJ4KbYU4iUuhvWPrOTKxBDrDTbuXqeDpeoGPCJOy0oUrL+raHDZeZwMCAGUQk4spwJTf21Mt8vb0GOp3BMzls52WFBFeM7rFDh8M03UBTIPe1gsfg4B6ZzvFPs8K58V3Cj4qFTDo+WF+FTDh9lqbYG9RE09yylYfLTnUnNq1yDTSYjkh83E0lr9jELcAamnnj3fYKM3m0G/BOScHkdL8HHbGjqLoib4aHsQdsVvlXTipfW8/mzHAZXUwRkngx1DIsG57kzB7DTZ99STxdF9yTA6U7yq7cpDPXpk/FJg7ZjHo1kA4+V2ZI0YCGoAaqTGDfXpRLkAeOItnFbPnaL1j8hnykFlHaevAxOr/FcxBC5XBlbNYgmMiArKpKf4H5FSnnbnVfmhqHWVjvkVPCV1+DfrzB6tXxpjxKiT3hszhLJaVljGfaKriVroH96oJTYP5/Zj+adsxEz13Vkt0/rTnNGi8EWdSKfx1buyG+Pp5fRiRH2ClhN6ZYMZrrPtf2gt3gzUXLx5UnQ407X1+jAk5C75iTViDc7oPXxio7bnGZPrQ6QjWWImXhFQ73D1b0ALnbugK7PeEvC2PmeS+bQPCfGsnqT00L3kAZn1GiJj3MiRKQAJQQGcGwyHTmKdh7pCtpBpASIbJMlwUqIbp2D9Kv2ois+x2IpS8RUfJIqKWgjMN+owus2EoqaY3Ow85uAm7koOXQwmqqTKiZiSdleZpJhqFgR4LFVgDWGDsP5FOut8DtZBZBy9x9jJPimkVBWC1552F1WnCE2NJdaYLrh9Y1d604d/9r/4Eairuq+i1/82AyhOED27wcGvlvTmerzQKwa0MCC8bNdkoA+SH2d6agFBHuomy8uGsNv0cQe+pqCepGscmih0rpmbLeVrgj11dr84za9H68Hh2MxjWFb/mM14CezKOzHlanlXfGLkkRmu3qxoZNWmWi+q4Z0qguTby/P9sGEHB6SnnkkjxVs/gn+J8KRXEDvH8VqcEueHkzDItW3J/WzbHloKpeefRI7gpGzBsSxr9eYT+uBgydNz78xDXwr7VZVonTPAHz3UE0ua84Ltfmiq/3oejq2wl4q4ovP1vf51OlOkQguit2P0OV3hBtOUO9uurRo9LJD8o0s/WXsmSz2nLtg9TK9BApkRJuEHIDHRxcfvLtS7e9CqSu5ADjRwRh+tRxnAO12inTvYVSOioSQNoxigFxk87IiEORo5fz5duUDZTETu9HjTz3c2arFEqpYOwPkP92aQ7B7OnCQAAAIEzB64P1d84T9ck0/6zfi+Jkr6+PQqxkMetMm580iVobOUscM6n356zJVx4weEcPW1oEDuvIOo228jD+DlF7Yl7HgQTlVU1kRlbw93yqx/+GallpXVMyf/eB9d3GO84rahEuIsQ1tzlnrakpowESMJ6OmZT8Kke6OHN/mi1fhcrJc7Ppcv89z9mENxpS0o1QjmvTGv6ojS3i9RDHyAAFwaQawEJgKAABwsBAAEjAwEBBV0AEAAADID7CgG9sQhFAAB4nOMNLAlPTXJOTM5I1TOvYhgFIwz4CeKXF3Fe4cfIAADs1AZRu0ZgMgEAAAACAAAAJQAAAE4RAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-Folder-Icons]
+lines=2
+0=eJztXGlPHMmy/f6k+x/AgM1mXHtXYQzMjD3sYGMbMC6WyqwssIEGmgYasPntL0+caHv09HRHerof5knWqE0vVbnEcuJERNZ8XrLn7au9f/3X7e3t1GX31pmptuu+ejL/+13X/dbpVHejZS8v3q4vlJ2yXfbCyv8byH+dpcXXm/q+FwZ/eWfKXvbjY1P2mti//N8s1G+7F4ufrvi7K3s2+evbXlj2inRCPoaGv/j783jp9W8fcv+mvvYXxJ9X35cVfsszDH7lr8e0adkz/pXjpmC+7NX+SxeVvcp/UYQr7/27eMW/9QPF8Yqfzfh3YeG/Kdrv/KeWvzdvc9Tcf4iLxa7/scItz/36/HAm4v1NcYgPp5/8x2zSX+6/z83gpZ+0mixvsEh/fw5p1EXZ4Ec/lb8o8dNWfsTarymawm45sMNScn4uMr9UV3ih+9H8C3P6JRVeKHX882+D7+zNxudvfi11X9R+3ab2f+s5P2lYdi64nwpy8NdUELS/pm7pPcG9f5NjM6vrwzNlt3zi32civPLs4cjf3dx1hyDmuW/hI290CXZ8hLsp5crs+Tf1U+7bLz2gGkLREsTpl5T4v1k8+93fpjuIMy7aebVDRg7TnPsFWi60Cc8hhNxCFxSya6ioAmuHdP1vNuPgYbM6yd3l6dKBuVeTSinGGEvBqHGAaW44VvwZslJL8suok81TbhLScvEVp8DSME3d8jqr3e1Cm7toci/fKrugAkW5hgqARWK22r9vNUdcg/ObNQbmQ7mZ2i/StcapN9Fdyl9iXYTd2vI/pN+83UbzFKqLX/rrqodHOOdLiGKVi3TBFbYOf8Gc1KuIw6/L+s0Z53db1SoTA8l6K7F+McnZDg3KBAcco87UytJHygLStn7ASiz2zP9Ti3sGYg9tOopXeM82sEvxeNzQzb7u+kueYXy/vjAkHiTqqOnUxDZEWPZSMVgMEvg912E38k6XV3S4wlzP+FEyugOcNs6pEtt6pOsAbSA+R9xIYGARPar/U2Ff/U6R4G4TLglkeTSgqRQ6vAcNGULMu/gGac9PeNeAVacz7w55VYaFwLaLY//GymwBV+x/AlK2BdkCyhtLhKVligK1XfmafvWT1jQUY3Ub6fQfoWwgAQxEH4BPWKy/DK/8kp5bmBHIELJpUeUWt5VXgp7wjyR56+8DvtVrkKs1L1T/sUfdxTu/norGUcAmVelFtCwW8IR6KiIuD+AFJ3Gw7ey7OBM0kHJ5tpjgNbCmAttuTXv1OUeDqVN6SKO7CB0hMW7p9/Er7wmNvQAob3NWoEwTb0D6bVpUaDsEDOgzz3pwpONh6Gn1N/6ApTSWGgXmwCYh7AKu7XZOKI8sfoUlebtxlhuHuGz9QEnUzRoxEHNiB9aOEEFddbpFx8eNphrCXmfoG9C7cer8NX09N98BM4A83J0utRYwKjCtdQcJwzAgEwCCKy6IdaFAx+hHEWYnnV7+TFhpmlnaa27uuOxKX6ahFcD9ADw2AqCPdmvadZbAHb6NXKrOWlSTaS2LH2KERqE4lW+y+O41BDm5yZ06O4rYHOCeU1yIbaUIuSPPl9XFIoS9cPYltWNjXWGlQTMi4liR2xF3naQ0R4A3NuixsoTni4HSMYLn3yDaZ8fUpcTZRuARWNAYP130nigLp8BigSXhYRv2lG1e0w4QYSxgxdRe6yZ+gEJF3hohQi+TxA8eXWMWs8VpYLbi2SKVOh7wt4UvBUueSESPn/55SjQQ9SPwNidlMAjXP1VUrwjltuImnWiye7/NqIKwANfPo84aPccE3KtEwWDA444AOYSUpMJTxujvXrZP6HSmmAEO0c7D8OSGgm9aX48u1OkaiXcEa791BIhnBQKws1N3v73iIop0Ccb7Flgx9sc+EREQk0FDcLzo48gyxugUM9evnmvc0XAHwHc1Ua7IXmx94sa9eAMJ4MFARs4FHAEMIhSa4hL2u7V9TaDPwg/X48tbCH20VPGjkDgKQcO2q3gRFGquNAN+uoSLh983uiLLiWp7fIgoMa7cM1h6s/6aeJZEhxD62JN//ddZdXE1dXR+fnTqpuz52T+PALd/0N8RlYE5AY58ZMSwAQ28bjyAWbCS1ppSMVucRQhysVLJ/NibTGcZgevs9aAXYoxQa6bUBsNNOGDl2S4Mtdrau/nMwBkqVks4NhIobtpwgPDda8Uk+gj8qa5AvcLPp/Q9+HOY0FCxePinfJcrny26QMdaaYNVHwHeQm5CXOJeGVzsE1JgFFWKvSOSFbO0TACa1dDg8hNFoebkLWz/E+/MlUUD7YVF67TpGSmFWDjAB+Q+GVRWno2SqjThOhBhN79u0yIBe5nwzksl1DW3IAEiOlBC0aL4XDINsgY60ZhJoi4AICIPFvdOJr1KkgHCJXAgi95aUR9k7q4YKPzygaRpm0Iy6Sm5bJVgbNKM9iFFIijWEGrj7HoOoXdQsTRYOCYU4EcEctl/yCCUZIvD1fYGQzXUBNVDZeBUud2ZevGgim92sBygtaIlSFFoBt/RKIp0foVaDIsVABaAG5e4goRS4nOB6AHOCreH5ZqEOoPVZDF1F4cAQ1khBFAcAlMBeSYdpPZhb9btK0vMyubDVwDE+UulpJDsBHEYqJ9k5xMagK0GnpA6te7A8RfXjO8R1wRc4Ulxf+sJmYZBOGqQBFSLXH1lbpU6IMZCzf76JzJMhxbcuImXM4+XysULxgqhI4Yxw1WE9Mb0kMoUdpkGJllKsXGyit3exNOaAxkKFCNhOYUCogvBwuxh6/WIYg0hIym7XzdhMtwutgarhaQdLDlhPh0LnyYrSXqHHUaoAqwM/pUgHEHcWDC4VxLTFEM3JNvuzCcDA5pz+MmvaU5NONajSRTJKZWZIRlG5iB2mD7VLBBbwDdQtKR49UfuFb4vxLLm6qB4IZUBTQiSwyujymBFwKC8ob0l6SIMaX4NZuficaKas1+wiB5jChACxo5ViVljyhbpTIgYKVFJ0qrBqZlrmiiM0EkKdkx/SrIPAipAUcwM/hmno+MIaJs1vaEyB8qWQvHaLgR6D0sRQlkR4kHOW43ULTIGdNgemFKTDRMZsmhuqqcy1qKCVEUcYF1SgvhqD7Y4qVlzqoFYQtd8Qn6IiYQZtD5Rs41ces858nr4TGsqBVeMLUhyXIAW5u+x5GXsfrKNeRHAa0cDz4FhsE/UP2x0r8ofvBcZNU/x+ZqmWNgHihi0sVC7AhGqDSENrBYLr8w8xQrlwA5MNMlf4Cq2XgF+Z8pYPUXzqX8zL6vWKEO3qIoNzU6XNIuHzWH+8GBICw5I9I1yzzA8p4mFoAauHvn9quxcXt+sSqpV78JIhmm9wOTQvqMZYciYVF1cX6UDXSbRZ8Y84CZc0LRmWFHy8h5cKJ+8If3JJas60/gkEWu7ny8dINUt9vcWSJYxG3it8FxQ7fj0DSkdKioIMzAgoJ6LkIyaXepVvFtpuWQWgbLYYOSOXAIad9RMAZfJ3QovlzqZZcoj2aDRCkSixqbLybVIlA1oxaFF7ME+EAmYSSInC492vcX+OwqHCubd+XX32vyHKFzU/yh4Fx5n/0fyBs+vQd9GCbLYqAT3emXoHTEJFoL9QpKw6ToYBHBHw5OIGFBi2AyNGmra6/JHfkcvteE4zGOPXsMyAN2x+oCYcLoJt/m8A9dCXhCteXmHD5JWZLsMByZZAox6LM4uMWmiGZh7/vRykDwdlKxwLKhCs6DX8OiwJueEA7rWqz+AtYccVeqOCbGiiUZ+nyci1pJIAtHhkJIYIx4WE4id0YdJraqo4QrABHc6ubqllMH678NdiHP/Fu618Ecp5EgubgkjieMlmouTMKo/xPk6MHlXs5VY9N7u0kUlPhdaWME1iF8AwbC1QiRwkvpnWmEqGKxAZgDzwlpbypSor4CRGSTTq/vJ3EsaTBUNM3mHap2EqjYE9JURq1CUA4bnaZcczDVzdGBMAakbCYVv57VWA6G3rq9iMd1yn3AuSV8y/+LFMsNmsrurpS4kmXZ9gytHZTVurY6pW4dfljdBr5tv+3RjvKA4UIY6PdbajS3Lk5Pl4e43ht4a3BwSk6rhLeWCO2SxThMAM0LOKGl89L
+1=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
+2=JVa3toV0Iv832a2lghG/pJ+grTg5cyhV5oUHuoglcKhjSdKWLJ2NUxJwqqJ6qmYlVcciZIisGCpv4ABzDOyZNlaAF5V2PYVEWO0JgilLiaXi3MIA5UFGIEI0MSD2XWnhU46ISfxdh7hxrEPytoJbkcMYqMY00QOscJLuZJpl2mTdT7cNrQaK60f7Rs9+yJbdERFE6vLB5p9a2NXGtSg+YMrmQ9szhSZsKTuVAr4jYe0fn62UQhV2AZVRIelOttjR4C2yHGyRLeHFKlgjz+bX+jh8neDEVTIv/iItr6Tk4QJo2T625oXPaX0uzhefw9D3WfP00PaJJSJpitr1Roun2U0xdzdGoUilQp7ek2N3mp5L0xEPVve7t3Xr8wYlFydbDxRyIY/TSvL4/rhFRMUy0tLMEYal5idNyCnhK2X5nSgAetSwoSmPDyZ35yogu47HxcEtpfbiGAjr9DtaCcH3u9K4p7T1aFRUCIaQHBGdKk2o84VJ3bQei5T/oUEiC+rLCpHlBcEqT766n16VF6hC1+PjqZZjYP/ZZDiPqWAMUFSytvR0jPzJ1mMfxbdYTM3Lam1H81XFsTj6SBAswkN9LlwKkqLP5fkBSHCDCwAxlAdoC4ZpW+0g6svRTs2IMxRaWuhaLrBEmCTTEne8TNP1MliX4p3T4nigVY+q/NG3hk8YHu8U5iJu6vTwKDqH/cNXUpXxSP8HQR8QVplBDiR4bqS6kXFueKk8DJ1SwvIYbjhKdhJmZCbIGtE9zNPOKJz7PU0504fXU6481JaMJN1R+eNor0lnEctAHe3ctXaoCo+4OE4ox4IwifsmA8IVm+zfBvT/BvT9w1p4nGP1TM7PK2YYBSMULHeB0PlS2OXDk/dPZGACAIVxBYItK4PKAQAAAAIAAAAhAAAAbxoAAAAAAAABAAAAAAAAAAAAAAA
+

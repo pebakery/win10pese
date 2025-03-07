@@ -4,17 +4,19 @@ Type=Plugin
 Author=yahooUK, ChrisR, Homes32
 Description=Edit Registry hives without rebuilding your project.
 Credits=http://TheOven.org
-Version=024
+Version=029
 Download_Level=0
 Level=10
 Selected=None
 NoWarning=False
 Mandatory=True
 Contact=http://TheOven.org
-Date=2017.01.11_13:15.04 (GMT0: -3 Hours)
+Date=2020.02.27
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Utils/55-RegEdit.script
+Web2=http://yomi.cwcodes.net/Yomi/UtilsY/55-RegEdit.script
+WebHardLink=True
 CertifiedBy=
 Certification=
 History015=ChrisR Rewrite the script with Repair Mount, edit or export Hive, Unmount
@@ -23,11 +25,19 @@ History016=Homes32 extensive overhaul of interface and registry processes.
 History017=Lancelot script specialized to use RegEdit (using 00-RepairMount.script) // Tips some macro tricks not used - to ease maintance and at some points speed.
 History018=Lancelot backup etc. buttons progress window enabled (to be sure things working with visual ..) // Live98 support added
 History019=ChrisR Mount/unmount with WimUtil in addition if configured
-History020=ChrisR User use NTUSER.DAT if exist for %Api_Type% 2. Hive Name 8PE-X added
+History020=ChrisR User use NTUSER.DAT if exist for %BuildClass% 2. Hive Name 8PE-X added
 History021=ChrisR Added DU Buttons
 History022=ChrisR Add choice for Drivers hive
 History023=Lancelot Add ReadSourceHives_Button to easly check source hives (SE For now only support Extracted Folders) - Date:2016.02.01
 History024=ChrisR Tmp_Drivers typo - Date:2016.02.27 // Lancelot - Add Compare Button - Date:2017.01.11
+History025=Lancelot Add To Yomi Server - Date:2018.10.24 // Add WebHardLink=True - Date:2018.10.26
+History026=Lancelot Add BuildClass - Date:2019.01.14
+History027=Lancelot Removed old syntax - Date:2019.01.24
+History028=Lancelot quick support BuildClass 3 - Date:2019.03.13
+History029=Lancelot Update Syntax with Call,DirMakeE - Date:2020.02.27
+
+[Info_Download_Yomi]
+Call,DownloadX,%BaseDir%\Projects\Yomi\UtilsY\55-RegEdit.script
 
 [Interface]
 BTN_LoadHive="Edit Hives    ",1,8,12,40,115,58,EditHive,Registry.bmp,False,_EditHive_,False
@@ -72,49 +82,49 @@ Button_Download=,1,8,360,-1,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown001
 Button_CompareEdit=,1,8,405,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
 
 [Second_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-First_Gui,False
 Run,%ScriptFile%,Show-Hide-Second_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [First_Gui]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Show-Hide-Second_Gui,False
 Run,%ScriptFile%,Show-Hide-First_Gui,True
 System,RefreshInterface
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Show-Hide-Second_Gui]
-Visible,%CB_BackupHives%,#1,PERMANENT
+Visible,%CB_BackupHives%,#1,Permanent
 //--
-Visible,%BTN_ExportHive%,#1,PERMANENT
-Visible,%BTN_ExportHiveF%,#1,PERMANENT
+Visible,%BTN_ExportHive%,#1,Permanent
+Visible,%BTN_ExportHiveF%,#1,Permanent
 //--
-Visible,%SB_TextLabel%,#1,PERMANENT
-Visible,%SB_MountHere%,#1,PERMANENT
+Visible,%SB_TextLabel%,#1,Permanent
+Visible,%SB_MountHere%,#1,Permanent
 //--
-Visible,%HiveName_TextLabel%,#1,PERMANENT
-Visible,%HiveName_ScrollBox%,#1,PERMANENT
+Visible,%HiveName_TextLabel%,#1,Permanent
+Visible,%HiveName_ScrollBox%,#1,Permanent
 //--
-Visible,%Custom_LoadHive_Bevel%,#1,PERMANENT
-Visible,%Custom_LoadHive%,#1,PERMANENT
-Visible,%TB_CustomHiveName%,#1,PERMANENT
-Visible,%FB_CustomHive%,#1,PERMANENT
+Visible,%Custom_LoadHive_Bevel%,#1,Permanent
+Visible,%Custom_LoadHive%,#1,Permanent
+Visible,%TB_CustomHiveName%,#1,Permanent
+Visible,%FB_CustomHive%,#1,Permanent
 //--
-Visible,%Backup_Bevel%,#1,PERMANENT
-Visible,%BTN_Backup%,#1,PERMANENT
-Visible,%BTN_Restore%,#1,PERMANENT
-Visible,%BTN_Backup_Delete%,#1,PERMANENT
+Visible,%Backup_Bevel%,#1,Permanent
+Visible,%BTN_Backup%,#1,Permanent
+Visible,%BTN_Restore%,#1,Permanent
+Visible,%BTN_Backup_Delete%,#1,Permanent
 //--
-Visible,%ReadSourceHives_Bevel%,#1,PERMANENT
-Visible,%ReadSourceHives_Button%,#1,PERMANENT
+Visible,%ReadSourceHives_Bevel%,#1,Permanent
+Visible,%ReadSourceHives_Button%,#1,Permanent
 //--
-Visible,%pButton_Show_First_Gui%,#1,PERMANENT
+Visible,%pButton_Show_First_Gui%,#1,Permanent
 
 [Show-Hide-First_Gui]
 //--
-Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
+Visible,%pButton_Show_Second_Gui%,#1,Permanent
 
 [Variables]
 %HSys%=WB-System
@@ -150,15 +160,13 @@ Visible,%pButton_Show_Second_Gui%,#1,PERMANENT
 Echo,"You can't run this script directly!"
 
 [EditHive]
-Run,%ScriptFile%,LoadHive%Api_Type%
+Run,%ScriptFile%,LoadHive%BuildClass%
 Echo,"Regedit is running. Please close Regedit to continue."
-System,FILEREDIRECT,OFF
-ShellExecute,Open,regedit.exe,""
-System,FILEREDIRECT,ON
+Call,StartWait,,regedit.exe
 Run,%ScriptFile%,UnloadHive
 If,%mountmade%,Equal,YES,Run,%ScriptFile%,TargetUnMount
 
-[LoadHive%Api_Type%]
+[LoadHive%BuildClass%]
 If,%OSFamily%,Equal,NT5,Run,%ScriptFile%,LoadHive1
 Else,Run,%ScriptFile%,LoadHive2
 
@@ -176,7 +184,7 @@ If,Not,%HiveName_ScrollBox%,Equal,WB-X,Run,%ScriptFile%,HiveName_%HiveName_Scrol
 //--%target_win%=%target_root%\LiveW98
 //--SYSTEM.DAT
 //--USER.DAT
-//--%target_sys%=%target_root%\LiveW98\System
+//--%Target_Sys%=%target_root%\LiveW98\System
 //--\Config
 //--default
 //--software
@@ -194,7 +202,7 @@ If,Not,ExistVar,%RegDrivers%,Set,%RegComponents%,%app_tmp%\Config\DRIVERS
 If,Not,ExistVar,%RegUser%,Set,%RegUser%,%app_tmp%\Config\default
 If,Not,ExistVar,%RegSam%,Set,%RegSam%,%app_tmp%\Config\sam
 //
-If,%CB_BackupHives%,EQUAL,True,Run,%ScriptFile%,BackupHives
+If,%CB_BackupHives%,Equal,True,Run,%ScriptFile%,BackupHives
 //
 If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,RegHiveLoad,%HSys%,%RegSystem%
 If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,RegHiveLoad,%HDef%,%RegDefault%
@@ -211,16 +219,16 @@ If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSec%,%RegSecurit
 [LoadHive1]
 If,Not,%HiveName_ScrollBox%,Equal,WB-X,Run,%ScriptFile%,HiveName_%HiveName_ScrollBox%
 //
-If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%target_sys%\SETUPREG.HIV
-If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%target_sys%\config\default
-If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%target_sys%\config\software
-If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%target_sys%\config\COMPONENTS
-If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%target_sys%\config\DRIVERS
-If,Not,ExistVar,%RegUser%,Set,%RegUser%,%target_sys%\config\default
-If,Not,ExistVar,%RegSam%,Set,%RegSam%,%target_sys%\config\sam
-If,Not,ExistVar,%RegSecurity%,Set,%RegSecurity%,%target_sys%\config\security
+If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%Target_Sys%\SETUPREG.HIV
+If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%Target_Sys%\config\default
+If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%Target_Sys%\config\software
+If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%Target_Sys%\config\COMPONENTS
+If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%Target_Sys%\config\DRIVERS
+If,Not,ExistVar,%RegUser%,Set,%RegUser%,%Target_Sys%\config\default
+If,Not,ExistVar,%RegSam%,Set,%RegSam%,%Target_Sys%\config\sam
+If,Not,ExistVar,%RegSecurity%,Set,%RegSecurity%,%Target_Sys%\config\security
 //
-If,%CB_BackupHives%,EQUAL,True,Run,%ScriptFile%,BackupHives
+If,%CB_BackupHives%,Equal,True,Run,%ScriptFile%,BackupHives
 //
 If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,RegHiveLoad,%HSys%,%RegSystem%
 If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,RegHiveLoad,%HDef%,%RegDefault%
@@ -234,10 +242,13 @@ End
 If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSam%,%RegSam%
 If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveLoad,%HSec%,%RegSecurity%
 
+[LoadHive3]
+Run,%ScriptFile%,LoadHive2
+
 [LoadHive2]
 If,Not,%HiveName_ScrollBox%,Equal,WB-X,Run,%ScriptFile%,HiveName_%HiveName_ScrollBox%
 //
-If,Not,ExistVar,%RegSoftware%,If,ExistFile,%target_sys%\config\software,Set,%RegSoftware%,%target_sys%\config\software
+If,Not,ExistVar,%RegSoftware%,If,ExistFile,%Target_Sys%\config\software,Set,%RegSoftware%,%Target_Sys%\config\software
 If,Not,ExistFile,%RegSoftware%,If,ExistFile,%Mount%\Windows\System32\config\software,Set,%RegSoftware%,%Mount%\Windows\System32\config\software
 If,ExistFile,%RegSoftware%,Run,%ScriptFile%,LoadHive2_Reg
 Else,Run,%ScriptFile%,LoadHive2PreMount
@@ -276,11 +287,11 @@ If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,RegHiveUnLoad,%HSam%
 If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,RegHiveUnLoad,%HSec%
 
 [Backup_Hives]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Where_Are_Hives
 //
 Echo,"Backing up registry hives..."
-If,Not,ExistFile,%RegSoftware%,Message,"Target hive Folder Not Exists",WARNING
+If,Not,ExistFile,%RegSoftware%,Message,"Target hive Folder Not Exists",Warning
 //If,Not,ExistFile,%RegSoftware%,Halt,"Target hive Folder Not Exists"
 If,ExistFile,%RegSystem%,FileCopy,%RegSystem%,%RegSystem%.bak
 If,ExistFile,%RegDefault%,FileCopy,%RegDefault%,%RegDefault%.bak
@@ -290,16 +301,16 @@ If,ExistFile,%RegDrivers%,FileCopy,%RegDrivers%,%RegDrivers%.bak
 If,ExistFile,%RegUser%,FileCopy,%RegUser%,%RegUser%.bak
 If,ExistFile,%RegSam%,FileCopy,%RegSam%,%RegSam%.bak
 If,ExistFile,%RegSecurity%,FileCopy,%RegSecurity%,%RegSecurity%.bak
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Restore_Hives]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Where_Are_Hives
 //
 Echo,"Restoring up registry hives..."
-If,Not,ExistFile,%RegSoftware%,Message,"Target hive Folder Not Exists",WARNING
+If,Not,ExistFile,%RegSoftware%,Message,"Target hive Folder Not Exists",Warning
 //If,Not,ExistFile,%RegSoftware%,Halt,"Target hive Folder Not Exists"
-If,EXISTFILE,%RegSoftware%,If,Not,ExistFile,%RegSoftware%.bak,Message,"You must backup first",WARNING
+If,ExistFile,%RegSoftware%,If,Not,ExistFile,%RegSoftware%.bak,Message,"You must backup first",Warning
 //If,Not,ExistFile,%RegSoftware%.bak,Halt,"You must backup first"
 If,ExistFile,%RegSystem%,FileCopy,%RegSystem%.bak,%RegSystem%
 If,ExistFile,%RegDefault%,FileCopy,%RegDefault%.bak,%RegDefault%
@@ -309,10 +320,10 @@ If,ExistFile,%RegDrivers%,FileCopy,%RegDrivers%.bak,%RegDrivers%
 If,ExistFile,%RegUser%,FileCopy,%RegUser%.bak,%RegUser%
 If,ExistFile,%RegSam%,FileCopy,%RegSam%.bak,%RegSam%
 If,ExistFile,%RegSecurity%,FileCopy,%RegSecurity%.bak,%RegSecurity%
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Delete_Backup_Hives]
-System,CURSOR,Wait
+System,Cursor,Wait
 Run,%ScriptFile%,Where_Are_Hives
 //
 If,ExistFile,%RegSystem%.bak,FileDelete,%RegSystem%.bak
@@ -323,7 +334,7 @@ If,ExistFile,%RegDrivers%.bak,FileDelete,%RegDrivers%.bak
 If,ExistFile,%RegUser%.bak,FileDelete,%RegUser%.bak
 If,ExistFile,%RegSam%.bak,FileDelete,%RegSam%.bak
 If,ExistFile,%RegSecurity%.bak,FileDelete,%RegSecurity%.bak
-System,CURSOR,Normal
+System,Cursor,Normal
 
 [Where_Are_Hives]
 If,Not,ExistFile,%RegSystem%,If,%Mount%,Equal,%BaseDir%\Mount\%ProjectName%\Target,Begin
@@ -337,7 +348,7 @@ Else,If,ExistFile,%Mount%\Windows\System32\config\default,Set,%RegUser%,%Mount%\
 If,ExistFile,%Mount%\Windows\System32\config\sam,Set,%RegSam%,%Mount%\Windows\System32\config\sam
 If,ExistFile,%Mount%\Windows\System32\config\security,Set,%RegSecurity%,%Mount%\Windows\System32\config\security
 End
-If,%API_TYPE%,Equal,98,Begin
+If,%BuildClass%,Equal,98,Begin
 If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%app_tmp%\setupreg.hiv
 If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%app_tmp%\Config\default
 If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%app_tmp%\Config\software
@@ -346,17 +357,17 @@ If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%app_tmp%\Config\DRIVERS
 If,Not,ExistVar,%RegUser%,Set,%RegUser%,%app_tmp%\Config\default
 If,Not,ExistVar,%RegSam%,Set,%RegSam%,%app_tmp%\Config\sam
 End
-If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%target_sys%\config\system
-If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%target_sys%\config\default
-If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%target_sys%\config\software
-If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%target_sys%\config\COMPONENTS
-If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%target_sys%\Config\DRIVERS
+If,Not,ExistVar,%RegSystem%,Set,%RegSystem%,%Target_Sys%\config\system
+If,Not,ExistVar,%RegDefault%,Set,%RegDefault%,%Target_Sys%\config\default
+If,Not,ExistVar,%RegSoftware%,Set,%RegSoftware%,%Target_Sys%\config\software
+If,Not,ExistVar,%RegComponents%,Set,%RegComponents%,%Target_Sys%\config\COMPONENTS
+If,Not,ExistVar,%RegDrivers%,Set,%RegDrivers%,%Target_Sys%\Config\DRIVERS
 If,Not,ExistVar,%RegUser%,Begin
 If,ExistFile,%TargetDir%\Users\Default\NTUSER.DAT,Set,%RegUser%,%TargetDir%\Users\Default\NTUSER.DAT
-Else,Set,%RegUser%,%target_sys%\config\default
+Else,Set,%RegUser%,%Target_Sys%\config\default
 End
-If,Not,ExistVar,%RegSam%,Set,%RegSam%,%target_sys%\config\sam
-If,Not,ExistVar,%RegSecurity%,Set,%RegSecurity%,%target_sys%\config\security
+If,Not,ExistVar,%RegSam%,Set,%RegSam%,%Target_Sys%\config\sam
+If,Not,ExistVar,%RegSecurity%,Set,%RegSecurity%,%Target_Sys%\config\security
 
 [BackupHives]
 Echo,"Backing up registry hives..."
@@ -371,9 +382,13 @@ If,ExistFile,%RegSecurity%,FileCopy,%RegSecurity%,%RegSecurity%.bak
 
 [TargetMount]
 Echo,"Starting Mount process..."
-ReadEnv
-If,%WimTools%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
-If,%WimTools%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
+//-
+IniRead,%ProjectDir%\script.project,IniVariables,WIMTool,%WIMTool%
+If,%WIMTool%,Equal,ImageX,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%IMAGEX%
+If,%WIMTool%,Equal,WimUtil,IniRead,%ProjectDir%\script.project,IniVariables,WIMToolFile,%WIMUTIL%
+//-
+If,%WIMTool%,Equal,ImageX,If,Not,ExistFile,%IMAGEX%,Run,%ScriptFile%,ImageXNotFound
+If,%WIMTool%,Equal,WimUtil,If,Not,ExistFile,%WIMUTIL%,Run,%ScriptFile%,WimUtilNotFound
 //--
 If,ExistFile,%BootAF%,Set,%MountF%,%BootAF%
 If,ExistFile,%BootVF%,Set,%MountF%,%BootVF%
@@ -382,12 +397,12 @@ If,Not,ExistFile,%MountF%,Message,"Wim File not found",Error
 If,Not,ExistFile,%MountF%,Halt,"Wim File not found"
 //--
 If,Not,ExistDir,%Mount%,DirMake,%Mount%
-If,%WimTools%,Equal,ImageX,Begin
-StrFormat,path,%IMAGEX%,%IMAGEXPath%
+If,%WIMTool%,Equal,ImageX,Begin
+StrFormat,Path,%IMAGEX%,%IMAGEXPath%
 ShellExecute,Hide,%IMAGEX%,"/mountrw #$q%MountF%#$q 1 #$q%Mount%#$q",%IMAGEXPath%
 End
-If,%WimTools%,Equal,WimUtil,Begin
-StrFormat,path,%WIMUTIL%,%WIMUTILPath%
+If,%WIMTool%,Equal,WimUtil,Begin
+StrFormat,Path,%WIMUTIL%,%WIMUTILPath%
 ShellExecute,Hide,%WIMUTIL%,"/mount #$q%MountF%#$q 1 #$q%Mount%#$q /RW",%WIMUTILPath%
 End
 //--
@@ -395,7 +410,7 @@ If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount successful :)"
 If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount successful :)"
 If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount successful :)",Information,%TSuccess%
 If,ExistFile,%Mount%\Windows\System32\ntdll.dll,Set,%mountmade%,YES
-If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount NOT successful :(",ERROR
+If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Message,"Mount NOT successful :(",Error
 If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Echo,"Mount NOT successful :(",Warn
 If,Not,ExistFile,%Mount%\Windows\System32\ntdll.dll,Halt,"Mount NOT successful :("
 
@@ -411,10 +426,10 @@ Halt,"Image Tools WimUtil was not found. WimUtil.exe REQUIRED to mount. Exiting.
 
 [TargetUnMount]
 Echo,"Starting Unmount process..."
-If,%WimTools%,Equal,ImageX,Begin
+If,%WIMTool%,Equal,ImageX,Begin
 ShellExecute,Hide,%IMAGEX%,"/unmount /commit #$q%Mount%#$q",%IMAGEXPath%
 End
-If,%WimTools%,Equal,WimUtil,Begin
+If,%WIMTool%,Equal,WimUtil,Begin
 ShellExecute,Hide,%WIMUTIL%,"/unmount #$q%Mount%#$q /Commit /nowarn",%WIMUTILPath%
 End
 //--
@@ -423,45 +438,43 @@ Else,Begin
 Message,"Unmount Successful :)",Information,%TUnSuccess%
 Echo,"Unmount Successful :)"
 End
-//If,Not,%Mount%,EQUAL,%TargetDir%,Begi-n
+//If,Not,%Mount%,Equal,%TargetDir%,Begi-n
 //If,Not,ExistFile,%Mount%\bootmgr,Message,"Unmount Successful :)",Information,1
 //If,Not,ExistFile,%Mount%\bootmgr,Echo,"Unmount Successful :)"
-//If,ExistFile,%Mount%\bootmgr,Message,"Unmount NOT successful :(",ERROR
+//If,ExistFile,%Mount%\bootmgr,Message,"Unmount NOT successful :(",Error
 //If,ExistFile,%Mount%\bootmgr,Echo,"Unmount NOT successful :(",Warn
 //En-d
 
 [TargetUnMount_Error]
-Message,"Unmount NOT successful :(",ERROR
+Message,"Unmount NOT successful :(",Error
 Echo,"Unmount NOT successful :(",Warn
 
 [Custom_EditHive]
-If,Not,ExistFile,%FB_CustomHive%,Message,"The custom hive does not exist : %FB_CustomHive%",WARNING
+If,Not,ExistFile,%FB_CustomHive%,Message,"The custom hive does not exist : %FB_CustomHive%",Warning
 If,Not,ExistFile,%FB_CustomHive%,Halt,"The custom hive does not exist : %FB_CustomHive%"
-If,%CB_BackupHives%,EQUAL,True,FileCopy,%FB_CustomHive%,%FB_CustomHive%.bak
+If,%CB_BackupHives%,Equal,True,FileCopy,%FB_CustomHive%,%FB_CustomHive%.bak
 RegHiveLoad,%TB_CustomHiveName%,%FB_CustomHive%
 Echo,"Regedit is running. Please close Regedit to continue."
-System,FILEREDIRECT,OFF
-ShellExecute,Open,regedit.exe,""
-System,FILEREDIRECT,ON
+Call,StartWait,,regedit.exe
 RegHiveUnLoad,%TB_CustomHiveName%
 
 [ExportHive]
-Run,%ScriptFile%,LoadHive%Api_Type%
+Run,%ScriptFile%,LoadHive%BuildClass%
 Echo,"Exporting selected registry hives..."
 If,Not,ExistDir,%ExpHivesF%,DirMake,%ExpHivesF%
-System,FILEREDIRECT,OFF
-If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSys%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSys%#$q"
-If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HDef%.reg#$q #$qHKEY_LOCAL_MACHINE\%HDef%#$q"
-If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSof%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSof%#$q"
-If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HCom%.reg#$q #$qHKEY_LOCAL_MACHINE\%HCom%#$q"
-If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HDrv%.reg#$q #$qHKEY_LOCAL_MACHINE\%HDrv%#$q"
+System,FileRedirect,OFF
+If,%CB_SystemHive%,Equal,True,If,ExistFile,%RegSystem%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HSys%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSys%#$q"
+If,%CB_DefaultHive%,Equal,True,If,ExistFile,%RegDefault%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HDef%.reg#$q #$qHKEY_LOCAL_MACHINE\%HDef%#$q"
+If,%CB_SoftwareHive%,Equal,True,If,ExistFile,%RegSoftware%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HSof%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSof%#$q"
+If,%CB_ComponentsHive%,Equal,True,If,ExistFile,%RegComponents%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HCom%.reg#$q #$qHKEY_LOCAL_MACHINE\%HCom%#$q"
+If,%CB_Drivers%,Equal,True,If,ExistFile,%RegDrivers%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HDrv%.reg#$q #$qHKEY_LOCAL_MACHINE\%HDrv%#$q"
 If,%CB_User%,Equal,True,If,ExistFile,%RegUser%,Begin
-If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HUse%.reg#$q #$qHKEY_LOCAL_MACHINE\%HUse%#$q"
-If,Not,%RegDefault%,Equal,%RegUser%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HUse%.reg#$q #$qHKEY_LOCAL_MACHINE\%HUse%#$q"
+If,%RegDefault%,Equal,%RegUser%,If,Not,%CB_DefaultHive%,Equal,True,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HUse%.reg#$q #$qHKEY_LOCAL_MACHINE\%HUse%#$q"
+If,Not,%RegDefault%,Equal,%RegUser%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HUse%.reg#$q #$qHKEY_LOCAL_MACHINE\%HUse%#$q"
 End
-If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSam%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSam%#$q"
-If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,ShellExecute,hide,regedit.exe,"/e #$q%ExpHivesF%\%HSec%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSec%#$q"
-System,FILEREDIRECT,ON
+If,%CB_Sam%,Equal,True,If,ExistFile,%RegSam%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HSam%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSam%#$q"
+If,%CB_Security%,Equal,True,If,ExistFile,%RegSam%,ShellExecute,Hide,regedit.exe,"/e #$q%ExpHivesF%\%HSec%.reg#$q #$qHKEY_LOCAL_MACHINE\%HSec%#$q"
+System,FileRedirect,ON
 Run,%ScriptFile%,UnloadHive
 
 [HiveName_PE3-X]
@@ -497,16 +510,13 @@ Set,%HSec%,8PE-Security
 
 [OpenExportDir]
 If,%ExpHivesF%,Equal,"",Halt,"You must define folder"
-If,Not,ExistDir,%ExpHivesF%,DirMake,%ExpHivesF%
-System,FILEREDIRECT,OFF
-ShellExecuteEx,Open,explorer.exe,/e#$c#$q%ExpHivesF%#$q,%ExpHivesF%
-System,FILEREDIRECT,ON
+Call,OpenDir,%ExpHivesF%
 
 [Source_Hives]
 //Call,DirDeleteMake,%ProjectTemp%\SourceHives
 //-
 If,Not,ExistDir,%ProjectTemp%\SourceHives,DirMake,%ProjectTemp%\SourceHives
-Call,DirDeleteE,%ProjectTemp%\SourceHives
+Call,DirMakeE,%ProjectTemp%\SourceHives
 //--
 Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\COMPONENTS,TMP_COMPONENTS
 Run,%ScriptFile%,Source_Hives_Load,%Source_Sys%\config\DEFAULT,TMP_DEFAULT
@@ -522,9 +532,7 @@ If,ExistFile,%SourceDir%\IA64\SETUPREG.HIV,Run,%ScriptFile%,Source_Hives_Load,%S
 End
 //-
 Echo,"Regedit is running. Please close Regedit to continue."
-System,FILEREDIRECT,OFF
-ShellExecute,Open,regedit.exe,""
-System,FILEREDIRECT,ON
+Call,StartWait,,regedit.exe
 //-
 If,ExistFile,%ProjectTemp%\SourceHives\COMPONENTS,RegHiveUnLoad,TMP_COMPONENTS
 If,ExistFile,%ProjectTemp%\SourceHives\DEFAULT,RegHiveUnLoad,TMP_DEFAULT
@@ -538,9 +546,9 @@ If,ExistFile,%ProjectTemp%\SourceHives\SETUPREG.HIV,RegHiveUnLoad,TMP_SYSTEM
 [Source_Hives_Load]
 If,ExistFile,#1,Begin
 FileCopy,#1,%ProjectTemp%\SourceHives
-//System,FILEREDIRECT,OFF
+//System,FileRedirect,OFF
 //Shellexecute,Hide,cmd.exe,"/C Copy /Y #$q#1#$q #$q%ProjectTemp%\SourceHives#$q"
-//System,FILEREDIRECT,ON
+//System,FileRedirect,ON
 StrFormat,FileName,#1,#9
 If,ExistFile,%ProjectTemp%\SourceHives\#9,RegHiveLoad,#2,#1
 End
@@ -573,7 +581,12 @@ lines=0
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
+
+[CompareEditXXX]
+Call,CompareEdit
 
 [Settings_Default]
 Run,%ScriptFile%,First_Gui
@@ -585,9 +598,6 @@ lines=0
 [EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
 lines=0
 0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
-
-[CompareEditXXX]
-Call,CompareEdit
 
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0

@@ -2,19 +2,21 @@
 Title=Driver Integration
 Type=Plugin
 Author=JFX, 2aCD, ChrisR
-Description=Add Drivers to your Windows Vista or Windows 7/8/8.1/10 PE#$xDISM Export Driver feature requires Win8.1 or Win10 Host OS
+Description=(NT6x) Add Drivers to your Windows Vista or Windows 7/8/8.1/10 PE.  ***  DISM Export Driver feature requires Win8.1 or Win10 Host OS ***
 Credits=http://TheOven.org
-Version=028
+Version=030
 Download_Level=0
 Level=6
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.01.10_16:23.01 (GMT0: -3 Hours)
+Date=2020.01.22
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Drivers/zz_Drivers.script
+Web2=http://yomi.cwcodes.net/Yomi/DriversY/zz_Drivers.script
+Web1C=http://yomi.cwcodes.net/Yomi/DriversY/zz_Drivers_File.Packed
 CertifidBy=
 Certification=
 HistoryNotes01=
@@ -23,12 +25,12 @@ History003=ChrisR - Check Drivers to integrate
 History004=ChrisR - Adding the integration of driver with pause (checkbox)
 History005=Amalux - get dism folder check
 History005=Lancelot - ssshim.dll added to [Process_Vista_Check]
-History006=ChrisR - Retrieve,FOLDERSIZE gives negative number when size is bigger than 2 GB in wb wb82, wb80rv3, wb77rc2 (workaround: If,%FolderSize%,Bigger,0 ==> If,Not,%FolderSize%,Equal,0). Reported by Aeolis
+History006=ChrisR - Retrieve,FolderSize gives negative number when size is bigger than 2 GB in wb wb82, wb80rv3, wb77rc2 (workaround: If,%FolderSize%,Bigger,0 ==> If,Not,%FolderSize%,Equal,0). Reported by Aeolis
 History007=ChrisR - Following AU3381 updated
 History008=ChrisR - Code Cleanup
 History009=ChrisR - Driver Integration for Windows 8 PE.
 History010=ChrisR - Check Add Servicing.
-History012=ChrisR - Win8 used wimgapi from ADK (not from Win8 source) in tools folder, copied in dism folder for possible use after building.
+History012=ChrisR - Win8 used wimgapi from ADK (not from Win8 source) in Tools folder, copied in dism folder for possible use after building.
 History013=ChrisR-JFX - Under XP,2k3 HostOS, Win8 dism searches mui files in MUI\LangID. Hiveunload at the end of Win8 process, the system hive is sometimes not properly unloaded by dism under XP,2k3.
 History014=ChrisR - copy dism.exe.mui with en-US fallback
 History015=ChrisR - Retrieve the errors number of the drivers integration in setupapi.offline.log and put an "echo warn" in case of failure
@@ -43,8 +45,10 @@ History023=Kyhi - Fixed driver hostOSversion check by using;; Call,HostOSVersion
 History024=ChrisR - Call,CompareVersions,%HostOSVersion3% following ML - 2015.08.25
 History025=Lancelot - Added DU Buttons
 History026=ChrisR - Implemented HostOSVersion - Date:2016.09.02
-History027=JFX - Specify the log file location (target_win\Logs\DISM\Dism.log) and do not merged with the host OS one - Date:2016.09.24 - Date:2016.10.05
+History027=JFX - Specify the log file location (Target_Win\Logs\DISM\Dism.log) and do not merged with the host OS one - Date:2016.09.24 - Date:2016.10.05
 History028=ChrisR - Multi Fallback Languages support - Date:2016.11.23 - Date:2016.12.07 // Lancelot - Add Compare Button - Date:2017.01.10
+History029=Lancelot - Add Call,HostOSArch - Date:2019.01.26
+History030=Lancelot - Add BuildClass 3 support // Add More Compatibility (Thanks to JFX GetWaikTools) // Add To Yomi // Cosmetics // Added Malok Add Driver After Boot WebLabel - Date:2020.01.22
 
 [Variables]
 %b32%=%BootSRC%\Windows\System32
@@ -55,12 +59,13 @@ History028=ChrisR - Multi Fallback Languages support - Date:2016.11.23 - Date:20
 %tWow%=%TargetDir%\Windows\SysWow64
 %unsigned%=
 %DriverFolder%=
-%DismLogPath%=%target_win%\Logs\DISM\dism.log
+%DismLogPath%=%Target_Win%\Logs\DISM\dism.log
 %SW_HIDE%=
 %ExpFldr%=%ExpFldrx86%
 %ExpFldrx86%=%GlobalTemplates%\Drivers_Export_Dism_x86
 %ExpFldrx64%=%GlobalTemplates%\Drivers_Export_Dism_x64
 CopyDismMuiHost=Run,%ScriptFile%,PCopyDismMuiHost
+%FileContainer_Solo%=%ScriptDir%\zz_Drivers_File.Packed
 
 [PCopyDismMuiHost]
 // #1=Source Folder - #2=Target Folder
@@ -70,26 +75,26 @@ Loop,%ScriptFile%,PCopyDismMuiHost_Loop,1,%NbLang%,#1,#2
 StrFormat,Split,%MuiLangAll%,|,#c,#9
 If,ExistFile,#1\#9\dism.exe.mui,Begin
 FileCopy,#1\#9\*,#2
-Loop,BREAK
+Loop,Break
 End
 
 [Interface]
 pTextLabel3="Note:  Driver Packages need to be decompressed (*.inf)#$x                                                    > Sub-Folders are allowed",1,1,9,3,320,27,8,Bold
 pTextLabel1="x86 Drivers:",1,1,16,34,77,18,8,Bold
 pFileBox86=%GlobalTemplates%\Drivers_x86\,1,13,9,49,370,20,dir
-pButton1=,1,8,382,47,24,24,Process-OpenDriver_x86,opendir.bmp,False,_Process-OpenDriver_x86,False,_Process-OpenDriver_x86_,False
+pButton1=,1,8,382,49,22,20,Process-OpenDriver_x86,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,_Process-OpenDriver_x86,False,_Process-OpenDriver_x86_,False
 pTextLabel2="x64 Drivers:",1,1,16,73,77,18,8,Bold
 pFileBox64=%GlobalTemplates%\Drivers_x64\,1,13,9,89,370,20,dir
-pButton2=,1,8,382,86,24,24,Process-OpenDriver_x64,opendir.bmp,False,_Process-OpenDriver_x64,False,_Process-OpenDriver_x64_,False
+pButton2=,1,8,382,89,22,20,Process-OpenDriver_x64,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,_Process-OpenDriver_x64,False,_Process-OpenDriver_x64_,False
 pRadioGroup1="Integration process",1,14,9,113,198,54,"Show process","Hide process",0
-pCheckBox_Pause="Pause when integrating",1,3,220,129,147,18,False
+pCheckBox_Pause="Pause when integrating",1,3,209,129,147,18,False
 pBevel1=pBevel1,1,12,8,176,198,107
 pCheckBox2="Startmenu Shortcut",1,3,15,180,131,18,False
 pTextBox2="Start Menu folder:",1,0,31,216,168,21,"Driver Management"
 pTextBox3="Shortcut name:",1,0,31,256,168,21,"Load Integrated drivers"
-pCheckBox1=" Load Drivers at startup",1,3,220,154,139,16,False
-pCheckBox3="Allow to install Unsigned Drivers",1,3,220,179,193,18,False
-pCheckBox4="Enable TEST Mode for running Unsigned Drivers with UEFI",1,3,221,201,313,18,False
+pCheckBox1=" Load Drivers at startup",1,3,209,154,139,16,False
+pCheckBox3="Allow to install Unsigned Drivers",1,3,209,179,193,18,False
+pCheckBox4="Enable TEST Mode for running Unsigned Drivers with UEFI",1,3,209,201,313,18,False
 pTextLabel4=Note:,1,1,221,227,30,18,8,Bold
 pTextLabel5="''SecureBoot'' should be turned OFF.",1,1,254,227,245,18,8,Normal
 pTextLabel6="Even in TEST Mode drivers must have a test certificate before installation.#$xYou can add  your own unverified certificates with:",1,1,221,240,348,28,8,Normal
@@ -97,9 +102,9 @@ pWebLabel2="Driver Signature Enforcement Overrider ",1,10,221,267,231,18,http://
 pWebLabel1="Latest DriverPacks",1,10,382,114,104,18,http://driverpacks.net/driverpacks/latest
 pBevel2=pBevel2,1,12,8,296,471,67
 Button_Export_Drivers="Dism Export Host Drivers",1,8,13,301,200,24,Export_Drivers,_Export_Drivers_,False
-Button_Open_Export_Driver=,1,8,215,301,24,24,Open_Export_Driver,opendir.bmp,False,_Open_Export_Driver,False,_Open_Export_Driver_,False
+Button_Open_Export_Driver=,1,8,215,301,24,24,Open_Export_Driver,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,_Open_Export_Driver,False,_Open_Export_Driver_,False
 Button_Export_Drivers_DD="Double Driver Export Host Drivers",1,8,256,301,192,24,Export_Drivers_DD,_Export_Drivers_DD_,False
-Button_Open_Export_Driver_DD=,1,8,448,301,24,24,Open_Export_Driver_DD,opendir.bmp,False,_Open_Export_Driver_DD,False,_Open_Export_Driver_DD_,False
+Button_Open_Export_Driver_DD=,1,8,448,301,24,24,Open_Export_Driver_DD,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,_Open_Export_Driver_DD,False,_Open_Export_Driver_DD_,False
 pTextLabel7=Note:,1,1,17,331,30,18,8,Bold
 pTextLabel8="Check INF Manufacturer OSVersion, Architecture before integrate host exported drivers.",1,1,48,331,430,18,8,Normal
 pTextLabel9="It is also better to do some manually clean up to remove some drivers: display, audio, printer,...",1,1,17,345,461,18,8,Normal
@@ -107,10 +112,24 @@ WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?boar
 Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
 Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
 Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+Button_Upload_Container=,1,8,495,-1,24,24,UploadXXX_Container,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_Container_,False,"__UPLOAD Container (Admins Only)"
+Button_Download_Container=,1,8,495,21,24,24,DownloadXXX_Container_P_Q_B,DesignboltsThinDownloadDownloadButton0016016.bmp,False,False,_DownloadXXX_Container_P_Q_B_,False,"__Download Container"
+Button_Open_Container=,0,8,495,44,24,24,Open_Container_P_B,Everaldo-Crystal-Clear-App-my-documents_016_016.bmp,False,False,_Open_Container_P_B_,False,"__Open 'File Container'"
+Malok_WebLabel="See Also - Malok: Add Drivers After Boot",1,10,356,153,194,18,http://TheOven.org/index.php?topic=3043.0
 
 [Process]
+//Arch,x86|x64
+Call,TargetVersion,,4x
+If,Not,%TargetVersion1%,Bigger,5,Exit,"'Driver Integration' Plugin Designed for Vista and Later - Plugin Exit"
+//-
+Call,HostOSArch
 Run,%ScriptFile%,Check_DriverSize
 If,Not,%DriverFolderSize%,Equal,0,Begin
+//-
+If,%BuildClass%,Equal,3,Begin
+Call,DirDeleteMake,%ProjectTemp%\Driver_Integration_Temp
+Require,FileListB,,Require_FileListB_dism_exe_wdscore_dll_wimgapi_dll_Servicing_WOW64,,1,WinRE,%ProjectTemp%\Driver_Integration_Temp
+End
 //-
 Call,HostOSVersion,,4x
 // 2aCD - Allow unsigned Drivers
@@ -121,7 +140,8 @@ If,%pRadioGroup1%,Equal,1,Set,%OpenHide%,Hide
 AddVariables,%ProjectDir%\script.project,MuiLang
 StrFormat,Split,%MuiLangAll%,|,0,%NbLang%
 //-
-If,Not,ExistDir,%target_win%\Logs\DISM,DirMake,%target_win%\Logs\DISM
+IniRead,%ProjectDir%\script.project,IniVariables,OS,%OS%
+If,Not,ExistDir,%Target_Win%\Logs\DISM,DirMake,%Target_Win%\Logs\DISM
 If,%OS%%SourceArch%,Equal,Win10x86,Run,%ScriptFile%,Process_Win10x86
 If,%OS%%SourceArch%,Equal,Win10x64,Run,%ScriptFile%,Process_Win10x64
 If,%OS%%SourceArch%,Equal,Win8.1x86,Run,%ScriptFile%,Process_Win8.1x86
@@ -134,17 +154,35 @@ If,%OS%%SourceArch%,Equal,WinVistax86,Run,%ScriptFile%,Process_Vistax86
 If,%OS%%SourceArch%,Equal,WinVistax64,Run,%ScriptFile%,Process_Vistax64
 Run,%ScriptFile%,CheckDriverIntFailure
 //Enable TEST Mode for running Unsigned Drivers with UEFI
-If,%pCheckBox3%%pCheckBox4%,Equal,TrueTrue,Run,%ScriptFile%,EfiBCDTestSigning
+If,%pCheckBox3%-%pCheckBox4%,Equal,True-True,Run,%ScriptFile%,EfiBCDTestSigning
 //-
 // Load drivers at startup
 If,%pCheckBox1%,Equal,True,Begin
-If,ExistFile,%target_sys%\autorun.cmd,begin
-TXTDelLine,%target_sys%\autorun.cmd,exit
-TXTAddLine,%target_sys%\autorun.cmd,"PnpUtil.exe -i -a #$pSystemRoot#$p\inf\oem*.inf",Append
-TXTAddLine,%target_sys%\autorun.cmd,exit,Append
+//-
+Set,%CheckSE%,0
+IniRead,%ProjectDir%\Script.Project,IniVariables,SelectedProject,%SelectedProject%
+If,%SelectedProject%-,Equal,-,Set,%ProjectNameV%,%ProjectName%
+Else,Set,%ProjectNameV%,%SelectedProject%
+StrFormat,Replace,%ProjectNameV%,Win7PESE,-,%t%
+StrFormat,Replace,%ProjectNameV%,Win8PESE,-,%t%
+StrFormat,Replace,%ProjectNameV%,Win8.1SE,-,%t%
+StrFormat,Replace,%ProjectNameV%,Win10PESE,-,%t%
+If,Not,%ProjectNameV%,Equal,%t%,Set,%CheckSE%,1
+//-
+If,%CheckSE%,Equal,0,Begin
+Add,StartupBeforeShellCMD,"Driver Integration_PnpUtil",,"PnpUtil.exe -i -a #$pSystemRoot#$p\inf\oem*.inf"
+End
+//-
+If,%CheckSE%,Equal,1,Begin
+If,ExistFile,%Target_Sys%\autorun.cmd,Begin
+TxtDelLine,%Target_Sys%\autorun.cmd,exit
+TxtAddLine,%Target_Sys%\autorun.cmd,"PnpUtil.exe -i -a #$pSystemRoot#$p\inf\oem*.inf",Append
+TxtAddLine,%Target_Sys%\autorun.cmd,exit,Append
 End
 End
-If,%pCheckBox2%,Equal,true,Add_Shortcut,StartMenu,%pTextBox2%,#$pSystemRoot#$p\system32\cmd.exe,%pTextBox3%,#$pSystemRoot#$p\system32,"/c pnputil.exe -i -a #$pSystemRoot#$p\inf\oem*.inf","#$pSystemRoot#$p\system32\hdwwiz.exe",""
+//-
+End
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox2%,#$pSystemRoot#$p\system32\cmd.exe,%pTextBox3%,#$pSystemRoot#$p\system32,"/c pnputil.exe -i -a #$pSystemRoot#$p\inf\oem*.inf","#$pSystemRoot#$p\system32\hdwwiz.exe",""
 End
 
 [Check_DriverSize]
@@ -152,30 +190,44 @@ Set,%DriverFolderSize%,0
 If,%SourceArch%,Equal,x86,Set,%DriverFolder%,%pFileBox86%
 If,%SourceArch%,Equal,x64,Set,%DriverFolder%,%pFileBox64%
 If,ExistDir,%DriverFolder%,Begin
-Retrieve,FOLDERSIZE,%DriverFolder%,%DriverFolderSize%
+Retrieve,FolderSize,%DriverFolder%,%DriverFolderSize%
 End
 
 [Process_Vista_Check]
+If,Not,ExistFile,%Tools%\zPeIMG.exe,Run,%ScriptFile%,Get_Ready_zPeIMG_exe
 If,Not,ExistFile,%Tools%\zPeIMG.exe,Call,Echo,"Driver Integration requires zPeIMG.exe in folder %Tools%. Plugin Exit now",Warn,,MessageError,5,Exit
+//-
+If,Not,ExistFile,%Tools%\peimg.exe,Run,%ScriptFile%,Get_Ready_Waik2_PeIMG_exe_ssshim_dll
+//peimg.exe - GetWaikTools - Waik2
 If,Not,ExistFile,%Tools%\peimg.exe,Call,Echo,"Driver Integration requires peimg.exe in folder %Tools%. Exit now",Warn,,MessageError,5,Exit
+//-
+If,Not,ExistFile,%Tools%\peimg.exe,Run,%ScriptFile%,Get_Ready_Waik2_PeIMG_exe_ssshim_dll
+//ssshim.dll - GetWaikTools
 If,Not,ExistFile,%Tools%\ssshim.dll,Call,Echo,"Driver Integration (peimg.exe) requires ssshim.dll in folder %Tools%. Exit now",Warn,,MessageError,5,Exit
 
 [Process_Vistax86]
-Run,%scriptfile%,Process_Vista_Check
-StrFormat,CTRIM,%pFileBox86%,\,%pFileBox86%
-ShellExecute,%OpenHide%,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\zPeIMG.exe#$q #$q%pFileBox86%#$q #$q%target_win%#$q %SW_HIDE%"
+Run,%ScriptFile%,Process_Vista_Check
+StrFormat,CTrim,%pFileBox86%,\,%pFileBox86%
+ShellExecute,%OpenHide%,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\zPeIMG.exe#$q #$q%pFileBox86%#$q #$q%Target_Win%#$q %SW_HIDE%"
 
 [Process_Vistax64]
-Run,%scriptfile%,Process_Vista_Check
-StrFormat,CTRIM,%pFileBox64%,\,%pFileBox64%
-ShellExecute,%OpenHide%,%Tools%\%OSArch%\AU3381.exe,"#$q%Tools%\zPeIMG.exe#$q #$q%pFileBox64%#$q #$q%target_win%#$q %SW_HIDE%"
+Run,%ScriptFile%,Process_Vista_Check
+StrFormat,CTrim,%pFileBox64%,\,%pFileBox64%
+ShellExecute,%OpenHide%,%Tools%\%HostOSArch%\AU3381.exe,"#$q%Tools%\zPeIMG.exe#$q #$q%pFileBox64%#$q #$q%Target_Win%#$q %SW_HIDE%"
 
 [Process_Win7x86]
-StrFormat,CTRIM,%pFileBox86%,\,%pFileBox86%
+StrFormat,CTrim,%pFileBox86%,\,%pFileBox86%
 Run,%ScriptFile%,CheckAdd-Servicing
+If,%BuildClass%,Equal,2,Begin
 Call,FileCopyMUI-Source,%b32%\dism.exe,%t32%\dism
 If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%b32%\wdscore.dll,%t32%\dism
 If,Not,ExistFile,%t32%\dism\wimgapi.dll,FileCopy,%b32%\wimgapi.dll,%t32%\dism
+End
+If,%BuildClass%,Equal,3,Begin
+Call,FileCopyMUI,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\dism.exe,%t32%\dism,%MuiLangAll%
+If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\wdscore.dll,%t32%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\wimgapi.dll,%t32%\dism
+End
 Set,%targetdism%,%t32%\dism\dism.exe
 Set,%WorkDir%,%t32%\dism
 Set,%DriverDir%,%pFileBox86%
@@ -184,19 +236,29 @@ If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$
 Else,Run,%ScriptFile%,Process_Pause
 
 [Process_Win7x64]
-StrFormat,CTRIM,%pFileBox64%,\,%pFileBox64%
+StrFormat,CTrim,%pFileBox64%,\,%pFileBox64%
 Run,%ScriptFile%,CheckAdd-Servicing
+If,%BuildClass%,Equal,2,Begin
 Call,FileCopyMUI-Source,%b32%\dism.exe,%t32%\dism
 If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%b32%\wdscore.dll,%t32%\dism
 If,Not,ExistFile,%t32%\dism\wimgapi.dll,FileCopy,%b32%\wimgapi.dll,%t32%\dism
 Call,FileCopyMUI-Source,%iWow%\dism.exe,%tWow%\dism
 If,Not,ExistFile,%tWow%\dism\wdscore.dll,FileCopy,%iWow%\wdscore.dll,%tWow%\dism
 If,Not,ExistFile,%tWow%\dism\wimgapi.dll,FileCopy,%iWow%\wimgapi.dll,%tWow%\dism
-If,%OSArch%,Equal,x86,Begin
+End
+If,%BuildClass%,Equal,3,Begin
+Call,FileCopyMUI,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\dism.exe,%t32%\dism,%MuiLangAll%
+If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\wdscore.dll,%t32%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\wimgapi.dll,%t32%\dism
+Call,FileCopyMUI,%ProjectTemp%\Driver_Integration_Temp\Windows\SysWOW64\dism.exe,%tWow%\dism
+If,Not,ExistFile,%tWow%\dism\wdscore.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\SysWOW64\wdscore.dll,%tWow%\dism
+If,Not,ExistFile,%tWow%\dism\wimgapi.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\SysWOW64\wimgapi.dll,%tWow%\dism
+End
+If,%HostOSArch%,Equal,x86,Begin
 Set,%targetdism%,%tWow%\dism\dism.exe
 Set,%WorkDir%,%tWow%\dism
 End
-If,%OSArch%,Equal,x64,Begin
+If,%HostOSArch%,Equal,x64,Begin
 Set,%targetdism%,%t32%\dism\dism.exe
 Set,%WorkDir%,%t32%\dism
 End
@@ -206,12 +268,31 @@ If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$
 Else,Run,%ScriptFile%,Process_Pause
 
 [Process_Win8x86]
-StrFormat,CTRIM,%pFileBox86%,\,%pFileBox86%
+StrFormat,CTrim,%pFileBox86%,\,%pFileBox86%
 Run,%ScriptFile%,CheckAdd-Servicing
-// Win8: used wimgapi from tools (ADK)
+// Win8: used wimgapi from Tools (ADK)
+If,%BuildClass%,Equal,2,Begin
 Call,FileCopyMUI-Source,%b32%\dism.exe,%t32%\dism
 If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%b32%\wdscore.dll,%t32%\dism
-If,Not,ExistFile,%t32%\dism\wimgapi.dll,FileCopy,%tools%\x86\wimgapi.dll,%t32%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,Begin
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8 -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Echo,"File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll",Warn
+//Intentional Failure If file not exists
+FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,%t32%\dism
+//FileCopy,%Tools%\x86\wimgapi.dll,%t32%\dism
+End
+End
+If,%BuildClass%,Equal,3,Begin
+Call,FileCopyMUI,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\dism.exe,%t32%\dism,%MuiLangAll%
+If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\wdscore.dll,%t32%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,Begin
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8 -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Echo,"File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll",Warn
+//Intentional Failure If file not exists
+FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,%t32%\dism
+//FileCopy,%Tools%\x86\wimgapi.dll,%t32%\dism
+End
+End
 Set,%XP2k3HostOS%,No
 If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
 If,%XP2k3HostOS%,Equal,Yes,Begin
@@ -229,21 +310,56 @@ Set,%DriverDir%,%pFileBox86%
 If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",%WorkDir%
 Else,Run,%ScriptFile%,Process_Pause
 // In case sytem hive not unloaded by dism
-If,ExistFile,%tools%\HiveUnload.exe,ShellExecute,Hide,%tools%\HiveUnload.exe,"/HKLM /Target:%target_sys%\config"
+If,ExistFile,%Tools%\HiveUnload.exe,ShellExecute,Hide,%Tools%\HiveUnload.exe,"/HKLM /Target:%Target_Sys%\config"
 
 [Process_Win8x64]
-StrFormat,CTRIM,%pFileBox64%,\,%pFileBox64%
+StrFormat,CTrim,%pFileBox64%,\,%pFileBox64%
 Run,%ScriptFile%,CheckAdd-Servicing
-// Win8: used wimgapi from tools (ADK)
+// Win8: used wimgapi from Tools (ADK)
+If,%BuildClass%,Equal,2,Begin
 Call,FileCopyMUI-Source,%b32%\dism.exe,%t32%\dism
 If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%b32%\wdscore.dll,%t32%\dism
-If,Not,ExistFile,%t32%\dism\wimgapi.dll,FileCopy,%tools%\x64\wimgapi.dll,%t32%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,Begin
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8 -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll,Echo,"File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll",Warn
+//Intentional Failure If file not exists
+FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll,%t32%\dism
+//FileCopy,%Tools%\x64\wimgapi.dll,%t32%\dism
+End
+//-
 Call,FileCopyMUI-Source,%iWow%\dism.exe,%tWow%\dism
 If,Not,ExistFile,%tWow%\dism\wdscore.dll,FileCopy,%iWow%\wdscore.dll,%tWow%\dism
-If,Not,ExistFile,%tWow%\dism\wimgapi.dll,FileCopy,%tools%\x86\wimgapi.dll,%tWow%\dism
+If,Not,ExistFile,%tWow%\dism\wimgapi.dll,Begin
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8 -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Echo,"File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll",Warn
+//Intentional Failure If file not exists
+FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,%tWow%\dism
+//FileCopy,%Tools%\x86\wimgapi.dll,%tWow%\dism
+End
+End
+If,%BuildClass%,Equal,3,Begin
+Call,FileCopyMUI,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\dism.exe,%t32%\dism,%MuiLangAll%
+If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\wdscore.dll,%t32%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,Begin
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8 -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll,Echo,"File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll",Warn
+//Intentional Failure If file not exists
+FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\amd64\DISM\wimgapi.dll,%t32%\dism
+//FileCopy,%Tools%\x86\wimgapi.dll,%t32%\dism
+End
+Call,FileCopyMUI,%ProjectTemp%\Driver_Integration_Temp\Windows\SysWow64\dism.exe,%tWow%\dism,%MuiLangAll%
+If,Not,ExistFile,%t32%\dism\wdscore.dll,FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\SysWow64\wdscore.dll,%tWow%\dism
+If,Not,ExistFile,%t32%\dism\wimgapi.dll,Begin
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8 -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,Echo,"File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll",Warn
+//Intentional Failure If file not exists
+FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\x86\DISM\wimgapi.dll,%tWow%\dism
+//FileCopy,%Tools%\x86\wimgapi.dll,%t32%\dism
+End
+End
 Set,%XP2k3HostOS%,No
 If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
-If,%OSArch%,Equal,x86,Begin
+If,%HostOSArch%,Equal,x86,Begin
 If,%XP2k3HostOS%,Equal,Yes,Begin
 // Under XP it searches mui files in MUI\LangID
 Call,HostOSLang
@@ -255,7 +371,7 @@ End
 Set,%targetdism%,%tWow%\dism\dism.exe
 Set,%WorkDir%,%tWow%\dism
 End
-If,%OSArch%,Equal,x64,Begin
+If,%HostOSArch%,Equal,x64,Begin
 If,%XP2k3HostOS%,Equal,Yes,Begin
 Call,HostOSLang
 If,Not,ExistDir,%t32%\dism\MUI\%HostOSLang%,DirMake,%t32%\dism\MUI\%HostOSLang%
@@ -271,115 +387,164 @@ Set,%DriverDir%,%pFileBox64%
 If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",%WorkDir%
 Else,Run,%ScriptFile%,Process_Pause
 // In case sytem hive not unloaded by dism
-If,ExistFile,%tools%\HiveUnload.exe,ShellExecute,Hide,%tools%\HiveUnload.exe,"/HKLM /Target:%target_sys%\config"
+If,ExistFile,%Tools%\HiveUnload.exe,ShellExecute,Hide,%Tools%\HiveUnload.exe,"/HKLM /Target:%Target_Sys%\config"
 
 [Process_Win8.1x86]
 // Use ADK for Win8.1
-If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
-Retrieve,FILEVERSION,%Tools%\%SourceArch%\dism\dism.exe,%dismexeVer%
-If,%dismexeVer%,Smaller,6.3.9600.16384,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//--If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//--Retrieve,FileVersion,%Tools%\%SourceArch%\dism\dism.exe,%dismexeVer%
+//--If,%dismexeVer%,Smaller,6.3.9600.16384,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//Lancelot: For now I am Lazy only check with GetWaikTools ;) Thanks to JFX
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_5\x86\DISM\dism.exe,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8.1dism -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_5\x86\DISM\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!! File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_5\x86\DISM\dism.exe",Warn,,MessageError,,Exit
 // XP, 2k3, vista Not Compatible
 Set,%XP2k3HostOS%,No
 If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
 If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
 If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Integration Driver for Win8.1 uses ADK for Win8.1, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.#$x#$xExiting...",Warn,,MessageError,,Exit
 //-
-StrFormat,CTRIM,%pFileBox86%,\,%pFileBox86%
+StrFormat,CTrim,%pFileBox86%,\,%pFileBox86%
 Run,%ScriptFile%,CheckAdd-Servicing
 //-
-Set,%targetdism%,%Tools%\%SourceArch%\dism\dism.exe
-Set,%WorkDir%,%Tools%\%SourceArch%\dism
+If,Not,ExistDir,%ProjectTemp%\ADK_5,DirMake,%ProjectTemp%\ADK_5
+DirCopy,%GlobalTemplates%\GetWaikTools\ADK_5\*,%ProjectTemp%\ADK_5
+//-
+//Set,%targetdism%,%Tools%\%SourceArch%\dism\dism.exe
+//Set,%WorkDir%,%Tools%\%SourceArch%\dism
+Set,%targetdism%,%ProjectTemp%\ADK_5\x86\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_5\x86\DISM
 Set,%DriverDir%,%pFileBox86%
 //-
 If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",%WorkDir%
 Else,Run,%ScriptFile%,Process_Pause
 // In case sytem hive not unloaded by dism
-If,ExistFile,%tools%\HiveUnload.exe,ShellExecute,Hide,%tools%\HiveUnload.exe,"/HKLM /Target:%target_sys%\config"
+If,ExistFile,%Tools%\HiveUnload.exe,ShellExecute,Hide,%Tools%\HiveUnload.exe,"/HKLM /Target:%Target_Sys%\config"
 
 [Process_Win8.1x64]
 // Use ADK for Win8.1
-If,Not,ExistFile,%Tools%\%OSArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
-If,%OSArch%,Equal,x86,Retrieve,FILEVERSION,%Tools%\x86\dism\dism.exe,%dismexeVer%
-Else,Retrieve,FILEVERSION,%Tools%\x64\dism\dism.exe,%dismexeVer%
-If,%dismexeVer%,Smaller,6.3.9600.16384,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//--If,Not,ExistFile,%Tools%\%HostOSArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//--If,%HostOSArch%,Equal,x86,Retrieve,FileVersion,%Tools%\x86\dism\dism.exe,%dismexeVer%
+//--Else,Retrieve,FileVersion,%Tools%\x64\dism\dism.exe,%dismexeVer%
+//--If,%dismexeVer%,Smaller,6.3.9600.16384,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//Lancelot: For now I am Lazy only check with GetWaikTools ;) Thanks to JFX
+Set,%t%,x86
+If,%HostOSArch%,Equal,x64,Set,%t%,amd64
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_5\%t%\DISM\dism.exe,Run,%ScriptFile%,GetWaikTools_P_M,"-Win8.1dism -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_5\%t%\DISM\dism.exe,Call,Echo,"dism.exe from ADK for Windows 8.1 is required for Driver Integration !!! File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_5\%t%\DISM\dism.exe",Warn,,MessageError,,Exit
 // XP, 2k3, vista Not Compatible
 Set,%XP2k3HostOS%,No
 If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
 If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
 If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Integration Driver for Win8.1 uses ADK for Win8.1, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.#$x#$xExiting...",Warn,,MessageError,,Exit
 //-
-StrFormat,CTRIM,%pFileBox64%,\,%pFileBox64%
+StrFormat,CTrim,%pFileBox64%,\,%pFileBox64%
 Run,%ScriptFile%,CheckAdd-Servicing
 //-
-If,%OSArch%,Equal,x86,Begin
-Set,%targetdism%,%Tools%\x86\dism\dism.exe
-Set,%WorkDir%,%Tools%\x86\dism
+If,Not,ExistDir,%ProjectTemp%\ADK_5,DirMake,%ProjectTemp%\ADK_5
+DirCopy,%GlobalTemplates%\GetWaikTools\ADK_5\*,%ProjectTemp%\ADK_5
+//-
+If,%HostOSArch%,Equal,x86,Begin
+//Set,%targetdism%,%Tools%\x86\dism\dism.exe
+//Set,%WorkDir%,%Tools%\x86\dism
+Set,%targetdism%,%ProjectTemp%\ADK_5\x86\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_5\x86\DISM
 End
-If,%OSArch%,Equal,x64,Begin
-Set,%targetdism%,%Tools%\x64\dism\dism.exe
-Set,%WorkDir%,%Tools%\x64\dism
+If,%HostOSArch%,Equal,x64,Begin
+//Set,%targetdism%,%Tools%\x64\dism\dism.exe
+//Set,%WorkDir%,%Tools%\x64\dism
+Set,%targetdism%,%ProjectTemp%\ADK_5\amd64\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_5\amd64\DISM
 End
 Set,%DriverDir%,%pFileBox64%
 //-
 If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",%WorkDir%
 Else,Run,%ScriptFile%,Process_Pause
 // In case sytem hive not unloaded by dism
-If,ExistFile,%tools%\HiveUnload.exe,ShellExecute,Hide,%tools%\HiveUnload.exe,"/HKLM /Target:%target_sys%\config"
+If,ExistFile,%Tools%\HiveUnload.exe,ShellExecute,Hide,%Tools%\HiveUnload.exe,"/HKLM /Target:%Target_Sys%\config"
 
 [Process_Win10x86]
 // Use ADK for Win10
-If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
-Retrieve,FILEVERSION,%Tools%\%SourceArch%\dism\dism.exe,%dismexeVer%
-StrFormat,LEFT,%dismexeVer%,2,%MajdismexeVer%
-If,%MajdismexeVer%,Smaller,10,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//-If,Not,ExistFile,%Tools%\%SourceArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//-Retrieve,FileVersion,%Tools%\%SourceArch%\dism\dism.exe,%dismexeVer%
+//-StrFormat,Left,%dismexeVer%,2,%MajdismexeVer%
+//-If,%MajdismexeVer%,Smaller,10,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//Lancelot: For now I am Lazy only check with GetWaikTools ;) Thanks to JFX
+Set,%t%,x86
+If,%HostOSArch%,Equal,x64,Set,%t%,amd64
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_6\%t%\DISM\dism.exe,Run,%ScriptFile%,GetWaikTools_P_M,"-Win10dism -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_6\%t%\DISM\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!! File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_6\%t%\DISM\dism.exe",Warn,,MessageError,,Exit
 // XP, 2k3, vista Not Compatible
 Set,%XP2k3HostOS%,No
 If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
 If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
 If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Integration Driver for Win10 uses ADK for Win10, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.#$x#$xExiting...",Warn,,MessageError,,Exit
 //-
-StrFormat,CTRIM,%pFileBox86%,\,%pFileBox86%
+StrFormat,CTrim,%pFileBox86%,\,%pFileBox86%
 Run,%ScriptFile%,CheckAdd-Servicing
 //-
-Set,%targetdism%,%Tools%\%SourceArch%\dism\dism.exe
-Set,%WorkDir%,%Tools%\%SourceArch%\dism
+If,Not,ExistDir,%ProjectTemp%\ADK_6,DirMake,%ProjectTemp%\ADK_6
+DirCopy,%GlobalTemplates%\GetWaikTools\ADK_6\*,%ProjectTemp%\ADK_6
+//-
+//Set,%targetdism%,%Tools%\%SourceArch%\dism\dism.exe
+//Set,%WorkDir%,%Tools%\%SourceArch%\dism
+If,%HostOSArch%,Equal,x86,Begin
+Set,%targetdism%,%ProjectTemp%\ADK_6\x86\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_6\x86\DISM
+End
+If,%HostOSArch%,Equal,x64,Begin
+Set,%targetdism%,%ProjectTemp%\ADK_6\amd64\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_6\amd64\DISM
+End
 Set,%DriverDir%,%pFileBox86%
 //-
 If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",%WorkDir%
 Else,Run,%ScriptFile%,Process_Pause
 // In case sytem hive not unloaded by dism
-If,ExistFile,%tools%\HiveUnload.exe,ShellExecute,Hide,%tools%\HiveUnload.exe,"/HKLM /Target:%target_sys%\config"
+If,ExistFile,%Tools%\HiveUnload.exe,ShellExecute,Hide,%Tools%\HiveUnload.exe,"/HKLM /Target:%Target_Sys%\config"
 
 [Process_Win10x64]
 // Use ADK for Win10
-If,Not,ExistFile,%Tools%\%OSArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
-If,%OSArch%,Equal,x86,Retrieve,FILEVERSION,%Tools%\x86\dism\dism.exe,%dismexeVer%
-Else,Retrieve,FILEVERSION,%Tools%\x64\dism\dism.exe,%dismexeVer%
-StrFormat,LEFT,%dismexeVer%,2,%MajdismexeVer%
-If,%MajdismexeVer%,Smaller,10,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//-If,Not,ExistFile,%Tools%\%HostOSArch%\dism\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//-If,%HostOSArch%,Equal,x86,Retrieve,FileVersion,%Tools%\x86\dism\dism.exe,%dismexeVer%
+//-Else,Retrieve,FileVersion,%Tools%\x64\dism\dism.exe,%dismexeVer%
+//-StrFormat,Left,%dismexeVer%,2,%MajdismexeVer%
+//-If,%MajdismexeVer%,Smaller,10,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!!#$xUse Retrieve Tools Plugin.#$x#$xExiting...",Warn,,MessageError,,Exit
+//-
+//Lancelot: For now I am Lazy only check with GetWaikTools ;) Thanks to JFX
+Set,%t%,x86
+If,%HostOSArch%,Equal,x64,Set,%t%,amd64
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_6\%t%\DISM\dism.exe,Run,%ScriptFile%,GetWaikTools_P_M,"-Win10dism -Silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\ADK_6\%t%\DISM\dism.exe,Call,Echo,"dism.exe from ADK for Windows 10 is required for Driver Integration !!! File NOT Found: %GlobalTemplates%\GetWaikTools\ADK_6\%t%\DISM\dism.exe",Warn,,MessageError,,Exit
 // XP, 2k3, vista Not Compatible
 Set,%XP2k3HostOS%,No
 If,%HostOSVersion1%,Equal,5,Set,%XP2k3HostOS%,Yes
 If,%HostOSVersion1%.%HostOSVersion2%,Equal,6.0,Set,%XP2k3HostOS%,Yes
 If,%XP2k3HostOS%,Equal,Yes,Call,Echo,"Integration Driver for Win10 uses ADK for Win10, it is unfortunately not compatible with Windows XP, 2003 and Vista HostOS.#$x#$xExiting...",Warn,,MessageError,,Exit
 //-
-StrFormat,CTRIM,%pFileBox64%,\,%pFileBox64%
+StrFormat,CTrim,%pFileBox64%,\,%pFileBox64%
 Run,%ScriptFile%,CheckAdd-Servicing
 //-
-If,%OSArch%,Equal,x86,Begin
-Set,%targetdism%,%Tools%\x86\dism\dism.exe
-Set,%WorkDir%,%Tools%\x86\dism
+If,Not,ExistDir,%ProjectTemp%\ADK_6,DirMake,%ProjectTemp%\ADK_6
+DirCopy,%GlobalTemplates%\GetWaikTools\ADK_6\*,%ProjectTemp%\ADK_6
+//-
+If,%HostOSArch%,Equal,x86,Begin
+//Set,%targetdism%,%Tools%\x86\dism\dism.exe
+//Set,%WorkDir%,%Tools%\x86\dism
+Set,%targetdism%,%ProjectTemp%\ADK_6\x86\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_6\x86\DISM
 End
-If,%OSArch%,Equal,x64,Begin
-Set,%targetdism%,%Tools%\x64\dism\dism.exe
-Set,%WorkDir%,%Tools%\x64\dism
+If,%HostOSArch%,Equal,x64,Begin
+//Set,%targetdism%,%Tools%\x64\dism\dism.exe
+//Set,%WorkDir%,%Tools%\x64\dism
+Set,%targetdism%,%ProjectTemp%\ADK_6\amd64\DISM\dism.exe
+Set,%WorkDir%,%ProjectTemp%\ADK_6\amd64\DISM
 End
 Set,%DriverDir%,%pFileBox64%
 //-
 If,%pCheckBox_Pause%,Equal,False,ShellExecute,%OpenHide%,%targetdism%,"/image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",%WorkDir%
 Else,Run,%ScriptFile%,Process_Pause
 // In case sytem hive not unloaded by dism
-If,ExistFile,%tools%\HiveUnload.exe,ShellExecute,Hide,%tools%\HiveUnload.exe,"/HKLM /Target:%target_sys%\config"
+If,ExistFile,%Tools%\HiveUnload.exe,ShellExecute,Hide,%Tools%\HiveUnload.exe,"/HKLM /Target:%Target_Sys%\config"
 
 [Process_Pause]
 Set,%w%,%projecttemp%\AddGetDrivers.cmd
@@ -387,49 +552,77 @@ If,ExistFile,%w%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%w%#$q&del /q /f /A:
 If,ExistFile,%w%,Call,FileDelete,%w%
 If,ExistFile,%w%,Call,Echo,"FILE %w% NOT DELETED",Warn,,MessageError,,Exit
 FileCreateBlank,%w%
-TXTAddLine,%w%,"@Echo Off",Append
-TXTAddLine,%w%,"Echo=== Adds third-party driver packages ===",Append
-TXTAddLine,%w%,"#$q%targetdism%#$q /image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",Append
-TXTAddLine,%w%,"Echo.",Append
-TXTAddLine,%w%,"Echo=== Listed third-party Divers ===",Append
-TXTAddLine,%w%,"#$q%targetdism%#$q /image:#$q%TargetDir%#$q /Get-Drivers /Format:Table",Append
-TXTAddLine,%w%,"Pause",Append
-Shellexecute,Open,%w%,,%WorkDir%
+TxtAddLine,%w%,"@Echo Off",Append
+TxtAddLine,%w%,"Echo=== Adds third-party driver packages ===",Append
+TxtAddLine,%w%,"#$q%targetdism%#$q /image:#$q%TargetDir%#$q /Add-Driver /Driver:#$q%DriverDir%#$q /recurse %unsigned% /LogPath:#$q%DismLogPath%#$q",Append
+TxtAddLine,%w%,"Echo.",Append
+TxtAddLine,%w%,"Echo=== Listed third-party Divers ===",Append
+TxtAddLine,%w%,"#$q%targetdism%#$q /image:#$q%TargetDir%#$q /Get-Drivers /Format:Table",Append
+TxtAddLine,%w%,"Pause",Append
+ShellExecute,Open,%w%,,%WorkDir%
 
 [CheckAdd-Servicing]
+If,%BuildClass%,Equal,2,Begin
 //-- Servicing (DISM /PEIMG) required for drivers integration
-If,Not,ExistDir,%target_win%\servicing,Begin
+If,Not,ExistDir,%Target_Win%\servicing,Begin
 Echo,"Processing Servicing file copy..."
-DirMake,%target_win%\servicing
-FileCopy,%BootSRC%\Windows\servicing\*,%target_win%\servicing
+DirMake,%Target_Win%\servicing
+FileCopy,%BootSRC%\Windows\servicing\*,%Target_Win%\servicing
 End
 If,Not,ExistDir,%t32%\dism,Begin
 Echo,"Processing Dism file copy..."
 DirMake,%t32%\dism
 FileCopy,%b32%\dism\*,%t32%\dism
 End
-If,%SourceArch%,Equal,x64,If,Not,ExistDir,%tWow%\dism,Begin
+If,%SourceArch%,Equal,x64,Begin
+If,Not,ExistDir,%tWow%\dism,Begin
 Echo,"Processing WoW64 Dism file copy..."
 DirMake,%tWow%\dism
 FileCopy,%bWow%\dism\*,%tWow%\dism
+End
 End
 If,Not,ExistDir,%t32%\SMI,Begin
 Echo,"Processing SMI file copy..."
 DirMake,%t32%\SMI
 FileCopy,%b32%\SMI\*,%t32%\SMI
 End
+End
+If,%BuildClass%,Equal,3,Begin
+If,Not,ExistDir,%Target_Win%\servicing,Begin
+Echo,"Processing Servicing file copy..."
+DirMake,%Target_Win%\servicing
+FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\servicing\*,%Target_Win%\servicing
+End
+If,Not,ExistDir,%t32%\dism,Begin
+Echo,"Processing Dism file copy..."
+DirMake,%t32%\dism
+FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\dism\*,%t32%\dism
+End
+If,%SourceArch%,Equal,x64,Begin
+If,Not,ExistDir,%tWow%\dism,Begin
+Echo,"Processing WoW64 Dism file copy..."
+DirMake,%tWow%\dism
+FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\SysWOW64\dism\*,%tWow%\dism
+End
+End
+If,Not,ExistDir,%t32%\SMI,Begin
+Echo,"Processing SMI file copy..."
+DirMake,%t32%\SMI
+FileCopy,%ProjectTemp%\Driver_Integration_Temp\Windows\System32\SMI\*,%t32%\SMI
+End
+End
 
 [CheckDriverIntFailure]
 If,Not,ExistDir,%ProjectTemp%,DirMake,%ProjectTemp%
 Set,%w%,%ProjectTemp%\DriverIntFailure.cmd
-If,ExistFile,%w%,Shellexecute,Hide,cmd.exe,"/C del /q /f #$q%w%#$q"
+If,ExistFile,%w%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%w%#$q"
 If,ExistFile,%w%,Echo,"FILE %w% NOT DELETED",Warn
 FileCreateBlank,%w%
-TxtAddline,%w%,"@Echo off",Append
-TxtAddline,%w%,"Cd /D #$q%target_win%\in f#$q",Append
-TxtAddline,%w%,"Set _count=0",Append
-TxtAddline,%w%,"For /f #$qtokens=3 delims= #$q #$p#$pj in ('find.exe /C #$q[Exit status: FAILURE#$q setupapi.offline.log') do (SET _count=#$p#$pj)",Append
-TxtAddline,%w%,"Exit /b #$p_count#$p",Append
+TxtAddLine,%w%,"@Echo off",Append
+TxtAddLine,%w%,"Cd /D #$q%Target_Win%\in f#$q",Append
+TxtAddLine,%w%,"Set _count=0",Append
+TxtAddLine,%w%,"For /f #$qtokens=3 delims= #$q #$p#$pj in ('find.exe /C #$q[Exit status: FAILURE#$q setupapi.offline.log') do (SET _count=#$p#$pj)",Append
+TxtAddLine,%w%,"Exit /b #$p_count#$p",Append
 ShellExecute,Hide,%w%,,%ProjectTemp%
 If,Not,%ExitCode%,Equal,0,Call,Echo,"Driver Integration. Exit status: %ExitCode% FAILURE(s) on setupapi.offline.log",Warn,5
 
@@ -437,15 +630,42 @@ If,Not,%ExitCode%,Equal,0,Call,Echo,"Driver Integration. Exit status: %ExitCode%
 If,ExistFile,%TargetDir%\efi\microsoft\boot\bcd,Begin
 Run,%ScriptFile%,FindBCDedit
 Echo,"Adjust UEFI BCD with TestSigning ON for running Unsigned Drivers with UEFI Firmware"
-ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {default} TestSigning ON",%Tools%\%OSArch%\
+ShellExecute,Hide,%BcdEditExe%,"/store #$q%TargetDir%\efi\microsoft\boot\bcd#$q /set {default} TestSigning ON",%Tools%\%HostOSArch%\
 End
 
 [FindBCDedit]
+Set,%BcdEditExe%,-
+If,%BuildClass%,Equal,2,Run,%ScriptFile%,FindBCDedit_2
+If,%BuildClass%,Equal,3,Run,%ScriptFile%,FindBCDedit_3
+//-
+If,%BcdEditExe%,Equal,-,Begin
+If,Not,ExistFile,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot\bcdedit.exe,Run,%ScriptFile%,Get_Ready_bcdedit_exe
+If,ExistFile,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot\bcdedit.exe,Set,%BcdEditExe%,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot\bcdedit.exe
+End
+//-
+If,%BcdEditExe%,Equal,-,Call,Echo,"Bcdedit.exe NOT found! Exit Now",Warn,,MessageError,,Exit
+
+[FindBCDedit_2]
+If,%HostOSArch%,Equal,%SourceArch%,Begin
+If,Not,ExistDir,%ProjectTemp%\Driver_Integration_BCDedit_Temp,DirMake,%ProjectTemp%\Driver_Integration_BCDedit_Temp
+If,ExistFile,%InstallSRC%\Windows\System32\bcdedit.exe,Begin
+FileCopy,%InstallSRC%\Windows\System32\bcdedit.exe,%ProjectTemp%\Driver_Integration_BCDedit_Temp
+Set,%BcdEditExe%,%ProjectTemp%\Driver_Integration_BCDedit_Temp\bcdedit.exe
+End
+End
+
+[FindBCDedit_3]
+If,%HostOSArch%,Equal,%SourceArch%,Begin
+Require,FileList,,Require_FileList_bcdedit,,,,%ProjectTemp%\Driver_Integration_I_Temp
+If,ExistFile,%ProjectTemp%\Driver_Integration_I_Temp\Windows\System32\bcdedit.exe,Set,%BcdEditExe%,%ProjectTemp%\Driver_Integration_I_Temp\Windows\System32\bcdedit.exe
+End
+
+[FindBCDedit_CANCEL]
 If,Not,ExistFile,%Tools%\%SourceArch%\bcdedit.exe,FileCopy,%InstallSRC%\Windows\System32\bcdedit.exe,%Tools%\%SourceArch%
-Set,%BcdEditExe%,%Tools%\%OSArch%\bcdedit.exe
+Set,%BcdEditExe%,%Tools%\%HostOSArch%\bcdedit.exe
 If,Not,ExistFile,%BcdEditExe%,Set,%BcdEditExe%,%Tools%\x86\bcdedit.exe
 //source x64 host x86
-If,Not,ExistFile,%BcdEditExe%,Call,Echo,"%Tools%\%OSArch%\bcdedit.exe NOT found! Exit Now",Warn,,MessageError,,Exit
+If,Not,ExistFile,%BcdEditExe%,Call,Echo,"%Tools%\%HostOSArch%\bcdedit.exe NOT found! Exit Now",Warn,,MessageError,,Exit
 
 [Process-OpenDriver_x86]
 Call,OpenDir,%pFileBox86%
@@ -458,7 +678,7 @@ Run,%ScriptFile%,Check_Export_HostOSVersion
 Call,HostOSArch
 If,%HostOSArch%,Equal,x64,Set,%ExpFldr%,%ExpFldrx64%
 //--
-If,ExistDir,%ExpFldr%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ExpFldr%#$q"
+If,ExistDir,%ExpFldr%,ShellExecute,Hide,cmd.exe,"/C rd /s /q #$q%ExpFldr%#$q"
 If,ExistDir,%ExpFldr%,Call,DirDelete,%ExpFldr%
 DirMake,%ExpFldr%
 Call,HostSystemDir
@@ -467,9 +687,9 @@ Set,%WorkDir%,%HostSystemDir%
 //--
 If,%pCheckBox_Pause%,Equal,True,Run,%ScriptFile%,Export_Drivers_Pause
 Else,Begin
-System,FILEREDIRECT,OFF
+System,FileRedirect,OFF
 ShellExecute,Open,%targetdism%,"/online /Export-Driver /Destination:#$q%ExpFldr%#$q",%WorkDir%
-System,FILEREDIRECT,ON
+System,FileRedirect,ON
 End
 
 [Export_Drivers_Pause]
@@ -478,13 +698,13 @@ If,ExistFile,%e%,ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%e%#$q&del /q /f /A:
 If,ExistFile,%e%,Call,FileDelete,%e%
 If,ExistFile,%e%,Call,Echo,"FILE %w% NOT DELETED",Warn,,MessageError,,Exit
 FileCreateBlank,%e%
-TXTAddLine,%e%,"@Echo Off",Append
-TXTAddLine,%e%,"Echo=== Exporting Third-Party System Drivers ===",Append
-TXTAddLine,%e%,"#$q%targetdism%#$q /online /Export-Driver /Destination:#$q%ExpFldr%#$q",Append
-TXTAddLine,%e%,"Pause",Append
-System,FILEREDIRECT,OFF
-Shellexecute,Open,%e%,,%WorkDir%
-System,FILEREDIRECT,ON
+TxtAddLine,%e%,"@Echo Off",Append
+TxtAddLine,%e%,"Echo=== Exporting Third-Party System Drivers ===",Append
+TxtAddLine,%e%,"#$q%targetdism%#$q /online /Export-Driver /Destination:#$q%ExpFldr%#$q",Append
+TxtAddLine,%e%,"Pause",Append
+System,FileRedirect,OFF
+ShellExecute,Open,%e%,,%WorkDir%
+System,FileRedirect,ON
 
 [Check_Export_HostOSVersion]
 // Export driver only available on Windows 8.1 Update or windows 10
@@ -501,12 +721,83 @@ If,%HostOSArch%,Equal,x64,Set,%ExpFldr%,%ExpFldrx64%
 Call,OpenDir,%ExpFldr%
 
 [Export_Drivers_DD]
-If,Not,ExistFile,%ProjectDir%\Drivers\Double Driver.Script,Call,Echo,"Double Driver Plugin required to Export Host drivers",Warn,,MessageError,,Exit
-Run,%ProjectDir%\Drivers\Double Driver.Script,Called_Export_Driver,%ProjectDir%\Drivers\Double Driver.Script
+If,Not,ExistFile,"%ProjectDir%\Drivers\Double Driver.Script",Call,Echo,"Double Driver Plugin required to Export Host drivers",Warn,,MessageError,,Exit
+Run,"%ProjectDir%\Drivers\Double Driver.Script",Called_Export_Driver,"%ProjectDir%\Drivers\Double Driver.Script"
 
 [Open_Export_Driver_DD]
-If,Not,ExistFile,%ProjectDir%\Drivers\Double Driver.Script,Call,Echo,"Double Driver Plugin required to Open exported Host drivers",Warn,,MessageError,,Exit
-Run,%ProjectDir%\Drivers\Double Driver.Script,Called_Open_Export_Driver,%ProjectDir%\Drivers\Double Driver.Script
+If,Not,ExistFile,"%ProjectDir%\Drivers\Double Driver.Script",Call,Echo,"Double Driver Plugin required to Open exported Host drivers",Warn,,MessageError,,Exit
+Run,"%ProjectDir%\Drivers\Double Driver.Script",Called_Open_Export_Driver,"%ProjectDir%\Drivers\Double Driver.Script"
+
+[Require_FileListB_dism_exe_wdscore_dll_wimgapi_dll_Servicing_WOW64]
+\Windows\System32\dism.exe
+\Windows\System32\??-??\dism.exe.mui
+\Windows\System32\wdscore.dll
+\Windows\System32\wdscore.dll
+\Windows\SysWOW64\dism.exe
+\Windows\SysWOW64\??-??\dism.exe.mui
+\Windows\SysWOW64\wdscore.dll
+\Windows\SysWOW64\wdscore.dll
+\Windows\servicing\*
+\Windows\System32\dism\*
+\Windows\SysWOW64\dism\*
+\Windows\System32\SMI\*
+
+[Require_FileList_bcdedit]
+\Windows\System32\bcdedit.exe
+
+[Get_Ready_zPeIMG_exe]
+If,Not,ExistFile,%FileContainer_Solo%,Begin
+StrFormat,FileName,%FileContainer_Solo%,%FileContainer_Solo_FileName%
+If,ExistFile,%BaseDir%\Projects\Yomi\DriversY\%FileContainer_Solo_FileName%,Set,%FileContainer_Solo%,%BaseDir%\Projects\Yomi\DriversY\%FileContainer_Solo_FileName%
+End
+If,Not,ExistFile,%FileContainer_Solo%,Run,%ScriptFile%,DownloadXXX_Container_P
+If,ExistFile,%FileContainer_Solo%,Call,PackedExtractFile,%FileContainer_Solo%,%Tools%,zPeIMG.exe
+
+[Get_Ready_Waik2_PeIMG_exe_ssshim_dll]
+If,ExistFile,%GlobalTemplates%\GetWaikTools\Waik_2\x86\peimg.exe,Begin
+If,Not,ExistDir,%Tools%,DirMake,%Tools%
+FileCopy,%GlobalTemplates%\GetWaikTools\Waik_2\x86\peimg.exe,%Tools%
+End
+//-
+If,ExistFile,%GlobalTemplates%\GetWaikTools\Waik_2\x86\ssshim.dll,Begin
+If,Not,ExistDir,%Tools%,DirMake,%Tools%
+FileCopy,%GlobalTemplates%\GetWaikTools\Waik_2\x86\ssshim.dll,%Tools%
+End
+//-
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\Waik_2\x86\peimg.exe,Run,%ScriptFile%,GetWaikTools_P_M,"-vista -silent"
+If,Not,ExistFile,%GlobalTemplates%\GetWaikTools\Waik_2\x86\ssshim.dll,Run,%ScriptFile%,GetWaikTools_P_M,"-vista -silent"
+//-
+If,ExistFile,%GlobalTemplates%\GetWaikTools\Waik_2\x86\peimg.exe,Begin
+If,Not,ExistDir,%Tools%,DirMake,%Tools%
+FileCopy,%GlobalTemplates%\GetWaikTools\Waik_2\x86\peimg.exe,%Tools%
+End
+//-
+If,ExistFile,%GlobalTemplates%\GetWaikTools\Waik_2\x86\ssshim.dll,Begin
+If,Not,ExistDir,%Tools%,DirMake,%Tools%
+FileCopy,%GlobalTemplates%\GetWaikTools\Waik_2\x86\ssshim.dll,%Tools%
+End
+
+[Get_Ready_bcdedit_exe]
+If,Not,ExistDir,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot,DirMake,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot
+//-
+Call,HostOSArch
+Set,#9,x86
+If,%HostOSArch%,Equal,x64,Set,#9,amd64
+//-
+If,Existfile,%GlobalTemplates%\GetWaikTools\ADK_4\#9\BCDBoot\bcdedit.exe,FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\#9\BCDBoot\bcdedit.exe,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot
+//-
+If,Not,ExistFile,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot\bcdedit.exe,Begin
+If,Not,%HostOSArch%,Equal,x86,Begin
+//FallBack to use bcdedit.exe with HostOS Wow64 !
+If,Existfile,%GlobalTemplates%\GetWaikTools\ADK_4\x86\BCDBoot\bcdedit.exe,FileCopy,%GlobalTemplates%\GetWaikTools\ADK_4\x86\BCDBoot\bcdedit.exe,%ProjectTemp%\WaikTools_M\ADK_4\HostOS\BCDBoot
+End
+End
+
+[GetWaikTools_P_M]
+If,ExistFile,%ProjectDir%\Utils\GetWaikTools.script,Run,%ProjectDir%\Utils\GetWaikTools.script,Launch_Program,%ProjectDir%\Utils\GetWaikTools.script,#1
+
+[Open_Container_P_B]
+Call,FileOpenWait,%FileContainer_Solo%
 
 [AuthorEncoded]
 Icon_3346.ico=4749,6332
@@ -518,20 +809,47 @@ lines=1
 1=HCPj6Kdo5irGygXW4SeyF1ust8ptcjnz7NpM+TGSdLGE9J9MNe7oNEj0zmixT6XeLF1soqW9F6pT/01LR/pSm0w1HmCzx7BnBPisePgYcPgaIioLDwz/Vgzy16pDNPhZLvNh2s4M189Ih6PGQPnskaFcH4iSR/ktlnSJy/rMcV+lp6jDT6P6x/f4z19Cz80sVlo7GxsX/NmjXF7q/dv4sO4gfO8xYuXPjzDvL1l+vXX6/HrVvP9Uhnbgmljc3dTGHYwxDveb4HxUdR8f9G/FuZf9mA4yfW7/vk2THm5HByJoLPSE93lbpdps9XEXewl9dNG0vLtHr16g3XcUXfz5XozEw3SjGmG3L/GjQmOHhbAvPQUe5fim7fVvW4L5iJIZT2NHczUzGXHlRaxSzy7uhyKB9TFT7k7NNjx1Q95AyFdkFRVhayee0c9SqgLrnsRRYxV/Ts3l3OWC6z3soZv/RAwnXZv0vNlX2k9EHVFe0s7U17BH3PaaDTX/ZC3dkHJTo5ORUOYX1t5NjoD5jLTTKAwfx6qJpkjKobjVFlg5GK/xnjeAG57dimjbrvEi4dl7M04j/FOnmUfUkO5/O8fpJxvoD52s3FpVD2CtRF9v7xOl2kD/JRtPOMrrpYKFcMt/hIzgHq6DGXLVs2hLzb1di48ZX6Heq/gPmd4e/iw/BqqLLUCLW3tES9BGs0CbRCg+kWqJZiqurgynyeypp+jVwUP+SSJxIPPzAXnWCdvMR6eZv+uHT8OI4z3+4jxw6TY6d5zxHqMp9x7OrqqurCXuisg4PDterVqx9VtN5utPJiLhKeNSfm4OKYDdwNntu4jP8HMIiujzpJrdBwpyMarXFAs342sLRtLu8B94WQPbiFrRWMBlqgqZc5Gvub4RMvU/Tq9Tni6Yec775TdfiFfsmiDjsZx/vZp+QS/3Xy6TJz11H2LjtYSzMY38ep40HqJOvKvnw3r5HbcgY9R9H2JGpMkB9uTS2aHn4Zc7mxBqi+yAyNt3aE0cYuMJnSFqYerWAU5YCmka0RwNws+3oR4fcU5uARI0ZgDHP7sGHDwN4EtWNNYJjUBLXDjWDWzgIO7ElDWJN2MG9eJ5du0v7Z1GUrY3gzc9Bh+uEi9bgosU69khj/HsxHgl8kknWJmOcp2hmUip97qkg95orhdVFnhS2MM9zRbG03mAW0g4VbSzUGRTqQF/rPFu2tYeZiDWPvzzB47BA5m1AlavZ0eMR4w3pGW9SJa0bclqou3KsjhLVRdJNzKlljpLc3ljKn5pFX1+gbiYM06rKee4udzK3r2TcNeDN+xdLSckqTfuawWuwOi+89YZHcG1YdWqjry3u/YtyKbRMSEtgbJqrzBPZxzLfPcZiQSw1W26L+khaomWqDuglWaBJgqXJJYjeFthWR860w1slxzF9Tp05V9enH3sHoc2M49XRUc+vu5GRco/3FFxmMH88/4o/RxfDzfGphYWFJCaJsserQ8l5P9o/CiZ3k55tEzrKC2UeLHxrPt6Ue1owJq+cxITq2Yf4RHZt1sUCXqd0QuyBOtcHQ2BFo6+8Eo64mxG8i/2PMMzU1XWpmZhbtYG+fM4a1cCV7G8mvwv1i+CUfvel/GKX0+hDHFn9//3uii/D8OPkqZ9Bjp0xQz8uK80owu7u7YwV7GTnrKi5ypmjaxRI1443RYAzx9jaFWSvzfGJNZvwNrF27dh3l9xqr53UlYhhEfmzmO+45OzufElG0s4q3+d+76NOO75pBOWFpZw1Tfwc5L8Ns7g2SWIP13BcRXeVcrWeMJ9ynDYBxXyuKJfFaqHhNTExGcc9uqsNQ4rqqvF0d/sPze/fuddizZ8/87OzsjKPMgXFxcYV2dnZHJC6FyyIDg3zQ0t1B5ZN5K8t/B+//+Xj69OmmoqKirQUFBTNPnDjxeXx8vPhRPaeR/7VQ5lG+bdasmd/fAe9rxp/h+bvh/VsPcDzSzaHafFd3PUM36+57ppufvjiXeqpa+6mks9KKcle2d5wvyY8VFUVdZPJLM4rPbZRS0O6XWV5eFrIeH+csoPTfFd3vioPu+YraP0PVk1kZZd9yrvj7rF9HXV+Pv5TuuvL7/PLQX8/QzY90zwluh32cM5TSYkJcUhzUWfYh0Owt878AV9LpJnic4/VMzs+LNzY2MdPLTM5nGAUjDOxThdAOQtjl2Q3vxDIwAQARngbXjqJuFwEAAAACAAAAKQAAAEASAAAAAAAAAQAAAAAAAAAAAAAA
 
 [InterfaceEncoded]
-opendir.bmp=571,762
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
 AmperossQetto2Move0016016.bmp=893,1191
-
-[EncodedFile-InterfaceEncoded-opendir.bmp]
-lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+DesignboltsThinDownloadDownloadButton0016016.bmp=321,428
+Everaldo-Crystal-Clear-App-my-documents_016_016.bmp=978,1304
 
 [DownloadXXX]
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,True
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[DownloadXXX_Container_P_Q_B]
+//IniRead,%ScriptFile%,Container_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadXQ,%FileContainer_Solo%,%WebFileContainer%
+
+[DownloadXXX_Container_P]
+//IniRead,%ScriptFile%,Container_Main,Web1,%WebFileContainer%
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,DownloadX,%FileContainer_Solo%,%WebFileContainer%
+
+[UploadXXX_Container]
+IniRead,%ScriptFile%,Main,Web1C,%WebFileContainer%
+If,Not,%WebFileContainer%-,Equal,-,Call,UploadXQ,%FileContainer_Solo%,%WebFileContainer%
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0
@@ -541,10 +859,20 @@ lines=0
 lines=0
 0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
 
-[CompareEditXXX]
-Call,CompareEdit
-
 [EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
 lines=0
 0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-DesignboltsThinDownloadDownloadButton0016016.bmp]
+lines=0
+0=eJxz8jVjZgADMyDWAGIBKGZkkIBIAOWP8EEwDMzZI0lPNGGFdHGVUlKOIRABGUAuLpWzd0sWV6uYlNeJb7zKd+QjEAEZQC5QECiFqR4orjx9PUQl/8G3QARhAwWBUpjOABoFUSC886FdfKxdXDSQAREBSqE5DOhUiDMk1l6wSsvQ7Jqj1TETyAByIQ4DKkBWD/QdxCj1vkWCe58rzt6iNHMjkAHkQsSBCrCqhyCIemQRNPVw92BVj+keZP+C1W9VmrkZzsX0Lyw8NxAZnmTEF6npgUYIALPqdh94nDNwSS3OTM9Lys8pKQ7JyMxzyS/Py8lPTIHRTqUlJfl5BgaGZkCkl5RbwDAKhhMwY4bQt3DIe+zniWZgAgAtoBR8NIDcsAEAAAACAAAAQwAAANoAAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Everaldo-Crystal-Clear-App-my-documents_016_016.bmp]
+lines=0
+0=eJylk2tM22UUh+sii5kT13iJ2fywqPHCBxPNxOCiGwNiYiJVlsjGQOIgYQZH5gYIKsWOMDNQNOOSTFkc64WxtnQYJkOZHYxLKKXLVkrvlZVx7driRCwUePy3CjF+MvEkT07e38nz5s2bnD1vFt8rila8wLMCWwTEAveItkfz3X/P/1nA/2ZlZYVAIIDf7/9PBINBVldXWXMHBgdQqpWotCrkF+Q0nW9CoVag1PyVRWaRfC2LzG12W/QOp9tJ4uFEmvvVNHYI+XiALtMvfN9j5EK3nsYrrXzV8R11V1XU97TQ0KfmnOkHEk5k4LrlwTxqRrz3IdIbcrk8NERrn4v6dgtXDDYsYz5uuiZpvtxL0bctFDScJfWb46TrKoiRvorZaY36D+/bys7yJNzeKWq0Jmp0N/hSY+Sk2oRMaUB6rp9yhYEqzXVqL17nk/Zm7pMlY3YJvtXMtpynKZCX4Z2YRdXtRt03hkag5ZonelboXZztciDXO9EN3KLpRg+bqlMF3yb4IzxRGE+epgzXuI9uyyx99jsMOoMY3XMYPXMMCd3gDtJv90dnnT4LDzRmrftx0iQkLUei/3l3IYx/PoxvfpmZ31aYFpj6dZkJgUkBd/B3zEuzbFEdwuy2Y7ZZ2FT0PCPOUf5dC4vL+BdWGA8sYp2Yx+D0o+64RqdnmA0teet+TMkLVJ2qxuFw4PP5CIfDhEIhPB5P9PxHKExAeNPgqJd9WTnU/KgiRluw7m+UJvDizh2UlpYilUqRyWRUVlaSnZ1NRkYGmZmZfJCfT1JSErGxsWR+fpRH2z5ixOPAbB9lY8UuHnw/nmekEuIq3iHuxH6eEvr9h3ez+Ugym4+9TmzxG4hLUtn2cRo7mo7y3KVyLB4nHu8Yyc2FvNZ/nF3GalJu1vGW9QwHXCpyxrQcHG/jwEQbaVM63p7WkS709yYvkqmv5/bMFEtLSzz+mQRR1yE2mD5lq7sWybSGsru9nFm0cDpkpmjuKimT5xE7axAZShB15vJkaQqR3Yns0N6KfB7pKuCxYRnbnbUkTqjIvdNBseAVzunJ9rXzym05YmsVot4PEan3c/DrY6zt7xfNp3mpvYiXh0+SYG8gcVxB2oyOd32XyBJcybSWPV45CdY6RD/lITqVgvLn1qj/JwV/K8l4nDN2LUstSsxJydd1LqosLknM0XXOSU0s0nUsKNDNrdRNyU8uzU3NKymONzA0A2G9pNwChlEwbEAZC4ROYsYuHy/xgo+BCQCcnBSQTWXEpwEAAAACAAAATAAAAGIDAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
 

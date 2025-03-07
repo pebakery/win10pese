@@ -4,17 +4,18 @@ Type=Plugin
 Author=Paraglider, JonF, Lancelot
 Description=(x86 /(x64 NT6x)) (x86(XP or later) + x64(Vista or Later)) Program developed by Paraglider to load a remote registry and run a program and then unload the remote registry. Originally developed for non-PE-aware antispyware applications. Includes a shortcut for editing the target registry in regedit, and a shell extension for running any program.
 Credits=http://wb.paraglidernc.com/Scripts/Runscanner2.htm
-Version=004
+Version=006
 Download_Level=1
 Level=5
 Selected=True
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org
-Date=2017.12.11
+Date=2019.02.24_03:20.23 (GMT0: -3 Hours)
 Depend=
 Disable=
 Web1=http://gena.cwcodes.net/Projects/Gena/Apps/System%20Tools/Registry/Runscanner2.script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/System%20Tools/Registry/Runscanner2.script
 CertifiedBy=
 Certification=
 HistoryNotes01=Paraglider plugin http://wb.paraglidernc.com/Scripts/Runscanner2.script
@@ -22,6 +23,9 @@ History001=Paraglider created for runscanner2
 History002=Paraglider tweaked links
 History003=Lancelot various improvments (added packed, added buttons, added version etc...) - Date:2016.02.15 // Lancelot - Add Compare Button - Date:2017.01.12
 History004=Lancelot PEBakery - AddVariables Macro Not implemented for now - Temporary Disable WimPackExclude %EngineVersion% - Date:2017.12.11
+History004a=Bob.Omb changed default selected=false
+History005=bob.omb updated - made context item optional - Date:2018.10.22
+History006=Lancelot Add To Yomi Server - Date:2018.10.23 // Cosmetics - Date:2019.02.24
 
 [Variables]
 %ProgramTitle%=Remote Regedit
@@ -69,9 +73,10 @@ Button_CompareEdit=,1,8,532,24,24,24,CompareEditXXX,AmperossQetto2Move0016016.bm
 pWebLabel3=Help,1,10,467,94,21,18,http://wb.paraglidernc.com/Scripts/Runscanner2.htm
 version_RadioGroup=Version,1,14,14,330,108,47,"Use Packed","Use Downloaded",0
 DownloadLatest_Button=,1,8,232,353,24,24,Runscanner_Download,Danrabbit-Elementary-Document-download_0_016016.bmp,False,False,_Runscanner_Download_,False,"__Download Latest"
-ProvideFile_Opendir_Button=,1,8,276,353,24,24,ProvideFiles_OpenDir_P_B,opendir.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Download Folder"
-DownloadLatest_Delete_Button=,1,8,254,353,24,24,ProvideFiles_DeleteDir_P_B,trash.bmp,False,_ProvideFiles_DeleteDir_P_B_,False,"__Delete Downloaded Files"
+ProvideFile_Opendir_Button=,1,8,276,353,24,24,ProvideFiles_OpenDir_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_ProvideFiles_OpenDir_P_B_,False,"__Open Download Folder"
+DownloadLatest_Delete_Button=,1,8,254,353,24,24,ProvideFiles_DeleteDir_P_B,Icons8-Windows-8-Industry-Trash_0_016016.bmp,False,_ProvideFiles_DeleteDir_P_B_,False,"__Delete Downloaded Files"
 UpdateLatest_CheckBox="Update Latest",1,3,130,354,100,24,True
+Context_CheckBox="Context Item",1,3,130,377,200,18,False
 
 [Process]
 If,%OSFamily%,Equal,NT5,Arch,x86
@@ -148,9 +153,11 @@ If,%pCheckBox7%,Equal,True,Set,%ShellContextMenuSwitches%,"%ShellContextMenuSwit
 If,%pCheckBox8%,Equal,True,Set,%ShellContextMenuSwitches%,"%ShellContextMenuSwitches% /m+"
 If,%pCheckBox9%,Equal,True,Set,%ShellContextMenuSwitches%,"%ShellContextMenuSwitches% /y"
 Set,%ShellContextMenuSwitches%,"%ShellContextMenuSwitches% %pTextBox4%"
+If,%Context_CheckBox%,Equal,True,Begin
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegWrite,HKLM,0x2,"Tmp_Software\Classes\exefile\shell\Run with Runscanner 2\command","",#$q#1\%ProgramEXE%#$q#$s%ShellContextMenuSwitches%#$s#$q#$p1#$q
 RegHiveUnLoad,Tmp_Software
+End
 
 [ExtractFiles_SelectVersion]
 If,%version_RadioGroup%,Equal,0,Begin
@@ -366,30 +373,35 @@ lines=1
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
 
 [Settings_Default]
 IniWrite,%ScriptFile%,Main,Selected,True
 
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
 [InterfaceEncoded]
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
 BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
-opendir.bmp=571,762
 Danrabbit-Elementary-Document-download_0_016016.bmp=709,946
-trash.bmp=867,1156
 AmperossQetto2Move0016016.bmp=893,1191
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Icons8-Windows-8-Industry-Trash_0_016016.bmp=322,430
 
-[EncodedFile-InterfaceEncoded-opendir.bmp]
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
 lines=0
-0=eJyVkt1LU3EYx382esMuBFEKE8GLLL0IbyYhpEUI4aKytilTFN1xOrvxohpI9/0FlYESXUR2EXmxi4S9hYF4IZhOSdZMzJdtx+HwvO1sh2/P8cyxYFh9+TzPxXm+v+9z+J1z847ZxA5lprpMVZarEnbeGNC8vNSoI+E/5Z6YZs++Mk+QPTnkaaiAo4ee0LVPEcN/4tViTRjuNB7Jeh/cAxfPcEnNtY8hAW4ZwwqGVbCxL3k/D5zxC71x9AjoTsGRgG0jbY2K1siBfV2ybyjd2xkHr7HHIcO/CZh8ApdEfwIDKXASnAr6BDh4dG5mbVHJui727ar0VuQ/924tCtyNoTwgGFQGdZyxrHMfLgUuFYMShg4wIOrhVTNb3zVYdtCbQD+vQ4sqQwKhH/cLFQGx1C+W+EQWlC/Nyw0LqRUVt7fQtZPDvgtrDB2JHD1JnJrl8/dpjqjLipb3P9zG/Ti+qQirWJY1Yi0L06pW6F+QtJZf+grCEkOYrus5q/iJ06tgiwoLZ+0v3vyRnwEdoailtG6ufllVN1FXO36x6Pcd8wYogXJOrqDsB66+rTdPtV7/aGmcar0weeX4f6N2srrpQ/ON6Xvt3i7q9e+bz74uvqVQt7wPOn0c9b86DbV9tjlnR6n/o39kzmNQdPoblHVTL3ic484vSM1LySzSS8otYBgFIw6YMUPoD4zY5WddWriPgQkAk7cIYWOapDwBAAAAAgAAACcAAADwAQAAAAAAAAEAAAAAAAAAAAAAAA
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-Danrabbit-Elementary-Document-download_0_016016.bmp]
 lines=0
 0=eJytjt1PUgEYxm3rD6jLstJqNTXcWl9z1cJBbLii5YqV5daXF140JxfWhavUra3QbM5WubaKajQdmbSkMxkoS6EgiG8CQUAkIVqW3HHB03mPxorTRRed7bfz7nmeHxyR7NLKEu7Zw1LBsoplNcuKknIur13uf38A/Dfy+Tz+hb95op42bFO2QHCrFYJeBQS3Fahehm4uYzva0Lb4d3aqOrHmcTvWPr2K0mcdKFV3/QmbUUebXU86ed9QM3QT6wavY73mBjYMK1H2shtlIz1LsDdl1NGmZkjJ8/dq+1D+qhcbR/uw6U0/NjN3UKVbgm7KqKMNbYt9IXMfW8buYqt+ABWGB6hk39qIm6NyOaOONkJmgOeLDY9QNf4QApMK1Sz3Au+wuLjIQTdl1NGGtsW+1KTG9ik1dpif44rLWHB/QRl1tKFtsS8za7Db+gL7zYPoD9ngTCcKLt2UUUcbmUXD8+utWuxzvsYBD4Na7xiG44GCTzdl1NGm3qbl+XKHDrU+PcSfxiEJmTCSCBZ8uiVBE8R+A4RuBnL7KM9v8Og5Txox41DsPRQRG7pnvRytYSvqQpOQ+IwQORmctOt4fqN/AnUzZhyZ/YBjSSdOzHtwKuXjkMcdOOyZgNRtxEEHA+XHtzz/THASsrgNx5MunE75cTYTQtPXMC5kptE464Iq7IU1FoHF5UTm+wLPPx+24OicAw3zXpxj3eaFKFp+JHDxWxxNc34YUwlEo1Fks1meS1yOWNEcs6OF/a+2zz60p6fR8WUG19JhdEW9CCQTyOVyPPcnn70h+HicM3ZJzCtKTErKLNF1zUnNTc0rSSyq1HXJTy4FsXVT8svzcvITU+IN4g0MzYBILym3gGEUDBtQxgKhw5iwy79LcT/AwAQAEqMVpdAej5IBAAAAAgAAAEsAAABWAgAAAAAAAAEAAAAAAAAAAAAAAA
 
-[EncodedFile-InterfaceEncoded-trash.bmp]
+[EncodedFile-InterfaceEncoded-Icons8-Windows-8-Industry-Trash_0_016016.bmp]
 lines=0
-0=eJxtlNtTEnEUx2umtx5qtKb+hN7MyUxCELxfkBRvjToTXkYTu3i3tJdq8sHeLEfNLBJSQcVLKCy7wCIsKyiwKOEFZyjxkoOvNl7GqRMk4yBnvmdn9/c7n99v95zf2fjMmgvnfBYNfgM8HDwM/Py5677xuzAfdtHvJ/bnxA4PD+fnLQa9ISA9XA2EwW96g81GHR8fB+JPs4gSmSXJr2KxqF8klUjFItHQ4CA8SoaGxCKxuF9ktVhQFXqWXV5edq2ucjOzxmSytjdtly+Fl5WWYyjKyci8euVa5/vOT31997hZjkWHx+MJYmdnTdNT8iePnxoNxNLS0s2IyMmJSSNBdHd1M+gMi8UyZzYX3i9UIciCfSGIJY3klFxeW1OrVCitVuvtqGjZqAxBkK6uLjYrXq/XazQa/gM+qlLZKXswS84qpqcb6uoh3mazxdyJGZONQeSHnp7EhETIFK7FS/il8BUhWUSpbGpsUiEqirLRafSJ8XFgP/b2piQlQ65xHC8vK9eoMSoUC9/yvPkZsHaKYjKY3yYnIauQovTUNIIw6HC8sqJCq1GH3BdDVS9aWxUKBUVRbBZbLpdD1YSfhVxOJlRaq9FWCwS4VhtyXzWGtba0WC3WNZeLHcdSKpWwyBehkJOe7nA4FhcWH1ZWzujws6zJZNLP6JITk2CFdx0dkRERjQ0NpJEo4fOjbkUJhULZ6AgzNhZGHI7vQSyKYktOZ052dg6Pl8vLKS4qys/Ny8nmFeTnFxcW5fJ4MFWQl+daXcEw9WkWjvGGZ10qkQyDpFLQiE/DJ5LCGZUMSeCMDgysrbnMJnOAJUlya2uzuqqKHhMTx2CAWMw4dtx/sZhM/yCdRnskEKyurECDBNj9/X14591db0N9HWSGm8FJT01N8yslBe65nH8jr1+93N7ehsLt7f0O6iMdroM1obhbm5vNTY0MOj0pIT6WRnvb3r65sWG32ZxOp5EwhuxBsJ1fO263G0Ox9fWfkFJoSWiHDY9HrVa73T+8Xu/p4CDWbwcHB2bzHEEYYRfCQEATHR0dnQ3z/Tn+Ah/33RZ4nOMsKUosztBLyi1gGAUjEBSwQGgpZuzyyx1fajMwAQDHowYo0vtiWAEAAAACAAAAJQAAABoDAAAAAAAAAQAAAAAAAAAAAAAA
+0=eJztky0Og0AQhWmowZBdjVlZT1LdVGEquAMSgapGIJBIbsQVMGiO8dg3KQ0hFFa0rpt8yeT9sBMI98fz7Mm5Wi4WZdGWk2dEv7385QHwFcZxRBzH4CP3YIbZdb8sy8PuDLPrflEU4gVBgLquobVGmqYCZ2r0mGH2U18pJZ4xBm3bCpyp0fv3f9sPwxB93yOKIvnOhDM1ekd9F7b63DNJEieYXd/t2p1Z7lBVlfPuM+wsdxiGQd5R13Xi53mOpmkEztToMcPs3r+cZRl833/fxZnaVnYCtxtLZnic0/FMzs8rttANz8xLyS8v1rXQ9cxLKS0uKarUDSlKLM6IN4g3MDQDIr2k3AKGUTDcQBkLhL6JQ5496GYFAxMAem4SJP0g8REBAAAAAgAAAEUAAADZAAAAAAAAAAEAAAAAAAAAAAAAAA
 
 [EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
 lines=0

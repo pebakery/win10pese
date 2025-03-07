@@ -1,0 +1,215 @@
+[Main]
+Title=Rotate slore
+Type=Plugin
+Author=slore
+Description=Plugin Adds Rotate.exe from slore.
+Credits=http://TheOven.org
+Version=005
+Download_Level=2
+Level=5
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org/index.php?topic=2030.msg22830#msg22830
+Date=2020.03.09_03:10.31 (GMT0: -3 Hours)
+Depend=
+Disable=
+Web1=http://yomi.cwcodes.net/Yomi/AppY/Supplementary/Graphics/Rotate_slore.Script
+Web2=http://win10se.cwcodes.net/Projects/Win10PESE/Apps/Supplementary/Graphics/Rotate_slore.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Gena - FAILED - Error:-2
+HistoryNotes42=ADD: cd /d "%~dp0"   top of your cmd files -- end Exit to the end;)
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2017.02.15 Plugin created
+History002=Lancelot Add to server - Date:2017.02.15
+History003=Lancelot Update hiderun lines - Date:2017.09.24
+History004=Lancelot Add Win10PESE - Date:2019.02.03
+History005=Lancelot Fix: No empty Title with "cmd.exe Start" - even HDM6 with Start QuoteQuote can crash see Malok Reply-8 Topic: http://TheOven.org/index.php?topic=3088.0 Malok Reply 8: http://TheOven.org/index.php?topic=3088.msg36827#msg36827 - Date:2020.03.09
+
+[Interface]
+pBevel1=pBevel1,1,12,-3,-3,83,84
+pCheckBox1=Desktop,1,3,1,1,59,14,False,"__Desktop Shortcut"
+pCheckBox2="Start Menu",1,3,1,29,76,14,True,"__Start Menu Shortcut"
+pCheckBox3="Quicklaunch",1,3,1,15,76,14,False,"__QuickLaunch Shortcut"
+pCheckBox4=Startup,1,3,1,65,61,14,False
+pTextBox1=,1,0,1,43,75,21,,"__'Start Menu' Folder"
+Edit_TextFile=Rotate_slore.cmd,1,6,84,51,340,245
+ScrollBox_RunFromWhere="Run from Normal",1,4,84,1,121,21,"Run from Normal","Run from RAM","Run from CD"
+RunFromSys32_CheckBox="Run From System32",1,3,85,29,116,18,False
+Button_Launch_Program=Edit,1,8,13,207,59,25,Launch_Program
+Startup_Delay_TextLabel=Delay,1,1,2,91,27,18,8,Normal
+Startup_Delay_NumberBox=Delay_NumberBox,1,2,32,87,40,22,40,0,9999999,1,__Seconds
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://TheOven.org/index.php?topic=2030.msg22830#msg22830
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+SH_Name_TextBox="Shortcut Name:",1,0,1,137,78,21,"Rotate Left"
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=Rotate slore
+%ProgramEXE%=Rotate_slore.cmd
+%ProgramFolder%=Rotate_slore
+%ProgramFolder_x64%=Rotate_slore_x64
+%SetupFile%=%SetupFilex86%
+%SetupFilex86%=Rotate_slore.cmd
+%SetupFilex64%=Rotate_slore.cmd
+%Rotate_zip%=Rotate.zip
+%Rotate_Name%=Rotate.exe
+%Rotate_x86%=Rotate_x86.exe
+%Rotate_x64%=Rotate_x64.exe
+
+[Process]
+//Arch,x86|x64
+Echo,"Processing %ProgramTitle%..."
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+If,%SourceArch%,Equal,x64,Set,%ProgramFolder%,%ProgramFolder_x64%
+//--
+If,Not,%SH_Name_TextBox%-,Equal,-,Set,%ProgramTitle%,%SH_Name_TextBox%
+//--
+If,%pCheckBox4%,Equal,True,Begin
+If,Not,ExistFile,%Target_Sys%\HideRun.exe,Require,File,HideRun.exe
+End
+//--
+If,%pCheckBox4%,Equal,True,Begin
+If,%Startup_Delay_NumberBox%,Bigger,0,Begin
+If,Not,ExistFile,%Target_Sys%\Sleep.exe,Run,%ProjectDir%\Utils\Sleep_exe_Galapo.Script,Copy%SourceArch%,%Target_Sys%
+End
+End
+//--
+Run,%ScriptFile%,Extract
+//--
+If,%RunFromSys32_CheckBox%,Equal,True,Begin
+FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%,%Target_Sys%
+If,%SourceArch%,Equal,x86,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%Rotate_x86%,%Target_Sys%\%Rotate_Name%
+If,%SourceArch%,Equal,x64,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%Rotate_x64%,%Target_Sys%\%Rotate_Name%
+Set,%Target_Prog%,%Target_Sys%
+Set,%ProgramFolder%,""
+Set,%PE_Programs%,%systemroot%\system32
+End
+//--
+If,%RunFromSys32_CheckBox%,Equal,False,Begin
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+DirCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%,%Target_Prog%
+If,%SourceArch%,Equal,x86,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%Rotate_x86%,%Target_Prog%\%ProgramFolder%\%Rotate_Name%
+If,%SourceArch%,Equal,x64,FileCopy,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%Rotate_x64%,%Target_Prog%\%ProgramFolder%\%Rotate_Name%
+End
+//--
+If,%pCheckBox4%,Equal,True,Begin
+If,%Startup_Delay_NumberBox%,Bigger,0,Begin
+StrFormat,Replace,%ProgramEXE%,.,_,%ProgramEXE_DelayCMD%
+StrFormat,Replace,%ProgramEXE_DelayCMD%," ",_,%ProgramEXE_DelayCMD%
+Set,%ProgramEXE_DelayCMD%,%ProgramEXE_DelayCMD%_DelayCMD.cmd
+Set,%w%,%Target_Prog%\%ProgramFolder%\%ProgramEXE_DelayCMD%
+FileCreateBlank,%w%
+TxtAddLine,%w%,"cd /d #$q#$p~dp0#$q",Append
+TxtAddLine,%w%,"Sleep.exe %Startup_Delay_NumberBox%",Append
+TxtAddLine,%w%,"hiderun.exe #$q%ProgramEXE%#$q",Append
+//TxtAddLine,%w%,"Start #$qRotate_slore#$q #$q%ProgramEXE%#$q",Append
+End
+End
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+//Registry - Use Utils\RegCPE
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+If,%pCheckBox4%,Equal,True,Begin
+If,%Startup_Delay_NumberBox%,Bigger,0,Begin
+Set,%ProgramTitle%,"%ProgramTitle% Delay"
+Set,%ProgramEXE%,%ProgramEXE_DelayCMD%
+End
+End
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun
+//If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun,,,,,,,2
+If,%pCheckBox4%%RunFromSys32_CheckBox%,Equal,TrueFalse,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\hiderun.exe,%ProgramTitle%,#$q%PE_Programs%\%ProgramFolder%#$q,"/w #$q%PE_Programs%\%ProgramFolder%\%ProgramEXE%#$q"
+If,%pCheckBox4%%RunFromSys32_CheckBox%,Equal,TrueTrue,Add_Shortcut,AutoRun,,#$pSystemRoot#$p\system32\hiderun.exe,%ProgramTitle%,#$q%PE_Programs%#$q,"/w #$q%PE_Programs%\%ProgramEXE%#$q"
+
+[Extract]
+//Extracting-7z-Start
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+If,ExistDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%,Call,DirDelete,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+DirMake,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ExtractFile,%ScriptFile%,InterfaceEncoded,%SetupFile%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//-
+ExtractFile,%ScriptFile%,Folder,%Rotate_zip%,%ProjectTemp%\TempExtractFolder\%ProgramFolder%
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%Rotate_zip%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\%ProgramFolder%#$q"
+//Extracting-7z-Finish
+
+[Launch_Program]
+Run,%ScriptFile%,Extract
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+//Call,Start,,%ProgramEXE%,,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%
+Echo,"Close Editor. Waiting......."
+Call,StartDocWaitNotePad,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\%ProgramFolder%\%ProgramFolder%\%ProgramEXE%
+System,RefreshInterface
+
+[AuthorEncoded]
+cmd4848.ico=494,659
+Logo=cmd4848.ico
+
+[EncodedFile-AuthorEncoded-cmd4848.ico]
+lines=1
+0=eJztlr9OwzAQxq+kokggtQMCxEKFVIkFlIWZTH0ONtY+AhIDj5CZjXfIko3HCG8S4vxRr1bOOZPESar7qq+fFPvsX2wnLcAs+/g+ZN9r+N4AXAHAQ+bsErxCcV3pfQOicWvu0F4LLkpLhz634NdrKV079KWF9VpK9xMxpceJmNLzRHysSidi4Rf+xMJj5I8MHE1cwj+s/8uvzuIT6l93Nqt+1Jimtr74E0ONUmjBGJbXbx3x6+wR7N8LWAlRQ81N7V3X/FvUrq8zfga562maq2t+vI67hrG46+mSP0Rtbfabc6764N91NJ8+3nbk/NQ6V2q7l1x+/HzazNnE33YfufyYw/T8fgHv/anU5r1vy6/8htpNv1NNZ7rqGznmN/Xn1FbeMvv1wZ8YapT0fTHNOQQ/vg/O/zeq1qZ/H/xjsfALfx/8omE19LmYyvmvm5N7TfiFv8v7PyZ+kUgkcqY01z5/AWbp50ECLDrJ+vFOvZM87z7mefpxkUFQJhQZw0WZZ0V6hxmU463jVZ4vZS5hZcOJ1kFvX9z81GZtPTf/ANs6/Cp4nONOzk0xsTCx0MtMzmcYBSMO7FOF0IsZscsbODW2MjABAK19BoKMYALxAQAAAAIAAAAnAAAAowEAAAAAAAABAAAAAAAAAAAAAAA
+
+[InterfaceEncoded]
+Launch.bmp=913,1218
+Rotate_slore.cmd=292,390
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-Launch.bmp]
+lines=0
+0=eJxN0WtMFFcUAGCM/W/SXzSxaZOmTX8YtdLSJk1jQsIPpUZNSGMTWk1tKvFVMDVGCaIWRKWGgrLaRbq4AruwT92XWoshUVAhKtFAYVmWZXdgdmdnZ+beedy587gdXJr05JyTm3O/5J7kVuywrS15E+VWfWzVOqvetmpNSemb+b7V+/8HI5vLgggx+K73x2/sP1Tb9+QBRXEwrxAG4qyk0lClgcxAhRBi+RN/L1T9efTM+OUQgZ38qyvceHW0YWNrVe2z7M/j7OGXuYNP0keD443PmcHnScvvdbbXPTz4gtBVd2sqQ19vi+yqffHb7uBPW7tPHM+QujjfEOdqwzORR8PR0IDlNzeXX50fmCTshp7yj65vXt/xbmVg//6RptIDa05myeEptmGG/d73OjI3N70wY/myXze1TfXO6sInPV+WXn7vw65Pz0LSkHy67tuSJo7Uz3Dn4uze4GSMQs8oYPmd16p33N3zWX/F5wNbKz3bym5u6dZIa+r+O4fWnufI8Vm+dY7bd2fyr2X5ZZqx/BGvw5/wD9H3jzz6pe5xfWcieo/I2/u/qLhxqjlLTs0LzQnu2IPpO6zqja/4jleZGm99cMo3QWanyNI0EWsCu8u6djUmwOkkbEyClhRoHk20zxUuTaQs75wHLlY8FLF91bLlgwNvbTr9flVf04UMOk+pZ5LCSqbAxTgT/mcJIGz53oVCRCFejUTISt4mpEckXTncRsELadCyCFsWhba0NEbxxf9yLhRCkuli8S3esBc0O610MehqDlm9dRFepJQ2ClxKwdF0oehdiyAsmR6o9YtGH685AHEUkJ3F13JKO610LMPfl8ROGo1luKJ3Z8CwSvyi7gG6W8C3CoqTQw5e6ykgW06x5dCVnGzLCKOZ1X2GKPAAkaho+CTNJ+o+qLtFw5lXbuZRd16+zqAbednBoKdLQtEPUmAYkduyFlRwUMbWYh5Bc0tmn/WWbHQzkp03/qClCRoWvUdQR1RzBJv3kBlTjZhihJDmFbWAZAwJ2MXjQQH7eXWCWfVuWgwDHBNxTDKioh6GWgjggIADvOrnsItTvSyyZ+Wx7KoHmlFM0TBF3YS6aZ3hf0Pe6lhnNUPWjKL/F4rXcD14nOPySSzNS87QS8otYBgFIw9MY4bQ7szY5SXNdJ4zMAEARyYGGuVhjnsBAAAAAgAAACYAAABHAwAAAAAAAAEAAAAAAAAAAAAAAA
+
+[Folder]
+Rotate.zip=2833,3778
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[EncodedFile-Folder-Rotate.zip]
+lines=0
+0=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
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXQ
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Rotate_slore.cmd]
+lines=0
+0=eJyNj8FqwzAMhu8Gv4Po6DVxncO6wNhhp102KH2BYGuxWWIZW1mzy559CTSUjBaKLj/6P+mXjIXSwmb7a6PaSHEgbhgLHBF2UuDoWYq53sIn1VLkjhLCAWP3Axocc6zL8ujw4xtDQaktfbA4FtHFF6bozbNWlSr63Gq9r9TDIuaNl6RFAzuEbBJiAENDYEymI/N18hnh5NnRwBCb1PQ4WXl17KsUxyGF1Ypldp0GU/o7pb7pzuD/p58UWGwnB9Lc9xSugVqK3f4uspJCP94i/wAz1nxreJwTCMovSSxJjS/OyS9K1UvOTWEYBSMJ1DNC6Ks45NdxZu5lYAIAvvAJmoHTovcBAAAAAgAAACsAAADVAAAAAAAAAAEAAAAAAAAAAAAAAA
+

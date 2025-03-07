@@ -4,20 +4,21 @@ Type=Plugin
 Author=Nikzzzz
 Description=Create HotKey
 Credits=http://TheOven.org
-Version=008
+Version=010
 Download_Level=1
 Level=5
 Selected=False
 Mandatory=False
 NoWarning=False
 Contact=http://TheOven.org/index.php?topic=175.0
-Date=2018.01.04_15:12.53 (GMT0: -3 Hours)
+Date=2019.12.25
 Depend=
 Disable=
 Web1=http://w7pese.cwcodes.net/Projects/Win7PESE/Apps/Supplementary/HotKeyAu3.script
+Web2=http://yomi.cwcodes.net/Yomi/AppY/Supplementary/HotKeyAu3.script
 CertifiedBy=
 Certification=
-HistoryNotes01=
+HistoryNotes01=Lancelot: To test use Hotkey: ^!z Execute: %SystemRoot%\System32\notepad.exe
 History002=Lancelot fixed AU3361.exe
 History002=Nikzzzz added Comment
 History003=ChrisR added AddAutoRun for Win7PE
@@ -25,8 +26,11 @@ History004=Nikzzzz added Arguments
 History005=ChrisR - Following AU3381 updated
 History007=Lancelot - Added DU Buttons - Date:2015.10.30 // Lancelot - Add Compare Button - Date:2017.01.12
 History008=Lancelot Depreciate old syntax - Date:2017.12.09 - Date:2018.01.04
+History009=Lancelot Add To Yomi Server - Date:2018.10.23
+History010=Lancelot updated Syntax - Date:2019.12.25
 
 [Process]
+Call,TargetVersion,,1x
 Set,%Count%,1
 FileCreateBlank,%Target_Sys%\HotKey.au3
 TxtAddLine,%Target_Sys%\HotKey.au3,"Opt('TrayIconHide',1)",Append
@@ -45,12 +49,15 @@ If,Not,%HotKey7%,Equal,"",If,Not,%Cmd7%,Equal,"",Run,%ScriptFile%,HideShortcut,"
 If,Not,%HotKey8%,Equal,"",If,Not,%Cmd8%,Equal,"",Run,%ScriptFile%,HideShortcut,"%Cmd8%","%HotKey8%","%Arg8%"
 If,%Count%,Equal,1,FileDelete,%Target_Sys%\HotKey.au3
 Else,Begin
-If,%OSFamily%,Equal,NT5,Begin
+If,%TargetVersion1%,Equal,5,Begin
 RegHiveLoad,Tmp_Software,%RegSoftware%
 RegWrite,HKLM,0x2,Tmp_Software\Microsoft\Windows\CurrentVersion\Run,HotKeyAu3,"AU3381.exe #$pSystemRoot#$p\system32\HotKey.au3"
 RegHiveUnLoad,Tmp_Software
 End
-Else,AddAutoRun,HotKey,#$pSystemRoot#$p\system32\AU3381.exe,#$pSystemRoot#$p\system32\HotKey.au3,2
+Else,Begin
+//AddAutoRun,HotKey,#$pSystemRoot#$p\system32\AU3381.exe,#$pSystemRoot#$p\system32\HotKey.au3,2
+Add,StartupBeforeShellCMD,HotKey,,"Start #$qHotKey#$q AU3381.exe #$pSystemRoot#$p\system32\HotKey.au3"
+End
 End
 
 [HideShortcut]
@@ -145,7 +152,9 @@ lines=0
 Call,DownloadXQ
 
 [UploadXXX]
-Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE_Gena.Script||WebRoot,||Web2
 
 [InterfaceEncoded]
 DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830

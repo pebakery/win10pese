@@ -1,0 +1,176 @@
+[Main]
+Title=Additional Files Other
+Type=Plugin
+Author=Lancelot
+Description=Add Files/Folders to special folders (Desktop - Application Data etc.)
+Credits=http://TheOven.org
+Version=008
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.02.02
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks/Additional_Files_Other.script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks/Additional_Files_Other.script
+Web3=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks/Additional_Files_Other.script
+CertifiedBy=
+Certification=
+HistoryNotes01=Demonstration at [Open_Info_Example]
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2015.08.27 Plugin created
+History003=Lancelot Buttons improved - Date:2015.11.13
+History005=Lancelot Added Components_PluginCache_Extract x 2 - Date:2016.11.10
+History006=Lancelot - FileCopy * have unicode bug - workaround with DirCopy * bug - I/O error 123 - nbsp http://TheOven.org/index.php?topic=1724.0 - Date:2017.02.27
+History007=Lancelot Update empty Home Page WebLabel - PEBakery - ied206 Reply 3 http://TheOven.org/index.php?topic=2329.msg25119#msg25119 - Date:2017.12.18
+History008=Lancelot Add Win10PESE - Date:2019.02.02
+
+[InterFace]
+TextLabel_Intro="Put your files to folder(s)#$xClick button",1,1,23,27,135,31,8,Normal
+Button_TargetDesktop=Desktop,1,8,34,77,81,51,OpenDir_S_TargetDesktop,0,False,False,_OpenDir_S_TargetDesktop_,False
+Button_TargetAppdata="Application Data (TargetAppdata)",1,8,128,109,320,40,OpenDir_S_TargetAppdata,0,False,False,_OpenDir_S_TargetAppdata_,False
+Button_TargetAUAppdata="Application Data All Users (TargetAUAppdata)",1,8,128,147,320,40,OpenDir_S_TargetAUAppdata,0,False,False,_OpenDir_S_TargetAUAppdata_,False
+Button_TargetLocalSettingsAppdata="Application Data Local Settings (TargetLocalSettingsAppdata)",1,8,128,186,320,40,OpenDir_S_TargetLocalSettingsAppdata,0,False,False,_OpenDir_S_TargetLocalSettingsAppdata_,False
+Button_Info=Info,1,8,452,223,36,25,Open_Info,0,False,False,_Open_Info_,False
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://TheOven.org/index.php?board=9
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%SourceExternal%=%GlobalTemplates%\AdditionalFiles_Others
+%STargetDesktop%=%SourceExternal%\Desktop
+%STargetAppdata%=%SourceExternal%\Application Data
+%STargetAUAppdata%=%SourceExternal%\Application Data All Users
+%STargetLocalSettingsAppdata%=%SourceExternal%\Application Data Local Settings
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+If,ExistDir,%STargetDesktop%,Run,%ScriptFile%,Process_TargetDesktop
+If,ExistDir,%STargetAppdata%,Run,%ScriptFile%,Process_TargetAppdata
+If,ExistDir,%STargetAUAppdata%,Run,%ScriptFile%,Process_TargetAUAppdata
+If,ExistDir,%STargetLocalSettingsAppdata%,Run,%ScriptFile%,Process_TargetLocalSettingsAppdata
+
+[Process_TargetDesktop]
+Call,TargetDesktop
+If,Not,ExistDir,%TargetDesktop%,DirMake,%TargetDesktop%
+// I/O error 123
+//FileCopy,%STargetDesktop%\*,%TargetDesktop%
+DirCopy,%STargetDesktop%\*,%TargetDesktop%
+
+[Process_TargetAppdata]
+Call,TargetAppdata
+If,Not,ExistDir,%TargetAppdata%,DirMake,%TargetAppdata%
+// I/O error 123
+//FileCopy,%STargetAppdata%\*,%TargetAppdata%
+DirCopy,%STargetAppdata%\*,%TargetAppdata%
+
+[Process_TargetAUAppdata]
+Call,TargetAUAppdata
+If,Not,ExistDir,%TargetAUAppdata%,DirMake,%TargetAUAppdata%
+// I/O error 123
+//FileCopy,%STargetAUAppdata%\*,%TargetAUAppdata%
+DirCopy,%STargetAUAppdata%\*,%TargetAUAppdata%
+
+[Process_TargetLocalSettingsAppdata]
+Call,TargetLocalSettingsAppdata
+If,Not,ExistDir,%TargetLocalSettingsAppdata%,DirMake,%TargetLocalSettingsAppdata%
+// I/O error 123
+//FileCopy,%STargetLocalSettingsAppdata%\*,%TargetLocalSettingsAppdata%
+DirCopy,%STargetLocalSettingsAppdata%\*,%TargetLocalSettingsAppdata%
+
+[OpenDir_S_TargetDesktop]
+Call,OpenDir,%STargetDesktop%
+
+[OpenDir_S_TargetAppdata]
+Call,OpenDir,%STargetAppdata%
+
+[OpenDir_S_TargetAUAppdata]
+Call,OpenDir,%STargetAUAppdata%
+
+[OpenDir_S_TargetLocalSettingsAppdata]
+Call,OpenDir,%STargetLocalSettingsAppdata%
+
+[Open_Info]
+Call,TargetDesktop
+Call,TargetAppdata
+Call,TargetAUAppdata
+Call,TargetLocalSettingsAppdata
+Echo,%TargetDesktop%
+Echo,%TargetAppdata%
+Echo,%TargetAUAppdata%
+Echo,%TargetLocalSettingsAppdata%
+Message,"TargetDesktop=%TargetDesktop%#$xTargetAppdata=%TargetAppdata%#$xTargetAUAppdata=%TargetAUAppdata%#$xTargetLocalSettingsAppdata=%TargetLocalSettingsAppdata%",Information
+
+[Open_Info_Example]
+%BaseDir%\Target\Win10PESE\Users\Default\Desktop
+%BaseDir%\Target\Win10PESE\Users\Default\AppData\Roaming
+%BaseDir%\Target\Win10PESE\ProgramData
+%BaseDir%\Target\Win10PESE\Users\Default\AppData\Local
+//-
+%BaseDir%\Workbench\Gena\UserData\TargetProfiles\GenaP\GenaU\Desktop
+%BaseDir%\Workbench\Gena\UserData\TargetProfiles\GenaP\GenaU\Application Data
+%BaseDir%\Workbench\Gena\UserData\TargetProfiles\GenaP\All Users\Application Data
+%BaseDir%\Workbench\Gena\UserData\TargetProfiles\GenaP\GenaU\Local Settings\Application Data
+
+[AuthorEncoded]
+Icojam-Blue-Bits-Document-add_0_048048.ico=3209,4279
+Logo=Icojam-Blue-Bits-Document-add_0_048048.ico
+
+[Cache_SCD_Info_Additional_Plugin]
+IniRead,%ScriptFile%,Main,Selected,%t%
+If,%t%,Equal,True,Begin
+Run,%api%,Cache_SCD_Info_Additional_Plugin_ML,#1,#2,#3,#4,#5,#6,#7,#8,#9
+//-
+Call,RetrieveFolderUniqueID,%SourceExternal%
+IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_SourceExternal_RetrieveFolderUniqueID,%RetrieveFolderUniqueID%
+If,%RetrieveFolderUniqueID%,Equal,1,IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_SourceExternal_RetrieveFolderUniqueID,"%RetrieveFolderUniqueID% : Directory Not Exists"
+If,%RetrieveFolderUniqueID%,Equal,2,IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_SourceExternal_RetrieveFolderUniqueID,"%RetrieveFolderUniqueID% : Directory exists but empty"
+//-
+Echo,"Cache_SCD_Info_Additional_Plugin - Finish - %Plugin_FName%"
+End
+
+[EncodedFile-AuthorEncoded-Icojam-Blue-Bits-Document-add_0_048048.ico]
+lines=1
+0=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
+1=k193/0+99Uj1/2Iwb6twb6vw/0owd6Bwi/OgL9foP3/wYKrGjieJzT8kzOz0rM1XXKKU3VdcosKdZ1yU8uzU3NK9FNTEmJN4g3MLEAIr3M5HyGUTD8wD5VCK3Ig13elTmqjYEJAK9QEH0kpx54AQAAAAIAAABEAAAAIQwAAAAAAAABAAAAAAAAAAAAAAA
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[Settings_Default_Yomi]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+

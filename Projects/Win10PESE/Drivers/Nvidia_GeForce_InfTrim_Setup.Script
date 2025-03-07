@@ -1,0 +1,255 @@
+[Main]
+Title=Nvidia GeForce Setup InfTrim
+Type=Plugin
+Author=Lancelot
+Description=ONLY ADVANCED USERS - Helps Create Nvidia GeForce driver files from 'Setup' File to update relevant plugins easly.
+Credits=JFX
+Version=003
+Download_Level=2
+Level=6
+Selected=None
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.02.19
+Depend=
+Disable=
+Web1=http://win10se.cwcodes.net/Projects/Win10PESE/Drivers/Nvidia_GeForce_InfTrim_Setup.Script
+Web2=http://yomi.cwcodes.net/Yomi/DriversY/Nvidia_GeForce_InfTrim_Setup.Script
+CertifiedBy=
+Certification=
+Interface=Interface
+InterfaceList=InterFace,InterFace_Basic
+HistoryNotes01=For now hidden Button_Int "<-- Interface None"
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+History001=Lancelot 2019.02.10 Plugin created
+History002=Lancelot Tested with: 418.81-notebook-win10-64bit-international-whql.exe
+History003=Lancelot Add to servers - Date:2019.02.19
+
+[Info]
+JFX Reply 9 http://TheOven.org/index.php?topic=2726.msg31343#msg31343
+|DrvInstPatch.7z
+|But if you mod the inf file you also will need to patch drvinst.exe -
+|--------------------------------------------------------------------------------
+JFX Reply 21 http://TheOven.org/index.php?topic=2726.msg31362#msg31362
+|1) In Windows 7 there already was an trimmed down nvidia driver integrated, so I knew at least the core files necessary.
+|   removing 32 bit dll files from a x64 driver package should be no problem.
+|   Also Cuda and control panel files can be removed. The rest is a bit trail and error.
+|2) Not only the actual driver (*.sys) file needs a digital signature, but also an driver inf file needs a signed catalog file.
+|   The patch ignores the validation of the *.cat so we can edit nv_dispi.inf.
+|3) Winpe based on Windows 7 an older ignored the check,  it's a new feature of Windows 8 and 10.
+|--------------------------------------------------------------------------------
+JFX Reply 23 ----- patchers.7z - JFX Reply 23 http://TheOven.org/index.php?topic=2726.msg31375#msg31375
+JFX Reply 32 ----- InfTrim.7z - JFX Reply 32 InfTrim - http://TheOven.org/index.php?topic=2726.msg31437#msg31437
+Chris Reply 33 --- Add Line: HKR,,CoInstallers32 - Chris Reply 33 - http://TheOven.org/index.php?topic=2726.msg31440#msg31440
+JFX Reply 36 ------Add Line: CopyINF=nvppc.inf - JFX Reply 36 - http://TheOven.org/index.php?topic=2726.msg31526#msg31526
+
+[InterFace_Basic]
+Button_IntMain=a,1,8,429,243,14,14,P_Interface_I,0,False,False,_P_Interface_I_,False
+Info_TextLabel="Plugin only for Advanced Users....#$x#$xNothing here for normal users.",1,1,38,47,344,171,14,Bold
+
+[InterFace]
+Button_Int="<-- Interface None",0,8,229,-1,102,25,P_Interface_B,0,False,False,_P_Interface_B_,False
+InfTrim_TextLabel="Create InfTrim + Small Package",1,1,52,22,241,18,10,Bold
+InfTrim_Button=Goooooo,1,8,63,86,114,41,Process_InfTrim_P_B,Sekkyumu-Developpers-Play_1616.bmp,False,False,_Process_InfTrim_P_B_,False
+SetupFile_FileBox=C:\Users\Cemal\Desktop\418.81-notebook-win10-64bit-international-whql.exe,1,13,61,51,448,20,file
+pTextFile1=nv_trim.txt,1,6,461,111,177,240
+Edit_Button="Edit nv_trim.txt'",1,8,460,86,125,25,Edit_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False,_Edit_P_B_,False,__Edit
+Opendir_Display_Driver_Button=Display.Driver,1,8,16,162,125,26,OpenDir_Display_Driver_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_Display_Driver_P_B_,False,"__Open Folder"
+Opendir_Display_Driver_Small_Button=Display.Driver_Small,1,8,150,163,125,26,OpenDir_Display_Driver_Small_P_B,folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp,False,False,_OpenDir_Display_Driver_Small_P_B_,False,"__Open Folder"
+pTextLabel1="'Display.Driver' Folder#$x -------> with only updated (InfTrim) files#$x'Display.Driver_Small' Folder#$x -------> with only updated (InfTrim) + with only Small_List.txt",1,1,11,207,317,56,8,Normal
+pTextLabel2="You can use Drivers\'Driver Integration' plugin with#$x 'Display.Driver' OR 'Display.Driver_Small' Folder#$x   BUT#$x   You must patch drvinst.exe to use (Win7 - Win10 ....)#$x      --> SE\Drivers\'DrvInstPatch' plugin",1,1,13,277,312,68,8,Normal
+Small_ListFiles_TextFile=Small_List.txt,1,6,339,111,115,238
+Edit_Small_List_txt_Button="Edit Small_List.txt",1,8,340,86,114,25,Edit_Small_List_txt_P_B,Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp,False,False
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[P_Interface_I]
+IniWrite,%ScriptFile%,Main,Interface,Interface
+System,RefreshInterface
+
+[P_Interface_B]
+IniWrite,%ScriptFile%,Main,Interface,Interface_Basic
+System,RefreshInterface
+
+[Variables]
+%ProvideFiles%=%GlobalTemplates%\1_Test
+
+[Process]
+Echo,"File Container Plugin - There is no Spoon"
+
+[Process_InfTrim_P_B]
+Run,%ScriptFile%,Process_InfTrim_P
+
+[Process_InfTrim_P]
+Call,DirDeleteMake,%ProjectTemp%\TempExtractFolder\Nvidia
+Echo,"Extract File - Start - %SetupFile_FileBox%"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%SetupFile_FileBox%#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia#$q"
+Echo,"Extract File - Finish - %SetupFile_FileBox%"
+//-
+DirMake,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Backup
+Echo,"Display.Driver_Backup - Start"
+DirCopy,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Backup
+Echo,"Display.Driver_Backup - Finish"
+//-
+Echo,"Extract Display.Driver - Start"
+DirMake,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.dl_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.sy_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.ex_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.pd_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract#$q"
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.bi_#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract#$q"
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.dl_#$q"
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.sy_#$q"
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.ex_#$q"
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.pd_#$q"
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.bi_#$q"
+DirCopy,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Extract\*,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver
+Echo,"Extract Display.Driver - Finish"
+//-
+Echo,"InfTrim Display.Driver_Before_InfTrim - Start"
+DirMake,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Before_InfTrim
+DirCopy,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Before_InfTrim
+Echo,"InfTrim Display.Driver_Before_InfTrim - Finish"
+//-
+ExtractFile,%ScriptFile%,Folder,InfTrim.7z,%ProjectTemp%\TempExtractFolder\Nvidia
+ShellExecute,Hide,%Tools%\7z.exe,"x #$q%ProjectTemp%\TempExtractFolder\Nvidia\InfTrim.7z#$q -y -o#$q%ProjectTemp%\TempExtractFolder\Nvidia#$q"
+ExtractFile,%ScriptFile%,InterfaceEncoded,nv_trim.txt,%ProjectTemp%\TempExtractFolder\Nvidia
+FileCopy,%ProjectTemp%\TempExtractFolder\Nvidia\InfTrim.exe,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver
+FileCopy,%ProjectTemp%\TempExtractFolder\Nvidia\nv_trim.txt,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver
+ShellExecute,Hide,cmd.exe,"/C dir #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.inf#$q /b /s>#$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\9List.txt#$q"
+//Call,StartDoc,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\9List.txt
+FileCopy,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\9List.txt,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\InfTrim_9List.cmd
+TxtReplace,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\InfTrim_9List.cmd,"%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\","InfTrim.exe nv_trim.txt "
+//Call,StartDocNotePad,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\InfTrim_9List.cmd
+ShellExecute,Hide,cmd.exe,"/C #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\InfTrim_9List.cmd#$q",%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver
+ShellExecute,Hide,cmd.exe,"/C del /q /f #$q%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\*.inf.bak#$q"
+Call,FileDelete,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\9List.txt
+Call,FileDelete,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\InfTrim_9List.cmd
+Call,FileDelete,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\InfTrim.exe
+Call,FileDelete,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\nv_trim.txt
+Echo,"InfTrim - Finish"
+//-
+// At this point we have InfTrimed \Display.Driver\
+//-
+Echo,"Display.Driver_Small - Start"
+//-
+Call,DirDeleteMake,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Small
+ExtractFile,%ScriptFile%,InterfaceEncoded,Small_List.txt,%ProjectTemp%\TempExtractFolder\Nvidia
+FileCopy,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.txt,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini
+TxtAddLine,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,[SmallList],Prepend
+IniWrite,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,DummyDummyDummyDummyDummyDummyDummyDummyDummyDummyDummy,Key,Value
+IniDeleteSection,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,DummyDummyDummyDummyDummyDummyDummyDummyDummyDummyDummy
+TxtReplace,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,"#$x#$x#$x#$x","#$x"
+TxtReplace,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,"#$x#$x#$x","#$x"
+TxtReplace,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,"#$x#$x","#$x"
+TxtReplace,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,"#$x","#$xRun,#$pScriptFile#$p,FileCopy_Small_List_P_M,"
+//Call,StartDocNotepad,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini
+Run,%ProjectTemp%\TempExtractFolder\Nvidia\Small_List.ini,SmallList
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Small
+//-
+Echo,"Display.Driver_Small - Finish"
+//-
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\Nvidia
+
+[FileCopy_Small_List_P_M]
+If,Not,#1-,Equal,-,FileCopy,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver\#1,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Small
+
+[OpenDir_Display_Driver_P_B]
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver
+
+[OpenDir_Display_Driver_Small_P_B]
+Call,OpenDir,%ProjectTemp%\TempExtractFolder\Nvidia\Display.Driver_Small
+
+[Edit_P_B]
+If,Not,ExistDir,%ProjectTemp%\TempExtractFolder,DirMake,%ProjectTemp%\TempExtractFolder
+ExtractFile,%ScriptFile%,InterfaceEncoded,nv_trim.txt,%ProjectTemp%\TempExtractFolder
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder
+Echo,"Close Editor. Waiting......."
+Call,StartDocWaitNotepad,%ProjectTemp%\TempExtractFolder\nv_trim.txt
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\nv_trim.txt
+System,RefreshInterface
+
+[Edit_Small_List_txt_P_B]
+If,Not,ExistDir,%ProjectTemp%\TempExtractFolder,DirMake,%ProjectTemp%\TempExtractFolder
+ExtractFile,%ScriptFile%,InterfaceEncoded,Small_List.txt,%ProjectTemp%\TempExtractFolder
+//Call,OpenDir,%ProjectTemp%\TempExtractFolder
+Echo,"Close Editor. Waiting......."
+Call,StartDocWaitNotepad,%ProjectTemp%\TempExtractFolder\Small_List.txt
+Encode,%ScriptFile%,InterfaceEncoded,%ProjectTemp%\TempExtractFolder\Small_List.txt
+System,RefreshInterface
+
+[AuthorEncoded]
+418.81-notebook-win10-64bit-international-whql_0_048048.ico=2389,3186
+Logo=418.81-notebook-win10-64bit-international-whql_0_048048.ico
+
+[EncodedFile-AuthorEncoded-418.81-notebook-win10-64bit-international-whql_0_048048.ico]
+lines=0
+0=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
+
+[InterfaceEncoded]
+nv_trim.txt=802,1070
+Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp=737,983
+folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp=806,1075
+Sekkyumu-Developpers-Play_1616.bmp=435,580
+Small_List.txt=166,222
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+//Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot
+//Add To Yomi
+Call,UploadXMultiQ,,%ProjectDir%\Utils\WebRoots_SE.Script||WebRoot,||Web2
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[Folder]
+InfTrim.7z=5511,7348
+
+[EncodedFile-Folder-InfTrim.7z]
+lines=1
+0=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
+1=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
+
+[EncodedFile-InterfaceEncoded-Oxygen-Icons.org-Oxygen-Actions-document-edit_0_016016.bmp]
+lines=0
+0=eJylk11IU2Ecxi3qJkIyjGA3qTMmdtEgUvAiygSFsAsJQRIE6y68iMRid+lNF2H2QRcFslhhJiTOQVp0tpJtoUiNyuNQK2Jfbu187Xzs++m8b062cBD0wsM5vOf9Pef5///ntHYO7amgq0lXg64Duqp07aqoofunt54XLwD/rUwmg0gkUlaxWAz5fB7leHImnU5TZbNZqlwuRxmy52e/wG63l/UgfCqVAru6CpvtKRRFLeX9q3A5nWU9CryiKOgeGkbfpAvPFpbhX9uAKIoIBoOYn5uDlEjs6EH4ZDJJNeP7hr6pBZiHH8M0s4Fbd+7C4XDA5/PBybzFB68Xs7OlHsX8900O/VYHjEYjDl0dg/nFR9weHQXDMLSXJEsw8BPRaLSE1zRNlwpZ1XCDldF+bRh1xnpUjUzg7IQHVqsVKysrILMivSFMMa+qKq0/mdSwKScx4pfRcXkAtaYGVI7N4+JzF609FArtyBNWlmXqQ+sQNVi+Cmi90IMjx45j/yMvrr90wu12057+zRNWkqQSD19cxcBSBC1t7TCYm1H55BPuv1oAy7IIBAIlfCIh6b4CvRY8SE/ehGT0Muswn2zGwaYzODzJYtqzTHtRmAHhJUkEz3PU40+OBK2J+IxviOiYWoSpsRH7Tp3H0el1ON+9pxkLvCDwiMd/UQ9BEKhfIYuiyLB85nDigR01tbXYe64fLeMMwuHwNs9xcf0/iVIPcs/z/FYWkeYRdfUsxlFveQiDwYDdnTfR3W/b5snZnbiE/s2SWkiOmCihzcOhrvceqqtfo6trifJknmQm/6IfgTAuXWExOLimv0/Db8YwheR4nLPyr6hMT83T9UzOzyvWyy9K14UKOCaXZAKFdFPyk0tzU/NKdFNTMkviDeINDM2ASC8pt4BhFAx9UMYCofOZsMvvyvLyYWACAL7jF4igD6oXAQAAAAIAAABOAAAAbwIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-folder_go_fatcow-hosting-icons-3000_Mod_016016.bmp]
+lines=0
+0=eJy9k8lPU1EUh6+Jf4C6cmVcujAxUSmOiMWIMSLRRF1p1LhBNA4gJg4gQgRRCQKKE1JxSByiYjRxIASEqMEWWqTQlr6CqEWRxqi0UCp8nvcKOCxd+PK+nJt77++c3zl5z5yUMVEZj0mYIUwSJgsT1HRjP370/PcH+C9YrVZ0NE3jX/SqYCXqRS7m8r34fL4/cvT39xMMBscJhULGnbGaOio/EfX+BqrmCMsr9o3nsNvt3Kuzcd/ASpXER/XNrKjcjTq+PKrLk5hjRrmvoFwWVHU0h95LcnkLCedaiC+1E1fcTHyxg8RSL+rYPJZ+rEW1W6I4K6TYpShvZP0kG3NFGsvOt7BEtLcjcPE7lH6FyyExlj2HnT021Kvzv3hZJvEcqvECW/1Ww19CmYP1dzQKPUEqA5Drh8I+0WfOorRPY1VPC8lCkt9Bycd2VH0ZmzobUFUH2FCVhfmsgz0Nveyo9vPsG2R0jpD5DqZdP4rKmiXMFi8xEk1kv3OywVWHupXGlIJ0AoEA8WfsFGmDLLO40H6AZwg06eXDCGR2Q46Q/wEjR3qXA3VtD7G3cslr+M6N5y7iSpp5IP2uueMjpqBxlNfEnnjNxpo+9nZAulfvZybKsouplixOib+73RG2XW1mscz8scxtv/g+2DXCobc6cFjqrr2tsf7pJzTx5BNPnRK9YXAJ3mGIk7kvEn2t6He7I6R5IqSP0REhwzdM8k0vJvFiOmkjRpgrzCtqYrFoMx93sVD0jeI/xRlmh7C9NUyKjr5uGyLVFSHV/YNUzzApgrwsKrHj9n8xvj9d7xyAzY4wW+yDPPw8jFvyeQZHEa8d4WjUZyttGrVdn4KGXl97Ze6ugSgdciem0Mb8000skNx/o99fY3GO/z+rL7cae7+fr6t00hkYwNMbwv0XbaN1x/gJPMEuJXicM0rLz0lJLYpPz49PSyxJzi/XzcgvLsnMS9fNTM7PK9Y1NjAwiPfNT4k3MDQDIr2k3AKGUTB8QBkLhN7GhF2+Jn6vLQMTAHvOFKuzWrabAQAAAAIAAABMAAAAtgIAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Sekkyumu-Developpers-Play_1616.bmp]
+lines=0
+0=eJxz8i1jYQADMyDWAGIBIBYEYkYGBbC4A1QeGfz//38UQ/HvP3/+r9u37f/1+3f+g9ik6v/w+dN/nQXl/02WN/6vWNj3//7Tx////P1LtDlvP374r7C04r/piUX/7U8t/2++vPl/04oZ/5+9fvn/7z/C5rz99OG/0ur6/2Ynl4CxzZmV/51Or/5vsbL1f/fa+f/fffr4/9+/fzjNeQuUV9nY/t/67GoU7HRx43+Xs+v+W6zu+L9u/06cbgHp19kz7b/frQMoOOjWwf9p90/+9z2z/n/+5nnAsP2NU7/uwTn/A+8cBuOwu0f/5zw68z/84pb/URtn/N958vD/7z9/4nW/3vFF/6MfnPyf//j8/+BLW/4nbZz9/9iNy3j1wePvy+f/9idW/A86v+l/7sb5/y/cvfX/Jw63Yk0/f//8X3v8wP/rj+6TlX6GIgYAbSk453icUwpOzc6uLM0t1XVJLUvNyS8oSC0q1g3ISayMNzQzNNNLyi1gGAXDF5SxQOhARuzyz54k7GZgAgBhyxBH6DwdrgEAAAACAAAAPgAAAFEBAAAAAAAAAQAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+InterfaceEncoded
+
+[EncodedFile-InterfaceEncoded-nv_trim.txt]
+lines=0
+0=eJyVVU1P4zAQvVfqf0BI3NqIpogVhz10U7pkacuqZeESaZXGTjE4tmU7afrv1/nyR7oguM0bj2een8fjVfDHgyUcDtbF4kfgAYxb8/qqAaQYF29T33sVlLRILXXoliQUwNnvsAvWDrM/ZsgyjT/JCwQcoMrY0IQCKC2z7Ow0ljtEYn5c0hhA/o7bZO0tmPx7cSSJykxzLjofAigeiwx5E4+B1PHUgilMUuqxXWMizbCyNcUsyTN9yAyb84HYtu2Tg9gQo3ssXlBmlluHraITzyBJsIuszTU20UyWv5AMaMYQNvK5XrPb9XdZwC4kQsa4StDqArgAO08pXbVSwPAWypyFRDbrjcywFQWjBBIBPVnK5nZ3+R7kGWtiHxThYNlENnZHp0GWDL1DJCf0kx7xWsvCth2Viy5uXYSLTVXu5/LE0e2wXM42y3RCnUeg7qRDsH49Wdr20lOO32KyeRz3JF7gUl1D1gTVgBCYSAtzqN/LFNwceMz6WHfoHCarxePqlcH9By6ABEvo1Df29VVn7yvaZqmG7Wq5R07xFuvialyoSne+EaTxvMBCi6IeUNXyPVj2mU2/+TeXtrOlZflVN1IiY0Qgr3vSUbOjYPR0PBwajpY+/zlJeXqU911zRRTHxzlHBeSb2VZ3YGqNzRrYj1winZHLXFMv6n4ZT9p7zjPr0vPsb5Lq6zzsU98sN8heT3bWmAAYCekAXR0Da7zVVcrTMqXNrhqaw8FwcHe/XI3Ot0chYRYFOeeQyOp2OK3mRbSFvFCjQUSkiNZP6j85/8oWDED2lvU3Piwen2eb2+j+hVNCRdQ8r6jRXpyPLiaXF5Go00/9yP3qPk4RZkwNMiSX8fGrmZ7p4fpq6q/Vu/8KMf0jfz7dJ0j2s9JUHmIOlZDhPJydqVfAKI8lokRrO5mMRs7Hfne/GY0CqkeWqCZDQNkxXC/Ovp+pf4QlnuqC4eAfIvDVWXic484riy8pyszVK6koYRgFIw7UcEDo60zY5RfLPv/NwAQA/gkImjYm4cIBAAAAAgAAACcAAADXAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-Small_List.txt]
+lines=0
+0=eJxFy0sOgCAMBNC9iVdhoQciyqRIbAkJH/X2/gLs3nSmvmBGllOBeRx8YUB2UfGKf8qC1gXjiFPtDkvT86gN2TrQcDE45Ty9aTGd0rhyI/p16+T08QYzhDUEeJzjC85NzMmJ98ksLtErqShhGAUjC8yE0lE45HcJnWlgYAIA9rYInrUfCicBAAAAAgAAACgAAABaAAAAAAAAAAEAAAAAAAAAAAAAAA
+

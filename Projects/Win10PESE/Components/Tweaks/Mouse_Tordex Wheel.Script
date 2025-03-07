@@ -1,0 +1,192 @@
+[Main]
+Title=Mouse Tordex Wheel
+Type=Plugin
+Author=Nikzzzz
+Description=(v) With Tordex Wheel, Windows rolls the window under the mouse cursor, so you can scroll windows, lists, etc. without having to activate them.
+Credits=http://TheOven.org
+Version=005
+Download_Level=1
+Level=3
+Selected=False
+Mandatory=False
+NoWarning=False
+Contact=http://TheOven.org
+Date=2019.02.02
+Depend=
+Disable=
+Web1=http://gena.cwcodes.net/Projects/Gena/Components/Tweaks/Mouse_Tordex%20Wheel.Script
+Web2=http://yomi.cwcodes.net/Yomi/ComponentsY/Tweaks/Mouse_Tordex%20Wheel.Script
+Web3=http://win10se.cwcodes.net/Projects/Win10PESE/Components/Tweaks/Mouse_Tordex%20Wheel.Script
+CertifiedBy=
+Certification=
+HistoryNotes01=Install latest Tordex Wheel to Host x86 and x64 and put tordexwheel.exe to provide files folder(s)
+HistoryNotes41=PC Provide Files - "MultiArch - SameExe - DifferentFolder"
+HistoryNotes51='Plugin Creator' http://TheOven.org/index.php?topic=178
+HistoryNotes52="Provide Files' http://TheOven.org/index.php?topic=1119
+History001=Nikzzzz 2017.08.29 Plugin created
+History002=Lancelot - updated Nikzzzz plugin with Provide Files
+History003=Lancelot Added Components_PluginCache_Extract - Date:2016.11.10
+History004=Lancelot - Fixed Halt can have [0] ~ [1] arguments - Thanks to ied206 PEBakery Auto Syntax Checking Reply 3 http://TheOven.org/index.php?topic=2271.msg24582#msg24582 - Date:2017.11.09
+History005=Lancelot Add Win10PESE - Date:2019.02.02
+
+[Interface]
+pBevel1=pBevel1,1,12,4,6,133,126
+pCheckBox1="Desktop shortcut",1,3,8,10,105,18,False
+pCheckBox2="Start Menu shortcut",1,3,8,48,122,18,True
+pCheckBox3="Quicklaunch shortcut",1,3,8,29,122,18,False
+pCheckBox4="Startup shortcut",1,3,8,109,122,18,True
+pTextBox1="Start Menu folder:",1,0,11,85,119,18,"System Tools"
+Image_Software=,1,5,142,44,301,223
+ScrollBox_RunFromWhere="Run from Normal",1,4,143,6,130,21,"Run from Normal","Run from RAM","Run from CD"
+Button_Launch_Program=Launch,1,8,13,207,80,25,Launch_Program,_Launch_Program_,False
+Button_ProvideFiles="Provide Files",1,8,8,145,84,25,ProvideFiles_Process,_ProvideFiles_Process_,False
+Button_Pack="Pack To Desktop",1,8,424,268,96,25,Pack,_Pack_,False
+WebLabel_Homepg=HomePage,1,10,343,20,55,18,http://www.tordex.com/wheel/index.html
+WebLabel_Plugin="Plugin Page",1,10,338,4,55,18,http://TheOven.org/index.php?board=9
+Button_Download=,1,8,403,21,24,24,DownloadXXX,DoubleJDesignRavenna3dArrowDown0016016.bmp,False,False,_DownloadXXX_,False,"__DOWNLOAD Plugin"
+Button_Upload=,1,8,403,-1,24,24,UploadXXX,BokehliciaCaptivaSoftwareupload0016016.bmp,False,False,_UploadXXX_,False,"__UPLOAD Plugin (Admins Only)"
+Button_CompareEdit=,1,8,426,-1,24,24,CompareEditXXX,AmperossQetto2Move0016016.bmp,False,False,_CompareEditXXX_,False,"__DOWNLOAD and Compare with an Editor"
+
+[Variables]
+%ProgramTitle%=Tordex Wheel
+%ProgramEXE%=tordexwheel.exe
+%ProgramEXEx64%=%ProgramEXE%
+%ProgramFolder%=TordexWheel
+%ProgramFolderx64%=%ProgramFolder%_x64
+%ProgramSourceFiles%=Provide_Folder_Tordex_Wheel
+%ProvideFiles%=%GlobalTemplates%\%ProgramSourceFiles%
+%FArch%=x86
+
+[Process]
+If,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Echo,"Components PluginCache"
+If,Not,ExistFile,%ProjectTemp%\Components_PluginCache_Extract.ini,Run,%ScriptFile%,Process_Normal
+
+[Process_Normal]
+//Arch,x86|x64
+Echo,"Processing %ScriptTitle%..."
+//--
+If,%SourceArch%,Equal,x64,Run,%ScriptFile%,PluginSetx64
+Set,%ProvideFilesCopy%,%ProvideFiles%\%SourceArch%\%ProgramFolder%
+//--
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Call,Echo,"%ScriptTitle% - File(s) not found - Exit",Warn
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Exit,"-"
+//--
+StrFormat,Replace,%ScrollBox_RunFromWhere%,"Run from ","",%Here%
+If,Not,%Here%,Equal,Normal,RunFrom,%Here%
+//--
+If,Not,ExistDir,%Target_Prog%,DirMake,%Target_Prog%
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Shellexecute,Hide,cmd.exe,"/C rd /s /q #$q%Target_Prog%\%ProgramFolder%#$q"
+If,ExistDir,%Target_Prog%\%ProgramFolder%,Call,DirDelete,%Target_Prog%\%ProgramFolder%
+DirCopy,%ProvideFilesCopy%,%Target_Prog%
+//--
+//Dependencies - Require_FileQ : http://TheOven.org/index.php?topic=43.0 -- Macro Library : http://TheOven.org/index.php?board=14.0
+//Set,%PluginArch%,x86
+//Require_FileQ,xxx.dll
+//--
+//Registry - Use Utils\RegCPE
+//--
+If,%pCheckBox1%,Equal,True,Add_Shortcut,Desktop
+If,%pCheckBox2%,Equal,True,Add_Shortcut,StartMenu,%pTextBox1%
+If,%pCheckBox3%,Equal,True,Add_Shortcut,QuickLaunch
+If,%pCheckBox4%,Equal,True,Add_Shortcut,AutoRun
+
+[ProvideFiles_Process]
+If,Not,ExistDir,%ProvideFiles%\x86\%ProgramFolder%,DirMake,%ProvideFiles%\x86\%ProgramFolder%
+If,Not,ExistDir,%ProvideFiles%\x64\%ProgramFolderx64%,DirMake,%ProvideFiles%\x64\%ProgramFolderx64%
+Call,OpenDir,%ProvideFiles%
+
+[Launch_Program]
+Call,HostOSArch
+If,%HostOSArch%,Equal,x64,Run,%ScriptFile%,PluginSetx64
+//--
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Call,Echo,"%ScriptTitle% - File(s) not found - Exit",Warn
+If,Not,ExistFile,%ProvideFilesCopy%\%ProgramEXE%,Exit,"-"
+//--
+Call,Start,,%ProgramEXE%,,%ProvideFilesCopy%
+
+[PluginSetx64]
+Set,%ProgramFolder%,%ProgramFolderx64%
+Set,%ProgramEXE%,%ProgramEXEx64%
+Set,%FArch%,x64
+Set,%ProvideFilesCopy%,%ProvideFiles%\x64\%ProgramFolder%
+
+[Pack]
+Call,HostDesktopDir
+//--
+//\Workbench\Common
+//StrFormat,Replace,%GlobalTemplates%,%BaseDir%,"",%subfolder%
+//Echo,%subfolder%
+//-
+// FileName
+Set,%t%,%ScriptFile%
+StrFormat,Replace,%t%,%ScriptDir%,"",%t%
+StrFormat,Ctrim,%t%,\,%t%
+Set,%ScriptFileName%,%t%
+StrFormat,RTrim,%t%,7,%FNWOext%
+Set,%7z%,%FNWOext%.7z
+//
+If,ExistFile,%HostDesktopDir%\%7z%,Call,FileDelete,%HostDesktopDir%\%7z%
+If,ExistFile,%HostDesktopDir%\%7z%,Message,"!!! NOT DELETED WARNING 1/2 !!! #$x#$x Desktop\%7z% #$x#$x %HostDesktopDir%\%7z% #$x#$x Actively being used by another program #$x (Ex: 7zip ) #$x#$x#$x Close active handling on file and press OK button. ",WARNING
+If,ExistFile,%HostDesktopDir%\%7z%,Call,FileDelete,%HostDesktopDir%\%7z%
+If,ExistFile,%HostDesktopDir%\%7z%,Message,"!!! Still NOT DELETED WARNING 2/2 !!! #$x#$x Desktop\%7z% #$x#$x could not be deleted #$x#$x Pack operation not completed #$x#$x Exiting ",Error
+If,ExistFile,%HostDesktopDir%\%7z%,Halt,"Desktop\%7z% File Not Deleted - No Package created"
+//
+Echo,"Packing to Desktop"
+ShellExecute,Hide,%Tools%\7z.exe,"a -t7z #$q%HostDesktopDir%\%7z%#$q #$q%ScriptFileName%#$q -mx9",%ScriptDir%
+If,ExistDir,%ProvideFiles%,ShellExecute,Hide,%Tools%\7z.exe,"a -t7z #$q%HostDesktopDir%\%7z%#$q #$q%ProvideFiles%#$q -mx9"
+
+[AuthorEncoded]
+tordexwheel_0_048048.ico=2957,3943
+Logo=tordexwheel_0_048048.ico
+
+[EncodedFile-AuthorEncoded-tordexwheel_0_048048.ico]
+lines=0
+0=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
+
+[Cache_SCD_Info_Additional_Plugin]
+IniRead,%ScriptFile%,Main,Selected,%t%
+If,%t%,Equal,True,Begin
+Run,%api%,Cache_SCD_Info_Additional_Plugin_ML,#1,#2,#3,#4,#5,#6,#7,#8,#9
+//-
+Call,RetrieveFolderUniqueID,%ProvideFiles%
+IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_ProvideFiles_RetrieveFolderUniqueID,%RetrieveFolderUniqueID%
+If,%RetrieveFolderUniqueID%,Equal,1,IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_ProvideFiles_RetrieveFolderUniqueID,"%RetrieveFolderUniqueID% : Directory Not Exists"
+If,%RetrieveFolderUniqueID%,Equal,2,IniWrite,%ProjectTemp%\%SFName%_Unique.ini,Unique,%Plugin_FName_Sub%_|_ProvideFiles_RetrieveFolderUniqueID,"%RetrieveFolderUniqueID% : Directory exists but empty"
+//-
+Echo,"Cache_SCD_Info_Additional_Plugin - Finish - %Plugin_FName%"
+End
+
+[InterfaceEncoded]
+DoubleJDesignRavenna3dArrowDown0016016.bmp=622,830
+BokehliciaCaptivaSoftwareupload0016016.bmp=676,902
+AmperossQetto2Move0016016.bmp=893,1191
+
+[DownloadXXX]
+Call,DownloadXQ
+
+[UploadXXX]
+Call,UploadXMultiQ
+
+[Settings_Default]
+IniWrite,%ScriptFile%,Main,Selected,False
+
+[EncodedFile-InterfaceEncoded-DoubleJDesignRavenna3dArrowDown0016016.bmp]
+lines=0
+0=eJzNk09Ik2Ecxw06BF2KqG5ih1EgYZZu7+v7vnu3d++2MpelRFHgQZEaJLVIXSxrW4Wauf7Nwha2rQ7dOgT9IQT1EkQHi+hSHfRSUZrMcp389PjSoUib3vrB9/I8fD78fr+Hxwi0LS+yyi6ySWSVyGqRZUUl1rnr1/3vBfy3+TTxkabuAzx4dp+lsu/G31LRXIrjaCmeVjtfpj4v2jH+YQwpWIYc3orctgUptJkT/UcWxc/1rLXYqYpKqGcklEglcns5DuF48uLhPx2TUxOYIRWlU8PZraOdU1GjMsop4RO9+DucfM1NzuvIfctR3Wai9hq4rvrREybOCy608xpqrAqlQzhObiOSbv2Ln8nPsDvsZ33dSoob1mE7XIIsetAvCUePG63TiRpXUE47rJ0MvRz8wzH9fZqR0SHSj1LUhn2s8a6gMi7hTm7HddmLftHA2aVT2mJjY3Mx7naJ/I/8vHN0Zc5avKNLw+gP4O7bgeuKD73XQyDqI5QM8ur96IJ7jKUiFi8nDDwDezBuCsf1amsnA4Opgm8Y7jtu8UrSj3lnL+btOjypXRg3dpIdThfkjyWCFu9M1eC7tx/vXeFIC8etWjKL4IPdTRZfFqtAvua1PJ5sPWamnuxIpiD/9Plj4ukIh3oaqGk3KG+0sWHfWhp7DvJm7PWS/9FcZmdnF+R+AlbU23p4nNNyyS9Nykn1ckktzkzPC0osS83LSzROcSwqyi93yS/PMzAwNAMivaTcAoZRMPxAGQuEZmPCLu9y8YwcAxMAHjMRfb+2diEBAAAAAgAAAEQAAAAGAgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[EncodedFile-InterfaceEncoded-BokehliciaCaptivaSoftwareupload0016016.bmp]
+lines=0
+0=eJytU21LWmEYbrAfsP0De4H2pRcqRq+0RllUZkav1O+YIH2JPvUhKKJfUE3aaCNQQR3pYWDTPCpBMKUxSczjZDB0Q8UPV/d9L0tdg33YAxfn5nq5n+c85z4vDa8e18l6TnhGeEJ4SnhUpxP+xa1euQD8V5RKJeTzeeRyOWSzWQHXzLH2t1yxWEQikYDb7cXu7iHW1/exuron4Jo51tjD3tqsw3GC+fn36O39hJ6eh8Eae9hb2SMYjGB42Iu+Pv8/gb2cKb+v2fwGAwOBGvhpTzfhg9S1utn8FuW7MplOMDQUwMhIgHrfY3Mzio2Nz1Uce9jLGc5mMhni/WhuPoROt4/6+td3ODpKwGqNV3HsYS9nOBuLfUFLyzG6ulzEnVXB4/kOpzPzB89eznD24iKKxkar9NPrg7fwYG7OBp/vGxRFw+ysDaOjnjudvZzhbDR6iY4OO/V0YHJSxdiYiq2trygUSri+zuLq6ofU29tx0djT2WmTDGdTqbRw3d1O+jYfMTGhYno6TL1zKC+uTaawaDrdHtrajiWjaWn5BgsLfhgMIZoPL6amQlKvrJzT/gUkkwUsL58Lx2hoOJAnZ8rzbLF4YTSG6d18dAY3nfMUg4MK7RmULGu/oUqea4tFqZi/JGZmwnJGgyEg8zU+fip3otcrdJcRusMQ2tt5vl3iVdVU1T9gt6exuMi+exiNZ2htfYempgNBf78LS0sRsPehf1DTfoq2sxPH2tolnTEm4Jo51tLpX1XZG70Y6I54nNNyys9OzcjJTM5MdE4sKMksSwzOTyspTyxKLS3IyU9MMTAwNAMivaTcAoZRMPxAGQuEtmHCLs9kcFmVgQkAJ9URXc7wHxQBAAAAAgAAAEQAAAA8AgAAAAAAAAEAAAAAAAAAAAAAAA
+
+[CompareEditXXX]
+Call,CompareEdit
+
+[EncodedFile-InterfaceEncoded-AmperossQetto2Move0016016.bmp]
+lines=0
+0=eJxtk1lIVFEYxw16agEVzTRncRtt0cx0NCu0QlsgyyCih7Cgh6KFNgQzSsqnFohUEm3FlqmsVGxxxoxSyYkpTcctsiKXtCZ1mPXee878++5o4YMf/DjfnXN+//sdmLt2s3amj7e0RAzhO8kMH7XPv/KfPcF0NXd7RXRg3ufCoDMD+nkFQ8Z5BYOTDBmDCgYNgXlfCudsq4yZzg3I7ToSfMHmVJQBilLi6pT1X097IZdsroBc87GpblB+zwHVNUBJ50JLBAQUSVhQIkJB/X+KBYQWCd4s1XUgKL/3kOz6HTYpQ4scbq9fLsL/ooAV50ahueKE8oYI1TWBoLVcgLKMKJWf6T1XHILv8WaVothyMlwHqG+KmHVJxKHbFnjs49j5zAnf2xyqexLC74hewm6JdE6AmjLDH1BGseVU2E17VeRjIIBmPFhhASQnnneK0Fy2IYaIKHEi9C6DXxmDWscQeY+yKkREPpLfaa+JuO/Wh5C/9bEd4C7INWyxw/bbCmnUiuZeK9bpHDhfY0FkuQvKSo6ohxKiqoCIu+76qEp3XUQtkFDL0DYm2x4863bjdAdwthfY0QKsMYjgYNDTAQVlqJ9yLHwBaB66DdFPhbol9TRLDUPsS4bWMQ+sYw6kVjuwhmbaXzuOvTVWVJtpPkqpbx/DYp0b0a+AmGrBsKhWMMS+AWL1dDcipZGhctiDHSYRbRY3OSIhYdwlYaI4cppdCGsAFr8Q6uNeiU/iacalrxkSyI1ropxGCXEtDGs/cmxq50hrlvCkx+G9W/F3DzQNDLITpxerEhrFE0ntwLK3DInvGLTvGZI/0BytHInka0wce9tpDo+E0gEPwuncUkJ2ljeJuUlGzNcamS3pA8iVkEJO6ieOVR2EmXpaN3Zz7PviQbyJPMrXfgSSjcy+2mQPlv+DaR3CrrSvQGon0caxmry0Lo508tJ7KIf6BLqHvLeyC0j/RpiFnKnfQEa3sDujj1syR4CMn0AmsZ76DSMTvfe3X8C6Pv4n0yzsme4bzO6yB2f1s6NZ/VyX9YPVZU+yhcjqlx5kD9FetyNkqvMXP3mcf3ick3XMLUgtyi8uDkwtKck38s0vSzUwMDQDIr2k3AKGUTDMgRkLhFZixi4vra37hIEJABkJC8Gkai7oAQAAAAIAAAA3AAAAIgMAAAAAAAABAAAAAAAAAAAAAAA
+
+[EncodedFolders]
+Folder
+
+[Folder]
+
